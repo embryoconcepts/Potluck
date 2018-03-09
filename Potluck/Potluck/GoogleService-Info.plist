@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>679267217310-gsu9pgg3bmp8lh7ok62kqrl1p479p2it.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.679267217310-gsu9pgg3bmp8lh7ok62kqrl1p479p2it</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDf2XBiS9v8ansKX-JoD7i7okaxtR9el14</string>
+	<key>GCM_SENDER_ID</key>
+	<string>679267217310</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.manyhandsapp.Potluck</string>
+	<key>PROJECT_ID</key>
+	<string>potluck-e00bb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>potluck-e00bb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:679267217310:ios:fc3f6106319ec2b3</string>
+	<key>DATABASE_URL</key>
+	<string>https://potluck-e00bb.firebaseio.com</string>
+</dict>
+</plist>
