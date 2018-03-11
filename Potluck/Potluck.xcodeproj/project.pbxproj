@@ -8,13 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		765123BA2053538900E78488 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123B92053538900E78488 /* AppDelegate.swift */; };
-		765123BC2053538900E78488 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123BB2053538900E78488 /* ViewController.swift */; };
 		765123BF2053538900E78488 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123BD2053538900E78488 /* Main.storyboard */; };
 		765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 765123C02053538900E78488 /* Potluck.xcdatamodeld */; };
 		765123C42053538900E78488 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 765123C32053538900E78488 /* Assets.xcassets */; };
 		765123C72053538900E78488 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123C52053538900E78488 /* LaunchScreen.storyboard */; };
 		765123D22053538900E78488 /* PotluckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123D12053538900E78488 /* PotluckTests.swift */; };
 		765123DE205355A800E78488 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 765123DD205355A800E78488 /* GoogleService-Info.plist */; };
+		765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123E32055DDA400E78488 /* MHPHomeViewController.swift */; };
+		765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123E52055DDB400E78488 /* MHPProfileViewController.swift */; };
+		765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123E72055DDC100E78488 /* MHPSettingsViewController.swift */; };
+		765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */; };
+		765123EC2055DDFC00E78488 /* MHPEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123EB2055DDFC00E78488 /* MHPEventViewController.swift */; };
 		C0F4A1D6FE33470A656CC328 /* Pods_PotluckTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293B908DEC6B21F6727DE0AD /* Pods_PotluckTests.framework */; };
 		DC0B364FD4DD527201273BEC /* Pods_Potluck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95F83A198136024582EE233F /* Pods_Potluck.framework */; };
 /* End PBXBuildFile section */
@@ -35,7 +39,6 @@
 		5D36E773934847B70A318A7C /* Pods-PotluckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PotluckTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PotluckTests/Pods-PotluckTests.debug.xcconfig"; sourceTree = "<group>"; };
 		765123B62053538900E78488 /* Potluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Potluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765123B92053538900E78488 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		765123BB2053538900E78488 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		765123BE2053538900E78488 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		765123C12053538900E78488 /* Potluck.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Potluck.xcdatamodel; sourceTree = "<group>"; };
 		765123C32053538900E78488 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,6 +49,11 @@
 		765123D32053538900E78488 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		765123DC2053552A00E78488 /* Potluck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Potluck.entitlements; sourceTree = "<group>"; };
 		765123DD205355A800E78488 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		765123E32055DDA400E78488 /* MHPHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPHomeViewController.swift; sourceTree = "<group>"; };
+		765123E52055DDB400E78488 /* MHPProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPProfileViewController.swift; sourceTree = "<group>"; };
+		765123E72055DDC100E78488 /* MHPSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPSettingsViewController.swift; sourceTree = "<group>"; };
+		765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEvent1DetailsViewController.swift; sourceTree = "<group>"; };
+		765123EB2055DDFC00E78488 /* MHPEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPEventViewController.swift; sourceTree = "<group>"; };
 		95F83A198136024582EE233F /* Pods_Potluck.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Potluck.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A84138F347E4C4E3E274216C /* Pods-Potluck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Potluck.release.xcconfig"; path = "Pods/Target Support Files/Pods-Potluck/Pods-Potluck.release.xcconfig"; sourceTree = "<group>"; };
 		F8CA402038BFF63EF4C379DF /* Pods-Potluck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Potluck.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Potluck/Pods-Potluck.debug.xcconfig"; sourceTree = "<group>"; };
@@ -107,8 +115,8 @@
 			children = (
 				765123DC2053552A00E78488 /* Potluck.entitlements */,
 				765123B92053538900E78488 /* AppDelegate.swift */,
-				765123BB2053538900E78488 /* ViewController.swift */,
-				765123BD2053538900E78488 /* Main.storyboard */,
+				765123E02055D7C200E78488 /* ViewControllers */,
+				765123DF2055D7A200E78488 /* Storyboards */,
 				765123C32053538900E78488 /* Assets.xcassets */,
 				765123C52053538900E78488 /* LaunchScreen.storyboard */,
 				765123C82053538900E78488 /* Info.plist */,
@@ -125,6 +133,26 @@
 				765123D32053538900E78488 /* Info.plist */,
 			);
 			path = PotluckTests;
+			sourceTree = "<group>";
+		};
+		765123DF2055D7A200E78488 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				765123BD2053538900E78488 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		765123E02055D7C200E78488 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				765123E32055DDA400E78488 /* MHPHomeViewController.swift */,
+				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
+				765123E52055DDB400E78488 /* MHPProfileViewController.swift */,
+				765123E72055DDC100E78488 /* MHPSettingsViewController.swift */,
+				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		CD09774CA765F74C58FDC86E /* Frameworks */ = {
@@ -348,9 +376,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Potluck/Pods-Potluck-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -369,8 +397,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
-				765123BC2053538900E78488 /* ViewController.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
+				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
+				765123EC2055DDFC00E78488 /* MHPEventViewController.swift in Sources */,
+				765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */,
+				765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */,
+				765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
