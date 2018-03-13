@@ -12,15 +12,19 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -32,4 +36,12 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     */
 
+    func cancel() {
+        // TODO: alert - do you really wanna?
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func next() {
+        // TODO: save current values to user preferences, move to next screen
+    }
 }

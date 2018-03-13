@@ -19,7 +19,7 @@
         <!--Create Event-->
         <scene sceneID="og7-7U-eZZ">
             <objects>
-                <viewController id="7MT-Iz-M60" userLabel="Create Event" sceneMemberID="viewController">
+                <viewController id="7MT-Iz-M60" userLabel="Create Event" customClass="MHPCreateEvent1DetailsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hI0-9b-hh7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -30,7 +30,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zlD-3H-35x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-756" y="949"/>
+            <point key="canvasLocation" x="18" y="187"/>
         </scene>
         <!--Home-->
         <scene sceneID="lKc-vJ-FND">
@@ -139,7 +139,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-z2-RIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10.4" y="-685.00749625187416"/>
+            <point key="canvasLocation" x="17" y="-685"/>
         </scene>
         <!--Event-->
         <scene sceneID="TBb-cb-8cx">
@@ -155,12 +155,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EDr-BW-K4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="734" y="-685"/>
+            <point key="canvasLocation" x="761" y="-685"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="rfR-TS-040">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9o8-9v-zqG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tabBarController id="GOF-Qe-HBg" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="78D-nL-eGj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
@@ -174,13 +173,14 @@
                         <segue destination="Wjb-ZW-nMv" kind="relationship" relationship="viewControllers" id="WXe-ar-VRH"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9o8-9v-zqG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1545" y="-685"/>
         </scene>
         <!--Profile-->
         <scene sceneID="f26-b5-med">
             <objects>
-                <viewController id="Cby-qD-0PM" userLabel="Profile" sceneMemberID="viewController">
+                <viewController id="Cby-qD-0PM" userLabel="Profile" customClass="MHPProfileViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="p9T-ea-aRB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -196,7 +196,7 @@
         <!--Settings-->
         <scene sceneID="gsM-bh-Ysd">
             <objects>
-                <viewController id="5Rp-nD-XeM" userLabel="Settings" sceneMemberID="viewController">
+                <viewController id="5Rp-nD-XeM" userLabel="Settings" customClass="MHPSettingsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K8H-Ez-l2Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -231,7 +231,6 @@
         <!--Create-->
         <scene sceneID="R2b-o9-4Gq">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zko-Kj-lU6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FCT-9B-zKH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Create" id="fv2-e3-Kox" userLabel="Create Event"/>
                     <toolbarItems/>
@@ -244,8 +243,9 @@
                         <segue destination="7MT-Iz-M60" kind="relationship" relationship="rootViewController" id="kk4-NQ-0Uc"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zko-Kj-lU6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-756" y="213"/>
+            <point key="canvasLocation" x="-756" y="187"/>
         </scene>
         <!--Settings-->
         <scene sceneID="70a-Pg-TtW">
