@@ -19,6 +19,10 @@ class Item: NSObject {
     var itemPlaceholderName: String?
     var itemSuggestedPortions: Int?
     
+    init(itemID: String) {
+        self.itemID = itemID
+    }
+    
     init(itemID: String, user: User?, eventItemList: EventItemList?, itemTags: [String]?, itemName: String?, itemPortions: Int?, itemDescription: String?, itemPlaceholderName: String?, itemSuggestedPortions: Int?) {
         
         self.itemID = itemID

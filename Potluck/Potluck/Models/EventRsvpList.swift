@@ -9,17 +9,17 @@
 import UIKit
 
 class EventRsvpList: NSObject {
-    var eventRsvpListID: String
-    var event: Event
-    var eventRsvps: [Rsvp]?
-    
-    init(eventRsvpListID: String, event: Event, eventRsvps: [Rsvp]?) {
-      
-        self.eventRsvpListID = eventRsvpListID
-        self.event = event
-       
-        if let tempEventRsvps = eventRsvps {
-            self.eventRsvps = tempEventRsvps
-        }
-    }
+//    var eventRsvpListID: String
+//    var event: Event
+//    var eventRsvps: [Rsvp]?
+//    
+//    init(eventRsvpListID: String, event: Event, eventRsvps: [Rsvp]?) {
+//      
+//        self.eventRsvpListID = eventRsvpListID
+//        self.event = event
+//       
+//        if let tempEventRsvps = eventRsvps {
+//            self.eventRsvps = tempEventRsvps
+//        }
+//    }
 }

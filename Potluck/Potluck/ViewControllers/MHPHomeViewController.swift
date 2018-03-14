@@ -14,7 +14,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var pageControl: UIPageControl!
     
     private let reuseIdentifier = "homeCell"
-//    var events = Event[]()
+    var events = [Event]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +23,13 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Register cell classes
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        // TODO: set up static events, remove for production
+        let user1 = User(userID: "abcd")
+        let event1 = Event(eventID: "12345", eventName: "Potluck Test 1", eventDate: Date(), eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventHostID: user1, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
+        let user2 = User(userID: "abcd")
+        let event2 = Event(eventID: "67890", eventName: "Potluck Test 2", eventDate: Date(), eventLocation: "Somewhere", eventDescription: "Second time just testing out some things like this is a thing and that is a thing and wow, things.", eventHostID: user2, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
+        events.append(event1)
+        events.append(event2)
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,21 +51,23 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     // MARK: UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return events.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCollectionViewCell
-        cell.eventName = "Test Event"
-        cell.eventHost = "Test Host"
-        let timeNow = Date()
+        cell.eventName = events[indexPath.row].eventName
+        cell.eventHost = events[indexPath.row].eventHostID?.userName
+        let timeNow = events[indexPath.row].eventDate
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
-        cell.eventDateTime = dateFormatter.string(from: timeNow)
+        cell.eventDateTime = dateFormatter.string(from: timeNow!)
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
     
     // MARK: UICollectionViewDelegate
     

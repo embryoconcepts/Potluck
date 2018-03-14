@@ -212,6 +212,7 @@
 				765123B42053538900E78488 /* Resources */,
 				EC77A9EBA69C0E47B7E3982F /* [CP] Embed Pods Frameworks */,
 				FBA5433560C645507E1EE1A6 /* [CP] Copy Pods Resources */,
+				765124062058A1CC00E78488 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -375,6 +376,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PotluckTests/Pods-PotluckTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		765124062058A1CC00E78488 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:\"\nfind \".\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -not -path \"./Pods/*\" -print0 |\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" |\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 		EC77A9EBA69C0E47B7E3982F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

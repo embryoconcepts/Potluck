@@ -9,5 +9,5 @@
 import UIKit
 
 class MHPHomeCollectionViewLayout: UICollectionViewLayout {
-    
+    // TODO: setup carousel layout
 }

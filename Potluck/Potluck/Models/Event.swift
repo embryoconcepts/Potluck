@@ -18,6 +18,10 @@ class Event: NSObject {
     var eventItemList: EventItemList?
     var eventRsvpList: EventRsvpList?
     
+    init(eventID: String) {
+        self.eventID = eventID
+    }
+    
     init(eventID: String, eventName: String?, eventDate: Date?, eventLocation: String?, eventDescription: String?, eventHostID: User?, eventItemList: EventItemList?, eventRsvpList: EventRsvpList?) {
        
         self.eventID = eventID

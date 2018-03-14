@@ -18,6 +18,10 @@ class Rsvp: NSObject {
     var notificationsOn: Bool?
     var numOfGuest: Int?
     
+    init(rsvpID: String) {
+        self.rsvpID = rsvpID
+    }
+    
     init(rsvpID: String, user: User?, eventRsvpList: EventRsvpList?, isGuest: Bool?, isHost: Bool?, response: String?, notificationsOn: Bool?, numOfGuest: Int?) {
        
         self.rsvpID = rsvpID

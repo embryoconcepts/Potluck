@@ -15,12 +15,16 @@ class User: NSObject {
     var userPhone: String?
     var userProfileURL: URL?
     var userFacebookID: String?
-    var isRegistered: Bool
+    var isRegistered: Bool?
     var userEventList: UserEventList?
     var notificationPermissions: Bool?
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
+    
+    init(userID: String) {
+        self.userID = userID
+    }
     
     init(userID: String, userName: String?, userEmail: String?, userPhone: String?, userProfileURLString: String?, userFacebookID: String?, isRegistered: Bool?, userEventList: UserEventList?, notificationPermissions: Bool?, notificationPreferences: Bool?, locationPermissions: Bool?, facebookPermissions: Bool?) {
         

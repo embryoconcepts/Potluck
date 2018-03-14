@@ -13,4 +13,6 @@ class MHPHomeCollectionViewCell: UICollectionViewCell {
     var eventDateTime: String?
     var eventHost: String?
     
+    
+    // TODO: setup cell here, not in main VC
 }
