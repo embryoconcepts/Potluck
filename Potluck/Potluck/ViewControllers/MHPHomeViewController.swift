@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import ScalingCarousel
 
 class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
     
     private let reuseIdentifier = "homeCell"
@@ -18,10 +19,6 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.delegate = self
-        
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         // TODO: set up static events, remove for production
         let user1 = User(userID: "abcd")
@@ -55,13 +52,17 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCollectionViewCell
-        cell.eventName = events[indexPath.row].eventName
-        cell.eventHost = events[indexPath.row].eventHostID?.userName
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCarouselViewCell
+        cell.lblEventName.text = events[indexPath.row].eventName
+        cell.lblHostName.text = events[indexPath.row].eventHostID?.userID
+        
         let timeNow = events[indexPath.row].eventDate
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        cell.eventDateTime = dateFormatter.string(from: timeNow!)
+        dateFormatter.dateStyle = .medium
+        cell.lblDateTime.text = dateFormatter.string(from: timeNow!)
+        
+        cell.mainView.layer.cornerRadius = 5
+
         return cell
     }
     
@@ -99,5 +100,13 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
      
      }
      */
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        carousel.didScroll()
+        
+        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
+        
+//        output.text = String(describing: currentCenterIndex)
+    }
     
 }
