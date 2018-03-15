@@ -11,9 +11,10 @@ import UIKit
 class Event: NSObject {
     var eventID: String
     var eventName: String?
-    var eventDate: Date?
+    var eventDate: String?
     var eventLocation: String?
     var eventDescription: String?
+    var eventImageURL: String?
     var eventHostID: User?
     var eventItemList: EventItemList?
     var eventRsvpList: EventRsvpList?
@@ -22,7 +23,7 @@ class Event: NSObject {
         self.eventID = eventID
     }
     
-    init(eventID: String, eventName: String?, eventDate: Date?, eventLocation: String?, eventDescription: String?, eventHostID: User?, eventItemList: EventItemList?, eventRsvpList: EventRsvpList?) {
+    init(eventID: String, eventName: String?, eventDate: String?, eventLocation: String?, eventDescription: String?, eventImageURL: String?,eventHostID: User?, eventItemList: EventItemList?, eventRsvpList: EventRsvpList?) {
        
         self.eventID = eventID
         
@@ -37,6 +38,9 @@ class Event: NSObject {
         }
         if let tempEventDescription = eventDescription {
             self.eventDescription = tempEventDescription
+        }
+        if let tempEventImageURL = eventImageURL {
+            self.eventImageURL = tempEventImageURL
         }
         if let tempEventHostID = eventHostID {
             self.eventHostID = tempEventHostID

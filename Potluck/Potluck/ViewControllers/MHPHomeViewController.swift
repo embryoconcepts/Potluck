@@ -22,9 +22,9 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // TODO: set up static events, remove for production
         let user1 = User(userID: "abcd")
-        let event1 = Event(eventID: "12345", eventName: "Potluck Test 1", eventDate: Date(), eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventHostID: user1, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
+        let event1 = Event(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHostID: user1, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
         let user2 = User(userID: "abcd")
-        let event2 = Event(eventID: "67890", eventName: "Potluck Test 2", eventDate: Date(), eventLocation: "Somewhere", eventDescription: "Second time just testing out some things like this is a thing and that is a thing and wow, things.", eventHostID: user2, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
+        let event2 = Event(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Second time just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHostID: user2, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
         events.append(event1)
         events.append(event2)
     }
@@ -53,59 +53,37 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCarouselViewCell
-        cell.lblEventName.text = events[indexPath.row].eventName
-        cell.lblHostName.text = events[indexPath.row].eventHostID?.userID
+        let selectedEvent = events[indexPath.row]
         
-        let timeNow = events[indexPath.row].eventDate
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        cell.lblDateTime.text = dateFormatter.string(from: timeNow!)
+        if let tempName = selectedEvent.eventName {
+            cell.lblEventName.text = tempName
+        }
+        if let tempHost = selectedEvent.eventHostID?.userID {
+            cell.lblHostName.text = tempHost
+        }
+        if let tempDate = selectedEvent.eventDate {
+            cell.lblDateTime.text = tempDate
+        }
         
-        cell.mainView.layer.cornerRadius = 5
-
+        // TODO: set up proper image handling
+        if let tempImage = UIImage(named: selectedEvent.eventImageURL!){
+             cell.imgEvent.image = tempImage
+        }
+       
         return cell
     }
+    
+    // MARK: UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
     
-    // MARK: UICollectionViewDelegate
-    
-    /*
-     // Uncomment this method to specify if the specified item should be highlighted during tracking
-     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     */
-    
-    /*
-     // Uncomment this method to specify if the specified item should be selected
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     */
-    
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return false
-     }
-     
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     
-     }
-     */
-    
+    // MARK: ScalingCarousel Methods
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         carousel.didScroll()
-        
-        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
-        
+        // TODO: possibly set up page control coordination?
+//        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
 //        output.text = String(describing: currentCenterIndex)
     }
     
