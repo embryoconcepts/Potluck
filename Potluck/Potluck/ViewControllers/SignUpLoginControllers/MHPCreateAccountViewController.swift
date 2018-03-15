@@ -1,14 +1,14 @@
 //
-//  MHPSettingsViewController.swift
+//  MHPCreateAccountViewController.swift
 //  Potluck
 //
-//  Created by Jennifer Hamilton on 3/11/18.
+//  Created by Jennifer Hamilton on 3/15/18.
 //  Copyright © 2018 Many Hands Apps. All rights reserved.
 //
 
 import UIKit
 
-class MHPSettingsViewController: UIViewController {
+class MHPCreateAccountViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

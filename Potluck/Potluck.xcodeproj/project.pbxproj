@@ -39,6 +39,12 @@
 		76DF6B68205A29C300028B3B /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B5C205A29C100028B3B /* Roboto-ThinItalic.ttf */; };
 		76DF6B69205A29C300028B3B /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B5D205A29C100028B3B /* Roboto-BlackItalic.ttf */; };
 		76DF6B6A205A29C300028B3B /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B5E205A29C200028B3B /* Roboto-MediumItalic.ttf */; };
+		76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B70205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift */; };
+		76DF6B75205B359900028B3B /* MHPLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B74205B359900028B3B /* MHPLoginViewController.swift */; };
+		76DF6B77205B35B300028B3B /* MHPCreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B76205B35B300028B3B /* MHPCreateAccountViewController.swift */; };
+		76DF6B79205B35BD00028B3B /* MHPPersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B78205B35BD00028B3B /* MHPPersonalInfoViewController.swift */; };
+		76DF6B7B205B35C700028B3B /* MHPConfirmAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B7A205B35C700028B3B /* MHPConfirmAccountViewController.swift */; };
+		76DF6B7D205B35D000028B3B /* MHPConfirmationScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF6B7C205B35D000028B3B /* MHPConfirmationScreenViewController.swift */; };
 		C0F4A1D6FE33470A656CC328 /* Pods_PotluckTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293B908DEC6B21F6727DE0AD /* Pods_PotluckTests.framework */; };
 		DC0B364FD4DD527201273BEC /* Pods_Potluck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95F83A198136024582EE233F /* Pods_Potluck.framework */; };
 /* End PBXBuildFile section */
@@ -94,6 +100,12 @@
 		76DF6B5C205A29C100028B3B /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B5D205A29C100028B3B /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B5E205A29C200028B3B /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
+		76DF6B70205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPSignUpLoginChoiceViewController.swift; sourceTree = "<group>"; };
+		76DF6B74205B359900028B3B /* MHPLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPLoginViewController.swift; sourceTree = "<group>"; };
+		76DF6B76205B35B300028B3B /* MHPCreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateAccountViewController.swift; sourceTree = "<group>"; };
+		76DF6B78205B35BD00028B3B /* MHPPersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPPersonalInfoViewController.swift; sourceTree = "<group>"; };
+		76DF6B7A205B35C700028B3B /* MHPConfirmAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPConfirmAccountViewController.swift; sourceTree = "<group>"; };
+		76DF6B7C205B35D000028B3B /* MHPConfirmationScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPConfirmationScreenViewController.swift; sourceTree = "<group>"; };
 		95F83A198136024582EE233F /* Pods_Potluck.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Potluck.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A84138F347E4C4E3E274216C /* Pods-Potluck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Potluck.release.xcconfig"; path = "Pods/Target Support Files/Pods-Potluck/Pods-Potluck.release.xcconfig"; sourceTree = "<group>"; };
 		F8CA402038BFF63EF4C379DF /* Pods-Potluck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Potluck.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Potluck/Pods-Potluck.debug.xcconfig"; sourceTree = "<group>"; };
@@ -188,12 +200,11 @@
 		765123E02055D7C200E78488 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				765123E32055DDA400E78488 /* MHPHomeViewController.swift */,
-				765123EF205745DF00E78488 /* MHPHomeCarouselViewCell.swift */,
-				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
-				765123E52055DDB400E78488 /* MHPProfileViewController.swift */,
-				765123E72055DDC100E78488 /* MHPSettingsViewController.swift */,
-				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
+				76DF6B6D205B338D00028B3B /* SignUpLoginControllers */,
+				76DF6B6E205B33A400028B3B /* HomeScreenControllers */,
+				76DF6B6F205B33B200028B3B /* EventControllers */,
+				76DF6B72205B33EF00028B3B /* CreateEventControllers */,
+				76DF6B73205B340100028B3B /* OtherControllers */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -237,6 +248,53 @@
 				76DF6B5C205A29C100028B3B /* Roboto-ThinItalic.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		76DF6B6D205B338D00028B3B /* SignUpLoginControllers */ = {
+			isa = PBXGroup;
+			children = (
+				76DF6B70205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift */,
+				76DF6B76205B35B300028B3B /* MHPCreateAccountViewController.swift */,
+				76DF6B78205B35BD00028B3B /* MHPPersonalInfoViewController.swift */,
+				76DF6B7A205B35C700028B3B /* MHPConfirmAccountViewController.swift */,
+				76DF6B7C205B35D000028B3B /* MHPConfirmationScreenViewController.swift */,
+				76DF6B74205B359900028B3B /* MHPLoginViewController.swift */,
+			);
+			path = SignUpLoginControllers;
+			sourceTree = "<group>";
+		};
+		76DF6B6E205B33A400028B3B /* HomeScreenControllers */ = {
+			isa = PBXGroup;
+			children = (
+				765123E32055DDA400E78488 /* MHPHomeViewController.swift */,
+				765123EF205745DF00E78488 /* MHPHomeCarouselViewCell.swift */,
+			);
+			path = HomeScreenControllers;
+			sourceTree = "<group>";
+		};
+		76DF6B6F205B33B200028B3B /* EventControllers */ = {
+			isa = PBXGroup;
+			children = (
+				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
+			);
+			path = EventControllers;
+			sourceTree = "<group>";
+		};
+		76DF6B72205B33EF00028B3B /* CreateEventControllers */ = {
+			isa = PBXGroup;
+			children = (
+				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
+			);
+			path = CreateEventControllers;
+			sourceTree = "<group>";
+		};
+		76DF6B73205B340100028B3B /* OtherControllers */ = {
+			isa = PBXGroup;
+			children = (
+				765123E52055DDB400E78488 /* MHPProfileViewController.swift */,
+				765123E72055DDC100E78488 /* MHPSettingsViewController.swift */,
+			);
+			path = OtherControllers;
 			sourceTree = "<group>";
 		};
 		CD09774CA765F74C58FDC86E /* Frameworks */ = {
@@ -519,12 +577,18 @@
 				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
 				765123EC2055DDFC00E78488 /* MHPEventViewController.swift in Sources */,
 				765123F920588DF200E78488 /* Event.swift in Sources */,
+				76DF6B7D205B35D000028B3B /* MHPConfirmationScreenViewController.swift in Sources */,
+				76DF6B77205B35B300028B3B /* MHPCreateAccountViewController.swift in Sources */,
 				765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */,
 				765123FB20588E1300E78488 /* Item.swift in Sources */,
 				765124012058902000E78488 /* EventItemList.swift in Sources */,
+				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
+				76DF6B7B205B35C700028B3B /* MHPConfirmAccountViewController.swift in Sources */,
 				765124032058903000E78488 /* EventRsvpList.swift in Sources */,
+				76DF6B79205B35BD00028B3B /* MHPPersonalInfoViewController.swift in Sources */,
 				765124052058932200E78488 /* UserEventList.swift in Sources */,
 				765123FD20588E2400E78488 /* Rsvp.swift in Sources */,
+				76DF6B75205B359900028B3B /* MHPLoginViewController.swift in Sources */,
 				765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */,
 				765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */,
 				765123F0205745DF00E78488 /* MHPHomeCarouselViewCell.swift in Sources */,
