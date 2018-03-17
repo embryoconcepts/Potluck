@@ -32,4 +32,11 @@ class MHPRSVPViewController: MHPBaseViewController {
     }
     */
 
+    @IBAction func cancelTapped(_ sender: Any) {
+        cancel()
+    }
+    
+    @IBAction func saveTapped(_ sender: Any) {
+        
+    }
 }

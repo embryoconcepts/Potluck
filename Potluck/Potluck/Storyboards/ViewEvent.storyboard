@@ -10,6 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
         <array key="Roboto-LightItalic.ttf">
             <string>Roboto-LightItalic</string>
         </array>
@@ -222,9 +225,46 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kC1-Td-uLg">
                                 <rect key="frame" x="20" y="143.5" width="335" height="380"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TvN-10-amC">
+                                        <rect key="frame" x="171.5" y="320" width="143.5" height="40"/>
+                                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="nz4-l4-Lbz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelTapped:" destination="8mt-yr-xrS" eventType="touchUpInside" id="grf-xB-wsS"/>
+                                            <action selector="saveTapped:" destination="8mt-yr-xrS" eventType="touchUpInside" id="QYY-D7-7Qm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpW-NY-Xxa">
+                                        <rect key="frame" x="20" y="320" width="144" height="40"/>
+                                        <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="q6M-Y0-ULG"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelTapped:" destination="8mt-yr-xrS" eventType="touchUpInside" id="rU7-a3-GH4"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="TvN-10-amC" firstAttribute="leading" secondItem="fpW-NY-Xxa" secondAttribute="trailing" constant="8" id="0Cb-fp-y6T"/>
+                                    <constraint firstAttribute="trailing" secondItem="TvN-10-amC" secondAttribute="trailing" constant="20" id="4MY-DV-K3h"/>
+                                    <constraint firstAttribute="bottom" secondItem="TvN-10-amC" secondAttribute="bottom" constant="20" id="Ad6-d3-SOF"/>
                                     <constraint firstAttribute="height" constant="380" id="atX-lo-Cml"/>
+                                    <constraint firstAttribute="bottom" secondItem="fpW-NY-Xxa" secondAttribute="bottom" constant="20" id="cUx-OS-VzM"/>
+                                    <constraint firstItem="fpW-NY-Xxa" firstAttribute="width" secondItem="TvN-10-amC" secondAttribute="width" id="fY8-ej-9sl"/>
+                                    <constraint firstItem="fpW-NY-Xxa" firstAttribute="leading" secondItem="kC1-Td-uLg" secondAttribute="leading" constant="20" id="wfr-Hm-8we"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -240,7 +280,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i2Z-ZK-HbO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2753" y="-979"/>
+            <point key="canvasLocation" x="2752.8000000000002" y="-979.16041979010504"/>
         </scene>
         <!--Item Card - Viewing-->
         <scene sceneID="aeh-eK-DJy">
