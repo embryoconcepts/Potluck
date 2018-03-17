@@ -27,53 +27,18 @@
         <!--Create Event-->
         <scene sceneID="og7-7U-eZZ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zlD-3H-35x" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="7MT-Iz-M60" userLabel="Create Event" customClass="MHPCreateEvent1DetailsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hI0-9b-hh7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ka0-Tq-gLu">
-                                <rect key="frame" x="164" y="459" width="136" height="40"/>
-                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="yBO-7S-gnJ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ZZ-YN-4RQ">
-                                <rect key="frame" x="20" y="459" width="136" height="40"/>
-                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="Y1h-BT-3ey"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="cancelTappped:" destination="7MT-Iz-M60" eventType="touchUpInside" id="eCc-1d-UWu"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Ka0-Tq-gLu" firstAttribute="leading" secondItem="4ZZ-YN-4RQ" secondAttribute="trailing" constant="8" id="0BK-oD-9hg"/>
-                            <constraint firstItem="I3c-FA-Zhd" firstAttribute="trailing" secondItem="Ka0-Tq-gLu" secondAttribute="trailing" constant="20" id="8Z5-sH-ISM"/>
-                            <constraint firstItem="4ZZ-YN-4RQ" firstAttribute="width" secondItem="Ka0-Tq-gLu" secondAttribute="width" id="Z0d-ZR-NwC"/>
-                            <constraint firstItem="I3c-FA-Zhd" firstAttribute="bottom" secondItem="4ZZ-YN-4RQ" secondAttribute="bottom" constant="20" id="i9M-ut-JBi"/>
-                            <constraint firstItem="I3c-FA-Zhd" firstAttribute="bottom" secondItem="Ka0-Tq-gLu" secondAttribute="bottom" constant="20" id="jrT-Y1-Aq7"/>
-                            <constraint firstItem="4ZZ-YN-4RQ" firstAttribute="leading" secondItem="I3c-FA-Zhd" secondAttribute="leading" constant="20" id="nYh-Ak-OVv"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="I3c-FA-Zhd"/>
                     </view>
                     <navigationItem key="navigationItem" title="Create Event - Details" id="i1f-Mt-TIf"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zlD-3H-35x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="43" y="-157"/>
+            <point key="canvasLocation" x="18" y="187"/>
         </scene>
         <!--Home-->
         <scene sceneID="lKc-vJ-FND">
@@ -208,7 +173,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-z2-RIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4" y="-1432"/>
+            <point key="canvasLocation" x="16.800000000000001" y="-685.00749625187416"/>
         </scene>
         <!--Event-->
         <scene sceneID="TBb-cb-8cx">
@@ -383,7 +348,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EDr-BW-K4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="746" y="-1432"/>
+            <point key="canvasLocation" x="759.375" y="-685.56338028169012"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="rfR-TS-040">
@@ -433,7 +398,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mgx-go-gai" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49" y="941"/>
+            <point key="canvasLocation" x="15" y="918"/>
         </scene>
         <!--SignUpLogin-->
         <scene sceneID="5Zo-9d-4eM">
@@ -441,7 +406,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="SignUpLogin" storyboardName="SignUpLogin" id="M0a-0t-2bh" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KiM-wE-tqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1015" y="1166"/>
+            <point key="canvasLocation" x="1180" y="1203"/>
         </scene>
         <!--Settings-->
         <scene sceneID="gsM-bh-Ysd">
@@ -474,7 +439,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ql2-jL-KNh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49" y="1666"/>
+            <point key="canvasLocation" x="15" y="1643"/>
         </scene>
         <!--Home-->
         <scene sceneID="lmB-CO-uh3">
@@ -493,12 +458,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31D-w3-E5d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-771" y="-1432"/>
+            <point key="canvasLocation" x="-756" y="-685"/>
         </scene>
         <!--Create-->
         <scene sceneID="R2b-o9-4Gq">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zko-Kj-lU6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FCT-9B-zKH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Create" id="fv2-e3-Kox" userLabel="Create Event"/>
                     <toolbarItems/>
@@ -511,8 +475,9 @@
                         <segue destination="7MT-Iz-M60" kind="relationship" relationship="rootViewController" id="kk4-NQ-0Uc"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zko-Kj-lU6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-773" y="-156"/>
+            <point key="canvasLocation" x="-799" y="187"/>
         </scene>
         <!--Settings-->
         <scene sceneID="70a-Pg-TtW">
@@ -531,7 +496,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YhB-dw-kj0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-726" y="1666"/>
+            <point key="canvasLocation" x="-759" y="1643"/>
         </scene>
         <!--Profile-->
         <scene sceneID="7bV-gN-0al">
@@ -550,10 +515,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RCK-DT-f6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-728" y="938"/>
+            <point key="canvasLocation" x="-758" y="919"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Pnc-aC-o8Q"/>
+        <segue reference="VSQ-vE-D1g"/>
     </inferredMetricsTieBreakers>
 </document>
