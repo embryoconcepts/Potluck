@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="36S-ZC-a2a">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Create Event-->
+        <scene sceneID="gMI-Ab-Jyr">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HND-Oq-XPe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="DgA-GW-4rN" userLabel="Create Event" customClass="MHPCreateEvent1DetailsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="d1K-x2-2o4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZZ-81-GZM">
+                                <rect key="frame" x="191.5" y="607" width="163.5" height="40"/>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="NYz-Nh-nyQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mgx-Z8-KGP">
+                                <rect key="frame" x="20" y="607" width="163.5" height="40"/>
+                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Ezr-cY-V7B"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTappped:" destination="DgA-GW-4rN" eventType="touchUpInside" id="fbO-5y-b7K"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pNl-Yf-oek" firstAttribute="bottom" secondItem="aZZ-81-GZM" secondAttribute="bottom" constant="20" id="B3a-a0-zwc"/>
+                            <constraint firstItem="Mgx-Z8-KGP" firstAttribute="leading" secondItem="pNl-Yf-oek" secondAttribute="leading" constant="20" id="E0r-Hz-zMa"/>
+                            <constraint firstItem="Mgx-Z8-KGP" firstAttribute="width" secondItem="aZZ-81-GZM" secondAttribute="width" id="LAH-zc-TMh"/>
+                            <constraint firstItem="pNl-Yf-oek" firstAttribute="trailing" secondItem="aZZ-81-GZM" secondAttribute="trailing" constant="20" id="PCq-mT-xB5"/>
+                            <constraint firstItem="pNl-Yf-oek" firstAttribute="bottom" secondItem="Mgx-Z8-KGP" secondAttribute="bottom" constant="20" id="PUf-lB-9Io"/>
+                            <constraint firstItem="aZZ-81-GZM" firstAttribute="leading" secondItem="Mgx-Z8-KGP" secondAttribute="trailing" constant="8" id="b7p-9T-Abo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pNl-Yf-oek"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Create Event - Details" id="zBg-zc-Iaf"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="133" y="-195"/>
+        </scene>
+        <!--Create-->
+        <scene sceneID="aN5-CC-vvi">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1t8-kd-EG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="36S-ZC-a2a" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Create" id="Hwp-gP-or1" userLabel="Create Event"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NmI-ua-4o6">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="DgA-GW-4rN" kind="relationship" relationship="rootViewController" id="T9g-S2-lIl"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="-644" y="-196"/>
+        </scene>
+    </scenes>
+</document>

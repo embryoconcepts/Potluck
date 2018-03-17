@@ -29,6 +29,7 @@
 		765124052058932200E78488 /* UserEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124042058932200E78488 /* UserEventList.swift */; };
 		7657AC2E205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */; };
 		7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */; };
+		7657AC38205CFC8100FE7833 /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -92,6 +93,7 @@
 		765124042058932200E78488 /* UserEventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventList.swift; sourceTree = "<group>"; };
 		7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPBaseSignUpLoginViewController.swift; sourceTree = "<group>"; };
 		7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUpLogin.storyboard; sourceTree = "<group>"; };
+		7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			children = (
 				765123BD2053538900E78488 /* Main.storyboard */,
 				7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */,
+				7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				76DF6B67205A29C300028B3B /* Roboto-Medium.ttf in Resources */,
+				7657AC38205CFC8100FE7833 /* CreateEvent.storyboard in Resources */,
 				76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */,
 				76DF6B65205A29C300028B3B /* Roboto-BoldItalic.ttf in Resources */,
 				765123C72053538900E78488 /* LaunchScreen.storyboard in Resources */,
