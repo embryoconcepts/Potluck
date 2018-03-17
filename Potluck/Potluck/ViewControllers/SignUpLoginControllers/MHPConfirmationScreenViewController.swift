@@ -8,10 +8,11 @@
 
 import UIKit
 
-class MHPConfirmationScreenViewController: UIViewController {
+class MHPConfirmationScreenViewController: MHPBaseSignUpLoginViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped(_:)))
 
         // Do any additional setup after loading the view.
     }
@@ -21,15 +22,17 @@ class MHPConfirmationScreenViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        setupBackButton()
     }
-    */
-
+    
+    // MARK: - Action Handlers
+    
+    @IBAction func doneTapped(_ sender: UIBarButtonItem) {
+        returnToOriginalFlow()
+    }
+    
+    @IBAction func closeTapped(_ sender: UIButton) {
+        returnToOriginalFlow()
+    }
 }

@@ -8,10 +8,11 @@
 
 import UIKit
 
-class MHPPersonalInfoViewController: UIViewController {
+class MHPPersonalInfoViewController: MHPBaseSignUpLoginViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
 
         // Do any additional setup after loading the view.
     }
@@ -22,14 +23,14 @@ class MHPPersonalInfoViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        setupBackButton()
     }
-    */
+    
+    // MARK: - Action Handlers
+    
+    @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
+        returnToSignUpRoot()
+    }
 
 }

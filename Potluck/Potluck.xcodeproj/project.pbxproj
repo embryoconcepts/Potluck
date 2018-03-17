@@ -27,6 +27,7 @@
 		765124012058902000E78488 /* EventItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124002058902000E78488 /* EventItemList.swift */; };
 		765124032058903000E78488 /* EventRsvpList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124022058903000E78488 /* EventRsvpList.swift */; };
 		765124052058932200E78488 /* UserEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124042058932200E78488 /* UserEventList.swift */; };
+		7657AC2E205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -88,6 +89,7 @@
 		765124002058902000E78488 /* EventItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItemList.swift; sourceTree = "<group>"; };
 		765124022058903000E78488 /* EventRsvpList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRsvpList.swift; sourceTree = "<group>"; };
 		765124042058932200E78488 /* UserEventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventList.swift; sourceTree = "<group>"; };
+		7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPBaseSignUpLoginViewController.swift; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 		76DF6B6D205B338D00028B3B /* SignUpLoginControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */,
 				76DF6B70205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift */,
 				76DF6B76205B35B300028B3B /* MHPCreateAccountViewController.swift */,
 				76DF6B78205B35BD00028B3B /* MHPPersonalInfoViewController.swift */,
@@ -582,6 +585,7 @@
 				765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */,
 				765123FB20588E1300E78488 /* Item.swift in Sources */,
 				765124012058902000E78488 /* EventItemList.swift in Sources */,
+				7657AC2E205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				76DF6B7B205B35C700028B3B /* MHPConfirmAccountViewController.swift in Sources */,
 				765124032058903000E78488 /* EventRsvpList.swift in Sources */,

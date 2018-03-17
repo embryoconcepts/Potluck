@@ -37,10 +37,6 @@ class MHPSettingsViewController: UIViewController {
     */
     @IBAction func logInOutTapped(_ sender: Any) {
         // TODO: if user is logged in, then switch button text to Log Out, else button text = Sign Up or Login
-       
-        if let signUpLoginVC = storyboard?.instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") {
-            present(signUpLoginVC, animated: true)
-        }
         
     }
     
