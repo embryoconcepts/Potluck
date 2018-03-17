@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPSignUpLoginChoiceViewController: MHPBaseSignUpLoginViewController {
+class MHPSignUpLoginChoiceViewController: MHPBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

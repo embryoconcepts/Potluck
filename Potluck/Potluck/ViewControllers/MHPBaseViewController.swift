@@ -1,5 +1,5 @@
 //
-//  MHPBaseSignUpLoginViewController.swift
+//  MHPBaseViewController.swift
 //  Potluck
 //
 //  Created by Jennifer Hamilton on 3/16/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPBaseSignUpLoginViewController: UIViewController {
+class MHPBaseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,5 +41,12 @@ class MHPBaseSignUpLoginViewController: UIViewController {
     /// Returns user to their original flow
     func returnToOriginalFlow() {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    ///
+    func goToRsvp() {
+        if let rsvpVC = self.storyboard?.instantiateViewController(withIdentifier: "rsvpVC") {
+            present(rsvpVC, animated: true, completion: nil)
+        }
     }
 }

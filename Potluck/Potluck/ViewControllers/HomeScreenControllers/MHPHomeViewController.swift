@@ -9,7 +9,7 @@
 import UIKit
 import ScalingCarousel
 
-class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -45,6 +45,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
      // MARK: - Navigation
      
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        setupBackButton()
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell){
             if segue.identifier == "HomeToEventSegue" {
                 let selectedEvent = events[indexPath.row]

@@ -27,9 +27,11 @@
 		765124012058902000E78488 /* EventItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124002058902000E78488 /* EventItemList.swift */; };
 		765124032058903000E78488 /* EventRsvpList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124022058903000E78488 /* EventRsvpList.swift */; };
 		765124052058932200E78488 /* UserEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124042058932200E78488 /* UserEventList.swift */; };
-		7657AC2E205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */; };
+		7657AC2E205CC52800FE7833 /* MHPBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* MHPBaseViewController.swift */; };
 		7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */; };
 		7657AC38205CFC8100FE7833 /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */; };
+		7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */; };
+		7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -91,9 +93,11 @@
 		765124002058902000E78488 /* EventItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItemList.swift; sourceTree = "<group>"; };
 		765124022058903000E78488 /* EventRsvpList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRsvpList.swift; sourceTree = "<group>"; };
 		765124042058932200E78488 /* UserEventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEventList.swift; sourceTree = "<group>"; };
-		7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPBaseSignUpLoginViewController.swift; sourceTree = "<group>"; };
+		7657AC2D205CC52800FE7833 /* MHPBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPBaseViewController.swift; sourceTree = "<group>"; };
 		7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUpLogin.storyboard; sourceTree = "<group>"; };
 		7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
+		7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewEvent.storyboard; sourceTree = "<group>"; };
+		7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRSVPViewController.swift; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 			children = (
 				765123BD2053538900E78488 /* Main.storyboard */,
 				7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */,
+				7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */,
 				7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */,
 			);
 			path = Storyboards;
@@ -208,6 +213,7 @@
 		765123E02055D7C200E78488 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7657AC2D205CC52800FE7833 /* MHPBaseViewController.swift */,
 				76DF6B6D205B338D00028B3B /* SignUpLoginControllers */,
 				76DF6B6E205B33A400028B3B /* HomeScreenControllers */,
 				76DF6B6F205B33B200028B3B /* EventControllers */,
@@ -261,7 +267,6 @@
 		76DF6B6D205B338D00028B3B /* SignUpLoginControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7657AC2D205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift */,
 				76DF6B70205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift */,
 				76DF6B76205B35B300028B3B /* MHPCreateAccountViewController.swift */,
 				76DF6B78205B35BD00028B3B /* MHPPersonalInfoViewController.swift */,
@@ -285,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
+				7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */,
 			);
 			path = EventControllers;
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 				765123C42053538900E78488 /* Assets.xcassets in Resources */,
 				7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */,
 				76DF6B62205A29C300028B3B /* Roboto-Bold.ttf in Resources */,
+				7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */,
 				76DF6B64205A29C300028B3B /* Roboto-Italic.ttf in Resources */,
 				76DF6B68205A29C300028B3B /* Roboto-ThinItalic.ttf in Resources */,
 				76DF6B6A205A29C300028B3B /* Roboto-MediumItalic.ttf in Resources */,
@@ -585,6 +592,7 @@
 				765123FF20588F8800E78488 /* User.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
+				7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */,
 				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
 				765123EC2055DDFC00E78488 /* MHPEventViewController.swift in Sources */,
 				765123F920588DF200E78488 /* Event.swift in Sources */,
@@ -593,7 +601,7 @@
 				765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */,
 				765123FB20588E1300E78488 /* Item.swift in Sources */,
 				765124012058902000E78488 /* EventItemList.swift in Sources */,
-				7657AC2E205CC52800FE7833 /* MHPBaseSignUpLoginViewController.swift in Sources */,
+				7657AC2E205CC52800FE7833 /* MHPBaseViewController.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				76DF6B7B205B35C700028B3B /* MHPConfirmAccountViewController.swift in Sources */,
 				765124032058903000E78488 /* EventRsvpList.swift in Sources */,

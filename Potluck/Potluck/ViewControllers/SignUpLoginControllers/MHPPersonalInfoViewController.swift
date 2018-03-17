@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPPersonalInfoViewController: MHPBaseSignUpLoginViewController {
+class MHPPersonalInfoViewController: MHPBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPEventViewController: UIViewController {
+class MHPEventViewController: MHPBaseViewController {
     
     @IBOutlet weak var lblEventHost: UILabel!
     @IBOutlet weak var lblEventDescription: UILabel!
@@ -36,9 +36,10 @@ class MHPEventViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        // TODO: put the below in a completion block with setupDetails in the completion
+        // TODO: put the below in a completion block with all in the completion
         checkForUserRsvp()
         checkIfUserHostOrGuest()
+        setupNavigation()
         setupDetails()
     }
     
@@ -47,61 +48,45 @@ class MHPEventViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    /*
      // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
-    
-    // MARK: - Action Handlers
-    @IBAction func rsvpTapped(_ sender: Any) {
-        // TODO: move to RSVP screen
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        setupBackButton()
+        // TODO: handle moving to rsvp
+        // TODO: handle moving to guest list
+        // TODO: handle moving to menu
     }
     
-    @IBAction func manageEvent(_ sender: Any) {
-        // TODO: move to manage event flow
-    }
-    
-    @IBAction func guestListTapped(_ sender: Any) {
-        
-    }
-    
-    @IBAction func menuTapped(_ sender: Any) {
-        
-    }
-   
     func checkForUserRsvp() {
+        // TODO: complete
         userHasRsvp = false
     }
     
     func checkIfUserHostOrGuest() {
+        // TODO: complete
         userIsGuest = true
         userIsHost = false
     }
     
-    func setupDetails() {
+    func setupNavigation() {
         // Navigation Bar
         var rightBarButton: UIBarButtonItem?
         if userIsHost! {
             rightBarButton = UIBarButtonItem(title: "Manage", style: .plain, target: self, action: #selector(manageEvent))
         } else {
-            rightBarButton = UIBarButtonItem(title: "RSVP", style: .plain, target: self, action: #selector(rsvpTapped(_:)))
+            rightBarButton = UIBarButtonItem(title: "RSVP", style: .plain, target: self, action: #selector(rsvpTapped))
         }
         
         navigationItem.rightBarButtonItem = rightBarButton
         if let tempTitle = event?.eventName {
             self.title = tempTitle
         }
-        
+    }
+    
+    func setupDetails() {
         // Event Details
         if let tempHost = event?.eventHostID?.userName {
-            lblEventHost.text = tempHost
+            lblEventHost.text = tempHost 
         } else {
             lblEventHost.text = ""
         }
@@ -136,11 +121,23 @@ class MHPEventViewController: UIViewController {
 //            }
 //        }
 //        lblGuestListTotals.text = "\(String(describing: rsvps?.count)) invited, \(guestsConfirmed) confirmed"
+        lblGuestListTotals.text = ""
         
         // Menu Summary
         lblMenuTotals.text = ""
     }
     
+    // MARK: - Action Handlers
+    @IBAction func rsvpTapped(_ sender: Any) {
+        goToRsvp()
+    }
+    
+    @IBAction func manageEvent(_ sender: Any) {
+        // TODO: move to manage event flow
+    }
+    
+    
+    // MARK: - Helper Methods
     func sendToSignUpLogin() {
         // TODO: move to sign up flow
     }
