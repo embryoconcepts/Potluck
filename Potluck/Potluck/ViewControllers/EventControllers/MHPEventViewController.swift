@@ -48,6 +48,7 @@ class MHPEventViewController: MHPBaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
      // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -127,7 +128,9 @@ class MHPEventViewController: MHPBaseViewController {
         lblMenuTotals.text = ""
     }
     
+    
     // MARK: - Action Handlers
+    
     @IBAction func rsvpTapped(_ sender: Any) {
         goToRsvp()
     }
@@ -138,7 +141,10 @@ class MHPEventViewController: MHPBaseViewController {
     
     
     // MARK: - Helper Methods
+    
     func sendToSignUpLogin() {
         // TODO: move to sign up flow
     }
+    
 }
+

@@ -19,6 +19,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
@@ -37,7 +38,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
     @IBAction func cancelTappped(_ sender: UIButton) {
         // TODO: alert - do you really wanna?
         dismiss(animated: true, completion: nil)
@@ -53,3 +53,4 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         // TODO: save current values to user preferences, move to next screen
     }
 }
+

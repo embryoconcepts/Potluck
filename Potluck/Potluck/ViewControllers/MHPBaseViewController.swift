@@ -40,7 +40,7 @@ class MHPBaseViewController: UIViewController {
     
     /// Returns user to their original flow
     func returnToOriginalFlow() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion:nil)
     }
     
     ///
@@ -50,3 +50,4 @@ class MHPBaseViewController: UIViewController {
         }
     }
 }
+

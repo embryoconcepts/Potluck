@@ -20,8 +20,6 @@ class MHPRSVPViewController: MHPBaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
     /*
     // MARK: - Navigation
 
@@ -40,3 +38,4 @@ class MHPRSVPViewController: MHPBaseViewController {
         
     }
 }
+

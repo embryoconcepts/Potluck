@@ -40,13 +40,12 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: UICollectionViewDataSource
     
      // MARK: - Navigation
      
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell){
+        if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
                 let selectedEvent = events[indexPath.row]
                 let eventDetailVC = segue.destination as! MHPEventViewController
@@ -58,8 +57,10 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         } else {
             // TODO: error handling
         }
-        
     }
+    
+    
+    // MARK: UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return events.count
@@ -80,7 +81,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         }
         
         // TODO: set up proper image handling
-        if let tempImage = UIImage(named: selectedEvent.eventImageURL!){
+        if let tempImage = UIImage(named: selectedEvent.eventImageURL!) {
              cell.imgEvent.image = tempImage
         }
        
@@ -89,6 +90,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     
     // MARK: ScalingCarousel Methods
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         carousel.didScroll()
         // TODO: possibly set up page control coordination?
@@ -97,3 +99,4 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     }
     
 }
+

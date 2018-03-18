@@ -26,6 +26,7 @@ class MHPConfirmAccountViewController: MHPBaseViewController {
         setupBackButton()
     }
     
+    
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
@@ -33,3 +34,4 @@ class MHPConfirmAccountViewController: MHPBaseViewController {
     }
 
 }
+

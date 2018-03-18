@@ -22,10 +22,10 @@ class MHPLoginViewController: MHPBaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
     }
+    
     
     // MARK: - Action Handlers
     
@@ -38,3 +38,4 @@ class MHPLoginViewController: MHPBaseViewController {
     }
     
 }
+
