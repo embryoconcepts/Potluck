@@ -8,7 +8,7 @@
 
 import UIKit
 
-class User: NSObject {
+class MHPUser: NSObject {
     var userID: String
     var userName: String?
     var userEmail: String?
@@ -16,7 +16,7 @@ class User: NSObject {
     var userProfileURL: URL?
     var userFacebookID: String?
     var isRegistered: Bool?
-    var userEventList: UserEventList?
+    var userEventList: MHPUserEventList?
     var notificationPermissions: Bool?
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
@@ -26,7 +26,7 @@ class User: NSObject {
         self.userID = userID
     }
     
-    init(userID: String, userName: String?, userEmail: String?, userPhone: String?, userProfileURLString: String?, userFacebookID: String?, isRegistered: Bool?, userEventList: UserEventList?, notificationPermissions: Bool?, notificationPreferences: Bool?, locationPermissions: Bool?, facebookPermissions: Bool?) {
+    init(userID: String, userName: String?, userEmail:String?, userPhone:String?, userProfileURLString:String?, userFacebookID:String?, isRegistered:Bool?, userEventList:MHPUserEventList?, notificationPermissions:Bool?, notificationPreferences:Bool?, locationPermissions:Bool?, facebookPermissions:Bool?) {
         
         self.userID = userID
        
@@ -67,3 +67,4 @@ class User: NSObject {
         }
     }
 }
+

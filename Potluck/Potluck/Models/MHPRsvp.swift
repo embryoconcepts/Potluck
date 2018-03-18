@@ -8,10 +8,10 @@
 
 import UIKit
 
-class Rsvp: NSObject {
+class MHPRsvp: NSObject {
     var rsvpID: String
-    var user: User?
-    var eventRsvpList: EventRsvpList?
+    var user: MHPUser?
+    var eventRsvpList: MHPEventRsvpList?
     var isGuest: Bool?
     var isHost: Bool?
     var response: String?
@@ -22,7 +22,7 @@ class Rsvp: NSObject {
         self.rsvpID = rsvpID
     }
     
-    init(rsvpID: String, user: User?, eventRsvpList: EventRsvpList?, isGuest: Bool?, isHost: Bool?, response: String?, notificationsOn: Bool?, numOfGuest: Int?) {
+    init(rsvpID: String, user: MHPUser?, eventRsvpList:MHPEventRsvpList?, isGuest:Bool?, isHost:Bool?, response:String?, notificationsOn:Bool?, numOfGuest:Int?) {
        
         self.rsvpID = rsvpID
        
@@ -49,3 +49,4 @@ class Rsvp: NSObject {
         }
     }
 }
+

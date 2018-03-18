@@ -8,10 +8,10 @@
 
 import UIKit
 
-class Item: NSObject {
+class MHPItem: NSObject {
     var itemID: String
-    var user: User?
-    var eventItemList: EventItemList?
+    var user: MHPUser?
+    var eventItemList: MHPEventItemList?
     var itemTags: [String]?
     var itemName: String?
     var itemPortions: Int?
@@ -23,7 +23,7 @@ class Item: NSObject {
         self.itemID = itemID
     }
     
-    init(itemID: String, user: User?, eventItemList: EventItemList?, itemTags: [String]?, itemName: String?, itemPortions: Int?, itemDescription: String?, itemPlaceholderName: String?, itemSuggestedPortions: Int?) {
+    init(itemID: String, user: MHPUser?, eventItemList:MHPEventItemList?, itemTags:[String]?, itemName:String?, itemPortions:Int?, itemDescription:String?, itemPlaceholderName:String?, itemSuggestedPortions:Int?) {
         
         self.itemID = itemID
         
@@ -53,3 +53,4 @@ class Item: NSObject {
         }
     }
 }
+

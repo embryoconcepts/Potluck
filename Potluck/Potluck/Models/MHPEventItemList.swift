@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventItemList: NSObject {
+class MHPEventItemList: NSObject {
 //    var eventItemListID: String
 //    var event: Event
 //    var eventItemListDescription: String?
@@ -31,3 +31,4 @@ class EventItemList: NSObject {
 //        }
 //    }
 }
+

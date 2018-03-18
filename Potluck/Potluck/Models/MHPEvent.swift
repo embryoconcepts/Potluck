@@ -8,22 +8,22 @@
 
 import UIKit
 
-class Event: NSObject {
+class MHPEvent: NSObject {
     var eventID: String
     var eventName: String?
     var eventDate: String?
     var eventLocation: String?
     var eventDescription: String?
     var eventImageURL: String?
-    var eventHostID: User?
-    var eventItemList: EventItemList?
-    var eventRsvpList: EventRsvpList?
+    var eventHostID: MHPUser?
+    var eventItemList: MHPEventItemList?
+    var eventRsvpList: MHPEventRsvpList?
     
     init(eventID: String) {
         self.eventID = eventID
     }
     
-    init(eventID: String, eventName: String?, eventDate: String?, eventLocation: String?, eventDescription: String?, eventImageURL: String?,eventHostID: User?, eventItemList: EventItemList?, eventRsvpList: EventRsvpList?) {
+    init(eventID: String, eventName: String?, eventDate:String?, eventLocation:String?, eventDescription:String?, eventImageURL:String?, eventHostID:MHPUser?, eventItemList:MHPEventItemList?, eventRsvpList:MHPEventRsvpList?) {
        
         self.eventID = eventID
         
@@ -53,3 +53,4 @@ class Event: NSObject {
         }
     }
 }
+

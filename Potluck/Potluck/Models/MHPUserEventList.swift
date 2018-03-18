@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserEventList: NSObject {
+class MHPUserEventList: NSObject {
 //    var userEventListID: String
 //    var user: User
 //    var userEvents: [Event]?
@@ -23,3 +23,4 @@ class UserEventList: NSObject {
 //        }
 //    }
 }
+

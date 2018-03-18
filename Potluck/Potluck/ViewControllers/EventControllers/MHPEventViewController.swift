@@ -18,10 +18,10 @@ class MHPEventViewController: MHPBaseViewController {
     @IBOutlet weak var lblGuestListTotals: UILabel!
     @IBOutlet weak var lblMenuTotals: UILabel!
     
-    var user: User?
-    var event: Event?
-    var items: [Item]?
-    var rsvps: [Rsvp]?
+    var user: MHPUser?
+    var event: MHPEvent?
+    var items: [MHPItem]?
+    var rsvps: [MHPRsvp]?
     var userDidRsvpForEvent: Bool?
     var userIsHost: Bool?
     var userIsGuest: Bool?

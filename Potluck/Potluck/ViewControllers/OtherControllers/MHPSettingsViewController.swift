@@ -11,7 +11,7 @@ import UIKit
 class MHPSettingsViewController: UIViewController {
 
     @IBOutlet weak var btnLogInOut: UIButton!
-    var user: User?
+    var user: MHPUser?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,12 +8,12 @@
 
 import UIKit
 
-class EventRsvpList: NSObject {
+class MHPEventRsvpList: NSObject {
 //    var eventRsvpListID: String
-//    var event: Event
-//    var eventRsvps: [Rsvp]?
+//    var event: MHPEvent
+//    var eventRsvps: [MHPRsvp]?
 //    
-//    init(eventRsvpListID: String, event: Event, eventRsvps: [Rsvp]?) {
+//    init(eventRsvpListID: String, event: Event, eventRsvps: [MHPRsvp]?) {
 //      
 //        self.eventRsvpListID = eventRsvpListID
 //        self.event = event
@@ -23,3 +23,4 @@ class EventRsvpList: NSObject {
 //        }
 //    }
 }
+

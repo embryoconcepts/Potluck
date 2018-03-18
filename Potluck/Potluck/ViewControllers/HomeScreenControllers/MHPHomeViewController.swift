@@ -15,17 +15,17 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var pageControl: UIPageControl!
     
     private let reuseIdentifier = "homeCell"
-    var events = [Event]()
-    var user: User?
+    var events = [MHPEvent]()
+    var user: MHPUser?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // TODO: set up static events, remove for production
-        let user1 = User(userID: "abcd")
-        let event1 = Event(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHostID: user1, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
-        let user2 = User(userID: "abcd")
-        let event2 = Event(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHostID: user2, eventItemList: EventItemList(), eventRsvpList: EventRsvpList())
+        let user1 = MHPUser(userID: "abcd")
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHostID: user1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        let user2 = MHPUser(userID: "abcd")
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHostID: user2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
     }
