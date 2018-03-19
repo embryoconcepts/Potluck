@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol Injectable {
+    associatedtype T
+    func inject(_: T)
+    func assertDependencies()
+}
+
 class MHPBaseViewController: UIViewController {
     
     override func viewDidLoad() {

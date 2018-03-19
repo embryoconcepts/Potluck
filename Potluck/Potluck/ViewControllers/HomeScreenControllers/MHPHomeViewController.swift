@@ -44,10 +44,9 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         setupBackButton()
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
-                let eventDetailVC = segue.destination as! MHPEventViewController
-                eventDetailVC.event = events[indexPath.row]
+                let eventDetailVC = segue.destination as? MHPEventViewController
                 if let tempUser = user {
-                    eventDetailVC.user = tempUser
+                    eventDetailVC?.inject((injectedUser: tempUser, injectedEvent:events[indexPath.row]))
                 }
             }
         } else {
@@ -92,6 +91,8 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     // MARK: - Private Methods
     
     fileprivate func setupMockData() {
+        user = MHPUser()
+        user?.userName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userName = "Jill of AllTrades"
         let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())

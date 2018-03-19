@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPEventViewController: MHPBaseViewController {
+class MHPEventViewController: MHPBaseViewController, Injectable {
     
     @IBOutlet weak var lblEventHost: UILabel!
     @IBOutlet weak var lblEventDescription: UILabel!
@@ -18,6 +18,7 @@ class MHPEventViewController: MHPBaseViewController {
     @IBOutlet weak var lblGuestListTotals: UILabel!
     @IBOutlet weak var lblMenuTotals: UILabel!
     
+    typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
     var user: MHPUser?
     var event: MHPEvent?
     var items: [MHPItem]?
@@ -37,7 +38,7 @@ class MHPEventViewController: MHPBaseViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         // TODO: retrieve rsvps and items for event (user and event data should have been passed in segue)
-        
+        userIsHost = false // TODO: remove for production
         
         // TODO: put the below in a completion block 
         styleNavigation()
@@ -57,12 +58,9 @@ class MHPEventViewController: MHPBaseViewController {
         // TODO: handle moving to rsvp
         // TODO: handle moving to guest list
         if segue.identifier == "EventToGuestList" {
-            let guestListVC = segue.destination as! MHPGuestListViewController
-            if let tempEvent = event {
-                guestListVC.event = tempEvent
-            }
-            if let tempUser = user {
-                guestListVC.user = tempUser
+            let guestListVC = segue.destination as? MHPGuestListViewController
+            if let tempEvent = event, let tempUser = user {
+                guestListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
             }
         }
         // TODO: handle moving to menu
@@ -74,7 +72,7 @@ class MHPEventViewController: MHPBaseViewController {
     func styleNavigation() {
         // Navigation Bar
         var rightBarButton: UIBarButtonItem?
-        if userIsHost! {
+        if userIsHost != nil {
             rightBarButton = UIBarButtonItem(title: "Manage", style: .plain, target: self, action: #selector(manageEvent))
         } else {
             rightBarButton = UIBarButtonItem(title: "RSVP", style: .plain, target: self, action: #selector(rsvpTapped))
@@ -92,7 +90,7 @@ class MHPEventViewController: MHPBaseViewController {
         lblEventLocation.text = event?.eventLocation ?? ""
         
         // RSVP Button
-        if userIsHost! || (userIsGuest! && userHasRsvp!) {
+        if userIsHost != nil || (userIsGuest != nil && userHasRsvp != nil) {
             btnRsvp.isHidden = true;
         } else {
             btnRsvp.isHidden = false
@@ -132,6 +130,18 @@ class MHPEventViewController: MHPBaseViewController {
         // TODO: move to manage event flow
     }
     
+    
+    // MARK: - Injectable Protocol
+    
+    func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
+        user = data.injectedUser
+        event = data.injectedEvent
+    }
+    
+    func assertDependencies() {
+        assert(user != nil)
+        assert(event != nil)
+    }
     
     // MARK: - Helper Methods
     

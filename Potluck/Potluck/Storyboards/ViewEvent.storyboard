@@ -114,7 +114,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wqf-rM-T7j">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                         <connections>
-                                            <segue destination="UUw-qd-Pfl" kind="show" id="Tz9-rg-aQQ"/>
+                                            <segue destination="UUw-qd-Pfl" kind="show" identifier="EventToGuestList" id="Tz9-rg-aQQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -151,7 +151,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emw-3g-8GF">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                         <connections>
-                                            <segue destination="h9h-FM-LQm" kind="show" id="38Y-b7-hDZ"/>
+                                            <segue destination="h9h-FM-LQm" kind="show" identifier="EventToItemList" id="38Y-b7-hDZ"/>
                                         </connections>
                                     </button>
                                 </subviews>

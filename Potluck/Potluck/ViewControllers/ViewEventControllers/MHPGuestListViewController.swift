@@ -8,11 +8,13 @@
 
 import UIKit
 
-class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UITableViewDataSource {
-
+class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
+    
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var btnRSVP: UIButton!
     
+    typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
     var user: MHPUser?
     var event: MHPEvent?
     var guestsYes = [MHPRsvp]()
@@ -22,7 +24,9 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         countRsvps()
+        assertDependencies()
         // Do any additional setup after loading the view.
+        self.title = event?.eventName ?? "Title"
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,6 +101,19 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
         cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
         
         return cell
+    }
+    
+    
+    // MARK: - Injectable Protocol
+    
+    func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
+        user = data.injectedUser
+        event = data.injectedEvent
+    }
+    
+    func assertDependencies() {
+        assert(user != nil)
+        assert(event != nil)
     }
     
     
