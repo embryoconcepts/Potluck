@@ -27,6 +27,18 @@ class MHPEventViewController: MHPBaseViewController {
     var userIsGuest: Bool?
     var userHasRsvp: Bool?
     
+    init(user: MHPUser?, event:MHPEvent?, items:[MHPItem]?, rsvps:[MHPRsvp]?) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user ?? MHPUser()
+        self.event = event ?? MHPEvent()
+        self.items = items ?? [MHPItem]()
+        self.rsvps = rsvps ?? [MHPRsvp]()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

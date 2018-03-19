@@ -15,22 +15,29 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var pageControl: UIPageControl!
     
     private let reuseIdentifier = "homeCell"
-    var events = [MHPEvent]()
     var user: MHPUser?
+    var events = [MHPEvent]()
+    
+    init(user: MHPUser?) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user ?? MHPUser()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // TODO: set up static events, remove for production
-        var user1 = MHPUser()
-        user1.userName = "Jill of AllTrades"
-        user1.userID = "12345"
-        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: user1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        var host1 = MHPUser()
+        host1.userName = "Jill of AllTrades"
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
        
-        var user2 = MHPUser()
-        user2.userName = "Mary Contrary"
-        user2.userID = "2355"
-        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: user2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        var host2 = MHPUser()
+        host2.userName = "Mary Contrary"
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
     }

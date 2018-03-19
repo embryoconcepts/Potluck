@@ -219,7 +219,7 @@
 				7657AC2D205CC52800FE7833 /* MHPBaseViewController.swift */,
 				76DF6B6D205B338D00028B3B /* SignUpLoginControllers */,
 				76DF6B6E205B33A400028B3B /* HomeScreenControllers */,
-				76DF6B6F205B33B200028B3B /* EventControllers */,
+				76DF6B6F205B33B200028B3B /* ViewEventControllers */,
 				76DF6B72205B33EF00028B3B /* CreateEventControllers */,
 				76DF6B73205B340100028B3B /* OtherControllers */,
 			);
@@ -289,13 +289,13 @@
 			path = HomeScreenControllers;
 			sourceTree = "<group>";
 		};
-		76DF6B6F205B33B200028B3B /* EventControllers */ = {
+		76DF6B6F205B33B200028B3B /* ViewEventControllers */ = {
 			isa = PBXGroup;
 			children = (
 				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
 				7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */,
 			);
-			path = EventControllers;
+			path = ViewEventControllers;
 			sourceTree = "<group>";
 		};
 		76DF6B72205B33EF00028B3B /* CreateEventControllers */ = {
