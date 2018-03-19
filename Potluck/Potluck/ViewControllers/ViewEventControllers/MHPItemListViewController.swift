@@ -10,6 +10,8 @@ import UIKit
 
 class MHPItemListViewController: MHPBaseViewController {
 
+    @IBOutlet weak var btnRsvp: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

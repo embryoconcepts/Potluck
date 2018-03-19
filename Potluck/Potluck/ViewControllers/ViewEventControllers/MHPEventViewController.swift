@@ -27,18 +27,6 @@ class MHPEventViewController: MHPBaseViewController {
     var userIsGuest: Bool?
     var userHasRsvp: Bool?
     
-    init(user: MHPUser?, event:MHPEvent?, items:[MHPItem]?, rsvps:[MHPRsvp]?) {
-        super.init(nibName: nil, bundle: nil)
-        self.user = user ?? MHPUser()
-        self.event = event ?? MHPEvent()
-        self.items = items ?? [MHPItem]()
-        self.rsvps = rsvps ?? [MHPRsvp]()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,6 +55,15 @@ class MHPEventViewController: MHPBaseViewController {
         setupBackButton()
         // TODO: handle moving to rsvp
         // TODO: handle moving to guest list
+        if segue.identifier == "EventToGuestList" {
+            let guestListVC = segue.destination as! MHPGuestListViewController
+            if let tempEvent = event {
+                guestListVC.event = tempEvent
+            }
+            if let tempUser = user {
+                guestListVC.user = tempUser
+            }
+        }
         // TODO: handle moving to menu
     }
     
@@ -112,17 +109,26 @@ class MHPEventViewController: MHPBaseViewController {
         }
         
         // Guest List Summary
-//        var guestsConfirmed = 0
-//        for rsvp in rsvps! {
-//            if rsvp.response == "Yes" || rsvp.response == "Maybe" {
-//                guestsConfirmed += 1
-//            }
-//        }
-//        lblGuestListTotals.text = "\(String(describing: rsvps?.count)) invited, \(guestsConfirmed) confirmed"
-        lblGuestListTotals.text = ""
+        var guestsConfirmed = 0
+        if let safeRsvps = rsvps {
+            for rsvp in safeRsvps {
+                if rsvp.response == "YES" {
+                    guestsConfirmed += 1
+                }
+            }
+        }
+        lblGuestListTotals.text = "\(rsvps?.count ?? 0) invited, \(guestsConfirmed) confirmed"
         
         // Menu Summary
-        lblMenuTotals.text = ""
+        var pledged = 0
+        if let safeItems = items {
+            for item in safeItems {
+                if (item.user != nil) {
+                    pledged += 1
+                }
+            }
+        }
+        lblMenuTotals.text = "\(items?.count ?? 0) items requested, \(pledged) items pledged"
     }
     
     
@@ -135,7 +141,6 @@ class MHPEventViewController: MHPBaseViewController {
     @IBAction func manageEvent(_ sender: Any) {
         // TODO: move to manage event flow
     }
-    
     
     // MARK: - Helper Methods
     

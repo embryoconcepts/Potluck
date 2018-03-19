@@ -18,15 +18,6 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     var user: MHPUser?
     var events = [MHPEvent]()
     
-    init(user: MHPUser?) {
-        super.init(nibName: nil, bundle: nil)
-        self.user = user ?? MHPUser()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
