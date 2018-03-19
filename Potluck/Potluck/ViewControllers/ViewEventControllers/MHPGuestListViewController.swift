@@ -123,6 +123,7 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
         if let tempRsvps = event?.eventRsvpList?.eventRsvps {
             for rsvp in tempRsvps {
                 if let response = rsvp.response {
+                    // TODO: update w/enum
                     switch response {
                     case "YES":
                         guestsYes.append(rsvp)

@@ -8,9 +8,19 @@
 
 import UIKit
 
-class MHPItemListViewController: MHPBaseViewController {
+class MHPItemListViewController: MHPBaseViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
 
     @IBOutlet weak var btnRsvp: UIButton!
+    @IBOutlet weak var tagContainerView: UIView!
+    @IBOutlet weak var btnInfo: UIButton!
+    @IBOutlet weak var lblItemListDescription: UILabel!
+    @IBOutlet weak var segmentedController: UISegmentedControl!
+    @IBOutlet weak var tableView: UITableView!
+    
+    typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
+    var user: MHPUser?
+    var event: MHPEvent?
+    var items = [MHPItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,4 +45,31 @@ class MHPItemListViewController: MHPBaseViewController {
     @IBAction func rsvpTapped(_ sender: Any) {
         goToRsvp()
     }
+    
+    // MARK: - UITableViewSourceAction
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    
+    // MARK: - Injectable Protocol
+    
+    func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
+        user = data.injectedUser
+        event = data.injectedEvent
+    }
+    
+    func assertDependencies() {
+        assert(user != nil)
+        assert(event != nil)
+    }
+    
 }

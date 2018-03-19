@@ -56,14 +56,20 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
         // TODO: handle moving to rsvp
-        // TODO: handle moving to guest list
+
         if segue.identifier == "EventToGuestList" {
             let guestListVC = segue.destination as? MHPGuestListViewController
             if let tempEvent = event, let tempUser = user {
                 guestListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
             }
         }
-        // TODO: handle moving to menu
+        
+        if segue.identifier == "EventToItemList" {
+            let itemListVC = segue.destination as? MHPItemListViewController
+            if let tempEvent = event, let tempUser = user {
+                itemListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
+            }
+        }
     }
     
 
