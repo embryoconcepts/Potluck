@@ -1,14 +1,14 @@
 //
-//  MHPRSVPViewController.swift
+//  MHPItemCardPledgingViewController.swift
 //  Potluck
 //
-//  Created by Jennifer Hamilton on 3/17/18.
+//  Created by Jennifer Hamilton on 3/19/18.
 //  Copyright © 2018 Many Hands Apps. All rights reserved.
 //
 
 import UIKit
 
-class MHPRSVPViewController: MHPBaseViewController {
+class MHPItemCardPledgingViewController: MHPBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,8 @@ class MHPRSVPViewController: MHPBaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
     /*
     // MARK: - Navigation
 
@@ -41,4 +43,3 @@ class MHPRSVPViewController: MHPBaseViewController {
         
     }
 }
-

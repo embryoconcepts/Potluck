@@ -1,14 +1,14 @@
 //
-//  MHPRSVPViewController.swift
+//  MHPItemCardViewingViewController.swift
 //  Potluck
 //
-//  Created by Jennifer Hamilton on 3/17/18.
+//  Created by Jennifer Hamilton on 3/19/18.
 //  Copyright © 2018 Many Hands Apps. All rights reserved.
 //
 
 import UIKit
 
-class MHPRSVPViewController: MHPBaseViewController {
+class MHPItemCardViewingViewController: MHPBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,8 @@ class MHPRSVPViewController: MHPBaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
     /*
     // MARK: - Navigation
 
@@ -30,15 +32,4 @@ class MHPRSVPViewController: MHPBaseViewController {
     }
     */
 
-    
-    // MARK: - Action Handlers
-    
-    @IBAction func cancelTapped(_ sender: Any) {
-        cancel()
-    }
-    
-    @IBAction func saveTapped(_ sender: Any) {
-        
-    }
 }
-

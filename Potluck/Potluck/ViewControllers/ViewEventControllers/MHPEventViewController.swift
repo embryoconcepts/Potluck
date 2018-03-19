@@ -51,8 +51,8 @@ class MHPEventViewController: MHPBaseViewController {
         // TODO: put the below in a completion block with all in the completion
         checkForUserRsvp()
         checkIfUserHostOrGuest()
-        setupNavigation()
-        setupDetails()
+        styleNavigation()
+        styleLabels()
     }
     
     override func didReceiveMemoryWarning() {
@@ -81,7 +81,10 @@ class MHPEventViewController: MHPBaseViewController {
         userIsHost = false
     }
     
-    func setupNavigation() {
+    
+    // MARK: Styling the View
+    
+    func styleNavigation() {
         // Navigation Bar
         var rightBarButton: UIBarButtonItem?
         if userIsHost! {
@@ -94,7 +97,7 @@ class MHPEventViewController: MHPBaseViewController {
         self.title = event?.eventName ?? ""
     }
     
-    func setupDetails() {
+    func styleLabels() {
         // Event Details
         lblEventHost.text = event?.eventHost?.userName ?? ""
         lblEventDescription.text = event?.eventDescription ?? ""

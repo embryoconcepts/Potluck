@@ -33,6 +33,10 @@
 		7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */; };
 		7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */; };
 		76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76723D2F205E5609004940DE /* SwiftStyleSettings.plist */; };
+		76723D32205FB219004940DE /* MHPItemCardPledgingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */; };
+		76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */; };
+		76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D35205FB23D004940DE /* MHPGuestListViewController.swift */; };
+		76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D37205FB246004940DE /* MHPItemListViewController.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -100,6 +104,10 @@
 		7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewEvent.storyboard; sourceTree = "<group>"; };
 		7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRSVPViewController.swift; sourceTree = "<group>"; };
 		76723D2F205E5609004940DE /* SwiftStyleSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SwiftStyleSettings.plist; sourceTree = "<group>"; };
+		76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardPledgingViewController.swift; sourceTree = "<group>"; };
+		76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardViewingViewController.swift; sourceTree = "<group>"; };
+		76723D35205FB23D004940DE /* MHPGuestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListViewController.swift; sourceTree = "<group>"; };
+		76723D37205FB246004940DE /* MHPItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListViewController.swift; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -293,7 +301,11 @@
 			isa = PBXGroup;
 			children = (
 				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
+				76723D35205FB23D004940DE /* MHPGuestListViewController.swift */,
 				7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */,
+				76723D37205FB246004940DE /* MHPItemListViewController.swift */,
+				76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */,
+				76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */,
 			);
 			path = ViewEventControllers;
 			sourceTree = "<group>";
@@ -610,15 +622,19 @@
 			files = (
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
+				76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
 				7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */,
 				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
+				76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */,
 				765123EC2055DDFC00E78488 /* MHPEventViewController.swift in Sources */,
 				765123F920588DF200E78488 /* MHPEvent.swift in Sources */,
 				76DF6B7D205B35D000028B3B /* MHPConfirmationScreenViewController.swift in Sources */,
 				76DF6B77205B35B300028B3B /* MHPCreateAccountViewController.swift in Sources */,
+				76723D32205FB219004940DE /* MHPItemCardPledgingViewController.swift in Sources */,
 				765123E62055DDB400E78488 /* MHPProfileViewController.swift in Sources */,
 				765123FB20588E1300E78488 /* MHPItem.swift in Sources */,
+				76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */,
 				765124012058902000E78488 /* MHPEventItemList.swift in Sources */,
 				7657AC2E205CC52800FE7833 /* MHPBaseViewController.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
