@@ -16,4 +16,3 @@ struct MHPEventItemList: Codable {
     var eventItems: [MHPItem]?
 
 }
-

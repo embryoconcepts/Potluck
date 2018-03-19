@@ -20,4 +20,3 @@ struct MHPEvent: Codable {
     var eventRsvpList: MHPEventRsvpList?
     
 }
-

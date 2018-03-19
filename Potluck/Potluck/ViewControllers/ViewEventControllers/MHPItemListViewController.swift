@@ -36,4 +36,3 @@ class MHPItemListViewController: MHPBaseViewController {
         goToRsvp()
     }
 }
-

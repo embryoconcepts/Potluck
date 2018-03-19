@@ -11,7 +11,7 @@ import UIKit
 struct MHPItem: Codable {
     var itemID: String?
     var user: MHPUser?
-    var eventItemList: MHPEventItemList?
+    var event: MHPEvent?
     var itemTags: [String]?
     var itemName: String?
     var itemPortions: Int?
@@ -20,4 +20,3 @@ struct MHPItem: Codable {
     var itemSuggestedPortions: Int?
     
 }
-

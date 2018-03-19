@@ -50,4 +50,3 @@ class MHPBaseViewController: UIViewController {
         }
     }
 }
-

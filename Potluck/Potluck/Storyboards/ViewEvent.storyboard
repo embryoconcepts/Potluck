@@ -6,12 +6,16 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
+        </array>
+        <array key="Roboto-Italic.ttf">
+            <string>Roboto-Italic</string>
         </array>
         <array key="Roboto-LightItalic.ttf">
             <string>Roboto-LightItalic</string>
@@ -226,6 +230,52 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K56-Ss-YSe">
                                 <rect key="frame" x="0.0" y="100" width="375" height="567"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GuestListCell" rowHeight="70" id="UUb-ty-cbS" customClass="MHPGuestListCell" customModule="Potluck" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UUb-ty-cbS" id="Y82-aK-NXF">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Nc-lB-0of">
+                                                    <rect key="frame" x="89" y="11" width="271" height="21.5"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sbK-PW-nBX">
+                                                    <rect key="frame" x="30" y="13" width="44" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="Hzf-Qd-8u0"/>
+                                                        <constraint firstAttribute="width" constant="44" id="Y2v-FO-B0W"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzG-Fq-pdl">
+                                                    <rect key="frame" x="89" y="37" width="271" height="16.5"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Italic" family="Roboto" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="7Nc-lB-0of" secondAttribute="trailing" constant="15" id="5rY-BK-qTW"/>
+                                                <constraint firstItem="sbK-PW-nBX" firstAttribute="centerY" secondItem="Y82-aK-NXF" secondAttribute="centerY" id="GVZ-Hv-HKn"/>
+                                                <constraint firstItem="gzG-Fq-pdl" firstAttribute="trailing" secondItem="7Nc-lB-0of" secondAttribute="trailing" id="Peu-oh-Fdh"/>
+                                                <constraint firstItem="7Nc-lB-0of" firstAttribute="leading" secondItem="sbK-PW-nBX" secondAttribute="trailing" constant="15" id="RBT-fY-sle"/>
+                                                <constraint firstItem="gzG-Fq-pdl" firstAttribute="leading" secondItem="7Nc-lB-0of" secondAttribute="leading" id="q42-oT-Vea"/>
+                                                <constraint firstItem="sbK-PW-nBX" firstAttribute="leading" secondItem="Y82-aK-NXF" secondAttribute="leadingMargin" constant="15" id="sds-uP-GaJ"/>
+                                                <constraint firstItem="7Nc-lB-0of" firstAttribute="top" secondItem="Y82-aK-NXF" secondAttribute="topMargin" id="vB4-qB-KKK"/>
+                                                <constraint firstItem="gzG-Fq-pdl" firstAttribute="top" secondItem="7Nc-lB-0of" secondAttribute="bottom" constant="4.5" id="xPa-l8-THW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="imgUser" destination="sbK-PW-nBX" id="0Af-Pf-tgq"/>
+                                            <outlet property="lblGuestName" destination="7Nc-lB-0of" id="XRr-iZ-BfJ"/>
+                                            <outlet property="lblItem" destination="gzG-Fq-pdl" id="kfq-m8-zn1"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="UUw-qd-Pfl" id="gH7-zn-afQ"/>
                                     <outlet property="delegate" destination="UUw-qd-Pfl" id="UcW-ba-bai"/>
@@ -251,7 +301,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Scr-6l-oO6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1926" y="-979"/>
+            <point key="canvasLocation" x="1925.5999999999999" y="-979.16041979010504"/>
         </scene>
         <!--RSVP-->
         <scene sceneID="qUo-c6-WU9">

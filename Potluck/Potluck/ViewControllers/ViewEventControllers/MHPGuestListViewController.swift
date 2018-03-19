@@ -82,7 +82,21 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GuestListCell", for: indexPath) as! MHPGuestListCell
+        var sectionGuests = [MHPRsvp]()
+        switch (indexPath.section) {
+            case 0:
+                sectionGuests = guestsYes
+            case 1:
+                sectionGuests = guestsInvited
+            default:
+                sectionGuests = guestsNo
+        }
+
+        cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userName ?? ""
+        cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
+        
+        return cell
     }
     
     
@@ -105,4 +119,3 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
         }
     }
 }
-

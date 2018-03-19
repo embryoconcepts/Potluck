@@ -25,4 +25,3 @@ class MHPHomeCarouselViewCell: ScalingCarouselCell {
         mainView.layer.shadowRadius = 3
     }
 }
-

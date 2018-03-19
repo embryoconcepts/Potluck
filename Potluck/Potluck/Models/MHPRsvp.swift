@@ -10,8 +10,9 @@ import UIKit
 
 struct MHPRsvp: Codable {
     var rsvpID: String?
-    var userID: String?
-    var eventRsvpList: MHPEventRsvpList?
+    var user: MHPUser?
+    var event: MHPEvent?
+    var item: MHPItem?
     var isGuest: Bool?
     var isHost: Bool?
     var response: String?
@@ -19,4 +20,3 @@ struct MHPRsvp: Codable {
     var numOfGuest: Int?
 
 }
-

@@ -21,21 +21,15 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: set up static events, remove for production
-        var host1 = MHPUser()
-        host1.userName = "Jill of AllTrades"
-        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
-       
-        var host2 = MHPUser()
-        host2.userName = "Mary Contrary"
-        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
-        events.append(event1)
-        events.append(event2)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        // TODO: retrieve user data, populate events with user's EventItemList
+        
+        // TODO: remove for production
+        setupMockData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -50,9 +44,8 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         setupBackButton()
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
-                let selectedEvent = events[indexPath.row]
                 let eventDetailVC = segue.destination as! MHPEventViewController
-                eventDetailVC.event = selectedEvent
+                eventDetailVC.event = events[indexPath.row]
                 if let tempUser = user {
                     eventDetailVC.user = tempUser
                 }
@@ -95,5 +88,19 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
 //        output.text = String(describing: currentCenterIndex)
     }
     
+    
+    // MARK: - Private Methods
+    
+    fileprivate func setupMockData() {
+        var host1 = MHPUser()
+        host1.userName = "Jill of AllTrades"
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        
+        var host2 = MHPUser()
+        host2.userName = "Mary Contrary"
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        events.append(event1)
+        events.append(event2)
+    }
+    
 }
-

@@ -55,7 +55,7 @@
 	<key>kColonSpacingRuleInFunctionCall</key>
 	<integer>3</integer>
 	<key>kNumberOfEmptyLinesAtEndOfFile</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>kShouldClassNameStartWithCapitalLetter</key>
 	<true/>
 	<key>kShouldFuncNameStartWithCapitalLetter</key>

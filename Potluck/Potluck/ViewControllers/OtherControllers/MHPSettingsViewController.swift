@@ -40,4 +40,3 @@ class MHPSettingsViewController: UIViewController {
     }
     
 }
-

@@ -36,9 +36,10 @@ class MHPEventViewController: MHPBaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        // TODO: put the below in a completion block with all in the completion
-        checkForUserRsvp()
-        checkIfUserHostOrGuest()
+        // TODO: retrieve rsvps and items for event (user and event data should have been passed in segue)
+        
+        
+        // TODO: put the below in a completion block 
         styleNavigation()
         styleLabels()
     }
@@ -67,18 +68,7 @@ class MHPEventViewController: MHPBaseViewController {
         // TODO: handle moving to menu
     }
     
-    func checkForUserRsvp() {
-        // TODO: complete
-        userHasRsvp = false
-    }
-    
-    func checkIfUserHostOrGuest() {
-        // TODO: complete
-        userIsGuest = true
-        userIsHost = false
-    }
-    
-    
+
     // MARK: Styling the View
     
     func styleNavigation() {
@@ -142,6 +132,7 @@ class MHPEventViewController: MHPBaseViewController {
         // TODO: move to manage event flow
     }
     
+    
     // MARK: - Helper Methods
     
     func sendToSignUpLogin() {
@@ -149,4 +140,3 @@ class MHPEventViewController: MHPBaseViewController {
     }
     
 }
-

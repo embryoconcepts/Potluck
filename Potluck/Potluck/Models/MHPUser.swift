@@ -23,4 +23,3 @@ struct MHPUser: Codable {
     var facebookPermissions: Bool?
     
 }
-

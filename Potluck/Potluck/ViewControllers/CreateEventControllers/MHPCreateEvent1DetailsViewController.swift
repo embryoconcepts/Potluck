@@ -53,4 +53,3 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         // TODO: save current values to user preferences, move to next screen
     }
 }
-

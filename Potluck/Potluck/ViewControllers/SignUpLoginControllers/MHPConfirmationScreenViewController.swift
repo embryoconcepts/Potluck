@@ -37,4 +37,3 @@ class MHPConfirmationScreenViewController: MHPBaseViewController {
         returnToOriginalFlow()
     }
 }
-

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */; };
 		765123BA2053538900E78488 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123B92053538900E78488 /* AppDelegate.swift */; };
 		765123BF2053538900E78488 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123BD2053538900E78488 /* Main.storyboard */; };
 		765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 765123C02053538900E78488 /* Potluck.xcdatamodeld */; };
@@ -73,6 +74,7 @@
 		293B908DEC6B21F6727DE0AD /* Pods_PotluckTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PotluckTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		422129C2E6E9BD54DA154C64 /* Pods-PotluckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PotluckTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PotluckTests/Pods-PotluckTests.release.xcconfig"; sourceTree = "<group>"; };
 		5D36E773934847B70A318A7C /* Pods-PotluckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PotluckTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PotluckTests/Pods-PotluckTests.debug.xcconfig"; sourceTree = "<group>"; };
+		760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListCell.swift; sourceTree = "<group>"; };
 		765123B62053538900E78488 /* Potluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Potluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765123B92053538900E78488 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765123BE2053538900E78488 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 			children = (
 				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
 				76723D35205FB23D004940DE /* MHPGuestListViewController.swift */,
+				760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */,
 				7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */,
 				76723D37205FB246004940DE /* MHPItemListViewController.swift */,
 				76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */,
@@ -622,6 +625,7 @@
 			files = (
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
+				760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */,
 				76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
 				7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */,

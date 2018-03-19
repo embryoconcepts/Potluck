@@ -14,4 +14,3 @@ struct MHPUserEventList: Codable {
     var userEvents: [MHPEvent]?
     
 }
-
