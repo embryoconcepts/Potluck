@@ -8,8 +8,8 @@
 
 import UIKit
 
-class MHPItem: NSObject {
-    var itemID: String
+struct MHPItem: Codable {
+    var itemID: String?
     var user: MHPUser?
     var eventItemList: MHPEventItemList?
     var itemTags: [String]?
@@ -19,38 +19,5 @@ class MHPItem: NSObject {
     var itemPlaceholderName: String?
     var itemSuggestedPortions: Int?
     
-    init(itemID: String) {
-        self.itemID = itemID
-    }
-    
-    init(itemID: String, user: MHPUser?, eventItemList:MHPEventItemList?, itemTags:[String]?, itemName:String?, itemPortions:Int?, itemDescription:String?, itemPlaceholderName:String?, itemSuggestedPortions:Int?) {
-        
-        self.itemID = itemID
-        
-        if let tempUser = user {
-            self.user = tempUser
-        }
-        if let tempItemList = eventItemList {
-            self.eventItemList = tempItemList
-        }
-        if let tempTags = itemTags {
-            self.itemTags = tempTags
-        }
-        if let tempName = itemName {
-            self.itemName = tempName
-        }
-        if let tempPortions = itemPortions {
-            self.itemPortions = tempPortions
-        }
-        if let tempDesc = itemDescription {
-            self.itemDescription = tempDesc
-        }
-        if let tempPlaceholder = itemPlaceholderName {
-            self.itemPlaceholderName = tempPlaceholder
-        }
-        if let tempSuggested = itemSuggestedPortions {
-            self.itemSuggestedPortions = tempSuggested
-        }
-    }
 }
 

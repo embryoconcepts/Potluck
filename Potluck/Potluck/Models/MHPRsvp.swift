@@ -8,45 +8,15 @@
 
 import UIKit
 
-class MHPRsvp: NSObject {
-    var rsvpID: String
-    var user: MHPUser?
+struct MHPRsvp: Codable {
+    var rsvpID: String?
+    var userID: String?
     var eventRsvpList: MHPEventRsvpList?
     var isGuest: Bool?
     var isHost: Bool?
     var response: String?
     var notificationsOn: Bool?
     var numOfGuest: Int?
-    
-    init(rsvpID: String) {
-        self.rsvpID = rsvpID
-    }
-    
-    init(rsvpID: String, user: MHPUser?, eventRsvpList:MHPEventRsvpList?, isGuest:Bool?, isHost:Bool?, response:String?, notificationsOn:Bool?, numOfGuest:Int?) {
-       
-        self.rsvpID = rsvpID
-       
-        if let tempUser = user {
-            self.user = tempUser
-        }
-        if let tempRsvpList = eventRsvpList {
-            self.eventRsvpList = tempRsvpList
-        }
-        if let tempIsGuest = isGuest {
-            self.isGuest = tempIsGuest
-        }
-        if let tempIsHost = isHost {
-            self.isHost = tempIsHost
-        }
-        if let tempResponse = response {
-            self.response = tempResponse
-        }
-        if let tempNotifications = notificationsOn {
-            self.notificationsOn = tempNotifications
-        }
-        if let tempNumGuests = numOfGuest {
-            self.numOfGuest = tempNumGuests
-        }
-    }
+
 }
 

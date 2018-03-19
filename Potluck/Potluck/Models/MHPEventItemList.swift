@@ -8,27 +8,12 @@
 
 import UIKit
 
-class MHPEventItemList: NSObject {
-//    var eventItemListID: String
-//    var event: Event
-//    var eventItemListDescription: String?
-//    var eventItemListTags: [String]?
-//    var eventItems: [Item]?
-//    
-//    init(eventItemListID: String, event: Event, eventItemListDescription: String?, eventItemListTags: [String]?, eventItems: [Item]?) {
-//      
-//        self.eventItemListID = eventItemListID
-//        self.event = event
-//       
-//        if let tempListDesc = eventItemListDescription {
-//            self.eventItemListDescription = eventItemListDescription
-//        }
-//        if let tempTags = eventItemListTags {
-//            self.eventItemListTags = eventItemListTags
-//        }
-//        if let tempItems = eventItems {
-//            self.eventItems = eventItems
-//        }
-//    }
+struct MHPEventItemList: Codable {
+    var eventItemListID: String?
+    var eventID: String?
+    var eventItemListDescription: String?
+    var eventItemListTags: [String]?
+    var eventItems: [MHPItem]?
+
 }
 

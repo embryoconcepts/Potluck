@@ -79,33 +79,15 @@ class MHPEventViewController: MHPBaseViewController {
         }
         
         navigationItem.rightBarButtonItem = rightBarButton
-        if let tempTitle = event?.eventName {
-            self.title = tempTitle
-        }
+        self.title = event?.eventName ?? ""
     }
     
     func setupDetails() {
         // Event Details
-        if let tempHost = event?.eventHostID?.userName {
-            lblEventHost.text = tempHost 
-        } else {
-            lblEventHost.text = ""
-        }
-        if let tempEventDesc = event?.eventDescription {
-            lblEventDescription.text = tempEventDesc
-        } else {
-            lblEventDescription.text = ""
-        }
-        if let tempEventDate = event?.eventDate {
-            lblEventDateTime.text = tempEventDate
-        } else {
-            lblEventDateTime.text = ""
-        }
-        if let tempEventLocation = event?.eventLocation {
-            lblEventLocation.text = tempEventLocation
-        } else {
-            lblEventLocation.text = ""
-        }
+        lblEventHost.text = event?.eventHost?.userName ?? ""
+        lblEventDescription.text = event?.eventDescription ?? ""
+        lblEventDateTime.text = event?.eventDate ?? ""
+        lblEventLocation.text = event?.eventLocation ?? ""
         
         // RSVP Button
         if userIsHost! || (userIsGuest! && userHasRsvp!) {

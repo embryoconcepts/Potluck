@@ -8,19 +8,10 @@
 
 import UIKit
 
-class MHPEventRsvpList: NSObject {
-//    var eventRsvpListID: String
-//    var event: MHPEvent
-//    var eventRsvps: [MHPRsvp]?
-//    
-//    init(eventRsvpListID: String, event: Event, eventRsvps: [MHPRsvp]?) {
-//      
-//        self.eventRsvpListID = eventRsvpListID
-//        self.event = event
-//       
-//        if let tempEventRsvps = eventRsvps {
-//            self.eventRsvps = tempEventRsvps
-//        }
-//    }
+struct MHPEventRsvpList: Codable {
+    var eventRsvpListID: String?
+    var eventHost: MHPUser?
+    var eventRsvps: [MHPRsvp]?
+
 }
 

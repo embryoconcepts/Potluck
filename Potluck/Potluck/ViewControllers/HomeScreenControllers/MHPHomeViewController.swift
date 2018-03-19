@@ -22,10 +22,15 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         super.viewDidLoad()
         
         // TODO: set up static events, remove for production
-        let user1 = MHPUser(userID: "abcd")
-        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHostID: user1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
-        let user2 = MHPUser(userID: "abcd")
-        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHostID: user2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        var user1 = MHPUser()
+        user1.userName = "Jill of AllTrades"
+        user1.userID = "12345"
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: user1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+       
+        var user2 = MHPUser()
+        user2.userName = "Mary Contrary"
+        user2.userID = "2355"
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: user2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
     }
@@ -70,15 +75,9 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCarouselViewCell
         let selectedEvent = events[indexPath.row]
         
-        if let tempName = selectedEvent.eventName {
-            cell.lblEventName.text = tempName
-        }
-        if let tempHost = selectedEvent.eventHostID?.userID {
-            cell.lblHostName.text = "Hosted by: \(tempHost)"
-        }
-        if let tempDate = selectedEvent.eventDate {
-            cell.lblDateTime.text = tempDate
-        }
+        cell.lblEventName.text = selectedEvent.eventName ?? ""
+        cell.lblHostName.text = "Hosted by: \(selectedEvent.eventHost?.userName ?? "")" 
+        cell.lblDateTime.text = selectedEvent.eventDate ?? ""
         
         // TODO: set up proper image handling
         if let tempImage = UIImage(named: selectedEvent.eventImageURL!) {
