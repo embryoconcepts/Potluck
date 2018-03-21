@@ -7,13 +7,28 @@
 //
 
 import UIKit
+import Firebase
 
 class MHPProfileViewController: UIViewController {
+
+    var handle: AuthStateDidChangeListenerHandle?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            // FIXME: self.setTitleDisplay(user)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Auth.auth().removeStateDidChangeListener(handle!)
     }
 
     override func didReceiveMemoryWarning() {

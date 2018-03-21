@@ -7,10 +7,12 @@ target 'Potluck' do
 
   # Pods for Potluck
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Facebook'
   pod 'FirebaseUI/Phone'
   pod 'Firebase/Database'
+  pod 'Firebase/DynamicLinks'
   pod 'ScalingCarousel'
   
   target 'PotluckTests' do
