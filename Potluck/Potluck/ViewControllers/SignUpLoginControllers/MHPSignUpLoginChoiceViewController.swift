@@ -18,6 +18,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
 
         // Do any additional setup after loading the view.
     }
@@ -153,17 +154,9 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     }
     
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // TODO: customize not-allowed characters for email and password
         var shouldChange = true
         if textFieldToChange == txtEmail {
-            let characterSetNotAllowed = CharacterSet.punctuationCharacters
-            if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
-                shouldChange = false
-            } else {
-                shouldChange = true
-            }
-        } else if textFieldToChange == txtPassword {
-            let characterSetNotAllowed = CharacterSet.punctuationCharacters
+            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^*")
             if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
                 shouldChange = false
             } else {
