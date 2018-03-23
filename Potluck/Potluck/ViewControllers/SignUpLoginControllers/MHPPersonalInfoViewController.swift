@@ -9,18 +9,16 @@
 import UIKit
 import Firebase
 
-class MHPPersonalInfoViewController: MHPBaseViewController, Injectable {
+class MHPPersonalInfoViewController: MHPBaseViewController {
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     
-    typealias T = User
     var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assertDependencies()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
-
+        user = Auth.auth().currentUser
         // Do any additional setup after loading the view.
     }
 
@@ -41,29 +39,19 @@ class MHPPersonalInfoViewController: MHPBaseViewController, Injectable {
     }
     
     @IBAction func nextTapped(_ sender: Any) {
+        // TODO: create a user object in the database and populate
         if let first = txtFirstName.text, let last = txtLastName.text {
             let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
             changeRequest?.displayName = "\(first) \(last)"
             changeRequest?.commitChanges { (error) in
                 if error == nil {
-                    // TODO: send verification email or text
+                    // TODO: check that user is verified, send to congrats screen
                 } else {
-                    print(error!)
+                    // TODO: handle error
+                    print(error!.localizedDescription)
                 }
             }
         }
     }
-    
-    
-    // MARK: - Injectable Protocol
-    
-    func inject(_ data: User) {
-        user = data
-    }
-    
-    func assertDependencies() {
-        assert(user != nil)
-    }
-    
     
 }

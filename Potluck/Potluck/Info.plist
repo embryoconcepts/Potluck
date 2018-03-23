@@ -32,6 +32,16 @@
 				<string>com.googleusercontent.apps.679267217310-gsu9pgg3bmp8lh7ok62kqrl1p479p2it</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.manyhandsapp.Potluck</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

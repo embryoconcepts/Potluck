@@ -10,28 +10,23 @@ import UIKit
 import Firebase
 
 class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
-
-    var fireUser: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
-
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
     }
-
+    
     
     // MARK: - Action Handlers
     
@@ -43,18 +38,13 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         if txtEmail.text == "" || txtPassword.text == "" {
             if txtEmail.text == "" {
                 let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
-                
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
-                
                 present(alertController, animated: true, completion: nil)
-                
             } else if txtPassword.text == "" {
                 let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
-                
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
-                
                 present(alertController, animated: true, completion: nil)
             }
         } else {
@@ -62,14 +52,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                 Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                     if error == nil {
                         print("You have successfully signed up")
-                        self.fireUser = user
                         self.dismiss(animated: true, completion: nil)
                     } else {
                         let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                         alertController.addAction(defaultAction)
-                        
                         self.present(alertController, animated: true, completion: nil)
                     }
                 }
@@ -82,39 +69,24 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         if txtEmail.text == "" || txtPassword.text == "" {
             if txtEmail.text == "" {
                 let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
-                
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
-                
                 present(alertController, animated: true, completion: nil)
-                
             } else if txtPassword.text == "" {
                 let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
-                
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
-                
                 present(alertController, animated: true, completion: nil)
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
                 Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                    // TODO: set up verification email
                     if error == nil {
-                        print("You have successfully signed up")
-                        self.fireUser = user
-                        if let personalInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                            if let tempUser = user {
-                                personalInfoVC.inject(tempUser)
-                            }
-                            self.navigationController?.pushViewController(personalInfoVC, animated:true)
-                        }
+                        self.sendVerificationEmail(forUser: user)
                     } else {
                         let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                         alertController.addAction(defaultAction)
-                        
                         self.present(alertController, animated: true, completion: nil)
                     }
                 }
@@ -123,9 +95,22 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     }
     
     @IBAction func forgotPasswordTapped(_ sender: Any) {
-        // TODO: set up password reset
-//        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
-//        }
+        let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addTextField(configurationHandler:{ textField in
+            textField.placeholder = "Input your email here..."
+        })
+        
+        alert.addAction(UIAlertAction(title:"OK", style:.default, handler:{ action in
+            if let email = alert.textFields?.first?.text {
+                self.sendResetPasswordEmail(forEmail: email)
+            }
+            let alert = UIAlertController(title: "All set!", message: "Please check your inbox for a link to reset your password.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }))
+        
+        self.present(alert, animated: true)
     }
     
     @IBAction func facebookTapped(_ sender: Any) {
@@ -146,6 +131,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         default:
             txtPassword.resignFirstResponder()
         }
+        
         return true
     }
     
@@ -156,7 +142,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange = true
         if textFieldToChange == txtEmail {
-            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^*")
+            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
             if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
                 shouldChange = false
             } else {
@@ -165,5 +151,43 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         }
         
         return shouldChange
+    }
+    
+    
+    // MARK: - Dynamic Links
+    // TODO: make sure user is returning to original stack or flow when returning from a link (eg, if in the midst of creating an event, they should be able to return to that event creation once signed up or logged in)
+    func sendVerificationEmail(forUser currentUser: User?) {
+        let actionCodeSettings =  ActionCodeSettings.init()
+        actionCodeSettings.handleCodeInApp = true
+        if let user = currentUser, let email = user.email {
+            actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
+            actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+            user.sendEmailVerification(completion:{ (error) in
+                if error == nil {
+                    // TODO: send to home or email or screen saying "please check email for verification link"
+                    
+                    return
+                } else {
+                    // TODO: handle error
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+    }
+    
+    func sendResetPasswordEmail(forEmail email: String) {        
+        let actionCodeSettings =  ActionCodeSettings.init()
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/resetPassword/?email=\(email)")
+        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+            if error == nil {
+                // TODO: send home or email or screen saying "please check email for password reset link"
+                return
+            } else {
+                // TODO: handle error
+                print(error?.localizedDescription as Any)
+            }
+        }
     }
 }

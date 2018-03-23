@@ -46,7 +46,9 @@ class MHPItemListViewController: MHPBaseViewController, UITableViewDelegate, UIT
         goToRsvp()
     }
     
+    
     // MARK: - UITableViewSourceAction
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

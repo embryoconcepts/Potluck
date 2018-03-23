@@ -149,6 +149,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
         assert(event != nil)
     }
     
+    
     // MARK: - Helper Methods
     
     func sendToSignUpLogin() {
