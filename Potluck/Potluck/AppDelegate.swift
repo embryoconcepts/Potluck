@@ -116,14 +116,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let dynamicLink = DynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url) {
             if let path = dynamicLink.url?.path {
                 if path == "/emailVerification" {
-                    if let personalInfoVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                        if let window = self.window, let rootViewController = window.rootViewController {
-                            var currentController = rootViewController
-                            while let presentedController = currentController.presentedViewController {
-                                currentController = presentedController
+                    if let _ = Auth.auth().currentUser?.isEmailVerified {
+                        if let personalInfoVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                            if let window = self.window, let rootViewController = window.rootViewController {
+                                var currentController = rootViewController
+                                while let presentedController = currentController.presentedViewController {
+                                    currentController = presentedController
                                 }
-                            
-                            currentController.present(personalInfoVC, animated: true, completion: nil)
+                                currentController.present(personalInfoVC, animated: true, completion: nil)
+                            }
+                        }
+                    } else {
+                        if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
+                            if let window = self.window, let rootViewController = window.rootViewController {
+                                var currentController = rootViewController
+                                while let presentedController = currentController.presentedViewController {
+                                    currentController = presentedController
+                                    verificationVC.flow = VerificationFlow.EmailVerification
+                                    verificationVC.email = Auth.auth().currentUser?.email
+                                }
+                                currentController.present(verificationVC, animated: true, completion: nil)
+                            }
                         }
                     }
                 } else if path == "/resetPassword" {
@@ -160,6 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // other URL handling goes here.
         return false
     }
+    
     
     // MARK: - Core Data stack
 

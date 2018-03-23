@@ -19,6 +19,15 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let user = Auth.auth().currentUser {
+            if user.isEmailVerified {
+                returnToOriginalFlow()
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -51,13 +60,17 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             if let email = txtEmail.text, let password = txtPassword.text {
                 Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                     if error == nil {
-                        print("You have successfully signed up")
-                        self.dismiss(animated: true, completion: nil)
+                        if user!.isEmailVerified {
+                            self.dismiss(animated: true, completion: nil)
+                        } else {
+                            let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertController.addAction(defaultAction)
+                            self.present(alertController, animated: true, completion: nil)
+                        }
                     } else {
-                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
+                        self.sendVerificationEmail(forUser: user)
+                        
                     }
                 }
             }
@@ -83,6 +96,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                 Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
                     if error == nil {
                         self.sendVerificationEmail(forUser: user)
+                        
                     } else {
                         let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -155,7 +169,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     
     // MARK: - Dynamic Links
-    // TODO: make sure user is returning to original stack or flow when returning from a link (eg, if in the midst of creating an event, they should be able to return to that event creation once signed up or logged in)
+    
     func sendVerificationEmail(forUser currentUser: User?) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
@@ -164,7 +178,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
             user.sendEmailVerification(completion:{ (error) in
                 if error == nil {
-                    // TODO: send to home or email or screen saying "please check email for verification link"
+                    if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
+                        verificationVC.flow = VerificationFlow.EmailVerification
+                        verificationVC.email = email
+                        self.present(verificationVC, animated: true, completion: nil)
+                    }
                     
                     return
                 } else {
@@ -182,7 +200,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
         Auth.auth().sendPasswordReset(withEmail: email) { (error) in
             if error == nil {
-                // TODO: send home or email or screen saying "please check email for password reset link"
+                if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
+                    verificationVC.flow = VerificationFlow.ResetPassword
+                    verificationVC.email = email
+                    self.present(verificationVC, animated: true, completion: nil)
+                }
                 return
             } else {
                 // TODO: handle error
