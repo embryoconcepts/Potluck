@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 class MHPConfirmationScreenViewController: MHPBaseViewController {
 
+    @IBOutlet weak var lblMessage: UILabel!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped(_:)))
-
+        if let name = Auth.auth().currentUser?.displayName {
+            lblMessage.text = "Welcome, \(name)! Your account is all set up and ready to go."
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -29,11 +33,11 @@ class MHPConfirmationScreenViewController: MHPBaseViewController {
     
     // MARK: - Action Handlers
     
-    @IBAction func doneTapped(_ sender: UIBarButtonItem) {
-        returnToOriginalFlow()
-    }
-    
     @IBAction func closeTapped(_ sender: UIButton) {
-        returnToOriginalFlow()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.window?.rootViewController?.dismiss(animated: true, completion:nil)
+            (appDelegate.window?.rootViewController as? UINavigationController)?.popToRootViewController(animated: true)
+        }
+
     }
 }

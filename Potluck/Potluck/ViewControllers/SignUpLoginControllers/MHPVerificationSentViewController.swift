@@ -28,12 +28,12 @@ class MHPVerificationSentViewController: MHPBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: direct user to email, return to sign up screen on dismiss
         if let flowState = flow {
             switch flowState {
             case .EmailVerification:
                 lblMessage.text = "Please check your email, and use the link we sent to verify your email."
                 btnResend.setTitle("Resend Email Verification", for: .normal)
+                btnResend.isEnabled = true
                 btnResend.isHidden = false;
                 break
             case .ResetPassword:
@@ -66,8 +66,9 @@ class MHPVerificationSentViewController: MHPBaseViewController {
             if let user = Auth.auth().currentUser {
                 user.sendEmailVerification(completion:{ (error) in
                     if error == nil {
-                        // TODO: what to do?
                         self.btnResend.setTitle("Sent!", for: .normal)
+                        self.btnResend.isEnabled = false
+                        
                         return
                     } else {
                         // TODO: handle error

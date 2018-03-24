@@ -22,8 +22,8 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let user = Auth.auth().currentUser {
-            if user.isEmailVerified {
-                returnToOriginalFlow()
+            if user.isEmailVerified && (user.displayName != nil) {
+                self.navigationController?.popToRootViewController(animated: true)
             }
         }
     }
@@ -60,18 +60,27 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             if let email = txtEmail.text, let password = txtPassword.text {
                 Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                     if error == nil {
-                        if user!.isEmailVerified {
-                            self.dismiss(animated: true, completion: nil)
-                        } else {
-                            let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(defaultAction)
-                            self.present(alertController, animated: true, completion: nil)
+                        if let currentUser = user {
+                            if currentUser.isEmailVerified {
+                                if let _ = currentUser.displayName {
+                                    // TODO: pull up full customer account
+                                    self.returnToOriginalFlow()
+                                } else {
+                                    if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                                        self.present(personalVC, animated: true, completion: nil)
+                                    }
+                                }
+                            } else {
+                                self.sendVerificationEmail(forUser: user)
+                            }
                         }
                     } else {
-                        self.sendVerificationEmail(forUser: user)
-                        
+                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
                     }
+                    
                 }
             }
         }
@@ -96,7 +105,6 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                 Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
                     if error == nil {
                         self.sendVerificationEmail(forUser: user)
-                        
                     } else {
                         let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -119,11 +127,12 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             if let email = alert.textFields?.first?.text {
                 self.sendResetPasswordEmail(forEmail: email)
             }
-            let alert = UIAlertController(title: "All set!", message: "Please check your inbox for a link to reset your password.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true)
+            
+//            let alert = UIAlertController(title: "All set!", message: "Please check your inbox for a link to reset your password.", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            self.present(alert, animated: true)
         }))
-        
+//
         self.present(alert, animated: true)
     }
     
@@ -183,7 +192,6 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                         verificationVC.email = email
                         self.present(verificationVC, animated: true, completion: nil)
                     }
-                    
                     return
                 } else {
                     // TODO: handle error
