@@ -97,7 +97,7 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
                 sectionGuests = guestsNo
         }
 
-        cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userName ?? ""
+        cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userFirstName ?? ""
         cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
         
         return cell

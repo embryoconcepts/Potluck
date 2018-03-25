@@ -139,6 +139,7 @@
                     <navigationItem key="navigationItem" title="Home" id="s3x-sv-Q78"/>
                     <connections>
                         <outlet property="carousel" destination="KiC-95-h69" id="Fk7-RM-T9s"/>
+                        <outlet property="lblTitle" destination="n9k-sJ-LBJ" id="1bK-Bc-cFD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-z2-RIn" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -13,6 +13,7 @@ target 'Potluck' do
   pod 'FirebaseUI/Phone'
   pod 'Firebase/Database'
   pod 'Firebase/DynamicLinks'
+  pod 'Firebase/Firestore'
   pod 'ScalingCarousel'
   
   target 'PotluckTests' do

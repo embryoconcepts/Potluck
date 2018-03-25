@@ -8,25 +8,44 @@
 
 import UIKit
 import ScalingCarousel
+import Firebase
+import FirebaseFirestore
 
 class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var lblTitle: UILabel!
     
     private let reuseIdentifier = "homeCell"
     var user: MHPUser?
     var events = [MHPEvent]()
+    var db: Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        db = Firestore.firestore()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         // TODO: retrieve user data, populate events with user's EventItemList
+        // TODO: set up enum with user state, change behavior based on state
+        if let firUser = Auth.auth().currentUser {
+            if firUser.isEmailVerified {
+                let ref = db.collection("users").document(firUser.uid)
+                ref.getDocument(completion:{ (document, error) in
+                    if let document = document {
+                        if let firstName = document.data()["userFirstName"] as? String {
+                            self.user?.userFirstName = firstName
+                            self.lblTitle.text = "Welcome, \(firstName)!"
+                        }
+                    }
+                   
+                })
+            }
+        }
         
         // TODO: remove for production
         setupMockData()
@@ -66,7 +85,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         let selectedEvent = events[indexPath.row]
         
         cell.lblEventName.text = selectedEvent.eventName ?? ""
-        cell.lblHostName.text = "Hosted by: \(selectedEvent.eventHost?.userName ?? "")" 
+        cell.lblHostName.text = "Hosted by: \(selectedEvent.eventHost?.userFirstName ?? "")" 
         cell.lblDateTime.text = selectedEvent.eventDate ?? ""
         
         // TODO: set up proper image handling
@@ -92,13 +111,13 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     fileprivate func setupMockData() {
         user = MHPUser()
-        user?.userName = "Tester the Bester"
+        user?.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
-        host1.userName = "Jill of AllTrades"
+        host1.userFirstName = "Jill of AllTrades"
         let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         
         var host2 = MHPUser()
-        host2.userName = "Mary Contrary"
+        host2.userFirstName = "Mary Contrary"
         let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)

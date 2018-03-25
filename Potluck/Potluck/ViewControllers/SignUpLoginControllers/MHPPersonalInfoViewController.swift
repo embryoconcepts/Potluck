@@ -8,17 +8,19 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate {
     
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     
-    var user: User?
+    var db: Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+         db = Firestore.firestore()
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,13 +54,34 @@ class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate 
             }
         } else {
             if let first = txtFirstName.text, let last = txtLastName.text {
+                let displayName = "\(first) \(last)"
                 let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-                changeRequest?.displayName = "\(first) \(last)"
+                changeRequest?.displayName = displayName
                 changeRequest?.commitChanges { (error) in
                     if error == nil {
-                        // TODO: create a user object in the database and populate
-                        if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
-                            self.present(congratsVC, animated: true, completion: nil)
+                        let ref: DocumentReference = self.db.collection("users").document((Auth.auth().currentUser?.uid)!)
+                        ref.setData([
+                            "userFirstName":first,
+                            "userLastName":last,
+                            "userEmail":Auth.auth().currentUser?.email ?? "",
+                            "userPhone":"",
+                            "userProfileURL":"",
+                            "userFacebookID":"",
+                            "isRegistered":true,
+                            "userEventListID":"",
+                            "notificationPermissions":false,
+                            "notificationPreferences":false,
+                            "locationPermissions":false,
+                            "facebookPermissions":false
+                        ]) { err in
+                            if let err = err {
+                                print("Error adding document: \(err)")
+                            } else {
+                                print("Document added with ID: \(ref.documentID)")
+                                if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
+                                    self.present(congratsVC, animated: true, completion: nil)
+                                }
+                            }
                         }
                     } else {
                         // TODO: handle error
@@ -68,6 +91,7 @@ class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate 
             }
         }
     }
+    
     
     // MARK: - UITextFieldDelegate
     

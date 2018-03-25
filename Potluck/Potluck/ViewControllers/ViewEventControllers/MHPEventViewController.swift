@@ -90,7 +90,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     
     func styleLabels() {
         // Event Details
-        lblEventHost.text = event?.eventHost?.userName ?? ""
+        lblEventHost.text = event?.eventHost?.userFirstName ?? ""
         lblEventDescription.text = event?.eventDescription ?? ""
         lblEventDateTime.text = event?.eventDate ?? ""
         lblEventLocation.text = event?.eventLocation ?? ""
