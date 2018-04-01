@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MHPUser: Codable {
+struct MHPUser {
     var userID: String?
     var userFirstName: String?
     var userLastName: String?
@@ -22,5 +22,5 @@ struct MHPUser: Codable {
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
-    
+    var userState: UserAuthorizationState?
 }

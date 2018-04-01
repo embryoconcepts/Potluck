@@ -12,10 +12,11 @@ import Firebase
 class MHPConfirmationScreenViewController: MHPBaseViewController {
 
     @IBOutlet weak var lblMessage: UILabel!
+    var user: MHPUser?
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let name = Auth.auth().currentUser?.displayName {
+        if let name = user?.userFirstName {
             lblMessage.text = "Welcome, \(name)! Your account is all set up and ready to go."
         }
         // Do any additional setup after loading the view.

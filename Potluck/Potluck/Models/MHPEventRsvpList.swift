@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MHPEventRsvpList: Codable {
+struct MHPEventRsvpList {
     var eventRsvpListID: String?
     var eventHost: MHPUser?
     var eventRsvps: [MHPRsvp]?

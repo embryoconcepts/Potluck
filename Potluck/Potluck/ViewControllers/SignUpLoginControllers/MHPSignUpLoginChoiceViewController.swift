@@ -178,6 +178,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     
     // MARK: - Dynamic Links
+    // TODO: break out to network or authentication manager
     
     func sendVerificationEmail(forUser currentUser: User?) {
         let actionCodeSettings =  ActionCodeSettings.init()
@@ -192,6 +193,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                         verificationVC.email = email
                         self.present(verificationVC, animated: true, completion: nil)
                     }
+                    
                     return
                 } else {
                     // TODO: handle error
@@ -213,6 +215,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                     verificationVC.email = email
                     self.present(verificationVC, animated: true, completion: nil)
                 }
+                
                 return
             } else {
                 // TODO: handle error

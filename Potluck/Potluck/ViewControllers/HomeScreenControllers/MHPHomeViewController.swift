@@ -18,7 +18,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var lblTitle: UILabel!
     
     private let reuseIdentifier = "homeCell"
-    var user: MHPUser?
+    var user = MHPUser()
     var events = [MHPEvent]()
     var db: Firestore!
     
@@ -30,21 +30,25 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
-        // TODO: retrieve user data, populate events with user's EventItemList
-        // TODO: set up enum with user state, change behavior based on state
         if let firUser = Auth.auth().currentUser {
             if firUser.isEmailVerified {
-                let ref = db.collection("users").document(firUser.uid)
-                ref.getDocument(completion:{ (document, error) in
-                    if let document = document {
-                        if let firstName = document.data()["userFirstName"] as? String {
-                            self.user?.userFirstName = firstName
-                            self.lblTitle.text = "Welcome, \(firstName)!"
-                        }
+                UserManager().retrieveMHPUserWith(firUser: firUser) { (result) in
+                    switch result {
+                    case let .success(user):
+                        self.user = (user as! MHPUser)
+                        self.lblTitle.text = "Welcome, \(self.user.userFirstName ?? "")!"
+                    case .error(_):
+                        // TODO: send user to finish registration process
+                        self.user.userState = .verified
+                        print(DatabaseError.errorRetrievingUserFromDB)
                     }
-                   
-                })
+                }
+            } else {
+                // TODO: send user to complete registration
+                user.userState = .unverified
             }
+        } else {
+            user.userState = .unknown
         }
         
         // TODO: remove for production
@@ -64,9 +68,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
                 let eventDetailVC = segue.destination as? MHPEventViewController
-                if let tempUser = user {
-                    eventDetailVC?.inject((injectedUser: tempUser, injectedEvent:events[indexPath.row]))
-                }
+                eventDetailVC?.inject((injectedUser: user, injectedEvent:events[indexPath.row]))
             }
         } else {
             // TODO: error handling
@@ -111,7 +113,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     fileprivate func setupMockData() {
         user = MHPUser()
-        user?.userFirstName = "Tester the Bester"
+        user.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userFirstName = "Jill of AllTrades"
         let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
