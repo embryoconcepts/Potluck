@@ -16,7 +16,7 @@ class MHPHomeCarouselViewCell: ScalingCarouselCell {
     @IBOutlet weak var lblDateTime: UILabel!
     @IBOutlet weak var imgEvent: UIImageView!
     
-    override func scale(withCarouselInset carouselInset: CGFloat, scaleMinimum: CGFloat) {
+    func scale(withCarouselInset carouselInset: CGFloat, scaleMinimum: CGFloat) {
         mainView.layer.cornerRadius = 5
         
         mainView.layer.shadowColor = UIColor.black.cgColor

@@ -78,20 +78,20 @@ struct UserManager {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         var user = MHPUser()
         ref.getDocument(completion:{ (document, error) in
-            if let document = document {
+            if let document = document, let data = document.data() {
                 user.userID = document.documentID
-                user.userFirstName = document.data()["userFirstName"] as? String ?? ""
-                user.userLastName = document.data()["userLastName"] as? String ?? ""
-                user.userEmail = document.data()["userEmail"] as? String ?? ""
-                user.userPhone = document.data()["userPhone"] as? String ?? ""
-                user.userProfileURL = URL(string: document.data()["userProfileURL"] as? String ?? "")
-                user.userFacebookID = document.data()["userFacebookID"] as? String ?? ""
-                user.isRegistered = document.data()["isRegistered"] as? Bool ?? true
-                user.userEventListID = document.data()["userEventListID"] as? String ?? ""
-                user.notificationPermissions = document.data()["notificationPermissions"] as? Bool ?? false
-                user.notificationPreferences = document.data()["notificationPreferences"] as? Bool ?? false
-                user.locationPermissions = document.data()["locationPermissions"] as? Bool ?? false
-                user.facebookPermissions = document.data()["facebookPermissions"] as? Bool ?? false
+                user.userFirstName = data["userFirstName"] as? String ?? ""
+                user.userLastName = data["userLastName"] as? String ?? ""
+                user.userEmail = data["userEmail"] as? String ?? ""
+                user.userPhone = data["userPhone"] as? String ?? ""
+                user.userProfileURL = URL(string: data["userProfileURL"] as? String ?? "")
+                user.userFacebookID = data["userFacebookID"] as? String ?? ""
+                user.isRegistered = data["isRegistered"] as? Bool ?? true
+                user.userEventListID = data["userEventListID"] as? String ?? ""
+                user.notificationPermissions = data["notificationPermissions"] as? Bool ?? false
+                user.notificationPreferences = data["notificationPreferences"] as? Bool ?? false
+                user.locationPermissions = data["locationPermissions"] as? Bool ?? false
+                user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
                 user.userState = .registered
                 completion(.success(user))
             } else {
