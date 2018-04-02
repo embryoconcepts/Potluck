@@ -22,5 +22,5 @@ struct MHPUser {
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
-    var userState: UserAuthorizationState?
+    var userState: UserAuthorizationState = .unknown
 }

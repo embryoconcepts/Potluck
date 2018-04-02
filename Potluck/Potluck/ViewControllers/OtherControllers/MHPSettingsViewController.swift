@@ -12,15 +12,13 @@ import Firebase
 class MHPSettingsViewController: MHPBaseViewController {
 
     @IBOutlet weak var btnLogInOut: UIButton!
-    var user: MHPUser?
+    var mhpUser: MHPUser?
     var handle: AuthStateDidChangeListenerHandle?
     var isLoggedIn = false
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        btnLogInOut.setTitle("something", for: .normal) 
-        // TODO: get user data
         
     }
     
@@ -29,13 +27,19 @@ class MHPSettingsViewController: MHPBaseViewController {
         if let _ = Auth.auth().currentUser {
             isLoggedIn = true
         } else {
-            isLoggedIn = false
+//            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+//                let navController = UINavigationController(rootViewController: signinVC)
+//                present(navController, animated: true, completion: nil)
+//            }
         }
-        styleButtonTitle()
         
         // Listen for user login state
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            self.styleButtonTitle()
+            if let _ = Auth.auth().currentUser {
+                self.isLoggedIn = true
+            } else {
+                self.isLoggedIn = false
+            }
         }
     }
     
@@ -62,24 +66,8 @@ class MHPSettingsViewController: MHPBaseViewController {
                 // TODO: handle error
                 print("Error signing out: %@", signOutError)
             }
-            isLoggedIn = false
-        } else {
-            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
-                let navController = UINavigationController(rootViewController: signinVC)
-                present(navController, animated: true, completion: nil)
-            }
-            isLoggedIn = true
         }
-        styleButtonTitle()
-    }
-    
-    func styleButtonTitle() {
-        if isLoggedIn {
-            btnLogInOut.setTitle("Logout", for: .normal)
-        } else {
-            btnLogInOut.setTitle("Login", for: .normal)
-        }
-        
+        isLoggedIn = !isLoggedIn
     }
     
 }
