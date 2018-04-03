@@ -62,6 +62,13 @@ class MHPSettingsViewController: MHPBaseViewController {
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
+                // TODO: pass updated user info
+                dismiss(animated: true, completion: nil)
+                if let tabs = tabBarController?.viewControllers {
+                    if tabs.count > 0 {
+                        self.tabBarController?.selectedIndex = 0
+                    }
+                }
             } catch let signOutError as NSError {
                 // TODO: handle error
                 print("Error signing out: %@", signOutError)

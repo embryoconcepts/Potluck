@@ -9,11 +9,18 @@
 import UIKit
 import Firebase
 
+protocol LoginViewControllerDelegate:class {
+    func didLoginSuccessfully(mhpUser: MHPUser)
+}
+
 class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDelegate {
     
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
+    var mhpUser = MHPUser()
+    weak var delegate: LoginViewControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
@@ -62,12 +69,16 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                     if error == nil {
                         if let currentUser = user {
                             if currentUser.isEmailVerified {
-                                if let _ = currentUser.displayName {
-                                    // TODO: pull up full customer account
-                                    self.returnToOriginalFlow()
-                                } else {
-                                    if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                                        self.present(personalVC, animated: true, completion: nil)
+                                UserManager().retrieveMHPUserWith(firUser: currentUser) { result in
+                                    switch result {
+                                    case let .success(retrievedUser):
+                                        self.delegate?.didLoginSuccessfully(mhpUser: retrievedUser as! MHPUser)
+                                    case .error(_):
+                                        if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                                            personalVC.mhpUser = self.mhpUser
+                                            self.present(personalVC, animated: true, completion: nil)
+                                            print(DatabaseError.errorRetrievingUserFromDB)
+                                        }
                                     }
                                 }
                             } else {

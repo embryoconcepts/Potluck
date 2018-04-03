@@ -11,53 +11,38 @@ import ScalingCarousel
 import Firebase
 import FirebaseFirestore
 
-class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+
+
+class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var lblTitle: UILabel!
     
     private let reuseIdentifier = "homeCell"
-    var user = MHPUser()
+    var mhpUser = MHPUser()
     var events = [MHPEvent]()
     var db: Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.delegate = self
         db = Firestore.firestore()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
-        if let firUser = Auth.auth().currentUser {
-            if firUser.isEmailVerified {
-                UserManager().retrieveMHPUserWith(firUser: firUser) { (result) in
-                    switch result {
-                    case let .success(user):
-                        self.user = (user as! MHPUser)
-                        self.lblTitle.text = "Welcome, \(self.user.userFirstName ?? "")!"
-                    case .error(_):
-                        // TODO: send user to finish registration process
-                        self.user.userState = .verified
-                        print(DatabaseError.errorRetrievingUserFromDB)
-                    }
-                }
-            } else {
-                // TODO: send user to complete registration
-                user.userState = .unverified
-            }
-        } else {
-            user.userState = .unknown
-        }
         
-        // TODO: remove for production
-        setupMockData()
+        if let firstName = self.mhpUser.userFirstName {
+            self.lblTitle.text = "Welcome, \(firstName)!"
+        }
+
+    //    setupMockData() // TODO: remove for production
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -68,10 +53,33 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
                 let eventDetailVC = segue.destination as? MHPEventViewController
-                eventDetailVC?.inject((injectedUser: user, injectedEvent:events[indexPath.row]))
+                eventDetailVC?.inject((injectedUser: mhpUser, injectedEvent:events[indexPath.row]))
             }
         } else {
             // TODO: error handling
+        }
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarIndex = tabBarController.selectedIndex
+        switch tabBarIndex {
+        case 1: // create event
+            // TODO: navigate to create event with anon user
+            return
+        case 2, 3: // profile, settings
+            if mhpUser.userState == .unknown {
+                if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+                    let navController = UINavigationController(rootViewController: signinVC)
+                    signinVC.delegate = self
+                    present(navController, animated: true, completion: nil)
+                }
+            } else {
+                // TODO: inject current user to next screen
+                
+            }
+            
+        default:
+            return
         }
     }
     
@@ -110,10 +118,10 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     
     // MARK: - Private Methods
-    
+        
     fileprivate func setupMockData() {
-        user = MHPUser()
-        user.userFirstName = "Tester the Bester"
+        mhpUser = MHPUser()
+        mhpUser.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userFirstName = "Jill of AllTrades"
         let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
@@ -123,6 +131,15 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
+    }
+    
+}
+
+extension MHPHomeViewController:LoginViewControllerDelegate {
+    func didLoginSuccessfully(mhpUser: MHPUser) {
+        dismiss(animated: true) {
+            self.mhpUser = mhpUser
+        }
     }
     
 }

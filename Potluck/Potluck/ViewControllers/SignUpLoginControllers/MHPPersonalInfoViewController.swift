@@ -14,6 +14,8 @@ class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate 
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     
+    var mhpUser = MHPUser()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
