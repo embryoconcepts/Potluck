@@ -12,11 +12,11 @@ import Firebase
 class MHPConfirmationScreenViewController: MHPBaseViewController {
 
     @IBOutlet weak var lblMessage: UILabel!
-    var user: MHPUser?
+    var user = MHPUser()
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let name = user?.userFirstName {
+        if let name = user.userFirstName {
             lblMessage.text = "Welcome, \(name)! Your account is all set up and ready to go."
         }
         // Do any additional setup after loading the view.
@@ -35,10 +35,17 @@ class MHPConfirmationScreenViewController: MHPBaseViewController {
     // MARK: - Action Handlers
     
     @IBAction func closeTapped(_ sender: UIButton) {
+        // TODO: should send user back to their original flow
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.window?.rootViewController?.dismiss(animated: true, completion:nil)
-            (appDelegate.window?.rootViewController as? UINavigationController)?.popToRootViewController(animated: true)
+            if let tabBarController = appDelegate.window?.rootViewController as? UITabBarController,
+                let rootVCArray = tabBarController.viewControllers {
+                let navCon = rootVCArray[0] as! UINavigationController
+                if let homeVC = navCon.topViewController as? MHPHomeViewController {
+                    homeVC.mhpUser = self.user
+                    navCon.popToViewController(homeVC, animated: true)
+                }
+            }
         }
-
     }
+    
 }

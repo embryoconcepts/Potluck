@@ -19,8 +19,9 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     @IBOutlet weak var txtPassword: UITextField!
     
     var mhpUser = MHPUser()
+    var firUser: User?
     weak var delegate: LoginViewControllerDelegate?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
@@ -28,10 +29,20 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let user = Auth.auth().currentUser {
-            if user.isEmailVerified && (user.displayName != nil) {
-                self.navigationController?.popToRootViewController(animated: true)
+        
+        
+        Auth.auth().currentUser?.reload(completion: { (error) in
+            if error == nil {
+                if let user = Auth.auth().currentUser {
+                    self.firUser = user
+                }
+            } else {
+                // TODO: handle error
             }
+        })
+        
+        if mhpUser.userState == .registered {
+            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -65,33 +76,37 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
-                Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-                    if error == nil {
-                        if let currentUser = user {
-                            if currentUser.isEmailVerified {
-                                UserManager().retrieveMHPUserWith(firUser: currentUser) { result in
-                                    switch result {
-                                    case let .success(retrievedUser):
-                                        self.delegate?.didLoginSuccessfully(mhpUser: retrievedUser as! MHPUser)
-                                    case .error(_):
-                                        if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                                            personalVC.mhpUser = self.mhpUser
-                                            self.present(personalVC, animated: true, completion: nil)
-                                            print(DatabaseError.errorRetrievingUserFromDB)
+                if let tempUser = firUser {
+                    if tempUser.isEmailVerified {
+                        
+                        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+                            if error == nil {
+                                if let fUser = user {
+                                    UserManager().retrieveMHPUserWith(firUser: fUser) { result in
+                                        switch result {
+                                        case let .success(retrievedUser):
+                                            self.delegate?.didLoginSuccessfully(mhpUser: retrievedUser as! MHPUser)
+                                            self.mhpUser = retrievedUser as! MHPUser
+                                        case .error(_):
+                                            if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                                                personalVC.mhpUser = self.mhpUser
+                                                self.present(personalVC, animated: true, completion: nil)
+                                                print(DatabaseError.errorRetrievingUserFromDB)
+                                            }
                                         }
                                     }
                                 }
                             } else {
-                                self.sendVerificationEmail(forUser: user)
+                                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                alertController.addAction(defaultAction)
+                                self.present(alertController, animated: true, completion: nil)
                             }
                         }
-                    } else {
-                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
                     }
                     
+                } else {
+                    sendVerificationEmail(forUser: firUser)
                 }
             }
         }
@@ -138,12 +153,8 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             if let email = alert.textFields?.first?.text {
                 self.sendResetPasswordEmail(forEmail: email)
             }
-            
-//            let alert = UIAlertController(title: "All set!", message: "Please check your inbox for a link to reset your password.", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self.present(alert, animated: true)
         }))
-//
+        
         self.present(alert, animated: true)
     }
     

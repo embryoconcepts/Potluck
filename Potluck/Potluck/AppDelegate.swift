@@ -51,29 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
-        
-        if let firUser = Auth.auth().currentUser {
-            if firUser.isEmailVerified {
-                UserManager().retrieveMHPUserWith(firUser: firUser) { (result) in
-                    switch result {
-                    case let .success(user):
-                        self.mhpUser = (user as! MHPUser)
-                        self.routeUserToHome()
-                    case .error(_):
-                        self.mhpUser.userState = .verified
-                        self.routeUserToPersonalInfo()
-                        print(DatabaseError.errorRetrievingUserFromDB)
-                    }
-                }
-            } else {
-                mhpUser.userState = .unverified
-                routeToVerification()
-            }
-        } else {
-            // TODO: set up anon user
-            mhpUser.userState = .unknown
-            routeUserToHome()
-        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -152,6 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let navCon = rootVCArray[0] as! UINavigationController
             if let homeVC = navCon.topViewController as? MHPHomeViewController {
                 homeVC.mhpUser = self.mhpUser
+                navCon.present(homeVC, animated: true, completion: nil)
             }
         }
     }
@@ -169,7 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     fileprivate func routeToVerification() {
-        if let verifyVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPSignUpLoginChoiceViewController {
+        if let verifyVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
             if let window = self.window, let rootViewController = window.rootViewController {
                 var currentController = rootViewController
                 while let presentedController = currentController.presentedViewController {

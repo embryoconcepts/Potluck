@@ -10,40 +10,43 @@ import UIKit
 import Firebase
 
 class MHPProfileViewController: UIViewController {
-
-    var handle: AuthStateDidChangeListenerHandle?
-
+    
+    var mhpUser = MHPUser()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            // FIXME: self.setTitleDisplay(user)
-        }
+        setupUser()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
-
+    
+    fileprivate func setupUser() {
+        if let firUser = Auth.auth().currentUser {
+            firUser.reload(completion:{ (error) in
+                if error == nil {
+                    // TODO: retrieve user info, or have it passed back in
+                    
+                } else {
+                    // TODO: handle error
+                }
+            })
+        } else {
+            self.dismiss(animated: true, completion: nil)
+            if let tabs = self.tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
+                }
+            }
+        }
+    }
 }

@@ -11,8 +11,6 @@ import ScalingCarousel
 import Firebase
 import FirebaseFirestore
 
-
-
 class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
@@ -33,11 +31,8 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        setupUser()
         
-        if let firstName = self.mhpUser.userFirstName {
-            self.lblTitle.text = "Welcome, \(firstName)!"
-        }
-
     //    setupMockData() // TODO: remove for production
     }
     
@@ -67,10 +62,11 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
             // TODO: navigate to create event with anon user
             return
         case 2, 3: // profile, settings
-            if mhpUser.userState == .unknown {
+            if mhpUser.userState != .registered || Auth.auth().currentUser == nil {
                 if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                     let navController = UINavigationController(rootViewController: signinVC)
                     signinVC.delegate = self
+                    signinVC.mhpUser = mhpUser
                     present(navController, animated: true, completion: nil)
                 }
             } else {
@@ -118,7 +114,39 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     
     // MARK: - Private Methods
-        
+    
+    fileprivate func setupUser() {
+        let user = Auth.auth().currentUser
+        Auth.auth().currentUser?.reload(completion: { (error) in
+            if error == nil {
+                if let firUser = Auth.auth().currentUser {
+                    if firUser.isEmailVerified {
+                        UserManager().retrieveMHPUserWith(firUser: firUser) { (result) in
+                            switch result {
+                            case let .success(user):
+                                self.mhpUser = (user as! MHPUser)
+                                self.mhpUser.userState = .registered
+                                if let firstName = self.mhpUser.userFirstName {
+                                    self.lblTitle.text = "Welcome, \(firstName)!"
+                                }
+                            case .error(_):
+                                self.mhpUser.userState = .verified
+                                print(DatabaseError.errorRetrievingUserFromDB)
+                            }
+                        }
+                    } else {
+                        self.mhpUser.userState = .unverified
+                    }
+                } else {
+                    // TODO: set up anon user
+                    self.mhpUser.userState = .unknown
+                }
+            } else {
+                // TODO: handle error
+            }
+        })
+    }
+    
     fileprivate func setupMockData() {
         mhpUser = MHPUser()
         mhpUser.userFirstName = "Tester the Bester"

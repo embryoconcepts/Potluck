@@ -10,71 +10,65 @@ import UIKit
 import Firebase
 
 class MHPSettingsViewController: MHPBaseViewController {
-
+    
     @IBOutlet weak var btnLogInOut: UIButton!
-    var mhpUser: MHPUser?
-    var handle: AuthStateDidChangeListenerHandle?
-    var isLoggedIn = false
-
+    var mhpUser = MHPUser()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let _ = Auth.auth().currentUser {
-            isLoggedIn = true
-        } else {
-//            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
-//                let navController = UINavigationController(rootViewController: signinVC)
-//                present(navController, animated: true, completion: nil)
-//            }
-        }
-        
-        // Listen for user login state
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            if let _ = Auth.auth().currentUser {
-                self.isLoggedIn = true
-            } else {
-                self.isLoggedIn = false
-            }
-        }
+        setupUser()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-        
+    
+    fileprivate func setupUser() {
+        if let firUser = Auth.auth().currentUser {
+            firUser.reload(completion:{ (error) in
+                if error == nil {
+                    // TODO: retrieve user info, or have it passed back in
+                    
+                } else {
+                    // TODO: handle error
+                }
+            })
+        } else {
+            self.dismiss(animated: true, completion: nil)
+            if let tabs = self.tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
+                }
+            }
+        }
+    }
+    
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
         returnToSignUpRoot()
     }
     
     @IBAction func logInOutTapped(_ sender: Any) {
-        if isLoggedIn {
-            let firebaseAuth = Auth.auth()
-            do {
-                try firebaseAuth.signOut()
-                // TODO: pass updated user info
-                dismiss(animated: true, completion: nil)
-                if let tabs = tabBarController?.viewControllers {
-                    if tabs.count > 0 {
-                        self.tabBarController?.selectedIndex = 0
-                    }
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            // TODO: pass updated user info
+            dismiss(animated: true, completion: nil)
+            if let tabs = tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
                 }
-            } catch let signOutError as NSError {
-                // TODO: handle error
-                print("Error signing out: %@", signOutError)
             }
+        } catch let signOutError as NSError {
+            // TODO: handle error
+            print("Error signing out: %@", signOutError)
         }
-        isLoggedIn = !isLoggedIn
     }
-    
 }
