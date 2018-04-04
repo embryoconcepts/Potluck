@@ -58,7 +58,16 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        cancel()
+        if (self.navigationController?.presentingViewController?.isKind(of: MHPSettingsViewController.self))! {
+            // FIXME: send to home
+            if let tabBarController = self.presentingViewController as? UITabBarController {
+                self.dismiss(animated: true) {
+                    tabBarController.selectedIndex = 0
+                }
+            }
+        } else {
+            self.navigationController?.dismiss(animated: true, completion:nil)
+        }
     }
     
     @IBAction func loginTapped(_ sender: Any) {
