@@ -42,7 +42,7 @@ class MHPConfirmationScreenViewController: MHPBaseViewController {
                 let navCon = rootVCArray[0] as! UINavigationController
                 if let homeVC = navCon.topViewController as? MHPHomeViewController {
                     homeVC.mhpUser = self.user
-                    navCon.popToViewController(homeVC, animated: true)
+                    navCon.dismiss(animated: true, completion: nil)
                 }
             }
         }

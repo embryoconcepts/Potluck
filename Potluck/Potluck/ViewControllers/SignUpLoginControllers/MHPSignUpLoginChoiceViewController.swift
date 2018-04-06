@@ -117,11 +117,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                                 self.present(alertController, animated: true, completion: nil)
                             }
                         }
+                    } else {
+                        sendVerificationEmail(forUser: firUser)
                     }
-                    
-                } else {
-                    sendVerificationEmail(forUser: firUser)
                 }
+                
             }
         }
     }
