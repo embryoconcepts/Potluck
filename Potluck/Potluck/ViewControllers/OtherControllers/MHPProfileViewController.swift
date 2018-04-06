@@ -19,7 +19,15 @@ class MHPProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupUser()
+        if mhpUser.userState != .registered || Auth.auth().currentUser == nil {
+            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+                let navController = UINavigationController(rootViewController: signinVC)
+                signinVC.mhpUser = mhpUser
+                present(navController, animated: true, completion: nil)
+            }
+        } else {
+            setupUser()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,12 +49,7 @@ class MHPProfileViewController: UIViewController {
                 }
             })
         } else {
-            self.dismiss(animated: true, completion: nil)
-            if let tabs = self.tabBarController?.viewControllers {
-                if tabs.count > 0 {
-                    self.tabBarController?.selectedIndex = 0
-                }
-            }
+            
         }
     }
 }

@@ -39,14 +39,14 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
      }
      */
     @IBAction func cancelTappped(_ sender: UIButton) {
-        // TODO: alert - do you really wanna?
-        dismiss(animated: true, completion: nil)
+        // TODO: add alert - do you really wanna?
         self.tabBarController?.tabBar.isHidden = false
         if let tabs = tabBarController?.viewControllers {
             if tabs.count > 0 {
                 self.tabBarController?.selectedIndex = 0
             }
         }
+        dismiss(animated: true, completion: nil)
     }
 
     func next() {

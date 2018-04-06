@@ -61,19 +61,22 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         case 1: // create event
             // TODO: navigate to create event with anon user
             return
-        case 2, 3: // profile, settings
-            if mhpUser.userState != .registered || Auth.auth().currentUser == nil {
-                if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
-                    let navController = UINavigationController(rootViewController: signinVC)
-                    signinVC.delegate = self
-                    signinVC.mhpUser = mhpUser
-                    present(navController, animated: true, completion: nil)
+        case 2: // profile
+            if mhpUser.userState == .registered {
+                if let tabBarControllers = self.tabBarController?.viewControllers {
+                    if let nextVC = tabBarControllers[tabBarIndex] as? MHPProfileViewController {
+                        nextVC.mhpUser = self.mhpUser
+                    }
                 }
-            } else {
-                // TODO: inject current user to next screen
-                
             }
-            
+        case 3: // settings
+            if mhpUser.userState == .registered {
+                if let tabBarControllers = self.tabBarController?.viewControllers {
+                    if let nextVC = tabBarControllers[tabBarIndex] as? MHPSettingsViewController {
+                        nextVC.mhpUser = self.mhpUser
+                    }
+                }
+            }
         default:
             return
         }
