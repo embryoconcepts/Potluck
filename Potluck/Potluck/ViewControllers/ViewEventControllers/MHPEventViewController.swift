@@ -37,10 +37,9 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        // TODO: retrieve rsvps and items for event (user and event data should have been passed in segue)
+        // retrieve rsvps and items for event (user and event data should have been passed in segue)
         userIsHost = false // TODO: remove for production
         
-        // TODO: put the below in a completion block 
         styleNavigation()
         styleLabels()
     }
@@ -55,7 +54,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        // TODO: handle moving to rsvp
+        // handle moving to rsvp
 
         if segue.identifier == "EventToGuestList" {
             let guestListVC = segue.destination as? MHPGuestListViewController
@@ -133,7 +132,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     }
     
     @IBAction func manageEvent(_ sender: Any) {
-        // TODO: move to manage event flow
+        // move to manage event flow
     }
     
     
@@ -153,7 +152,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     // MARK: - Helper Methods
     
     func sendToSignUpLogin() {
-        // TODO: move to sign up flow
+        // move to sign up flow
     }
     
 }

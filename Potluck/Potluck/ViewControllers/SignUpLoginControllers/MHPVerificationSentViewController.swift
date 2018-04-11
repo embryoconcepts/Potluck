@@ -71,7 +71,7 @@ class MHPVerificationSentViewController: MHPBaseViewController {
                         
                         return
                     } else {
-                        // TODO: handle error
+                        // handle error
                         print(error?.localizedDescription as Any)
                     }
                 })

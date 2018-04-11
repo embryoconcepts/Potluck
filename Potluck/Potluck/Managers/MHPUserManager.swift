@@ -31,11 +31,9 @@ enum DatabaseError: Error {
 }
 
 struct UserManager {
-    
     let db = Firestore.firestore()
     
-
-    func login(user: MHPUser) {
+    func login(email: String, password: String) {
         
     }
     
@@ -45,6 +43,41 @@ struct UserManager {
     
     func linkUsers(firUser: User, withMHPUser: MHPUser) {
         
+    }
+    
+    func setupUser(completion: @escaping ((MHPUser) -> ())) {
+        var mhpUser = MHPUser()
+        if let firUser = Auth.auth().currentUser {
+            if firUser.isAnonymous {
+                anonSetup(firUser: firUser) { (anonUser) in
+                    completion(anonUser)
+                }
+            } else if firUser.isEmailVerified {
+                mhpUser.userState = .verified
+                self.retrieveMHPUserWith(firUser: firUser) { (result) in
+                    switch result {
+                    case let .success(user):
+                        mhpUser = (user as! MHPUser)
+                        mhpUser.userState = .registered
+                        completion(mhpUser)
+                    case .error(_):
+                        // user has not completed registration
+                        print(DatabaseError.errorRetrievingUserFromDB)
+                        completion(mhpUser)
+                    }
+                }
+            } else {
+                // user has not verified email
+                mhpUser.userState = .unverified
+                completion(mhpUser)
+            }
+        } else {
+            Auth.auth().signInAnonymously() { (user, error) in
+                self.anonSetup(firUser: user!) { (anonUser) in
+                    completion(anonUser)
+                }
+            }
+        }
     }
     
     func saveFirUserToMHPUser(firUser: User, firstName: String, lastName: String, completion: @escaping ((Result<Bool> ) -> ())) {
@@ -71,7 +104,32 @@ struct UserManager {
                 completion(.success(true))
             }
         }
-        
+    }
+    
+    func saveAnonFirUserToMHPUser(firUser: User, completion: @escaping ((Result<Bool> ) -> ())) {
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        ref.setData([
+            "userFirstName":"",
+            "userLastName":"",
+            "userEmail":"",
+            "userPhone":"",
+            "userProfileURL":"",
+            "userFacebookID":"",
+            "isRegistered":false,
+            "userEventListID":"",
+            "notificationPermissions":false,
+            "notificationPreferences":false,
+            "locationPermissions":false,
+            "facebookPermissions":false
+        ]) { (error) in
+            if let error = error {
+                print("Error adding document: \(error)")
+                completion(.error(DatabaseError.errorAddingNewUserToDB))
+            } else {
+                print("Document added with ID: \(ref.documentID)")
+                completion(.success(true))
+            }
+        }
     }
     
     func retrieveMHPUserWith(firUser: User, completion: @escaping ((Result<MHPUser> ) -> ())) {
@@ -92,12 +150,35 @@ struct UserManager {
                 user.notificationPreferences = data["notificationPreferences"] as? Bool ?? false
                 user.locationPermissions = data["locationPermissions"] as? Bool ?? false
                 user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
-                user.userState = .registered
                 completion(.success(user))
             } else {
                 completion(.error(DatabaseError.errorRetrievingUserFromDB))
             }
         })
-        
+    }
+    
+    
+    // MARK: - Private Methods
+    
+    fileprivate func anonSetup(firUser: User, completion: @escaping ((MHPUser) -> ())) {
+        var mhpUser = MHPUser()
+        self.saveAnonFirUserToMHPUser(firUser:firUser, completion:{ (result) in
+            switch result {
+            case .success(_):
+                self.retrieveMHPUserWith(firUser: firUser) { (result) in
+                    mhpUser.userState = .unknown
+                    switch result {
+                    case let .success(user):
+                        mhpUser = (user as! MHPUser)
+                        completion(mhpUser)
+                    case .error(_):
+                        print(DatabaseError.errorRetrievingUserFromDB)
+                        completion(mhpUser)
+                    }
+                }
+            case .error(_):
+                print(DatabaseError.errorRetrievingUserFromDB)
+            }
+        })
     }
 }

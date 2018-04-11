@@ -16,6 +16,8 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var viewAlert: UIView!
+    @IBOutlet weak var lblAlertMessage: UILabel!
     
     private let reuseIdentifier = "homeCell"
     var mhpUser = MHPUser()
@@ -30,8 +32,11 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-        setupUser()
+        
+        UserManager().setupUser { (user) in
+            self.mhpUser = user
+            self.styleView()
+        }
         
     //    setupMockData() // TODO: remove for production
     }
@@ -51,7 +56,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
                 eventDetailVC?.inject((injectedUser: mhpUser, injectedEvent:events[indexPath.row]))
             }
         } else {
-            // TODO: error handling
+            // error handling
         }
     }
     
@@ -104,44 +109,46 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         carousel.didScroll()
-        // TODO: possibly set up page control coordination?
+        // set up page control coordination?
 //        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
 //        output.text = String(describing: currentCenterIndex)
     }
     
     
+    // MARK: - Action Handlers
+    
+    @IBAction func alertTapped(_ sender: Any) {
+        if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+            let navController = UINavigationController(rootViewController: signinVC)
+            signinVC.mhpUser = mhpUser
+            present(navController, animated: true, completion: nil)
+        }
+    }
+    
+    
     // MARK: - Private Methods
     
-    fileprivate func setupUser() {
-        let user = Auth.auth().currentUser
-        Auth.auth().currentUser?.reload(completion: { (error) in
-            if error == nil {
-                if let firUser = Auth.auth().currentUser {
-                    if firUser.isEmailVerified {
-                        UserManager().retrieveMHPUserWith(firUser: firUser) { (result) in
-                            switch result {
-                            case let .success(user):
-                                self.mhpUser = (user as! MHPUser)
-                                self.mhpUser.userState = .registered
-                                if let firstName = self.mhpUser.userFirstName {
-                                    self.lblTitle.text = "Welcome, \(firstName)!"
-                                }
-                            case .error(_):
-                                self.mhpUser.userState = .verified
-                                print(DatabaseError.errorRetrievingUserFromDB)
-                            }
-                        }
-                    } else {
-                        self.mhpUser.userState = .unverified
-                    }
-                } else {
-                    // TODO: set up anon user
-                    self.mhpUser.userState = .unknown
-                }
-            } else {
-                // TODO: handle error
+    fileprivate func styleView() {
+        self.tabBarController?.tabBar.isHidden = false
+        self.lblTitle.text = "Welcome to Potluck!"
+        
+        switch self.mhpUser.userState {
+        case .registered:
+            self.viewAlert.isHidden = true
+            self.lblAlertMessage.text = ""
+            if let firstName = self.mhpUser.userFirstName, let lastName = self.mhpUser.userLastName {
+                self.lblTitle.text = "Welcome, \(firstName) \(lastName)!"
             }
-        })
+        case .verified:
+            self.viewAlert.isHidden = false
+            self.lblAlertMessage.text = "Please complete signup to use all features."
+        case .unverified:
+            self.viewAlert.isHidden = false
+            self.lblAlertMessage.text = "Please verify your email to complete sign up."
+        case .unknown:
+            self.viewAlert.isHidden = true
+            self.lblAlertMessage.text = ""
+        }
     }
     
     fileprivate func setupMockData() {
@@ -156,15 +163,6 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
-    }
-    
-}
-
-extension MHPHomeViewController:LoginViewControllerDelegate {
-    func didLoginSuccessfully(mhpUser: MHPUser) {
-        dismiss(animated: true) {
-            self.mhpUser = mhpUser
-        }
     }
     
 }

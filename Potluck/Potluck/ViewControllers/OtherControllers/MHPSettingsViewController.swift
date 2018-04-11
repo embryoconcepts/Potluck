@@ -20,14 +20,15 @@ class MHPSettingsViewController: MHPBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if mhpUser.userState != .registered || Auth.auth().currentUser == nil {
+        if mhpUser.userState != .registered {
+            btnLogInOut.isHidden = true
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 signinVC.mhpUser = mhpUser
                 present(navController, animated: true, completion: nil)
             }
         } else {
-            setupUser()
+            setupView()
         }
     }
     
@@ -39,31 +40,15 @@ class MHPSettingsViewController: MHPBaseViewController {
         super.didReceiveMemoryWarning()
     }
     
-    fileprivate func setupUser() {
-        if let firUser = Auth.auth().currentUser {
-            firUser.reload(completion:{ (error) in
-                if error == nil {
-                    // TODO: retrieve user info, or have it passed back in
-                    
-                } else {
-                    // TODO: handle error
-                }
-            })
-        } else {
-            
-        }
-    }
-    
-    @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        returnToSignUpRoot()
+    fileprivate func setupView() {
+        btnLogInOut.isHidden = false
+        // populate view with user data
     }
     
     @IBAction func logInOutTapped(_ sender: Any) {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            // TODO: pass updated user info
-            dismiss(animated: true, completion: nil)
             if let tabs = tabBarController?.viewControllers {
                 if tabs.count > 0 {
                     self.tabBarController?.selectedIndex = 0
@@ -73,7 +58,7 @@ class MHPSettingsViewController: MHPBaseViewController {
                 }
             }
         } catch let signOutError as NSError {
-            // TODO: handle error
+            // handle error
             print("Error signing out: %@", signOutError)
         }
     }

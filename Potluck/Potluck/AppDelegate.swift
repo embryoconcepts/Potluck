@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.routeUserToHome()
                 }
             } else {
-                // TODO: handle error
+                // handle error
             }
         }
         

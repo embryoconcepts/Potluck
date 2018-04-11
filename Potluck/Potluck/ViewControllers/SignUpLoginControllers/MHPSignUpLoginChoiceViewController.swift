@@ -18,7 +18,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
-    var mhpUser = MHPUser()
+    var mhpUser: MHPUser?
     var firUser: User?
     weak var delegate: LoginViewControllerDelegate?
     
@@ -30,18 +30,20 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Auth.auth().currentUser?.reload(completion: { (error) in
-            if error == nil {
-                if let user = Auth.auth().currentUser {
-                    self.firUser = user
+        if let state = mhpUser?.userState {
+            switch state {
+            case .registered:
+                dismiss(animated: true, completion: nil)
+            case .verified:
+                if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                    personalVC.mhpUser = self.mhpUser!
+                    self.present(personalVC, animated: true, completion: nil)
                 }
-            } else {
-                // TODO: handle error
+            case .unverified:
+                sendVerificationEmail(forUser:Auth.auth().currentUser)
+            case .unknown:
+                return
             }
-        })
-        
-        if mhpUser.userState == .registered {
-            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -57,25 +59,42 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-            // TODO: double check after Event flows built
-            // if user came from Profile or Settings, return to Home
-            // return user to original flow (ie, View Event or Create Event)
+        close()
+    }
+    
+    fileprivate func close() {
+        // return user to original flow (ie, View Event or Create Event)
+        // TODO: double check after Event flows built
         let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
         switch tabBarIndex {
         case 0:
-            return
+            let homeVC = MHPHomeViewController()
+            homeVC.mhpUser = self.mhpUser!
         case 1:
             return
         case 2:
-            return
+            if let registered = self.mhpUser?.isRegistered {
+                if registered {
+                    let profileVC = MHPProfileViewController()
+                    profileVC.mhpUser = self.mhpUser!
+                } else {
+                    let homeVC = MHPHomeViewController()
+                    homeVC.mhpUser = self.mhpUser!
+                }
+            }
         case 3:
-            let homeVC = MHPHomeViewController()
-            homeVC.mhpUser = self.mhpUser
-            self.dismiss(animated: true, completion: nil)
+                if self.mhpUser?.userState == .registered {
+                    // FIXME: not passing the user back correctly
+                    let settingsVC = MHPSettingsViewController()
+                    settingsVC.mhpUser = self.mhpUser!
+                } else {
+                    let homeVC = MHPHomeViewController()
+                    homeVC.mhpUser = self.mhpUser!
+                }
         default:
             return
         }
-
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func loginTapped(_ sender: Any) {
@@ -93,44 +112,35 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
-                if let tempUser = firUser {
-                    if tempUser.isEmailVerified {
-                        
-                        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-                            if error == nil {
-                                if let fUser = user {
-                                    UserManager().retrieveMHPUserWith(firUser: fUser) { result in
-                                        switch result {
-                                        case let .success(retrievedUser):
-                                            self.delegate?.didLoginSuccessfully(mhpUser: retrievedUser as! MHPUser)
-                                            self.mhpUser = retrievedUser as! MHPUser
-                                        case .error(_):
-                                            if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                                                personalVC.mhpUser = self.mhpUser
-                                                self.present(personalVC, animated: true, completion: nil)
-                                                print(DatabaseError.errorRetrievingUserFromDB)
-                                            }
-                                        }
-                                    }
+                // TODO: if anon, link any event creation or whatever with db user
+                Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+                    if error == nil {
+                        if let fUser = user {
+                            UserManager().retrieveMHPUserWith(firUser: fUser) { result in
+                                switch result {
+                                case let .success(retrievedUser):
+                                    self.mhpUser = retrievedUser as? MHPUser
+                                    self.mhpUser?.userState = .registered
+                                    self.close()
+                                case .error(_):
+                                    
+                                    print(DatabaseError.errorRetrievingUserFromDB)
                                 }
-                            } else {
-                                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                                alertController.addAction(defaultAction)
-                                self.present(alertController, animated: true, completion: nil)
                             }
                         }
                     } else {
-                        sendVerificationEmail(forUser: firUser)
+                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 }
-                
             }
         }
     }
     
     @IBAction func signupTapped(_ sender: Any) {
-        // TODO: validate the fields, check if email is already in use, sanitize
+        // validate the fields, check if email is already in use, sanitize
         if txtEmail.text == "" || txtPassword.text == "" {
             if txtEmail.text == "" {
                 let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
@@ -145,7 +155,8 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
-                Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+                Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
                     if error == nil {
                         self.sendVerificationEmail(forUser: user)
                     } else {
@@ -154,7 +165,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                         alertController.addAction(defaultAction)
                         self.present(alertController, animated: true, completion: nil)
                     }
-                }
+                    
+                })
+                
+//                Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+//                }
             }
         }
     }
@@ -176,11 +191,11 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     }
     
     @IBAction func facebookTapped(_ sender: Any) {
-        // TODO: set up facebook login
+        // set up facebook login
     }
     
     @IBAction func googleTapped(_ sender: Any) {
-        // TODO: set up google login
+        // set up google login
     }
     
     
@@ -217,7 +232,6 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     
     // MARK: - Dynamic Links
-    // TODO: break out to network or authentication manager
     
     func sendVerificationEmail(forUser currentUser: User?) {
         let actionCodeSettings =  ActionCodeSettings.init()
@@ -235,7 +249,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                     
                     return
                 } else {
-                    // TODO: handle error
+                    // handle error
                     print(error?.localizedDescription as Any)
                 }
             })
@@ -257,7 +271,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
                 
                 return
             } else {
-                // TODO: handle error
+                // handle error
                 print(error?.localizedDescription as Any)
             }
         }

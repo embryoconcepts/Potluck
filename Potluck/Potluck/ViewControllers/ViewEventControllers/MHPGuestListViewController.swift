@@ -36,7 +36,7 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        // TODO: handle moving to rsvp
+        // handle moving to rsvp
     }
     
     
@@ -123,7 +123,6 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
         if let tempRsvps = event?.eventRsvpList?.eventRsvps {
             for rsvp in tempRsvps {
                 if let response = rsvp.response {
-                    // TODO: update w/enum
                     switch response {
                     case "YES":
                         guestsYes.append(rsvp)

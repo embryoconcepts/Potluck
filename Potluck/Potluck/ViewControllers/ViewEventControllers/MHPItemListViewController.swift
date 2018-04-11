@@ -35,8 +35,8 @@ class MHPItemListViewController: MHPBaseViewController, UITableViewDelegate, UIT
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        // TODO: handle moving to rsvp
-        // TODO: handle moving to item card
+        // handle moving to rsvp
+        // handle moving to item card
     }
 
     

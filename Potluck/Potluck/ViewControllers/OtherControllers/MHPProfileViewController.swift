@@ -19,14 +19,14 @@ class MHPProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if mhpUser.userState != .registered || Auth.auth().currentUser == nil {
+        if mhpUser.userState != .registered {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 signinVC.mhpUser = mhpUser
                 present(navController, animated: true, completion: nil)
             }
         } else {
-            setupUser()
+            setupView()
         }
     }
     
@@ -38,18 +38,7 @@ class MHPProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    fileprivate func setupUser() {
-        if let firUser = Auth.auth().currentUser {
-            firUser.reload(completion:{ (error) in
-                if error == nil {
-                    // TODO: retrieve user info, or have it passed back in
-                    
-                } else {
-                    // TODO: handle error
-                }
-            })
-        } else {
-            
-        }
+    fileprivate func setupView() {
+        // populate view with user data
     }
 }
