@@ -39,6 +39,12 @@ protocol UserInjectable {
 struct UserManager {
     let db = Firestore.firestore()
     
+    init() {
+        let settings = db.settings
+        settings.areTimestampsInSnapshotsEnabled = true
+        db.settings = settings
+    }
+    
     func login(email: String, password: String) {
         
     }
@@ -60,6 +66,7 @@ struct UserManager {
                 }
             } else if firUser.isEmailVerified {
                 mhpUser.userState = .verified
+                
                 self.retrieveMHPUserWith(firUser: firUser) { (result) in
                     switch result {
                     case let .success(user):
@@ -101,6 +108,7 @@ struct UserManager {
             "notificationPreferences":false,
             "locationPermissions":false,
             "facebookPermissions":false
+            // TODO: add registration timestamp?
         ]) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
@@ -138,6 +146,10 @@ struct UserManager {
         }
     }
     
+    func updateMHPUser() {
+        
+    }
+    
     func retrieveMHPUserWith(firUser: User, completion: @escaping ((Result<MHPUser> ) -> ())) {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         var user = MHPUser()
@@ -157,6 +169,7 @@ struct UserManager {
                 user.locationPermissions = data["locationPermissions"] as? Bool ?? false
                 user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
                 completion(.success(user))
+                // TODO: maybe set user state here
             } else {
                 completion(.error(DatabaseError.errorRetrievingUserFromDB))
             }

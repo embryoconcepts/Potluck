@@ -22,12 +22,10 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     private let reuseIdentifier = "homeCell"
     var mhpUser: MHPUser!
     var events = [MHPEvent]()
-    var db: Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
-        db = Firestore.firestore()
     }
     
     override func viewWillAppear(_ animated: Bool) {

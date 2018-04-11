@@ -52,7 +52,7 @@ class MHPVerificationSentViewController: MHPBaseViewController {
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        cancel()
+        self.navigationController?.dismiss(animated: true, completion:nil)
     }
     
     @IBAction func resendTapped(_ sender: Any) {
