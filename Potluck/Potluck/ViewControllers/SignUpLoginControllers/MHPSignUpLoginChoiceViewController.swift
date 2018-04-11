@@ -9,11 +9,15 @@
 import UIKit
 import Firebase
 
-protocol SettingsUserDelegate:class {
+protocol HomeUserDelegate:class {
     func updateUser(mhpUser: MHPUser)
 }
 
 protocol ProfileUserDelegate:class {
+    func updateUser(mhpUser: MHPUser)
+}
+
+protocol SettingsUserDelegate:class {
     func updateUser(mhpUser: MHPUser)
 }
 
@@ -26,6 +30,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     var firUser: User?
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
+    weak var homeUserDelegate: HomeUserDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,34 +73,34 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     }
     
     fileprivate func close() {
-        // return user to original flow (ie, View Event or Create Event)
         // TODO: double check after Event flows built
-        let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
-        switch tabBarIndex {
-        case 0:
-            let homeVC = MHPHomeViewController()
-            homeVC.mhpUser = self.mhpUser!
-        case 1:
-            return
-        case 2:
-            if let registered = self.mhpUser?.isRegistered {
-                if registered {
-                    profileDelegate?.updateUser(mhpUser: self.mhpUser!)
-                } else {
-                    let homeVC = MHPHomeViewController()
-                    homeVC.mhpUser = self.mhpUser!
+        guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
+        if let homeVC = tabBarCon.childViewControllers[0].childViewControllers[0] as? MHPHomeViewController {
+            homeVC.inject(self.mhpUser!)
+        }
+        
+        if self.mhpUser?.userState == .registered {
+            let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
+            switch tabBarIndex {
+            case 0:
+                homeUserDelegate?.updateUser(mhpUser: self.mhpUser!)
+            case 1:
+                return
+            case 2:
+                profileDelegate?.updateUser(mhpUser: self.mhpUser!)
+            case 3:
+                settingsDelegate?.updateUser(mhpUser: self.mhpUser!)
+            default:
+                return
+            }
+        } else {
+            if let tabs = tabBarCon.viewControllers {
+                if tabs.count > 0 {
+                    tabBarCon.selectedIndex = 0
                 }
             }
-        case 3:
-                if self.mhpUser?.userState == .registered {
-                    settingsDelegate?.updateUser(mhpUser: self.mhpUser!)
-                } else {
-                    let homeVC = MHPHomeViewController()
-                    homeVC.mhpUser = self.mhpUser!
-                }
-        default:
-            return
         }
+
         self.dismiss(animated: true, completion: nil)
     }
     

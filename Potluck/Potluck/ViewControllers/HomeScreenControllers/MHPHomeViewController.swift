@@ -11,7 +11,7 @@ import ScalingCarousel
 import Firebase
 import FirebaseFirestore
 
-class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
+class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -20,7 +20,7 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var lblAlertMessage: UILabel!
     
     private let reuseIdentifier = "homeCell"
-    var mhpUser = MHPUser()
+    var mhpUser: MHPUser!
     var events = [MHPEvent]()
     var db: Firestore!
     
@@ -32,13 +32,12 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        UserManager().setupUser { (user) in
-            self.mhpUser = user
-            self.styleView()
-        }
-        
-    //    setupMockData() // TODO: remove for production
+        setupUser()
+        //    setupMockData() // TODO: remove for production
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,26 +58,22 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
             // error handling
         }
     }
+
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        let tabBarIndex = tabBarController.selectedIndex
-        switch tabBarIndex {
-        case 1:
-            if let createEventVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+    // MARK: - UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+            if let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
                 createEventVC.mhpUser = self.mhpUser
             }
-        case 2:
-            if let profileVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPProfileViewController {
-                profileVC.mhpUser = self.mhpUser
+            if let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+                profileVC.inject(self.mhpUser)
             }
-        case 3:
-            if let settingsVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPSettingsViewController {
-                settingsVC.mhpUser = self.mhpUser
+            if let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+                settingsVC.inject(self.mhpUser)
             }
-        default:
-            return
-        }
         
+        return true
     }
     
     
@@ -121,12 +116,28 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
             let navController = UINavigationController(rootViewController: signinVC)
             signinVC.mhpUser = mhpUser
+            signinVC.homeUserDelegate = self
             present(navController, animated: true, completion: nil)
         }
     }
     
     
+    // MARK: - HomeUserDelegate
+    
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+    
+    
     // MARK: - Private Methods
+    
+    fileprivate func setupUser() {
+        UserManager().setupUser { (user) in
+            self.mhpUser = user
+            self.assertDependencies()
+            self.styleView()
+        }
+    }
     
     fileprivate func styleView() {
         self.tabBarController?.tabBar.isHidden = false
@@ -165,4 +176,16 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
         events.append(event2)
     }
     
+}
+
+extension MHPHomeViewController:UserInjectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+    }
 }

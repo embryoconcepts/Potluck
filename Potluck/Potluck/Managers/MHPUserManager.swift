@@ -30,6 +30,12 @@ enum DatabaseError: Error {
     case errorRetrievingUserFromDB
 }
 
+protocol UserInjectable {
+    associatedtype T
+    func inject(_: T)
+    func assertDependencies()
+}
+
 struct UserManager {
     let db = Firestore.firestore()
     

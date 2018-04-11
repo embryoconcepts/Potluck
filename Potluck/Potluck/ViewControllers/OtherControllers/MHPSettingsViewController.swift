@@ -10,10 +10,9 @@ import UIKit
 import Firebase
 
 class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
-
     
     @IBOutlet weak var btnLogInOut: UIButton!
-    var mhpUser = MHPUser()
+    var mhpUser: MHPUser!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +20,11 @@ class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        assertDependencies()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if mhpUser.userState != .registered {
             btnLogInOut.isHidden = true
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
@@ -48,14 +52,7 @@ class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
     }
     
     
-    // MARK: - SettingsUserDelegate
-    
-    func updateUser(mhpUser: MHPUser) {
-        self.mhpUser = mhpUser
-    }
-    
-    
-    // MARK: Aciton Handlers
+    // MARK: Action Handlers
     
     @IBAction func logInOutTapped(_ sender: Any) {
         let firebaseAuth = Auth.auth()
@@ -73,5 +70,25 @@ class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
             // handle error
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    
+    // MARK: - SettingsUserDelegate
+    
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+    
+}
+
+extension MHPSettingsViewController:UserInjectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
     }
 }

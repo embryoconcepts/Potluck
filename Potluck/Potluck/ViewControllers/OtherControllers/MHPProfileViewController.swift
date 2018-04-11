@@ -9,21 +9,26 @@
 import UIKit
 import Firebase
 
-class MHPProfileViewController: UIViewController {
+class MHPProfileViewController: UIViewController, ProfileUserDelegate {
     
-    var mhpUser = MHPUser()
+    var mhpUser: MHPUser!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        assertDependencies()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if mhpUser.userState != .registered {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 signinVC.mhpUser = mhpUser
-                signinVC.settingsDelegate = self
+                signinVC.profileDelegate = self
                 present(navController, animated: true, completion: nil)
             }
         } else {
@@ -48,5 +53,17 @@ class MHPProfileViewController: UIViewController {
     
     func updateUser(mhpUser: MHPUser) {
         self.mhpUser = mhpUser
+    }
+}
+
+extension MHPProfileViewController:UserInjectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
     }
 }
