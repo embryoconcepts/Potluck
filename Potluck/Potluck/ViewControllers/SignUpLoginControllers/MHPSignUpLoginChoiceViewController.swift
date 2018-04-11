@@ -30,7 +30,6 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
         Auth.auth().currentUser?.reload(completion: { (error) in
             if error == nil {
                 if let user = Auth.auth().currentUser {
@@ -58,21 +57,25 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        // if user came from Profile or Settings, return to Home
-        if (self.navigationController?.presentingViewController?.isKind(of: UITabBarController.self))! {
-            if let tabBarController = self.presentingViewController as? UITabBarController {
-                if let tabs = tabBarController.viewControllers {
-                    if tabs.count > 0 {
-                        tabBarController.selectedIndex = 0
-                    }
-                }
-                self.dismiss(animated: true, completion: nil)
-            }
-        } else {
             // TODO: double check after Event flows built
+            // if user came from Profile or Settings, return to Home
             // return user to original flow (ie, View Event or Create Event)
-            self.navigationController?.dismiss(animated: true, completion:nil)
+        let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
+        switch tabBarIndex {
+        case 0:
+            return
+        case 1:
+            return
+        case 2:
+            return
+        case 3:
+            let homeVC = MHPHomeViewController()
+            homeVC.mhpUser = self.mhpUser
+            self.dismiss(animated: true, completion: nil)
+        default:
+            return
         }
+
     }
     
     @IBAction func loginTapped(_ sender: Any) {

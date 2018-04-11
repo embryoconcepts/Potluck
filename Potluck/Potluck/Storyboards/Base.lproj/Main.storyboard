@@ -238,7 +238,7 @@
         <!--Home-->
         <scene sceneID="lmB-CO-uh3">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ly9-JH-Yzh" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="homeNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ly9-JH-Yzh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" id="dRF-Nr-1xY" userLabel="Home"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qIe-bF-2Mp">
@@ -257,7 +257,7 @@
         <!--Settings-->
         <scene sceneID="70a-Pg-TtW">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wjb-ZW-nMv" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="settingsNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Wjb-ZW-nMv" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" id="AQw-xM-aKs" userLabel="Settings"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ojH-9Y-Qn1">
@@ -276,7 +276,7 @@
         <!--Profile-->
         <scene sceneID="7bV-gN-0al">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bV8-uw-KU8" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="profileNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bV8-uw-KU8" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="2zY-ox-cLP" userLabel="Profile"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8df-dI-N1Q">

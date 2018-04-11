@@ -9,6 +9,7 @@
 import UIKit
 
 class MHPCreateEvent1DetailsViewController: UIViewController {
+    var mhpUser: MHPUser?
     
     override func viewDidLoad() {
         super.viewDidLoad()

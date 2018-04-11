@@ -58,28 +58,22 @@ class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UI
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let tabBarIndex = tabBarController.selectedIndex
         switch tabBarIndex {
-        case 1: // create event
-            // TODO: navigate to create event with anon user
-            return
-        case 2: // profile
-            if mhpUser.userState == .registered {
-                if let tabBarControllers = self.tabBarController?.viewControllers {
-                    if let nextVC = tabBarControllers[tabBarIndex] as? MHPProfileViewController {
-                        nextVC.mhpUser = self.mhpUser
-                    }
-                }
+        case 1:
+            if let createEventVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+                createEventVC.mhpUser = self.mhpUser
             }
-        case 3: // settings
-            if mhpUser.userState == .registered {
-                if let tabBarControllers = self.tabBarController?.viewControllers {
-                    if let nextVC = tabBarControllers[tabBarIndex] as? MHPSettingsViewController {
-                        nextVC.mhpUser = self.mhpUser
-                    }
-                }
+        case 2:
+            if let profileVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPProfileViewController {
+                profileVC.mhpUser = self.mhpUser
+            }
+        case 3:
+            if let settingsVC = tabBarController.childViewControllers[tabBarIndex].childViewControllers[0] as? MHPSettingsViewController {
+                settingsVC.mhpUser = self.mhpUser
             }
         default:
             return
         }
+        
     }
     
     
