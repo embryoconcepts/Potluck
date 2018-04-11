@@ -9,8 +9,12 @@
 import UIKit
 import Firebase
 
-protocol LoginViewControllerDelegate:class {
-    func didLoginSuccessfully(mhpUser: MHPUser)
+protocol SettingsUserDelegate:class {
+    func updateUser(mhpUser: MHPUser)
+}
+
+protocol ProfileUserDelegate:class {
+    func updateUser(mhpUser: MHPUser)
 }
 
 class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDelegate {
@@ -20,7 +24,8 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
     
     var mhpUser: MHPUser?
     var firUser: User?
-    weak var delegate: LoginViewControllerDelegate?
+    weak var settingsDelegate: SettingsUserDelegate?
+    weak var profileDelegate: ProfileUserDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,8 +80,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
         case 2:
             if let registered = self.mhpUser?.isRegistered {
                 if registered {
-                    let profileVC = MHPProfileViewController()
-                    profileVC.mhpUser = self.mhpUser!
+                    profileDelegate?.updateUser(mhpUser: self.mhpUser!)
                 } else {
                     let homeVC = MHPHomeViewController()
                     homeVC.mhpUser = self.mhpUser!
@@ -84,9 +88,7 @@ class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDele
             }
         case 3:
                 if self.mhpUser?.userState == .registered {
-                    // FIXME: not passing the user back correctly
-                    let settingsVC = MHPSettingsViewController()
-                    settingsVC.mhpUser = self.mhpUser!
+                    settingsDelegate?.updateUser(mhpUser: self.mhpUser!)
                 } else {
                     let homeVC = MHPHomeViewController()
                     homeVC.mhpUser = self.mhpUser!

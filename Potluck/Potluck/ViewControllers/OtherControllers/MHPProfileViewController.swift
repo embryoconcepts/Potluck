@@ -23,6 +23,7 @@ class MHPProfileViewController: UIViewController {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 signinVC.mhpUser = mhpUser
+                signinVC.settingsDelegate = self
                 present(navController, animated: true, completion: nil)
             }
         } else {
@@ -40,5 +41,12 @@ class MHPProfileViewController: UIViewController {
     
     fileprivate func setupView() {
         // populate view with user data
+    }
+    
+    
+    // MARK: - ProfileUserDelegate
+    
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
     }
 }

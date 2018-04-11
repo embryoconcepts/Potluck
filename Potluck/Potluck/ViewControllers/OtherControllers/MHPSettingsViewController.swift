@@ -9,7 +9,8 @@
 import UIKit
 import Firebase
 
-class MHPSettingsViewController: MHPBaseViewController {
+class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
+
     
     @IBOutlet weak var btnLogInOut: UIButton!
     var mhpUser = MHPUser()
@@ -25,6 +26,7 @@ class MHPSettingsViewController: MHPBaseViewController {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 signinVC.mhpUser = mhpUser
+                signinVC.settingsDelegate = self
                 present(navController, animated: true, completion: nil)
             }
         } else {
@@ -44,6 +46,16 @@ class MHPSettingsViewController: MHPBaseViewController {
         btnLogInOut.isHidden = false
         // populate view with user data
     }
+    
+    
+    // MARK: - SettingsUserDelegate
+    
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+    
+    
+    // MARK: Aciton Handlers
     
     @IBAction func logInOutTapped(_ sender: Any) {
         let firebaseAuth = Auth.auth()
