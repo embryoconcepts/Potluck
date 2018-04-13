@@ -11,7 +11,7 @@ import ScalingCarousel
 import Firebase
 import FirebaseFirestore
 
-class MHPHomeViewController: MHPBaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
+class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!

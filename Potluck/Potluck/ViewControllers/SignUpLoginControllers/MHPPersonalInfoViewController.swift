@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate {
+class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
@@ -34,7 +34,7 @@ class MHPPersonalInfoViewController: MHPBaseViewController, UITextFieldDelegate 
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        cancel()
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func nextTapped(_ sender: Any) {

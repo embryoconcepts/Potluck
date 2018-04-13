@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
+class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -43,7 +43,9 @@ class MHPGuestListViewController: MHPBaseViewController, UITableViewDelegate, UI
     // MARK: - Action Handlers
     
     @IBAction func rsvpTapped(_ sender: Any) {
-        goToRsvp()
+        if let rsvpVC = self.storyboard?.instantiateViewController(withIdentifier: "rsvpVC") {
+            present(rsvpVC, animated: true, completion: nil)
+        }
     }
     
     

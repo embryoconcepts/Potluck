@@ -21,7 +21,7 @@ protocol SettingsUserDelegate:class {
     func updateUser(mhpUser: MHPUser)
 }
 
-class MHPSignUpLoginChoiceViewController: MHPBaseViewController, UITextFieldDelegate {
+class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!

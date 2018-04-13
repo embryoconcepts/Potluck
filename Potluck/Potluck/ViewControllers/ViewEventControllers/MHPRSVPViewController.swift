@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPRSVPViewController: MHPBaseViewController {
+class MHPRSVPViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,7 @@ class MHPRSVPViewController: MHPBaseViewController {
     // MARK: - Action Handlers
     
     @IBAction func cancelTapped(_ sender: Any) {
-        cancel()
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func saveTapped(_ sender: Any) {

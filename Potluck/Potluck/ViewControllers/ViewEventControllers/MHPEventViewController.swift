@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPEventViewController: MHPBaseViewController, Injectable {
+class MHPEventViewController: UIViewController, Injectable {
     
     @IBOutlet weak var lblEventHost: UILabel!
     @IBOutlet weak var lblEventDescription: UILabel!
@@ -128,7 +128,9 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     // MARK: - Action Handlers
     
     @IBAction func rsvpTapped(_ sender: Any) {
-        goToRsvp()
+        if let rsvpVC = self.storyboard?.instantiateViewController(withIdentifier: "rsvpVC") {
+            present(rsvpVC, animated: true, completion: nil)
+        }
     }
     
     @IBAction func manageEvent(_ sender: Any) {

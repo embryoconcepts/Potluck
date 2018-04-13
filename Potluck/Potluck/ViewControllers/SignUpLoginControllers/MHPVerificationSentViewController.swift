@@ -14,7 +14,7 @@ enum VerificationFlow {
     case ResetPassword
 }
 
-class MHPVerificationSentViewController: MHPBaseViewController {
+class MHPVerificationSentViewController: UIViewController {
     
     @IBOutlet weak var lblMessage: UILabel!
     @IBOutlet weak var btnResend: UIButton!

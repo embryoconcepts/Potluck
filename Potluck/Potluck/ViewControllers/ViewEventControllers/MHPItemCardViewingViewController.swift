@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPItemCardViewingViewController: MHPBaseViewController {
+class MHPItemCardViewingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -30,6 +30,12 @@ enum DatabaseError: Error {
     case errorRetrievingUserFromDB
 }
 
+protocol Injectable {
+    associatedtype T
+    func inject(_: T)
+    func assertDependencies()
+}
+
 protocol UserInjectable {
     associatedtype T
     func inject(_: T)
@@ -57,12 +63,21 @@ struct UserManager {
         
     }
     
-    func setupUser(completion: @escaping ((MHPUser) -> ())) {
+    func setupUser(completion: @escaping ((Result<MHPUser> ) -> ())) {
+        /*
+         when user opens app for the first time, create an anon firUser, and a db entry with a mhpUser, save user state
+         when anon user registers, update the db entry with the new information
+         when anon user logs in, update the db entry with any new info from the anon user actions
+         
+         think about how to handle when an anon user follows a link with an event id, then registers.  
+         */
         var mhpUser = MHPUser()
+        
+        // create if needed
         if let firUser = Auth.auth().currentUser {
             if firUser.isAnonymous {
-                anonSetup(firUser: firUser) { (anonUser) in
-                    completion(anonUser)
+                createAnonUser(firUser: firUser) { (anonUser) in
+                    completion(.success(anonUser))
                 }
             } else if firUser.isEmailVerified {
                 mhpUser.userState = .verified
@@ -72,26 +87,55 @@ struct UserManager {
                     case let .success(user):
                         mhpUser = (user as! MHPUser)
                         mhpUser.userState = .registered
-                        completion(mhpUser)
+                        completion(.success(mhpUser))
                     case .error(_):
                         // user has not completed registration
-                        print(DatabaseError.errorRetrievingUserFromDB)
-                        completion(mhpUser)
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
                     }
                 }
             } else {
                 // user has not verified email
                 mhpUser.userState = .unverified
-                completion(mhpUser)
+                completion(.success(mhpUser))
             }
         } else {
             Auth.auth().signInAnonymously() { (user, error) in
-                self.anonSetup(firUser: user!) { (anonUser) in
-                    completion(anonUser)
+                self.createAnonUser(firUser: user!) { (anonUser) in
+                    completion(.success(anonUser))
                 }
             }
         }
+        
+        // retrieve the db user info
     }
+    
+    
+    // MARK: - Private Methods
+    
+    fileprivate func createAnonUser(firUser: User, completion: @escaping ((Result<MHPUser> ) -> ())) {
+        var mhpUser = MHPUser()
+        self.saveAnonFirUserToMHPUser(firUser:firUser, completion:{ (result) in
+            switch result {
+            case .success(_):
+                // TODO: split this out from the create function
+                self.retrieveMHPUserWith(firUser: firUser) { (result) in
+                    mhpUser.userState = .unknown
+                    switch result {
+                    case let .success(user):
+                        mhpUser = (user as! MHPUser)
+                        completion(.success(mhpUser))
+                    case .error(_):
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                    }
+                }
+            case .error(_):
+                completion(.error(DatabaseError.errorRetrievingUserFromDB))
+            }
+        })
+    }
+
+    
+    // MARK: - Data Handling
     
     func saveFirUserToMHPUser(firUser: User, firstName: String, lastName: String, completion: @escaping ((Result<Bool> ) -> ())) {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
@@ -102,12 +146,12 @@ struct UserManager {
             "userPhone":"",
             "userProfileURL":"",
             "userFacebookID":"",
-            "isRegistered":true,
             "userEventListID":"",
             "notificationPermissions":false,
             "notificationPreferences":false,
             "locationPermissions":false,
-            "facebookPermissions":false
+            "facebookPermissions":false,
+            "userState":"registered"
             // TODO: add registration timestamp?
         ]) { (error) in
             if let error = error {
@@ -129,12 +173,12 @@ struct UserManager {
             "userPhone":"",
             "userProfileURL":"",
             "userFacebookID":"",
-            "isRegistered":false,
             "userEventListID":"",
             "notificationPermissions":false,
             "notificationPreferences":false,
             "locationPermissions":false,
-            "facebookPermissions":false
+            "facebookPermissions":false,
+            "userState":"unknown"
         ]) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
@@ -162,12 +206,13 @@ struct UserManager {
                 user.userPhone = data["userPhone"] as? String ?? ""
                 user.userProfileURL = URL(string: data["userProfileURL"] as? String ?? "")
                 user.userFacebookID = data["userFacebookID"] as? String ?? ""
-                user.isRegistered = data["isRegistered"] as? Bool ?? true
                 user.userEventListID = data["userEventListID"] as? String ?? ""
                 user.notificationPermissions = data["notificationPermissions"] as? Bool ?? false
                 user.notificationPreferences = data["notificationPreferences"] as? Bool ?? false
                 user.locationPermissions = data["locationPermissions"] as? Bool ?? false
                 user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
+                user.userState = data["userState"] as? UserAuthorizationState ?? .unknown
+                
                 completion(.success(user))
                 // TODO: maybe set user state here
             } else {
@@ -175,29 +220,4 @@ struct UserManager {
             }
         })
     }
-    
-    
-    // MARK: - Private Methods
-    
-    fileprivate func anonSetup(firUser: User, completion: @escaping ((MHPUser) -> ())) {
-        var mhpUser = MHPUser()
-        self.saveAnonFirUserToMHPUser(firUser:firUser, completion:{ (result) in
-            switch result {
-            case .success(_):
-                self.retrieveMHPUserWith(firUser: firUser) { (result) in
-                    mhpUser.userState = .unknown
-                    switch result {
-                    case let .success(user):
-                        mhpUser = (user as! MHPUser)
-                        completion(mhpUser)
-                    case .error(_):
-                        print(DatabaseError.errorRetrievingUserFromDB)
-                        completion(mhpUser)
-                    }
-                }
-            case .error(_):
-                print(DatabaseError.errorRetrievingUserFromDB)
-            }
-        })
     }
-}

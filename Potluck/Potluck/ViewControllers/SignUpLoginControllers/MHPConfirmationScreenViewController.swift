@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MHPConfirmationScreenViewController: MHPBaseViewController {
+class MHPConfirmationScreenViewController: UIViewController {
 
     @IBOutlet weak var lblMessage: UILabel!
     var user = MHPUser()

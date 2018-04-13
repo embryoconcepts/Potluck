@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPItemCardPledgingViewController: MHPBaseViewController {
+class MHPItemCardPledgingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,7 @@ class MHPItemCardPledgingViewController: MHPBaseViewController {
     // MARK: - Action Handlers
     
     @IBAction func cancelTapped(_ sender: Any) {
-        cancel()
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func saveTapped(_ sender: Any) {

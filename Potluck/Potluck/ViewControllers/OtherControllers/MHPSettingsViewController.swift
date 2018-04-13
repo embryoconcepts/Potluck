@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MHPSettingsViewController: MHPBaseViewController, SettingsUserDelegate {
+class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
     
     @IBOutlet weak var btnLogInOut: UIButton!
     var mhpUser: MHPUser!

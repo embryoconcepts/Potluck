@@ -16,7 +16,6 @@ struct MHPUser {
     var userPhone: String?
     var userProfileURL: URL?
     var userFacebookID: String?
-    var isRegistered: Bool?
     var userEventListID: String?
     var notificationPermissions: Bool?
     var notificationPreferences: Bool?
