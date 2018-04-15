@@ -56,7 +56,7 @@ class MHPProfileViewController: UIViewController, ProfileUserDelegate {
     }
 }
 
-extension MHPProfileViewController:UserInjectable {
+extension MHPProfileViewController:Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {

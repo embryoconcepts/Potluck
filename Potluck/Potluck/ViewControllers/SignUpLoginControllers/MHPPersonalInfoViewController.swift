@@ -61,7 +61,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
-                                    congratsVC.user = (retrievedUser as! MHPUser)
+                                    congratsVC.user = retrievedUser 
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
                             case .error(_):

@@ -126,7 +126,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                             UserManager().retrieveMHPUserWith(firUser: fUser) { result in
                                 switch result {
                                 case let .success(retrievedUser):
-                                    self.mhpUser = retrievedUser as? MHPUser
+                                    self.mhpUser = retrievedUser 
                                     self.mhpUser?.userState = .registered
                                     self.close()
                                 case .error(_):

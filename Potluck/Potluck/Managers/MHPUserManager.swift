@@ -20,8 +20,8 @@ enum UserAuthorizationState {
     case registered
 }
 
-enum Result<T> {
-    case success(Any)
+enum Result<T, Error> {
+    case success(T)
     case error(Error)
 }
 
@@ -31,12 +31,6 @@ enum DatabaseError: Error {
 }
 
 protocol Injectable {
-    associatedtype T
-    func inject(_: T)
-    func assertDependencies()
-}
-
-protocol UserInjectable {
     associatedtype T
     func inject(_: T)
     func assertDependencies()
@@ -63,7 +57,7 @@ struct UserManager {
         
     }
     
-    func setupUser(completion: @escaping ((Result<MHPUser> ) -> ())) {
+    func setupUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         /*
          when user opens app for the first time, create an anon firUser, and a db entry with a mhpUser, save user state
          when anon user registers, update the db entry with the new information
@@ -76,8 +70,16 @@ struct UserManager {
         // create if needed
         if let firUser = Auth.auth().currentUser {
             if firUser.isAnonymous {
-                createAnonUser(firUser: firUser) { (anonUser) in
-                    completion(.success(anonUser))
+//                createAnonUser(firUser: firUser) { (anonUser) in
+//                    completion(.success(anonUser))
+//                }
+                self.createAnonUser(firUser: firUser) { (result) in
+                    switch result {
+                    case .success(let anonUser):
+                        completion(.success(anonUser))
+                    case .error(_):
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                    }
                 }
             } else if firUser.isEmailVerified {
                 mhpUser.userState = .verified
@@ -85,7 +87,7 @@ struct UserManager {
                 self.retrieveMHPUserWith(firUser: firUser) { (result) in
                     switch result {
                     case let .success(user):
-                        mhpUser = (user as! MHPUser)
+                        mhpUser = user
                         mhpUser.userState = .registered
                         completion(.success(mhpUser))
                     case .error(_):
@@ -100,8 +102,14 @@ struct UserManager {
             }
         } else {
             Auth.auth().signInAnonymously() { (user, error) in
-                self.createAnonUser(firUser: user!) { (anonUser) in
-                    completion(.success(anonUser))
+                self.createAnonUser(firUser: user!) { (result) in
+                    switch result {
+                    case .success(let anonUser):
+                        completion(.success(anonUser))
+                    case .error(_):
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                        
+                    }
                 }
             }
         }
@@ -112,7 +120,7 @@ struct UserManager {
     
     // MARK: - Private Methods
     
-    fileprivate func createAnonUser(firUser: User, completion: @escaping ((Result<MHPUser> ) -> ())) {
+    fileprivate func createAnonUser(firUser: User, completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         var mhpUser = MHPUser()
         self.saveAnonFirUserToMHPUser(firUser:firUser, completion:{ (result) in
             switch result {
@@ -121,15 +129,14 @@ struct UserManager {
                 self.retrieveMHPUserWith(firUser: firUser) { (result) in
                     mhpUser.userState = .unknown
                     switch result {
-                    case let .success(user):
-                        mhpUser = (user as! MHPUser)
-                        completion(.success(mhpUser))
+                    case .success(let user):
+                        completion(.success(user))
                     case .error(_):
-                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                        completion(.error(.errorRetrievingUserFromDB))
                     }
                 }
             case .error(_):
-                completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                completion(.error(.errorRetrievingUserFromDB))
             }
         })
     }
@@ -137,7 +144,7 @@ struct UserManager {
     
     // MARK: - Data Handling
     
-    func saveFirUserToMHPUser(firUser: User, firstName: String, lastName: String, completion: @escaping ((Result<Bool> ) -> ())) {
+    func saveFirUserToMHPUser(firUser: User, firstName: String, lastName: String, completion: @escaping ((Result<Bool, DatabaseError> ) -> ())) {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         ref.setData([
             "userFirstName":firstName,
@@ -164,7 +171,7 @@ struct UserManager {
         }
     }
     
-    func saveAnonFirUserToMHPUser(firUser: User, completion: @escaping ((Result<Bool> ) -> ())) {
+    func saveAnonFirUserToMHPUser(firUser: User, completion: @escaping ((Result<Bool, DatabaseError> ) -> ())) {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         ref.setData([
             "userFirstName":"",
@@ -194,7 +201,7 @@ struct UserManager {
         
     }
     
-    func retrieveMHPUserWith(firUser: User, completion: @escaping ((Result<MHPUser> ) -> ())) {
+    func retrieveMHPUserWith(firUser: User, completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         var user = MHPUser()
         ref.getDocument(completion:{ (document, error) in

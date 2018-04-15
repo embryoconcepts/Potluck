@@ -130,10 +130,18 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     // MARK: - Private Methods
     
     fileprivate func setupUser() {
-        UserManager().setupUser { (user) in
-            self.mhpUser = user
-            self.assertDependencies()
-            self.styleView()
+        UserManager().setupUser { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                    self.assertDependencies()
+                    self.styleView()
+                case .error(_):
+                    print(DatabaseError.errorRetrievingUserFromDB)
+                    
+                }
+            
+           
         }
     }
     
@@ -176,7 +184,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
 }
 
-extension MHPHomeViewController:UserInjectable {
+extension MHPHomeViewController:Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {
