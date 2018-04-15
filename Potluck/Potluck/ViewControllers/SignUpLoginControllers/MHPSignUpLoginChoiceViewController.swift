@@ -123,7 +123,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                     if error == nil {
                         if let fUser = user {
-                            UserManager().retrieveMHPUserWith(firUser: fUser) { result in
+                          NetworkManager().retrieve(user: fUser) { result in
                                 switch result {
                                 case let .success(retrievedUser):
                                     self.mhpUser = retrievedUser 
