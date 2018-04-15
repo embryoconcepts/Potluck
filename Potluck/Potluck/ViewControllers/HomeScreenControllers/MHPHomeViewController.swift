@@ -130,18 +130,15 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     // MARK: - Private Methods
     
     fileprivate func setupUser() {
-        UserManager().setupUser { (result) in
-                switch result {
-                case .success(let user):
-                    self.mhpUser = user
-                    self.assertDependencies()
-                    self.styleView()
-                case .error(_):
-                    print(DatabaseError.errorRetrievingUserFromDB)
-                    
-                }
-            
-           
+        MHPUserManager().setupUser { (result) in
+            switch result {
+            case .success(let user):
+                self.mhpUser = user
+                self.assertDependencies()
+                self.styleView()
+            case .error(_):
+                print(DatabaseError.errorRetrievingUserFromDB)
+            }
         }
     }
     
@@ -165,6 +162,8 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         case .unknown:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
+        default:
+            return
         }
     }
     

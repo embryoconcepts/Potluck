@@ -15,7 +15,7 @@ enum VerificationFlow {
 }
 
 class MHPVerificationSentViewController: UIViewController {
-    
+    // TODO: should this screen even exist? 
     @IBOutlet weak var lblMessage: UILabel!
     @IBOutlet weak var btnResend: UIButton!
     var email: String?
@@ -52,11 +52,13 @@ class MHPVerificationSentViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        self.navigationController?.dismiss(animated: true, completion:nil)
+        // TODO: inject updated user to signup flow
+        dismiss(animated: true, completion:nil)
+        
     }
     
     @IBAction func resendTapped(_ sender: Any) {
-        
+        // TODO: extract to network manager
         // resend email verification with email
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true

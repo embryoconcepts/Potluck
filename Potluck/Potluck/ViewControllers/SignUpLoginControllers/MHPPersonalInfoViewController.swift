@@ -54,10 +54,10 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
             if let first = txtFirstName.text, let last = txtLastName.text {
                 guard let currentUser = Auth.auth().currentUser else { return }
                 
-                NetworkManager().save(registeredUser: currentUser, firstName: first, lastName: last) { result in
+                MHPNetworkManager().save(registeredUser: currentUser, firstName: first, lastName: last) { result in
                     switch result {
                     case .success(_):
-                        NetworkManager().retrieve(user: currentUser) { result in
+                        MHPNetworkManager().retrieve(user: currentUser) { result in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {

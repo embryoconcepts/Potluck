@@ -119,11 +119,11 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
-                // TODO: if anon, link any event creation or whatever with db user
+                // TODO: extract to network manager
                 Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                     if error == nil {
                         if let fUser = user {
-                          NetworkManager().retrieve(user: fUser) { result in
+                          MHPNetworkManager().retrieve(user: fUser) { result in
                                 switch result {
                                 case let .success(retrievedUser):
                                     self.mhpUser = retrievedUser 
@@ -162,6 +162,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             }
         } else {
             if let email = txtEmail.text, let password = txtPassword.text {
+                // TODO: extract to network manager
                 let credential = EmailAuthProvider.credential(withEmail: email, password: password)
                 Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
                     if error == nil {
@@ -238,9 +239,11 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     
-    // MARK: - Dynamic Links
+    // MARK: - Misc Methods
     
     func sendVerificationEmail(forUser currentUser: User?) {
+        // TODO: extract to network manager
+
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         if let user = currentUser, let email = user.email {
@@ -263,7 +266,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         }
     }
     
-    func sendResetPasswordEmail(forEmail email: String) {        
+    func sendResetPasswordEmail(forEmail email: String) {
+        // TODO: extract to network manager
+
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/resetPassword/?email=\(email)")

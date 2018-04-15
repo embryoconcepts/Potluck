@@ -9,7 +9,32 @@
 import Foundation
 import Firebase
 
-struct DataManager {
+struct MHPDataManager {
+    
+    func buildDataSet(firUser: User, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String:Any] {
+        var userDict = [String:Any]()
+        userDict["userState"] = state.rawValue
+        
+        if let mu = mhpUser {
+            userDict["userFirstName"] = mu.userFirstName ?? ""
+            userDict["userFirstName"] = mu.userFirstName ?? ""
+            userDict["userLastName"] = mu.userLastName ?? ""
+            userDict["userEmail"] = mu.userEmail ?? firUser.email ?? ""
+            userDict["userPhone"] = mu.userPhone ?? ""
+            userDict["userProfileURL"] = mu.userProfileURL ?? ""
+            userDict["userFacebookID"] = mu.userFacebookID ?? ""
+            userDict["userEventListID"] = mu.userEventListID ?? ""
+            userDict["notificationPermissions"] = mu.notificationPermissions ?? false
+            userDict["notificationPreferences"] = mu.notificationPreferences ?? false
+            userDict["locationPermissions"] = mu.locationPermissions ?? false
+            userDict["facebookPermissions"] = mu.facebookPermissions ?? false
+        } else if let fn = firstName, let ln = lastName {
+            userDict["userFirstName"] = fn
+            userDict["userLastName"] = ln
+        }
+        
+        return userDict
+    }
     
     func parseResponseToUser(document: DocumentSnapshot, data: [String:Any]) -> MHPUser {
         var user = MHPUser()
@@ -25,7 +50,6 @@ struct DataManager {
         user.notificationPreferences = data["notificationPreferences"] as? Bool ?? false
         user.locationPermissions = data["locationPermissions"] as? Bool ?? false
         user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
-        user.userState = data["userState"] as? UserAuthorizationState ?? .unknown
         let state = data["userState"] as? String ?? "unknown"
         switch state {
         case "unverified":
