@@ -72,113 +72,15 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         close()
     }
     
-    fileprivate func close() {
-        // TODO: double check after Event flows built
-        guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
-        if let homeVC = tabBarCon.childViewControllers[0].childViewControllers[0] as? MHPHomeViewController {
-            homeVC.inject(self.mhpUser!)
-        }
-        
-        if self.mhpUser?.userState == .registered {
-            let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
-            switch tabBarIndex {
-            case 0:
-                homeUserDelegate?.updateUser(mhpUser: self.mhpUser!)
-            case 1:
-                return
-            case 2:
-                profileDelegate?.updateUser(mhpUser: self.mhpUser!)
-            case 3:
-                settingsDelegate?.updateUser(mhpUser: self.mhpUser!)
-            default:
-                return
-            }
-        } else {
-            if let tabs = tabBarCon.viewControllers {
-                if tabs.count > 0 {
-                    tabBarCon.selectedIndex = 0
-                }
-            }
-        }
-
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     @IBAction func loginTapped(_ sender: Any) {
-        if txtEmail.text == "" || txtPassword.text == "" {
-            if txtEmail.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
-            } else if txtPassword.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
-            }
-        } else {
-            if let email = txtEmail.text, let password = txtPassword.text {
-                // TODO: extract to network manager
-                Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-                    if error == nil {
-                        if let fUser = user {
-                          MHPNetworkManager().retrieve(user: fUser) { result in
-                                switch result {
-                                case let .success(retrievedUser):
-                                    self.mhpUser = retrievedUser 
-                                    self.mhpUser?.userState = .registered
-                                    self.close()
-                                case .error(_):
-                                    
-                                    print(DatabaseError.errorRetrievingUserFromDB)
-                                }
-                            }
-                        }
-                    } else {
-                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                }
-            }
+        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
+            loginUser(email: email, password: pass)
         }
     }
     
     @IBAction func signupTapped(_ sender: Any) {
-        // validate the fields, check if email is already in use, sanitize
-        if txtEmail.text == "" || txtPassword.text == "" {
-            if txtEmail.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
-            } else if txtPassword.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
-            }
-        } else {
-            if let email = txtEmail.text, let password = txtPassword.text {
-                // TODO: extract to network manager
-                let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-                Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
-                    if error == nil {
-                        self.sendVerificationEmail(forUser: user)
-                    } else {
-                        let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                    
-                })
-                
-//                Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-//                }
-            }
+        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
+            signupNewUser(email: email, password: pass)
         }
     }
     
@@ -207,43 +109,136 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     
-    // MARK: - UITextFieldDelegate
+    // MARK: - Private methods
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField {
-        case txtEmail:
-            txtPassword.becomeFirstResponder()
-        default:
-            txtPassword.resignFirstResponder()
+    fileprivate func close() {
+        // TODO: double check after Event flows built
+        guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
+        if let homeVC = tabBarCon.childViewControllers[0].childViewControllers[0] as? MHPHomeViewController {
+            homeVC.inject(self.mhpUser!)
         }
         
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-    }
-    
-    func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        var shouldChange = true
-        if textFieldToChange == txtEmail {
-            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
-            if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
-                shouldChange = false
-            } else {
-                shouldChange = true
+        if self.mhpUser?.userState == .registered {
+            let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
+            switch tabBarIndex {
+            case 0:
+                homeUserDelegate?.updateUser(mhpUser: self.mhpUser!)
+            case 1:
+                return
+            case 2:
+                profileDelegate?.updateUser(mhpUser: self.mhpUser!)
+            case 3:
+                settingsDelegate?.updateUser(mhpUser: self.mhpUser!)
+            default:
+                return
+            }
+        } else {
+            if let tabs = tabBarCon.viewControllers {
+                if tabs.count > 0 {
+                    tabBarCon.selectedIndex = 0
+                }
             }
         }
         
-        return shouldChange
+        self.dismiss(animated: true, completion: nil)
     }
     
+    fileprivate func validateEmail(email: String?) -> String? {
+        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
+        
+        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+        let allMatches = dataDetector.matches(in: trimmedText,
+                                              options: [],
+                                              range: range)
+        
+        if allMatches.count == 1,
+            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
+            return trimmedText
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            present(alertController, animated: true, completion: nil)
+            
+            return nil
+        }
+    }
     
-    // MARK: - Misc Methods
+    fileprivate func validatePassword(password: String?) -> String? {
+        // TODO: improve validation
+        if password != "" || password != nil {
+            return password!
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            present(alertController, animated: true, completion: nil)
+            
+            return nil
+        }
+    }
+    
+    // MARK: - Network methods to be extracted to manager
+    
+    func signupNewUser(email: String, password: String) {
+        // TODO: extract to network manager, return user
+        
+        // TODO: link newly created user to anon user in Firestore
+        //        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        //        Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
+        //            if error == nil {
+        //                self.sendVerificationEmail(forUser: user)
+        //            } else {
+        //                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+        //                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        //                alertController.addAction(defaultAction)
+        //                self.present(alertController, animated: true, completion: nil)
+        //            }
+        //
+        //        })
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                self.sendVerificationEmail(forUser: user)
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func loginUser(email: String, password: String) {
+        // TODO: extract to network manager, return user
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                if let fUser = user {
+                    MHPNetworkManager().retrieve(user: fUser) { result in
+                        switch result {
+                        case let .success(retrievedUser):
+                            self.mhpUser = retrievedUser
+                            self.mhpUser?.userState = .registered
+                            self.close()
+                        case .error(_):
+                            
+                            print(DatabaseError.errorRetrievingUserFromDB)
+                        }
+                    }
+                }
+            } else {
+                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
     
     func sendVerificationEmail(forUser currentUser: User?) {
-        // TODO: extract to network manager
-
+        // TODO: extract to network manager, return error?
+        
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         if let user = currentUser, let email = user.email {
@@ -267,8 +262,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     func sendResetPasswordEmail(forEmail email: String) {
-        // TODO: extract to network manager
-
+        // TODO: extract to network manager, return error?
+        
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/resetPassword/?email=\(email)")
@@ -288,4 +283,37 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             }
         }
     }
+    
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case txtEmail:
+            txtPassword.becomeFirstResponder()
+        default:
+            txtPassword.resignFirstResponder()
+        }
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // TODO: do some in place password validation
+    }
+    
+    func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var shouldChange = true
+        if textFieldToChange == txtEmail {
+            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
+            if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
+                shouldChange = false
+            } else {
+                shouldChange = true
+            }
+        }
+        
+        return shouldChange
+    }
+    
 }
