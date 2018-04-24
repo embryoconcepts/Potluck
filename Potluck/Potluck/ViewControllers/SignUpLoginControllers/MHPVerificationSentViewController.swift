@@ -53,7 +53,7 @@ class MHPVerificationSentViewController: UIViewController {
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
         // TODO: inject updated user to signup flow
-        dismiss(animated: true, completion:nil)
+        dismiss(animated: true, completion: nil)
         
     }
     

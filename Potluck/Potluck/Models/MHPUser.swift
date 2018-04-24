@@ -10,7 +10,7 @@ import UIKit
 
 enum UserAuthorizationState: String {
     /// not registered or logged in
-    case unknown
+    case anonymous
     /// initial sign up complete, email not verified
     case unverified
     /// email or phone verified, but basic profile details incomplete, not in database

@@ -30,7 +30,8 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
                 // TODO: inject user
-                signinVC.mhpUser = mhpUser
+                signinVC.inject(mhpUser)
+//                signinVC.mhpUser = mhpUser
                 signinVC.settingsDelegate = self
                 present(navController, animated: true, completion: nil)
             }

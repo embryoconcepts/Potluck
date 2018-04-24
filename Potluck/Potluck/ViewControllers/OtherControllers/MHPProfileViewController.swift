@@ -27,7 +27,9 @@ class MHPProfileViewController: UIViewController, ProfileUserDelegate {
         if mhpUser.userState != .registered {
             if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
                 let navController = UINavigationController(rootViewController: signinVC)
-                signinVC.mhpUser = mhpUser
+                // TODO: inject user
+                signinVC.inject(mhpUser)
+//                signinVC.mhpUser = mhpUser
                 signinVC.profileDelegate = self
                 present(navController, animated: true, completion: nil)
             }

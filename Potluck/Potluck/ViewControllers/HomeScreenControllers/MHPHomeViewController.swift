@@ -20,7 +20,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var lblAlertMessage: UILabel!
     
     private let reuseIdentifier = "homeCell"
-    var mhpUser: MHPUser!
+    var mhpUser: MHPUser?
     var events = [MHPEvent]()
     
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupUser()
+        handleUser()
         //    setupMockData() // TODO: remove for production
     }
     
@@ -50,7 +50,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
                 let eventDetailVC = segue.destination as? MHPEventViewController
-                eventDetailVC?.inject((injectedUser: mhpUser, injectedEvent:events[indexPath.row]))
+                eventDetailVC?.inject((injectedUser: mhpUser!, injectedEvent:events[indexPath.row]))
             }
         } else {
             // error handling
@@ -65,10 +65,10 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
                 createEventVC.mhpUser = self.mhpUser
             }
             if let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
-                profileVC.inject(self.mhpUser)
+                profileVC.inject(self.mhpUser!)
             }
             if let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
-                settingsVC.inject(self.mhpUser)
+                settingsVC.inject(self.mhpUser!)
             }
         
         return true
@@ -129,28 +129,15 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // MARK: - Private Methods
     
-    fileprivate func setupUser() {
-        MHPUserManager().setupUser { (result) in
-            switch result {
-            case .success(let user):
-                self.mhpUser = user
-                self.assertDependencies()
-                self.styleView()
-            case .error(_):
-                print(DatabaseError.errorRetrievingUserFromDB)
-            }
-        }
-    }
-    
     fileprivate func styleView() {
         self.tabBarController?.tabBar.isHidden = false
         self.lblTitle.text = "Welcome to Potluck!"
         
-        switch self.mhpUser.userState {
+        switch self.mhpUser!.userState {
         case .registered:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
-            if let firstName = self.mhpUser.userFirstName, let lastName = self.mhpUser.userLastName {
+            if let firstName = self.mhpUser!.userFirstName, let lastName = self.mhpUser!.userLastName {
                 self.lblTitle.text = "Welcome, \(firstName) \(lastName)!"
             }
         case .verified:
@@ -159,7 +146,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         case .unverified:
             self.viewAlert.isHidden = false
             self.lblAlertMessage.text = "Please verify your email to complete sign up."
-        case .unknown:
+        case .anonymous:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
         default:
@@ -169,7 +156,7 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     fileprivate func setupMockData() {
         mhpUser = MHPUser()
-        mhpUser.userFirstName = "Tester the Bester"
+        mhpUser!.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userFirstName = "Jill of AllTrades"
         let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
@@ -192,5 +179,26 @@ extension MHPHomeViewController:Injectable {
     
     func assertDependencies() {
         assert(self.mhpUser != nil)
+    }
+}
+
+extension MHPHomeViewController:UserHandler {
+    func handleUser() {
+        if let user = mhpUser {
+            self.mhpUser = user
+            assertDependencies()
+            styleView()
+        } else {
+            MHPUserManager().createOrRetrieveUser { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                    self.assertDependencies()
+                    self.styleView()
+                case .error(_):
+                    print(DatabaseError.errorRetrievingUserFromDB)
+                }
+            }
+        }
     }
 }

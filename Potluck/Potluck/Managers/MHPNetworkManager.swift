@@ -52,7 +52,7 @@ struct MHPNetworkManager {
     
     func save(unknownUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
         let ref: DocumentReference = db.collection("users").document(unknownUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: unknownUser, mhpUser: nil, firstName: nil, lastName: nil, state: .unknown)
+        let dataSet = dataManager.buildDataSet(firUser: unknownUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")

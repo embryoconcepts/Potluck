@@ -59,7 +59,7 @@ struct MHPDataManager {
         case "registered":
             user.userState = .registered
         default:
-            user.userState = .unknown
+            user.userState = .anonymous
         }
         
         return user

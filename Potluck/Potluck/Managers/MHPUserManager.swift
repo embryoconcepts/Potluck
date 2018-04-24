@@ -20,10 +20,14 @@ protocol Injectable {
     func assertDependencies()
 }
 
+protocol UserHandler {
+    func handleUser()
+}
+
 struct MHPUserManager {
     let networkManager = MHPNetworkManager()
     
-    func setupUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
+    func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         if let currentUser = Auth.auth().currentUser {
             // retrieve mhpUser from db
             networkManager.retrieve(user: currentUser) { (result) in

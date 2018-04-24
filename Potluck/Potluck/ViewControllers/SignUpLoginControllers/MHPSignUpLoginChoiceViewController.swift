@@ -34,27 +34,13 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTappped(_:)))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let state = mhpUser?.userState {
-            switch state {
-            case .registered:
-                dismiss(animated: true, completion: nil)
-            case .verified:
-                if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                    personalVC.mhpUser = self.mhpUser!
-                    self.present(personalVC, animated: true, completion: nil)
-                }
-            case .unverified:
-                sendVerificationEmail(forUser:Auth.auth().currentUser)
-            case .unknown:
-                return
-            }
-        }
+        handleUser()
     }
     
     override func didReceiveMemoryWarning() {
@@ -111,6 +97,24 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     // MARK: - Private methods
     
+    fileprivate func switchOnUserState()  {
+        if let state = mhpUser?.userState {
+            switch state {
+            case .registered:
+                dismiss(animated: true, completion: nil)
+            case .verified:
+                if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
+                    personalVC.mhpUser = self.mhpUser!
+                    self.present(personalVC, animated: true, completion: nil)
+                }
+            case .unverified:
+                sendVerificationEmail(forUser:Auth.auth().currentUser)
+            case .anonymous:
+                return
+            }
+        }
+    }
+    
     fileprivate func close() {
         // TODO: double check after Event flows built
         guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
@@ -149,8 +153,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         
         let range = NSMakeRange(0, NSString(string: trimmedText).length)
         let allMatches = dataDetector.matches(in: trimmedText,
-                                              options: [],
-                                              range: range)
+                                              options:[],
+                                              range:range)
         
         if allMatches.count == 1,
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
@@ -316,4 +320,37 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         return shouldChange
     }
     
+}
+
+extension MHPSignUpLoginChoiceViewController:Injectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+    }
+}
+
+extension MHPSignUpLoginChoiceViewController:UserHandler {
+    func handleUser() {
+        if let user = mhpUser {
+            self.mhpUser = user
+            assertDependencies()
+            switchOnUserState()
+        } else {
+            MHPUserManager().createOrRetrieveUser { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                    self.assertDependencies()
+                    self.switchOnUserState()
+                case .error(_):
+                    print(DatabaseError.errorRetrievingUserFromDB)
+                }
+            }
+        }
+    }
 }
