@@ -50,15 +50,15 @@ struct MHPNetworkManager {
         
     }
     
-    func save(unknownUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(unknownUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: unknownUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+    func save(anonUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        let ref: DocumentReference = db.collection("users").document(anonUser.uid)
+        let dataSet = dataManager.buildDataSet(firUser: anonUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
-                print("Document added with ID: \(ref.documentID)")
+                print("Anon user added with ID: \(ref.documentID)")
                 completion(.success(true))
             }
         }
@@ -72,21 +72,21 @@ struct MHPNetworkManager {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
-                print("Document added with ID: \(ref.documentID)")
+                print("Unverified user updated with document ID: \(ref.documentID)")
                 completion(.success(true))
             }
         }
     }
     
-    func save(verifiedUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(verifiedUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: verifiedUser, mhpUser: nil, firstName: nil, lastName: nil, state: .verified)
+    func save(firUser: User, verifiedUser: MHPUser, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: verifiedUser, firstName: nil, lastName: nil, state: .verified)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
-                print("Document added with ID: \(ref.documentID)")
+                print("Verified user updated with document ID: \(ref.documentID)")
                 completion(.success(true))
             }
         }
@@ -100,7 +100,7 @@ struct MHPNetworkManager {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
-                print("Document added with ID: \(ref.documentID)")
+                print("Registered user updated with document ID: \(ref.documentID)")
                 completion(.success(true))
             }
         }
@@ -114,10 +114,29 @@ struct MHPNetworkManager {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
-                print("Document added with ID: \(ref.documentID)")
+                print("User updated with document ID: \(ref.documentID)")
                 completion(.success(true))
             }
         }
+    }
+    
+    fileprivate func updateVerifiedUser(firUser: User, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+            self.save(firUser:firUser, verifiedUser:mhpUser, completion:{ (result) in
+                switch result {
+                case .success(_):
+                    // retrieve mhpUser from db
+                    self.retrieve(firUser:firUser, completion:{ (result) in
+                        switch result {
+                        case .success(let mhpUser):
+                            completion(.success(mhpUser))
+                        default:
+                            completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                        }
+                    })
+                default:
+                    completion(.error(DatabaseError.errorAddingNewUserToDB))
+                }
+            })
         
     }
     
@@ -126,16 +145,73 @@ struct MHPNetworkManager {
      - parameter user: Firebase User object
      - parameter completion: MHPUser object or Database Error
      */
-    func retrieve(user: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(user.uid)
+    func retrieve(firUser: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
         ref.getDocument(completion:{ (document, error) in
             if let document = document, let data = document.data() {
-                let user = self.dataManager.parseResponseToUser(document: document, data: data)
-                completion(.success(user))
+                let mhpUser = self.dataManager.parseResponseToUser(document: document, data: data)
+                if firUser.isEmailVerified && mhpUser.userState != .verified {
+                    self.updateVerifiedUser(firUser: firUser, mhpUser: mhpUser, completion: { (result) in
+                            completion(result)
+                    })
+                }
+                completion(.success(mhpUser))
             } else {
                 completion(.error(DatabaseError.errorRetrievingUserFromDB))
             }
         })
     }
+    
+    func signupUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        // link newly created user to anon user in Firestore
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
+            if error == nil {
+                self.sendVerificationEmail(forUser: user)
+                // save updated mhpUser info to DB
+                self.save(unverifiedUser:user!, completion:{ (result) in
+                    switch result {
+                    case .success(_):
+                        // retrieve mhpUser from db
+                        self.retrieve(firUser:user!, completion:{ (result) in
+                            switch result {
+                            case .success(let mhpUser):
+                                completion(.success(mhpUser))
+                            default:
+                                completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                            }
+                        })
+                    default:
+                        completion(.error(DatabaseError.errorAddingNewUserToDB))
+                    }
+                })
+            } else {
+                print(error?.localizedDescription as Any)
+                completion(error as! Result<MHPUser, DatabaseError>)
+            }
+        })
+    }
+    
+    func sendVerificationEmail(forUser currentUser: User?) {
+        // TODO: extract to network manager, return error?
+        
+        let actionCodeSettings =  ActionCodeSettings.init()
+        actionCodeSettings.handleCodeInApp = true
+        if let user = currentUser, let email = user.email {
+            actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
+            actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+            user.sendEmailVerification(completion:{ (error) in
+                if error == nil {
+                    // TODO: something
+                    
+                    return
+                } else {
+                    // handle error
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+    }
+    
     
 }

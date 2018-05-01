@@ -30,26 +30,30 @@ struct MHPUserManager {
     func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         if let currentUser = Auth.auth().currentUser {
             // retrieve mhpUser from db
-            networkManager.retrieve(user: currentUser) { (result) in
+            networkManager.retrieve(firUser: currentUser) { (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))
                 case .error(_):
-                    completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                    do {
+                        try Auth.auth().signOut()
+                    } catch let err {
+                        print(err)
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                    }
                 }
             }
         } else {
-            // FIXME: look into a better way to handle, without all the nesting statements
             // sign in as anon user
             networkManager.signInAnon { (result) in
                 switch result {
                 case .success (let firUser):
                     // save anon user to db
-                    self.networkManager.save(unknownUser:firUser, completion:{ (result) in
+                    self.networkManager.save(anonUser:firUser, completion:{ (result) in
                         switch result {
                         case .success(_):
                             // retrieve mhpUser from db
-                            self.networkManager.retrieve(user:firUser, completion:{ (result) in
+                            self.networkManager.retrieve(firUser:firUser, completion:{ (result) in
                                 switch result {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
@@ -58,7 +62,7 @@ struct MHPUserManager {
                                 }
                             })
                         default:
-                            completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                            completion(.error(DatabaseError.errorAddingNewUserToDB))
                         }
                     })
                 default:

@@ -28,6 +28,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     var mhpUser: MHPUser?
     var firUser: User?
+    let networkManager = MHPNetworkManager()
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
@@ -65,8 +66,23 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @IBAction func signupTapped(_ sender: Any) {
-        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
-            signupNewUser(email: email, password: pass)
+        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
+            networkManager.signupUser(email: email, password: pass, mhpUser: mhpUser) { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                    if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
+                        verificationVC.flow = VerificationFlow.EmailVerification
+                        verificationVC.email = email
+                        self.present(verificationVC, animated: true, completion: nil)
+                    }
+                case .error(let error):
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
         }
     }
     
@@ -108,7 +124,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                     self.present(personalVC, animated: true, completion: nil)
                 }
             case .unverified:
-                sendVerificationEmail(forUser:Auth.auth().currentUser)
+                return
             case .anonymous:
                 return
             }
@@ -183,36 +199,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         }
     }
     
-    // MARK: - Network methods to be extracted to manager
     
-    func signupNewUser(email: String, password: String) {
-        // TODO: extract to network manager, return user
-        
-        // TODO: link newly created user to anon user in Firestore
-        //        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-        //        Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
-        //            if error == nil {
-        //                self.sendVerificationEmail(forUser: user)
-        //            } else {
-        //                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-        //                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        //                alertController.addAction(defaultAction)
-        //                self.present(alertController, animated: true, completion: nil)
-        //            }
-        //
-        //        })
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            if error == nil {
-                self.sendVerificationEmail(forUser: user)
-            } else {
-                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
-            }
-        }
-    }
+    // MARK: - Network methods to be extracted to manager
     
     func loginUser(email: String, password: String) {
         // TODO: extract to network manager, return user
@@ -223,10 +211,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                         switch result {
                         case let .success(retrievedUser):
                             self.mhpUser = retrievedUser
-                            self.mhpUser?.userState = .registered
                             self.close()
                         case .error(_):
-                            
                             print(DatabaseError.errorRetrievingUserFromDB)
                         }
                     }
@@ -237,31 +223,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             }
-        }
-    }
-    
-    func sendVerificationEmail(forUser currentUser: User?) {
-        // TODO: extract to network manager, return error?
-        
-        let actionCodeSettings =  ActionCodeSettings.init()
-        actionCodeSettings.handleCodeInApp = true
-        if let user = currentUser, let email = user.email {
-            actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
-            actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-            user.sendEmailVerification(completion:{ (error) in
-                if error == nil {
-                    if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
-                        verificationVC.flow = VerificationFlow.EmailVerification
-                        verificationVC.email = email
-                        self.present(verificationVC, animated: true, completion: nil)
-                    }
-                    
-                    return
-                } else {
-                    // handle error
-                    print(error?.localizedDescription as Any)
-                }
-            })
         }
     }
     
