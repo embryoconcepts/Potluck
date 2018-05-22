@@ -25,6 +25,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
+    @IBOutlet weak var viewAlert: UIView!
+    @IBOutlet weak var txtAlert: UILabel!
+    @IBOutlet weak var btnAlert: UIButton!
     
     var mhpUser: MHPUser?
     var firUser: User?
@@ -62,6 +65,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func loginTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
             loginUser(email: email, password: pass)
+            self.switchOnUserState()
         }
     }
     
@@ -71,11 +75,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
-                    if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
-                        verificationVC.flow = VerificationFlow.EmailVerification
-                        verificationVC.email = email
-                        self.present(verificationVC, animated: true, completion: nil)
-                    }
+                    self.switchOnUserState()
                 case .error(let error):
                     let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -84,6 +84,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 }
             }
         }
+        self.switchOnUserState()
     }
     
     @IBAction func forgotPasswordTapped(_ sender: Any) {
@@ -102,6 +103,14 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         self.present(alert, animated: true)
     }
     
+    @IBAction func alertTapped(_ sender: Any) {
+        if let fUser = Auth.auth().currentUser {
+            networkManager.sendVerificationEmail(forUser: fUser) { (result) in
+                // TODO: handle result
+            }
+        }
+    }
+    
     @IBAction func facebookTapped(_ sender: Any) {
         // set up facebook login
     }
@@ -117,15 +126,20 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         if let state = mhpUser?.userState {
             switch state {
             case .registered:
+                viewAlert.isHidden = true
                 dismiss(animated: true, completion: nil)
             case .verified:
+                viewAlert.isHidden = true
                 if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
                     personalVC.mhpUser = self.mhpUser!
                     self.present(personalVC, animated: true, completion: nil)
                 }
             case .unverified:
-                return
+                viewAlert.isHidden = false;
+                txtAlert.text = "Verification email has been sent. Please use the link in the email to verify. Tap here to resend email."
+                btnAlert.isEnabled = true
             case .anonymous:
+                viewAlert.isHidden = true
                 return
             }
         }
@@ -180,7 +194,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
             present(alertController, animated: true, completion: nil)
-            
             return nil
         }
     }
@@ -194,7 +207,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
             present(alertController, animated: true, completion: nil)
-            
             return nil
         }
     }
@@ -203,20 +215,21 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     // MARK: - Network methods to be extracted to manager
     
     func loginUser(email: String, password: String) {
-        // TODO: extract to network manager, return user
+        // TODO: extract to network manager, return error?
+
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error == nil {
-                if let fUser = user {
-                    MHPNetworkManager().retrieve(user: fUser) { result in
-                        switch result {
-                        case let .success(retrievedUser):
-                            self.mhpUser = retrievedUser
-                            self.close()
-                        case .error(_):
-                            print(DatabaseError.errorRetrievingUserFromDB)
-                        }
+                MHPNetworkManager().retrieve(firUser:user!, completion:{ (result) in
+                    
+                    switch result {
+                    case let .success(retrievedUser):
+                        self.mhpUser = retrievedUser
+                        self.close()
+                    case .error(_):
+                        print(DatabaseError.errorRetrievingUserFromDB)
                     }
-                }
+                })
+                
             } else {
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -235,12 +248,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
         Auth.auth().sendPasswordReset(withEmail: email) { (error) in
             if error == nil {
-                if let verificationVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "VerificationVC") as? MHPVerificationSentViewController {
-                    verificationVC.flow = VerificationFlow.ResetPassword
-                    verificationVC.email = email
-                    self.present(verificationVC, animated: true, completion: nil)
-                }
-                
+                self.switchOnUserState()
                 return
             } else {
                 // handle error
@@ -259,12 +267,11 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         default:
             txtPassword.resignFirstResponder()
         }
-        
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // TODO: do some in place password validation
+        // TODO: add in place password validation
     }
     
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -277,7 +284,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 shouldChange = true
             }
         }
-        
         return shouldChange
     }
     
@@ -297,20 +303,14 @@ extension MHPSignUpLoginChoiceViewController:Injectable {
 
 extension MHPSignUpLoginChoiceViewController:UserHandler {
     func handleUser() {
-        if let user = mhpUser {
-            self.mhpUser = user
-            assertDependencies()
-            switchOnUserState()
-        } else {
-            MHPUserManager().createOrRetrieveUser { (result) in
-                switch result {
-                case .success(let user):
-                    self.mhpUser = user
-                    self.assertDependencies()
-                    self.switchOnUserState()
-                case .error(_):
-                    print(DatabaseError.errorRetrievingUserFromDB)
-                }
+        MHPUserManager().createOrRetrieveUser { (result) in
+            switch result {
+            case .success(let user):
+                self.mhpUser = user
+                self.assertDependencies()
+                self.switchOnUserState()
+            case .error(_):
+                print(DatabaseError.errorRetrievingUserFromDB)
             }
         }
     }

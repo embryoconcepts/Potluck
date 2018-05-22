@@ -1,17 +1,17 @@
-//
-//  MHPHomeViewController.swift
-//  Potluck
-//
-//  Created by Jennifer Hamilton on 3/11/18.
-//  Copyright © 2018 Many Hands Apps. All rights reserved.
-//
-
-import UIKit
-import ScalingCarousel
-import Firebase
-import FirebaseFirestore
-
-class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
+ //
+ //  MHPHomeViewController.swift
+ //  Potluck
+ //
+ //  Created by Jennifer Hamilton on 3/11/18.
+ //  Copyright © 2018 Many Hands Apps. All rights reserved.
+ //
+ 
+ import UIKit
+ import ScalingCarousel
+ import Firebase
+ import FirebaseFirestore
+ 
+ class MHPHomeViewController:UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -43,9 +43,9 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     
-     // MARK: - Navigation
-     
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
@@ -56,21 +56,20 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
             // error handling
         }
     }
-
+    
     
     // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-            if let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
-                createEventVC.mhpUser = self.mhpUser
-            }
-            if let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
-                profileVC.inject(self.mhpUser!)
-            }
-            if let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
-                settingsVC.inject(self.mhpUser!)
-            }
-        
+        if let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            createEventVC.mhpUser = self.mhpUser
+        }
+        if let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+            profileVC.inject(self.mhpUser!)
+        }
+        if let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+            settingsVC.inject(self.mhpUser!)
+        }
         return true
     }
     
@@ -91,9 +90,8 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // TODO: set up proper image handling
         if let tempImage = UIImage(named: selectedEvent.eventImageURL!) {
-             cell.imgEvent.image = tempImage
+            cell.imgEvent.image = tempImage
         }
-       
         return cell
     }
     
@@ -103,8 +101,8 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         carousel.didScroll()
         // set up page control coordination?
-//        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
-//        output.text = String(describing: currentCenterIndex)
+        //        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
+        //        output.text = String(describing: currentCenterIndex)
     }
     
     
@@ -167,10 +165,10 @@ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         events.append(event1)
         events.append(event2)
     }
-    
-}
 
-extension MHPHomeViewController:Injectable {
+ }
+ 
+ extension MHPHomeViewController:Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {
@@ -180,25 +178,19 @@ extension MHPHomeViewController:Injectable {
     func assertDependencies() {
         assert(self.mhpUser != nil)
     }
-}
-
-extension MHPHomeViewController:UserHandler {
+ }
+ 
+ extension MHPHomeViewController:UserHandler {
     func handleUser() {
-        if let user = mhpUser {
-            self.mhpUser = user
-            assertDependencies()
-            styleView()
-        } else {
-            MHPUserManager().createOrRetrieveUser { (result) in
-                switch result {
-                case .success(let user):
-                    self.mhpUser = user
-                    self.assertDependencies()
-                    self.styleView()
-                case .error(_):
-                    print(DatabaseError.errorRetrievingUserFromDB)
-                }
+        MHPUserManager().createOrRetrieveUser { (result) in
+            switch result {
+            case .success(let user):
+                self.mhpUser = user
+                self.assertDependencies()
+                self.styleView()
+            case .error(_):
+                print(DatabaseError.errorRetrievingUserFromDB)
             }
         }
     }
-}
+ }

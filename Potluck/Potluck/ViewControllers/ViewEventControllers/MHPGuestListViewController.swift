@@ -61,7 +61,6 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
         if guestsNo.count >= 1 {
             numOfSections += 1
         }
-        
         return 3
     }
     
@@ -101,7 +100,6 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
 
         cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userFirstName ?? ""
         cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
-        
         return cell
     }
     

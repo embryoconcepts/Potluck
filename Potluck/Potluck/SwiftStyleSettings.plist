@@ -25,7 +25,7 @@
 	<key>kRequireOpenBraceForSwitchStatement</key>
 	<true/>
 	<key>kRequireEmptyLineAboveReturnStatement</key>
-	<true/>
+	<false/>
 	<key>kMathOperatorSpacingRule</key>
 	<integer>1</integer>
 	<key>kRequireSpaceBeforeOpeningBrace</key>

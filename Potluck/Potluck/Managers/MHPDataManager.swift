@@ -36,7 +36,6 @@ struct MHPDataManager {
             userDict["userFirstName"] = fn
             userDict["userLastName"] = ln
         }
-        
         return userDict
     }
     
@@ -67,7 +66,6 @@ struct MHPDataManager {
         default:
             user.userState = nil
         }
-        
         return user
     }
     

@@ -34,6 +34,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
+        // FIXME: Should return user to original flow
         dismiss(animated: true, completion: nil)
     }
     
@@ -52,25 +53,26 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
             }
         } else {
             if let first = txtFirstName.text, let last = txtLastName.text {
-                guard let currentUser = Auth.auth().currentUser else { return }
-                
-                MHPNetworkManager().save(registeredUser: currentUser, firstName: first, lastName: last) { result in
+                if let currentUser = Auth.auth().currentUser {
+                MHPNetworkManager().saveRegisteredUser(firUser: currentUser, firstName: first, lastName: last) { result in
                     switch result {
                     case .success(_):
-                        MHPNetworkManager().retrieve(user: currentUser) { result in
+                        MHPNetworkManager().retrieve(firUser:currentUser, completion:{ (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
-                                    congratsVC.user = retrievedUser 
+                                    congratsVC.user = retrievedUser
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
                             case .error(_):
                                 print(DatabaseError.errorRetrievingUserFromDB)
                             }
-                        }
+                            
+                        })
                     case .error(_):
                         print(DatabaseError.errorAddingNewUserToDB)
                     }
+                }
                 }
             }
         }
@@ -86,7 +88,6 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         default:
             txtLastName.resignFirstResponder()
         }
-        
         return true
     }
     
@@ -101,7 +102,6 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         } else {
             shouldChange = true
         }
-        
         return shouldChange
     }
     

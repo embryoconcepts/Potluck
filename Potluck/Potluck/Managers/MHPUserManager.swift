@@ -29,8 +29,7 @@ struct MHPUserManager {
     
     func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
         if let currentUser = Auth.auth().currentUser {
-            // retrieve mhpUser from db
-            networkManager.retrieve(firUser: currentUser) { (result) in
+            networkManager.retrieve(firUser:currentUser, completion:{ (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))
@@ -38,33 +37,16 @@ struct MHPUserManager {
                     do {
                         try Auth.auth().signOut()
                     } catch let err {
-                        print(err)
+                        print("create or retreive try/catch error: \(err)")
                         completion(.error(DatabaseError.errorRetrievingUserFromDB))
                     }
                 }
-            }
+            })
         } else {
-            // sign in as anon user
             networkManager.signInAnon { (result) in
                 switch result {
-                case .success (let firUser):
-                    // save anon user to db
-                    self.networkManager.save(anonUser:firUser, completion:{ (result) in
-                        switch result {
-                        case .success(_):
-                            // retrieve mhpUser from db
-                            self.networkManager.retrieve(firUser:firUser, completion:{ (result) in
-                                switch result {
-                                case .success(let mhpUser):
-                                    completion(.success(mhpUser))
-                                default:
-                                    completion(.error(DatabaseError.errorRetrievingUserFromDB))
-                                }
-                            })
-                        default:
-                            completion(.error(DatabaseError.errorAddingNewUserToDB))
-                        }
-                    })
+                case .success (let mhpUser):
+                    completion(.success(mhpUser))
                 default:
                     completion(.error(DatabaseError.errorRetrievingUserFromDB))
                 }

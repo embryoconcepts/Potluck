@@ -24,49 +24,61 @@ struct MHPNetworkManager {
         db.settings = settings
     }
     
-    func signInAnon(completion: @escaping (Result<User, Error> ) -> ()) {
+    func signInAnon(completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
         Auth.auth().signInAnonymously() { (user, error) in
             if error == nil {
                 if let returnedUser = user {
-                    completion(Result.success(returnedUser))
+                    self.saveAnonUser(firUser:returnedUser, completion:{ (result) in
+                        switch result {
+                        case .success(let mhpUser):
+                            completion(.success(mhpUser))
+                        default:
+                            completion(.error(DatabaseError.errorAddingNewUserToDB))
+                        }
+                    })
                 }
             } else {
-                if let returnedError = error {
-                    completion(Result.error(returnedError))
-                }
+                completion(.error(DatabaseError.errorAddingNewUserToDB))
+                
             }
         }
     }
     
-    func login() {
-        
-    }
-    
-    func resetPassword() {
-        
-    }
-    
-    func resendVerificationEmail() {
-        
-    }
-    
-    func save(anonUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(anonUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: anonUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+    func saveAnonUser(firUser: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in save anon: \(String(describing: error))")
+            }
+        }
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
                 completion(.error(DatabaseError.errorAddingNewUserToDB))
             } else {
                 print("Anon user added with ID: \(ref.documentID)")
-                completion(.success(true))
+                // retrieve mhpUser from db
+                self.retrieve(firUser:firUser, completion:{ (result) in
+                    switch result {
+                    case .success(let mhpUser):
+                        completion(.success(mhpUser))
+                    default:
+                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                    }
+                })
             }
         }
     }
     
-    func save(unverifiedUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(unverifiedUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: unverifiedUser, mhpUser: nil, firstName: nil, lastName: nil, state: .unverified)
+    func saveUnverifiedUser(firUser: User, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in save unverified: \(String(describing: error))")
+            }
+        }
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: nil, firstName: nil, lastName: nil, state: .unverified)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
@@ -76,9 +88,15 @@ struct MHPNetworkManager {
                 completion(.success(true))
             }
         }
+        
     }
     
-    func save(firUser: User, verifiedUser: MHPUser, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+    func saveVerifiedUser(firUser: User, verifiedUser: MHPUser, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in save verified: \(String(describing: error))")
+            }
+        }
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: verifiedUser, firstName: nil, lastName: nil, state: .verified)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
@@ -90,11 +108,17 @@ struct MHPNetworkManager {
                 completion(.success(true))
             }
         }
+        
     }
     
-    func save(registeredUser: User, firstName: String, lastName: String, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(registeredUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: registeredUser, mhpUser: nil, firstName: firstName, lastName: lastName, state: .registered)
+    func saveRegisteredUser(firUser: User, firstName: String, lastName: String, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in save registered: \(String(describing: error))")
+            }
+        }
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: nil, firstName: firstName, lastName: lastName, state: .registered)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
@@ -104,9 +128,15 @@ struct MHPNetworkManager {
                 completion(.success(true))
             }
         }
+        
     }
     
     func update(firUser: User, mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in update user: \(String(describing: error))")
+            }
+        }
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
         let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
@@ -118,62 +148,20 @@ struct MHPNetworkManager {
                 completion(.success(true))
             }
         }
-    }
-    
-    fileprivate func updateVerifiedUser(firUser: User, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
-            self.save(firUser:firUser, verifiedUser:mhpUser, completion:{ (result) in
-                switch result {
-                case .success(_):
-                    // retrieve mhpUser from db
-                    self.retrieve(firUser:firUser, completion:{ (result) in
-                        switch result {
-                        case .success(let mhpUser):
-                            completion(.success(mhpUser))
-                        default:
-                            completion(.error(DatabaseError.errorRetrievingUserFromDB))
-                        }
-                    })
-                default:
-                    completion(.error(DatabaseError.errorAddingNewUserToDB))
-                }
-            })
         
     }
     
-    /**
-     Retrieves a MHPUser from the database for the UID of the Firebase User
-     - parameter user: Firebase User object
-     - parameter completion: MHPUser object or Database Error
-     */
-    func retrieve(firUser: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
-        let ref: DocumentReference = db.collection("users").document(firUser.uid)
-        ref.getDocument(completion:{ (document, error) in
-            if let document = document, let data = document.data() {
-                let mhpUser = self.dataManager.parseResponseToUser(document: document, data: data)
-                if firUser.isEmailVerified && mhpUser.userState != .verified {
-                    self.updateVerifiedUser(firUser: firUser, mhpUser: mhpUser, completion: { (result) in
-                            completion(result)
-                    })
+    fileprivate func updateVerifiedUser(mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        if let firUser = Auth.auth().currentUser {
+            firUser.reload { (error) in
+                if error != nil {
+                    print("User reload error in update verified: \(String(describing: error))")
                 }
-                completion(.success(mhpUser))
-            } else {
-                completion(.error(DatabaseError.errorRetrievingUserFromDB))
-            }
-        })
-    }
-    
-    func signupUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
-        // link newly created user to anon user in Firestore
-        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-        Auth.auth().currentUser?.link(with: credential, completion:{ (user, error) in
-            if error == nil {
-                self.sendVerificationEmail(forUser: user)
-                // save updated mhpUser info to DB
-                self.save(unverifiedUser:user!, completion:{ (result) in
+                self.saveVerifiedUser(firUser:firUser, verifiedUser:mhpUser, completion:{ (result) in
                     switch result {
                     case .success(_):
                         // retrieve mhpUser from db
-                        self.retrieve(firUser:user!, completion:{ (result) in
+                        self.retrieve(firUser:firUser, completion:{ (result) in
                             switch result {
                             case .success(let mhpUser):
                                 completion(.success(mhpUser))
@@ -185,16 +173,73 @@ struct MHPNetworkManager {
                         completion(.error(DatabaseError.errorAddingNewUserToDB))
                     }
                 })
-            } else {
-                print(error?.localizedDescription as Any)
-                completion(error as! Result<MHPUser, DatabaseError>)
             }
-        })
+        }
     }
     
-    func sendVerificationEmail(forUser currentUser: User?) {
-        // TODO: extract to network manager, return error?
+    /**
+     Retrieves a MHPUser from the database for the UID of the Firebase User
+     - parameter user: Firebase User object
+     - parameter completion: MHPUser object or Database Error
+     */
+    func retrieve(firUser: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        firUser.reload { (error) in
+            if error != nil {
+                print("User reload error in retrieve: \(String(describing: error))")
+            }
+        }
+        let ref: DocumentReference = db.collection("users").document(firUser.uid)
+        ref.getDocument(completion:{ (document, error) in
+            if let document = document, let data = document.data() {
+                let mhpUser = self.dataManager.parseResponseToUser(document: document, data: data)
+                if firUser.isEmailVerified && (mhpUser.userState == .anonymous || mhpUser.userState == .unverified) {
+                    self.updateVerifiedUser(mhpUser:mhpUser, completion:{ (result) in
+                        completion(result)
+                    })
+                }
+                completion(.success(mhpUser))
+            } else {
+                completion(.error(DatabaseError.errorRetrievingUserFromDB))
+            }
+        })
         
+    }
+    
+    func signupUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        // link newly created user to anon user in Firestore
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        if let currentUser = Auth.auth().currentUser {
+            currentUser.link(with:credential, completion:{ (user, error) in
+                if error == nil {
+                    self.sendVerificationEmail(forUser:user, completion:{ (result) in
+                        completion(result)
+                    })
+                    // save updated mhpUser info to DB
+                    self.saveUnverifiedUser(firUser:user!, completion:{ (result) in
+                        switch result {
+                        case .success(_):
+                            // retrieve mhpUser from db
+                            self.retrieve(firUser:user!, completion:{ (result) in
+                                switch result {
+                                case .success(let mhpUser):
+                                    completion(.success(mhpUser))
+                                default:
+                                    completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                                }
+                            })
+                        default:
+                            completion(.error(DatabaseError.errorAddingNewUserToDB))
+                        }
+                    })
+                } else {
+                    print(error?.localizedDescription as Any)
+                    completion(error as! Result<MHPUser, DatabaseError>)
+                }
+            })
+        }
+    }
+    
+    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         if let user = currentUser, let email = user.email {
@@ -202,16 +247,15 @@ struct MHPNetworkManager {
             actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
             user.sendEmailVerification(completion:{ (error) in
                 if error == nil {
-                    // TODO: something
-                    
+                    print("verification email sent")
                     return
                 } else {
                     // handle error
                     print(error?.localizedDescription as Any)
+                    completion(error as! Result<MHPUser, DatabaseError>)
                 }
             })
         }
     }
-    
-    
+
 }
