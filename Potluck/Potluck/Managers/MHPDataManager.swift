@@ -23,7 +23,7 @@ struct MHPDataManager {
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userLastName"] = mu.userLastName ?? ""
-            userDict["userEmail"] = mu.userEmail ?? ""
+//            userDict["userEmail"] = mu.userEmail ?? ""
             userDict["userPhone"] = mu.userPhone ?? ""
             userDict["userProfileURL"] = mu.userProfileURL ?? ""
             userDict["userFacebookID"] = mu.userFacebookID ?? ""

@@ -15,6 +15,9 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var txtLastName: UITextField!
     
     var mhpUser = MHPUser()
+    lazy var networkManager: MHPNetworkManager = {
+        return MHPNetworkManager()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,12 +55,18 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 present(alertController, animated: true, completion: nil)
             }
         } else {
-            if let first = txtFirstName.text, let last = txtLastName.text {
-                if let currentUser = Auth.auth().currentUser {
-                MHPNetworkManager().saveRegisteredUser(firUser: currentUser, firstName: first, lastName: last) { result in
+            if let first = txtFirstName.text,
+                let last = txtLastName.text,
+                let currentUser = Auth.auth().currentUser,
+                let email = currentUser.email {
+                
+                mhpUser.userFirstName = first
+                mhpUser.userLastName = last
+                mhpUser.userEmail = email
+                networkManager.updateUserForState(firUser: currentUser, mhpUser: mhpUser, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
-                        MHPNetworkManager().retrieve(firUser:currentUser, completion:{ (result) in
+                        self.networkManager.retrieve(firUser:currentUser, completion:{ (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
@@ -67,12 +76,10 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                             case .error(_):
                                 print(DatabaseError.errorRetrievingUserFromDB)
                             }
-                            
                         })
                     case .error(_):
-                        print(DatabaseError.errorAddingNewUserToDB)
+                        print(DatabaseError.errorRegisteringUserInDB)
                     }
-                }
                 }
             }
         }

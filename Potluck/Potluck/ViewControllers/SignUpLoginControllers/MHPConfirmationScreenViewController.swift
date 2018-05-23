@@ -35,15 +35,14 @@ class MHPConfirmationScreenViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func closeTapped(_ sender: UIButton) {
-        // FIXME: should send user back to their original flow
+        // FIXME: should send user back to their original flow (see signup flow)
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             if let tabBarController = appDelegate.window?.rootViewController as? UITabBarController,
                 let rootVCArray = tabBarController.viewControllers {
                 let navCon = rootVCArray[0] as! UINavigationController
                 if let homeVC = navCon.topViewController as? MHPHomeViewController {
                     homeVC.mhpUser = self.user
-                    navCon.popToViewController(homeVC, animated: true)
-//                    navCon.dismiss(animated: true, completion: nil)
+                    navCon.dismiss(animated: true, completion: nil)
                 }
             }
         }

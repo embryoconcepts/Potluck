@@ -31,7 +31,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     var mhpUser: MHPUser?
     var firUser: User?
-    let networkManager = MHPNetworkManager()
+    lazy var networkManager: MHPNetworkManager = {
+        return MHPNetworkManager()
+    }()
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
@@ -70,8 +72,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @IBAction func signupTapped(_ sender: Any) {
-        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
-            networkManager.signupUser(email: email, password: pass, mhpUser: mhpUser) { (result) in
+        if let txtEmail = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
+            // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
+            networkManager.linkUsers(email: txtEmail, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -84,7 +87,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 }
             }
         }
-        self.switchOnUserState()
     }
     
     @IBAction func forgotPasswordTapped(_ sender: Any) {
@@ -95,8 +97,16 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         })
         
         alert.addAction(UIAlertAction(title:"OK", style:.default, handler:{ action in
+            // handle error
             if let email = alert.textFields?.first?.text {
-                self.sendResetPasswordEmail(forEmail: email)
+                self.networkManager.sendResetPasswordEmail(forEmail:email, completion:{ (result) in
+                    switch result {
+                    case .success:
+                        print("password reset email sent")
+                    case .error:
+                        print("password reset email error")
+                    }
+                })
             }
         }))
         
@@ -132,7 +142,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 viewAlert.isHidden = true
                 if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
                     personalVC.mhpUser = self.mhpUser!
-                    self.present(personalVC, animated: true, completion: nil)
+                    navigationController?.present(personalVC, animated:true, completion:nil)
                 }
             case .unverified:
                 viewAlert.isHidden = false;
@@ -146,7 +156,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     fileprivate func close() {
-        // TODO: double check after Event flows built
+        // double check after Event flows built
         guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
         if let homeVC = tabBarCon.childViewControllers[0].childViewControllers[0] as? MHPHomeViewController {
             homeVC.inject(self.mhpUser!)
@@ -235,24 +245,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func sendResetPasswordEmail(forEmail email: String) {
-        // TODO: extract to network manager, return error?
-        
-        let actionCodeSettings =  ActionCodeSettings.init()
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/resetPassword/?email=\(email)")
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
-            if error == nil {
-                self.switchOnUserState()
-                return
-            } else {
-                // handle error
-                print(error?.localizedDescription as Any)
             }
         }
     }

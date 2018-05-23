@@ -33,13 +33,13 @@ struct MHPUserManager {
                 switch result {
                 case .success(let user):
                     completion(.success(user))
-                case .error(_):
+                case .error(let error):
                     do {
                         try Auth.auth().signOut()
                     } catch let err {
                         print("create or retreive try/catch error: \(err)")
-                        completion(.error(DatabaseError.errorRetrievingUserFromDB))
                     }
+                    completion(.error(error))
                 }
             })
         } else {
@@ -47,8 +47,8 @@ struct MHPUserManager {
                 switch result {
                 case .success (let mhpUser):
                     completion(.success(mhpUser))
-                default:
-                    completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                case .error (let error):
+                    completion(.error(error))
                 }
             }
         }
