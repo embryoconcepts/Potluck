@@ -66,8 +66,17 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     @IBAction func loginTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
-            loginUser(email: email, password: pass)
-            self.switchOnUserState()
+            networkManager.loginUser(email: email, password: pass) { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                case .error(let err):
+                    let alertController = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
         }
     }
     
@@ -78,7 +87,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
-                    self.switchOnUserState()
+                    self.updateForUserState()
                 case .error(let error):
                     let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -132,7 +141,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     // MARK: - Private methods
     
-    fileprivate func switchOnUserState()  {
+    fileprivate func updateForUserState()  {
         if let state = mhpUser?.userState {
             switch state {
             case .registered:
@@ -222,34 +231,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     
-    // MARK: - Network methods to be extracted to manager
-    
-    func loginUser(email: String, password: String) {
-        // TODO: extract to network manager, return error?
-
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            if error == nil {
-                MHPNetworkManager().retrieve(firUser:user!, completion:{ (result) in
-                    
-                    switch result {
-                    case let .success(retrievedUser):
-                        self.mhpUser = retrievedUser
-                        self.close()
-                    case .error(_):
-                        print(DatabaseError.errorRetrievingUserFromDB)
-                    }
-                })
-                
-            } else {
-                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -300,7 +281,7 @@ extension MHPSignUpLoginChoiceViewController:UserHandler {
             case .success(let user):
                 self.mhpUser = user
                 self.assertDependencies()
-                self.switchOnUserState()
+                self.updateForUserState()
             case .error(_):
                 print(DatabaseError.errorRetrievingUserFromDB)
             }

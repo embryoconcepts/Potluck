@@ -17,6 +17,7 @@ enum DatabaseError: Error {
     case errorSendingVerificationEmail
     case errorRegisteringUserInDB
     case errorLinkingUser
+    case errorLoggingIn
 }
 
 struct MHPNetworkManager {
@@ -30,8 +31,28 @@ struct MHPNetworkManager {
     }
     
     
-    // MARK: - User Update Methods
+    // MARK: - User Signup/Login Methods
     
+    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                MHPNetworkManager().retrieve(firUser:user!, completion:{ (result) in
+                    
+                    switch result {
+                    case let .success(retrievedUser):
+                        completion(.success(retrievedUser))
+                    case .error(_):
+                        completion(.error(DatabaseError.errorLoggingIn))
+                    }
+                })
+                
+            } else {
+                print(error as Any)
+                completion(.error(DatabaseError.errorLoggingIn))
+            }
+        }
+    }
+        
     func signInAnon(completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
         Auth.auth().signInAnonymously() { (user, error) in
             if error == nil {
@@ -61,6 +82,9 @@ struct MHPNetworkManager {
             }
         }
     }
+    
+    
+    // MARK: - Update User Methods
     
     func updateUserForState(firUser: User, mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
         firUser.reload { (error) in

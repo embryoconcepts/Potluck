@@ -131,16 +131,16 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKd-xA-ta4" userLabel="Alert View">
-                                <rect key="frame" x="0.0" y="64" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alert text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1J-LS-elB">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alert text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1J-LS-elB">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XtK-QW-vmG">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                         <connections>
                                             <action selector="alertTapped:" destination="am2-n5-041" eventType="touchUpInside" id="MAW-EP-n38"/>
                                         </connections>
@@ -148,7 +148,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="2F7-9j-f7r"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2F7-9j-f7r"/>
                                     <constraint firstAttribute="bottom" secondItem="XtK-QW-vmG" secondAttribute="bottom" id="6U6-DB-lIS"/>
                                     <constraint firstItem="A1J-LS-elB" firstAttribute="top" secondItem="bKd-xA-ta4" secondAttribute="top" id="D5G-P6-wqg"/>
                                     <constraint firstAttribute="trailing" secondItem="XtK-QW-vmG" secondAttribute="trailing" id="O6W-UO-I9z"/>
