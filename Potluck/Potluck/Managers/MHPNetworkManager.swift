@@ -113,7 +113,13 @@ struct MHPNetworkManager {
             currentUser.link(with:credential, completion:{ (user, error) in
                 if error == nil {
                     self.sendVerificationEmail(forUser:user, completion:{ (result) in
-                        completion(result)
+                        switch result {
+                        case .success:
+                            return
+                        case .error:
+                            completion(.error(.errorSendingVerificationEmail))
+                        }
+                        
                     })
                     // save updated mhpUser info to DB
                     self.updateUserForState(firUser:user!, mhpUser:mhpUser, state:.unverified, completion:{ (result) in
@@ -175,7 +181,7 @@ struct MHPNetworkManager {
         })
     }
     
-    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         if let user = currentUser, let email = user.email {
@@ -184,7 +190,7 @@ struct MHPNetworkManager {
             user.sendEmailVerification(completion:{ (error) in
                 if error == nil {
                     print("verification email sent")
-                    return
+                    completion(.success(true))
                 } else {
                     // handle error
                     print("Send Verification email error: \(String(describing: error))")

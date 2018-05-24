@@ -38,6 +38,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
@@ -125,7 +128,22 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func alertTapped(_ sender: Any) {
         if let fUser = Auth.auth().currentUser {
             networkManager.sendVerificationEmail(forUser: fUser) { (result) in
-                // TODO: handle result
+                switch result {
+                case .success:
+                    let alertController = UIAlertController(title: "Verification email sent!",
+                                                            message:"Please check your email and use the enclosed link to verify your account.",
+                                                            preferredStyle:.alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                case .error (let err):
+                    let alertController = UIAlertController(title: "Error sending verification email:",
+                                                            message:err.localizedDescription,
+                                                            preferredStyle:.alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
         }
     }
@@ -155,7 +173,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 }
             case .unverified:
                 viewAlert.isHidden = false;
-                txtAlert.text = "Verification email has been sent. Please use the link in the email to verify. Tap here to resend email."
+                txtAlert.text = "Verification email has been sent. Please use the link in the email to verify. Tap here to resend."
                 btnAlert.isEnabled = true
             case .anonymous:
                 viewAlert.isHidden = true
