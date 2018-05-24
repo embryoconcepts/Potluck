@@ -40,6 +40,7 @@
 		76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */; };
 		76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D35205FB23D004940DE /* MHPGuestListViewController.swift */; };
 		76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D37205FB246004940DE /* MHPItemListViewController.swift */; };
+		767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767F637420B6F638007F3D10 /* UIColorExtensions.swift */; };
 		76CB0FB020714E5300DF0AAD /* MHPUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB0FAF20714E5300DF0AAD /* MHPUserManager.swift */; };
 		76CB0FB22083A36E00DF0AAD /* MHPNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB0FB12083A36E00DF0AAD /* MHPNetworkManager.swift */; };
 		76CB0FB42083A37A00DF0AAD /* MHPDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB0FB32083A37A00DF0AAD /* MHPDataManager.swift */; };
@@ -114,6 +115,7 @@
 		76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardViewingViewController.swift; sourceTree = "<group>"; };
 		76723D35205FB23D004940DE /* MHPGuestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListViewController.swift; sourceTree = "<group>"; };
 		76723D37205FB246004940DE /* MHPItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListViewController.swift; sourceTree = "<group>"; };
+		767F637420B6F638007F3D10 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		76CB0FAF20714E5300DF0AAD /* MHPUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPUserManager.swift; sourceTree = "<group>"; };
 		76CB0FB12083A36E00DF0AAD /* MHPNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPNetworkManager.swift; sourceTree = "<group>"; };
 		76CB0FB32083A37A00DF0AAD /* MHPDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPDataManager.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 		76DF6B51205A298F00028B3B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				767F637420B6F638007F3D10 /* UIColorExtensions.swift */,
 				7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */,
 				76DF6B52205A29A600028B3B /* Fonts */,
 			);
@@ -655,6 +658,7 @@
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
 				76CB0FB22083A36E00DF0AAD /* MHPNetworkManager.swift in Sources */,
+				767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */,
 				760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */,
 				76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */,
 				760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */,

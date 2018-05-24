@@ -28,6 +28,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var txtAlert: UILabel!
     @IBOutlet weak var btnAlert: UIButton!
+    @IBOutlet weak var lblPasswordValidation: UILabel!
     
     var mhpUser: MHPUser?
     var firUser: User?
@@ -37,7 +38,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
-    
     
     // MARK: - Lifecycle
     
@@ -84,9 +84,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @IBAction func signupTapped(_ sender: Any) {
-        if let txtEmail = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
+        if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
-            networkManager.linkUsers(email: txtEmail, password: pass, mhpUser: mhpUser) { (result) in
+            networkManager.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -100,7 +100,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             }
         }
     }
-    
+        
     @IBAction func forgotPasswordTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -226,24 +226,42 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         if allMatches.count == 1,
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
             return trimmedText
-        } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            present(alertController, animated: true, completion: nil)
-            return nil
         }
+        return nil
     }
     
-    fileprivate func validatePassword(password: String?) -> String? {
-        // TODO: improve validation
-        if password != "" || password != nil {
-            return password!
+    func validatePassword(password: String?) -> String? {
+        var isValid = true
+        var errorMsg = "Password requires at least "
+        
+        if let txt = txtPassword.text {
+            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
+                errorMsg += "one uppercase letter"
+                isValid = false
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
+                errorMsg += ", one lowercase letter"
+                isValid = false
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
+                errorMsg += ", one number"
+                isValid = false
+            }
+            if txt.count < 8 {
+                errorMsg += ", and eight characters"
+                isValid = false
+            }
         } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: .alert)
+            isValid = false
+        }
+        
+        if isValid {
+            return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        } else {
+            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
-            present(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             return nil
         }
     }
@@ -261,24 +279,24 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        // TODO: add in place password validation
-    }
-    
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange = true
         if textFieldToChange == txtEmail {
             let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
             if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
                 shouldChange = false
-            } else {
-                shouldChange = true
             }
         }
+        
         return shouldChange
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // TODO: add in place password validatio
+    }
+    
 }
+
 
 extension MHPSignUpLoginChoiceViewController:Injectable {
     typealias T = MHPUser

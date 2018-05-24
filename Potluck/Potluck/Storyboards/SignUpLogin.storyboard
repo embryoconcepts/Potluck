@@ -13,6 +13,9 @@
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Sign Up or Login-->
@@ -30,7 +33,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07h-3C-N8H">
-                                <rect key="frame" x="191.5" y="306" width="163.5" height="40"/>
+                                <rect key="frame" x="191.5" y="326" width="163.5" height="40"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="NXz-vF-bfJ"/>
@@ -44,7 +47,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t6G-Mr-Wgx">
-                                <rect key="frame" x="20" y="306" width="164" height="40"/>
+                                <rect key="frame" x="20" y="326" width="164" height="40"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="gCF-lh-f5e"/>
@@ -70,14 +73,14 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gk0-9e-X9v">
-                                <rect key="frame" x="20" y="386" width="335" height="2"/>
+                                <rect key="frame" x="20" y="406" width="335" height="2"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="JAD-il-fBx"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k1K-0v-gVd">
-                                <rect key="frame" x="20" y="408" width="335" height="40"/>
+                                <rect key="frame" x="20" y="428" width="335" height="40"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="VXr-tO-Qfl"/>
@@ -91,7 +94,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Igh-E7-rk8">
-                                <rect key="frame" x="20" y="468" width="335" height="40"/>
+                                <rect key="frame" x="20" y="488" width="335" height="40"/>
                                 <color key="backgroundColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Hzc-Lg-7QB"/>
@@ -111,13 +114,13 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
                                 <connections>
                                     <outlet property="delegate" destination="am2-n5-041" id="bhQ-6Z-aQ3"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdt-CZ-ef1">
-                                <rect key="frame" x="20" y="356" width="335" height="20"/>
+                                <rect key="frame" x="20" y="376" width="335" height="20"/>
                                 <color key="backgroundColor" white="0.91666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="15q-8K-Io6"/>
@@ -130,6 +133,15 @@
                                     <action selector="forgotPasswordTapped:" destination="am2-n5-041" eventType="touchUpInside" id="kUY-N1-jgd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password must be at least 8 characters, and contain one uppercase letter, one lower case letter, and one number." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1aW-y6-2vd">
+                                <rect key="frame" x="25" y="289" width="325" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="7Yp-Lq-Gk7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="11"/>
+                                <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKd-xA-ta4" userLabel="Alert View">
                                 <rect key="frame" x="0.0" y="64" width="375" height="40"/>
                                 <subviews>
@@ -171,6 +183,7 @@
                             <constraint firstItem="Igh-E7-rk8" firstAttribute="top" secondItem="k1K-0v-gVd" secondAttribute="bottom" constant="20" id="EJE-Mj-HeD"/>
                             <constraint firstItem="qk2-y9-4jm" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="25" id="FdN-dZ-75d"/>
                             <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="gk0-9e-X9v" secondAttribute="trailing" constant="20" id="Fub-mZ-nZA"/>
+                            <constraint firstItem="1aW-y6-2vd" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="25" id="HGZ-cx-ESC"/>
                             <constraint firstItem="Igh-E7-rk8" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="20" id="KoQ-ml-QiY"/>
                             <constraint firstItem="oN7-Vw-yNh" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="20" id="PNg-U0-Ck4"/>
                             <constraint firstItem="gk0-9e-X9v" firstAttribute="top" secondItem="fdt-CZ-ef1" secondAttribute="bottom" constant="10" id="Raj-fp-Mrc"/>
@@ -178,6 +191,7 @@
                             <constraint firstItem="t6G-Mr-Wgx" firstAttribute="width" secondItem="07h-3C-N8H" secondAttribute="width" id="Ybe-yr-7b3"/>
                             <constraint firstItem="07h-3C-N8H" firstAttribute="leading" secondItem="t6G-Mr-Wgx" secondAttribute="trailing" constant="8" id="ZrI-sG-POl"/>
                             <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="k1K-0v-gVd" secondAttribute="trailing" constant="20" id="axT-Fn-2TO"/>
+                            <constraint firstItem="1aW-y6-2vd" firstAttribute="top" secondItem="oN7-Vw-yNh" secondAttribute="bottom" constant="3" id="b8t-tw-Q84"/>
                             <constraint firstItem="fdt-CZ-ef1" firstAttribute="top" secondItem="07h-3C-N8H" secondAttribute="bottom" constant="10" id="ckq-kM-RqH"/>
                             <constraint firstItem="qk2-y9-4jm" firstAttribute="top" secondItem="BxU-kR-M82" secondAttribute="top" constant="60" id="dIo-8R-25Y"/>
                             <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="fdt-CZ-ef1" secondAttribute="trailing" constant="20" id="dVt-O3-nwQ"/>
@@ -187,9 +201,10 @@
                             <constraint firstItem="bKd-xA-ta4" firstAttribute="top" secondItem="BxU-kR-M82" secondAttribute="top" id="lQH-65-Geg"/>
                             <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="Igh-E7-rk8" secondAttribute="trailing" constant="20" id="oe4-XC-EGi"/>
                             <constraint firstItem="fdt-CZ-ef1" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="20" id="r4X-Tf-gdn"/>
+                            <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="1aW-y6-2vd" secondAttribute="trailing" constant="25" id="rqk-Eu-IQa"/>
                             <constraint firstItem="BxU-kR-M82" firstAttribute="trailing" secondItem="07h-3C-N8H" secondAttribute="trailing" constant="20" id="t1F-bP-8KM"/>
                             <constraint firstItem="t6G-Mr-Wgx" firstAttribute="top" secondItem="07h-3C-N8H" secondAttribute="top" id="u1W-h2-vlo"/>
-                            <constraint firstItem="t6G-Mr-Wgx" firstAttribute="top" secondItem="oN7-Vw-yNh" secondAttribute="bottom" constant="20" id="utP-Tn-8g9"/>
+                            <constraint firstItem="t6G-Mr-Wgx" firstAttribute="top" secondItem="oN7-Vw-yNh" secondAttribute="bottom" constant="40" id="utP-Tn-8g9"/>
                             <constraint firstItem="k1K-0v-gVd" firstAttribute="top" secondItem="gk0-9e-X9v" secondAttribute="bottom" constant="20" id="xam-KN-eeB"/>
                             <constraint firstItem="bKd-xA-ta4" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" id="xcb-2Q-oWG"/>
                             <constraint firstItem="xN1-dx-Ga0" firstAttribute="leading" secondItem="BxU-kR-M82" secondAttribute="leading" constant="20" id="zmV-Vj-8Ud"/>
@@ -199,6 +214,7 @@
                     <navigationItem key="navigationItem" title="Sign Up or Login" id="bhY-EV-CDr"/>
                     <connections>
                         <outlet property="btnAlert" destination="XtK-QW-vmG" id="eWS-L7-bI2"/>
+                        <outlet property="lblPasswordValidation" destination="1aW-y6-2vd" id="KNP-EJ-jTt"/>
                         <outlet property="txtAlert" destination="A1J-LS-elB" id="iSq-AF-oId"/>
                         <outlet property="txtEmail" destination="xN1-dx-Ga0" id="KHU-WY-PBb"/>
                         <outlet property="txtPassword" destination="oN7-Vw-yNh" id="fUN-Q4-p2U"/>
