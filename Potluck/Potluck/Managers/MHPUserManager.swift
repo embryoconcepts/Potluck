@@ -27,7 +27,7 @@ protocol UserHandler {
 struct MHPUserManager {
     let networkManager = MHPNetworkManager()
     
-    func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, DatabaseError> ) -> ())) {
+    func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, Error> ) -> ())) {
         if let currentUser = Auth.auth().currentUser {
             networkManager.retrieve(firUser:currentUser, completion:{ (result) in
                 switch result {

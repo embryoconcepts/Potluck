@@ -73,12 +73,18 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                                     congratsVC.user = retrievedUser
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
-                            case .error(_):
-                                print(DatabaseError.errorRetrievingUserFromDB)
+                            case .error(let error):
+                                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                alertController.addAction(defaultAction)
+                                self.present(alertController, animated: true, completion: nil)
                             }
                         })
-                    case .error(_):
-                        print(DatabaseError.errorRegisteringUserInDB)
+                    case .error(let error):
+                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 }
             }
@@ -103,7 +109,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange = true
-        let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
+        let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^*")
         if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
             shouldChange = false
         } else {
@@ -112,8 +118,4 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         return shouldChange
     }
     
-    func validateText() {
-        // TODO: extract validation, give visual cues
-        
-    }
 }

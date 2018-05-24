@@ -67,8 +67,10 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
                 }
             }
         } catch let signOutError as NSError {
-            // handle error
-            print("Error signing out: %@", signOutError)
+            let alertController = UIAlertController(title: "Error", message: signOutError.localizedDescription, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     

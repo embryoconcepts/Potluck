@@ -188,8 +188,11 @@
                 self.mhpUser = user
                 self.assertDependencies()
                 self.styleView()
-            case .error(_):
-                print(DatabaseError.errorRetrievingUserFromDB)
+            case .error(let error):
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }

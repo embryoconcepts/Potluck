@@ -73,6 +73,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
+                    self.updateForUserState()
                 case .error(let err):
                     let alertController = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -164,7 +165,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             switch state {
             case .registered:
                 viewAlert.isHidden = true
-                dismiss(animated: true, completion: nil)
+                close()
             case .verified:
                 viewAlert.isHidden = true
                 if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
@@ -287,12 +288,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 shouldChange = false
             }
         }
-        
         return shouldChange
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        // TODO: add in place password validatio
     }
     
 }
@@ -318,8 +314,11 @@ extension MHPSignUpLoginChoiceViewController:UserHandler {
                 self.mhpUser = user
                 self.assertDependencies()
                 self.updateForUserState()
-            case .error(_):
-                print(DatabaseError.errorRetrievingUserFromDB)
+            case .error(let error):
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }

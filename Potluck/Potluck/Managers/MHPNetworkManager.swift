@@ -9,16 +9,16 @@
 import Foundation
 import Firebase
 
-enum DatabaseError: Error {
-    case errorAddingNewUserToDB
-    case errorRetrievingUserFromDB
-    case errorUpdatingUserInDB
-    case errorResetingPassword
-    case errorSendingVerificationEmail
-    case errorRegisteringUserInDB
-    case errorLinkingUser
-    case errorLoggingIn
-}
+//enum DatabaseError: Error {
+//    case errorAddingNewUserToDB
+//    case errorRetrievingUserFromDB
+//    case errorUpdatingUserInDB
+//    case errorResetingPassword
+//    case errorSendingVerificationEmail
+//    case errorRegisteringUserInDB
+//    case errorLinkingUser
+//    case errorLoggingIn
+//}
 
 struct MHPNetworkManager {
     let db = Firestore.firestore()
@@ -33,27 +33,24 @@ struct MHPNetworkManager {
     
     // MARK: - User Signup/Login Methods
     
-    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error == nil {
                 MHPNetworkManager().retrieve(firUser:user!, completion:{ (result) in
-                    
                     switch result {
                     case let .success(retrievedUser):
                         completion(.success(retrievedUser))
                     case .error(_):
-                        completion(.error(DatabaseError.errorLoggingIn))
+                        completion(.error(error!))
                     }
                 })
-                
             } else {
-                print(error as Any)
-                completion(.error(DatabaseError.errorLoggingIn))
+                completion(.error(error!))
             }
         }
     }
         
-    func signInAnon(completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+    func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signInAnonymously() { (user, error) in
             if error == nil {
                 if let returnedUser = user {
@@ -62,7 +59,7 @@ struct MHPNetworkManager {
                     ref.setData(dataSet, options:SetOptions.merge()) { (error) in
                         if let error = error {
                             print("Error adding document: \(error)")
-                            completion(.error(DatabaseError.errorAddingNewUserToDB))
+                            completion(.error(error))
                         } else {
                             print("Anon user added with ID: \(ref.documentID)")
                             // retrieve mhpUser from db
@@ -71,14 +68,14 @@ struct MHPNetworkManager {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
-                                    completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                                    completion(.error(error!))
                                 }
                             })
                         }
                     }
                 }
             } else {
-                completion(.error(DatabaseError.errorAddingNewUserToDB))
+                completion(.error(error!))
             }
         }
     }
@@ -86,7 +83,7 @@ struct MHPNetworkManager {
     
     // MARK: - Update User Methods
     
-    func updateUserForState(firUser: User, mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+    func updateUserForState(firUser: User, mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {
         firUser.reload { (error) in
             if error != nil {
                 print("User reload error in updateUserForState: \(String(describing: error))")
@@ -98,7 +95,7 @@ struct MHPNetworkManager {
         ref.setData(dataSet, options:SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
-                completion(.error(.errorUpdatingUserInDB))
+                completion(.error(error))
             } else {
                 print("User updated with document ID: \(ref.documentID)")
                 completion(.success(true))
@@ -106,7 +103,7 @@ struct MHPNetworkManager {
         }
     }
     
-    func linkUsers(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+    func linkUsers(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         // link newly created user to anon user in Firestore
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         if let currentUser = Auth.auth().currentUser {
@@ -117,7 +114,7 @@ struct MHPNetworkManager {
                         case .success:
                             return
                         case .error:
-                            completion(.error(.errorSendingVerificationEmail))
+                            completion(.error(error!))
                         }
                         
                     })
@@ -131,16 +128,15 @@ struct MHPNetworkManager {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
-                                    completion(.error(.errorRetrievingUserFromDB))
+                                    completion(.error(error!))
                                 }
                             })
                         default:
-                            completion(.error(.errorUpdatingUserInDB))
+                            completion(.error(error!))
                         }
                     })
                 } else {
-                    print(error?.localizedDescription as Any)
-                    completion(.error(DatabaseError.errorLinkingUser))
+                    completion(.error(error!))
                 }
             })
         }
@@ -154,7 +150,7 @@ struct MHPNetworkManager {
      - parameter firUser: Firebase User object
      - parameter completion: Result object containing MHPUser or DatabaseError
      */
-    func retrieve(firUser: User, completion: @escaping (Result<MHPUser, DatabaseError> ) -> ()) {
+    func retrieve(firUser: User, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         firUser.reload { (error) in
             if error != nil {
                 print("User reload error in retrieve: \(String(describing: error))")
@@ -176,12 +172,12 @@ struct MHPNetworkManager {
                 }
                 completion(.success(mhpUser))
             } else {
-                completion(.error(DatabaseError.errorRetrievingUserFromDB))
+                completion(.error(error!))
             }
         })
     }
     
-    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         if let user = currentUser, let email = user.email {
@@ -194,13 +190,13 @@ struct MHPNetworkManager {
                 } else {
                     // handle error
                     print("Send Verification email error: \(String(describing: error))")
-                    completion(.error(.errorSendingVerificationEmail))
+                    completion(.error(error!))
                 }
             })
         }
     }
     
-    func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, DatabaseError> ) -> ()) {
+    func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/resetPassword/?email=\(email)")
@@ -209,7 +205,7 @@ struct MHPNetworkManager {
             if error == nil {
                 completion(.success(true))
             } else {
-                completion(.error(.errorResetingPassword))
+                completion(.error(error!))
                 print("Reset password error: \(String(describing: error))")
             }
         }
