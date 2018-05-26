@@ -59,14 +59,14 @@ class MHPEventViewController: UIViewController, Injectable {
         if segue.identifier == "EventToGuestList" {
             let guestListVC = segue.destination as? MHPGuestListViewController
             if let tempEvent = event, let tempUser = user {
-                guestListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
+                guestListVC?.inject((injectedUser: tempUser, injectedEvent: tempEvent))
             }
         }
         
         if segue.identifier == "EventToItemList" {
             let itemListVC = segue.destination as? MHPItemListViewController
             if let tempEvent = event, let tempUser = user {
-                itemListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
+                itemListVC?.inject((injectedUser: tempUser, injectedEvent: tempEvent))
             }
         }
     }

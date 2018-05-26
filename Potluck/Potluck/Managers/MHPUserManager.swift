@@ -29,7 +29,7 @@ struct MHPUserManager {
     
     func createOrRetrieveUser(completion: @escaping ((Result<MHPUser, Error> ) -> ())) {
         if let currentUser = Auth.auth().currentUser {
-            networkManager.retrieve(firUser:currentUser, completion:{ (result) in
+            networkManager.retrieve(firUser: currentUser, completion: { (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))

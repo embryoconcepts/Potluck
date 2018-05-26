@@ -9,15 +9,15 @@
 import UIKit
 import Firebase
 
-protocol HomeUserDelegate:class {
+protocol HomeUserDelegate: class {
     func updateUser(mhpUser: MHPUser)
 }
 
-protocol ProfileUserDelegate:class {
+protocol ProfileUserDelegate: class {
     func updateUser(mhpUser: MHPUser)
 }
 
-protocol SettingsUserDelegate:class {
+protocol SettingsUserDelegate: class {
     func updateUser(mhpUser: MHPUser)
 }
 
@@ -46,7 +46,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
-        txtPassword.addTarget(self, action:#selector(textFieldDidChange(_: )), for: UIControlEvents.editingChanged)
+        txtPassword.addTarget(self, action: #selector(textFieldDidChange(_: )), for: UIControlEvents.editingChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,14 +108,14 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func forgotPasswordTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addTextField(configurationHandler:{ textField in
+        alert.addTextField(configurationHandler: { textField in
             textField.placeholder = "Input your email here..."
         })
         
-        alert.addAction(UIAlertAction(title:"OK", style:.default, handler:{ action in
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             // handle error
             if let email = alert.textFields?.first?.text {
-                self.networkManager.sendResetPasswordEmail(forEmail:email, completion:{ (result) in
+                self.networkManager.sendResetPasswordEmail(forEmail: email, completion: { (result) in
                     switch result {
                     case .success:
                         print("password reset email sent")
@@ -135,15 +135,15 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 switch result {
                 case .success:
                     let alertController = UIAlertController(title: "Verification email sent!",
-                                                            message:"Please check your email and use the enclosed link to verify your account.",
-                                                            preferredStyle:.alert)
+                                                            message: "Please check your email and use the enclosed link to verify your account.",
+                                                            preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 case .error (let err):
                     let alertController = UIAlertController(title: "Error sending verification email:",
-                                                            message:err.localizedDescription,
-                                                            preferredStyle:.alert)
+                                                            message: err.localizedDescription,
+                                                            preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
@@ -173,7 +173,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 viewAlert.isHidden = true
                 if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
                     personalVC.mhpUser = self.mhpUser!
-                    navigationController?.present(personalVC, animated:true, completion:nil)
+                    navigationController?.present(personalVC, animated: true, completion: nil)
                 }
             case .unverified:
                 viewAlert.isHidden = false;
@@ -224,8 +224,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         
         let range = NSMakeRange(0, NSString(string: trimmedText).length)
         let allMatches = dataDetector.matches(in: trimmedText,
-                                              options:[],
-                                              range:range)
+                                              options: [],
+                                              range: range)
         
         if allMatches.count == 1,
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
@@ -296,11 +296,11 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         let baseColor = UIColor().fromHex(hexString: "6A6A6A")
         let validColor = UIColor.blue
         
-        let attrStr = NSMutableAttributedString(
-            string:"Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, and one number.",
-            attributes:[
-                NSAttributedStringKey.font:UIFont.init(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
-                NSAttributedStringKey.foregroundColor:baseColor
+        let attrStr = NSMutableAttributedString (
+            string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, and one number.",
+            attributes: [
+                .font: UIFont.init(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
+                .foregroundColor: baseColor
             ])
         
         let countRange = NSMakeRange(26, 12)
@@ -345,7 +345,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
 }
 
-extension MHPSignUpLoginChoiceViewController:Injectable {
+extension MHPSignUpLoginChoiceViewController: Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {
@@ -357,7 +357,7 @@ extension MHPSignUpLoginChoiceViewController:Injectable {
     }
 }
 
-extension MHPSignUpLoginChoiceViewController:UserHandler {
+extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
         MHPUserManager().createOrRetrieveUser { (result) in
             switch result {

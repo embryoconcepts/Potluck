@@ -11,8 +11,8 @@ import Firebase
 
 struct MHPDataManager {
     
-    func buildDataSet(firUser: User, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String:Any] {
-        var userDict = [String:Any]()
+    func buildDataSet(firUser: User, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
+        var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
         if let email = firUser.email {
@@ -39,7 +39,7 @@ struct MHPDataManager {
         return userDict
     }
     
-    func parseResponseToUser(document: DocumentSnapshot, data: [String:Any]) -> MHPUser {
+    func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
         var user = MHPUser()
         user.userID = document.documentID
         user.userFirstName = data["userFirstName"] as? String ?? ""

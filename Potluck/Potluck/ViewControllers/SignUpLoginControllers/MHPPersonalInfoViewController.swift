@@ -66,7 +66,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 networkManager.updateUserForState(firUser: currentUser, mhpUser: mhpUser, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
-                        self.networkManager.retrieve(firUser:currentUser, completion:{ (result) in
+                        self.networkManager.retrieve(firUser: currentUser, completion: { (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {

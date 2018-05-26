@@ -83,7 +83,7 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
     
 }
 
-extension MHPSettingsViewController:Injectable {
+extension MHPSettingsViewController: Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {

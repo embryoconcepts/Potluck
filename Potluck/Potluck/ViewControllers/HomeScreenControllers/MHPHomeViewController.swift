@@ -11,7 +11,7 @@
  import Firebase
  import FirebaseFirestore
  
- class MHPHomeViewController:UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
+ class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -50,7 +50,7 @@
         if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
             if segue.identifier == "HomeToEventSegue" {
                 let eventDetailVC = segue.destination as? MHPEventViewController
-                eventDetailVC?.inject((injectedUser: mhpUser!, injectedEvent:events[indexPath.row]))
+                eventDetailVC?.inject((injectedUser: mhpUser!, injectedEvent: events[indexPath.row]))
             }
         } else {
             // error handling
@@ -168,7 +168,7 @@
 
  }
  
- extension MHPHomeViewController:Injectable {
+ extension MHPHomeViewController: Injectable {
     typealias T = MHPUser
     
     func inject(_ user: T) {
@@ -180,7 +180,7 @@
     }
  }
  
- extension MHPHomeViewController:UserHandler {
+ extension MHPHomeViewController: UserHandler {
     func handleUser() {
         MHPUserManager().createOrRetrieveUser { (result) in
             switch result {
