@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 protocol HomeUserDelegate: class {
     func updateUser(mhpUser: MHPUser)
@@ -363,6 +364,7 @@ extension MHPSignUpLoginChoiceViewController: Injectable {
 
 extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
+        SVProgressHUD.show()
         MHPUserManager().createOrRetrieveUser { (result) in
             switch result {
             case .success(let user):
@@ -375,6 +377,7 @@ extension MHPSignUpLoginChoiceViewController: UserHandler {
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             }
+            SVProgressHUD.dismiss()
         }
     }
 }

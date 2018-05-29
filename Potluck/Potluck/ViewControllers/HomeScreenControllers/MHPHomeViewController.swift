@@ -10,6 +10,7 @@
  import ScalingCarousel
  import Firebase
  import FirebaseFirestore
+ import SVProgressHUD
  
  class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
     
@@ -30,7 +31,9 @@
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         handleUser()
+        
         //    setupMockData() // TODO: remove for production
     }
     
@@ -61,14 +64,14 @@
     // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
-            createEventVC.mhpUser = self.mhpUser
+        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            createEventVC.mhpUser = user
         }
-        if let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
-            profileVC.inject(self.mhpUser!)
+        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+            profileVC.inject(user)
         }
-        if let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
-            settingsVC.inject(self.mhpUser!)
+        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+            settingsVC.inject(user)
         }
         return true
     }
@@ -182,17 +185,29 @@
  
  extension MHPHomeViewController: UserHandler {
     func handleUser() {
-        MHPUserManager().createOrRetrieveUser { (result) in
-            switch result {
-            case .success(let user):
-                self.mhpUser = user
-                self.assertDependencies()
-                self.styleView()
-            case .error(let error):
-                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
+        if let tabCon = tabBarController, let tabItems = tabCon.tabBar.items {
+            // disable the tabs while retrieving the user to prevent issues with nil value upon loading child VCs
+            for t in tabItems {
+                t.isEnabled = false
+            }
+            SVProgressHUD.show()
+            MHPUserManager().createOrRetrieveUser { (result) in
+                switch result {
+                case .success(let user):
+                    self.mhpUser = user
+                    self.assertDependencies()
+                    self.styleView()
+                case .error(let error):
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                SVProgressHUD.dismiss()
+                // enable tabs after completion
+                for t in tabItems {
+                    t.isEnabled = true
+                }
             }
         }
     }
