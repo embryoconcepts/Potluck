@@ -104,7 +104,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             }
         }
     }
-        
+    
     @IBAction func forgotPasswordTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -218,56 +218,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         self.dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func validateEmail(email: String?) -> String? {
-        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
-        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
-        
-        let range = NSMakeRange(0, NSString(string: trimmedText).length)
-        let allMatches = dataDetector.matches(in: trimmedText,
-                                              options: [],
-                                              range: range)
-        
-        if allMatches.count == 1,
-            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
-            return trimmedText
-        } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-            return nil
-        }
-    }
-    
-    func validatePassword(password: String?) -> String? {
-        var errorMsg = "Password requires at least "
-        
-        if let txt = txtPassword.text {
-            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
-                errorMsg += "one upper case letter"
-            }
-            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
-                errorMsg += ", one lower case letter"
-            }
-            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
-                errorMsg += ", one number"
-            }
-            if txt.count < 8 {
-                errorMsg += ", and eight characters"
-            }
-        }
-        
-        if isPasswordValid {
-            return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        } else {
-            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-            return nil
-        }
-    }
-    
     
     // MARK: - UITextFieldDelegate
     
@@ -293,49 +243,23 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let baseColor = UIColor().fromHex(hexString: "6A6A6A")
-        let validColor = UIColor.blue
-        
         let attrStr = NSMutableAttributedString (
             string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, and one number.",
             attributes: [
                 .font: UIFont.init(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
-                .foregroundColor: baseColor
+                .foregroundColor: UIColor(hexString: "6A6A6A")
             ])
         
-        let countRange = NSMakeRange(26, 12)
-        let upperRange = NSMakeRange(61, 22)
-        let lowerRange = NSMakeRange(84, 21)
-        let numRange = NSMakeRange(110, attrStr.length - 111)
-        
         if let txt = txtPassword.text {
-            if txt.count >= 8 {
-                attrStr.addAttribute(.foregroundColor, value: validColor, range: countRange)
-            } else {
-                attrStr.addAttribute(.foregroundColor, value: baseColor, range: countRange)
-                isPasswordValid = false
-            }
-            
-            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) != nil) {
-                attrStr.addAttribute(.foregroundColor, value: validColor, range: upperRange)
-            } else {
-                attrStr.addAttribute(.foregroundColor, value: baseColor, range: upperRange)
-                isPasswordValid = false
-            }
-            
-            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) != nil) {
-                attrStr.addAttribute(.foregroundColor, value: validColor, range: lowerRange)
-            } else {
-                attrStr.addAttribute(.foregroundColor, value: baseColor, range: lowerRange)
-                isPasswordValid = false
-            }
-            
-            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil) {
-                attrStr.addAttribute(.foregroundColor, value: validColor, range: numRange)
-            } else {
-                attrStr.addAttribute(.foregroundColor, value: baseColor, range: numRange)
-                isPasswordValid = false
-            }
+            isPasswordValid = true
+            attrStr.addAttributes(setupAttributeColor(if: (txt.count >= 8)),
+                                  range: findRange(in: attrStr.string, for: "at least 8 characters"))
+            attrStr.addAttributes(setupAttributeColor(if: (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) != nil)),
+                                  range: findRange(in: attrStr.string, for: "one upper case letter"))
+            attrStr.addAttributes(setupAttributeColor(if: (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) != nil)),
+                                  range: findRange(in: attrStr.string, for: "one lower case letter"))
+            attrStr.addAttributes(setupAttributeColor(if: (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil)),
+                                  range: findRange(in: attrStr.string, for: "one number"))
         } else {
             isPasswordValid = false
         }
@@ -343,7 +267,85 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         lblPasswordValidation.attributedText = attrStr
     }
     
+    
+    // MARK: - In-Place Validation Helpers
+    
+    func setupAttributeColor(if isValid: Bool) -> [NSAttributedStringKey: Any] {
+        if isValid {
+            return [NSAttributedStringKey.foregroundColor: UIColor.blue]
+        } else {
+            isPasswordValid = false
+            return [NSAttributedStringKey.foregroundColor: UIColor(hexString: "6A6A6A")]
+        }
+    }
+    
+    func findRange(in baseString: String, for substring: String) -> NSRange {
+        if let range = baseString.localizedStandardRange(of: substring) {
+            let startIndex = baseString.distance(from: baseString.startIndex, to: range.lowerBound)
+            let length = substring.count
+            return NSMakeRange(startIndex, length)
+        } else {
+            print("Range does not exist in the base string.")
+            return NSMakeRange(0, 0)
+        }
+    }
+    
+    
+    // MARK: - Validation Methods
+    
+    func validateEmail(email: String?) -> String? {
+        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
+        
+        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+        let allMatches = dataDetector.matches(in: trimmedText,
+                                              options: [],
+                                              range: range)
+        
+        if allMatches.count == 1,
+            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
+            return trimmedText
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return nil
+        }
+    }
+    
+    func validatePassword(password: String?) -> String? {
+        var errorMsg = "Password requires at least:"
+        
+        if let txt = txtPassword.text {
+            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
+                errorMsg += "\none upper case letter"
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
+                errorMsg += "\none lower case letter"
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
+                errorMsg += "\none number"
+            }
+            if txt.count < 8 {
+                errorMsg += "\neight characters"
+            }
+        }
+        
+        if isPasswordValid {
+            return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        } else {
+            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return nil
+        }
+    }
+    
 }
+
+// MARK: - Injectable Protocol
 
 extension MHPSignUpLoginChoiceViewController: Injectable {
     typealias T = MHPUser
@@ -356,6 +358,8 @@ extension MHPSignUpLoginChoiceViewController: Injectable {
         assert(self.mhpUser != nil)
     }
 }
+
+// MARK: - UserHandler Protocol
 
 extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
