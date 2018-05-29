@@ -100,6 +100,7 @@ PODS:
   - nanopb/encode (0.3.8)
   - Protobuf (3.5.0)
   - ScalingCarousel (2.2)
+  - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -111,6 +112,7 @@ DEPENDENCIES:
   - FirebaseUI/Facebook
   - FirebaseUI/Phone
   - ScalingCarousel
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -136,7 +138,8 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   ScalingCarousel: 346af59372a3823a1a38d5bc02ac4fd16afa4fd7
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: b28b10b160ca7ff3fe66298a7952895833017297
+PODFILE CHECKSUM: aa8b015c6fd9701d071ad85b2543add707bcc53f
 
 COCOAPODS: 1.3.1

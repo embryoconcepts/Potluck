@@ -18,6 +18,7 @@ target 'Potluck' do
   pod 'Firebase/DynamicLinks'
   pod 'Firebase/Firestore'
   pod 'ScalingCarousel'
+  pod 'SVProgressHUD'
   
   target 'PotluckTests' do
     inherit! :search_paths
