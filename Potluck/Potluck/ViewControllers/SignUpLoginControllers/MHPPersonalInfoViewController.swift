@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     
@@ -63,6 +64,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 mhpUser.userFirstName = first
                 mhpUser.userLastName = last
                 mhpUser.userEmail = email
+                SVProgressHUD.show()
                 networkManager.updateUserForState(firUser: currentUser, mhpUser: mhpUser, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
@@ -73,19 +75,20 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                                     congratsVC.user = retrievedUser
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
-                            case .error(let error):
+                            case .failure(let error):
                                 let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                                 alertController.addAction(defaultAction)
                                 self.present(alertController, animated: true, completion: nil)
                             }
                         })
-                    case .error(let error):
+                    case .failure(let error):
                         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                         alertController.addAction(defaultAction)
                         self.present(alertController, animated: true, completion: nil)
                     }
+                    SVProgressHUD.dismiss()
                 }
             }
         }

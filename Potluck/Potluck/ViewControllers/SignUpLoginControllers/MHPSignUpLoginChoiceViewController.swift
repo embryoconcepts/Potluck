@@ -73,17 +73,19 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     @IBAction func loginTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
+            SVProgressHUD.show()
             networkManager.loginUser(email: email, password: pass) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
                     self.updateForUserState()
-                case .error(let err):
-                    let alertController = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
+                case .failure(let error):
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 }
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -91,17 +93,19 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func signupTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
+            SVProgressHUD.show()
             networkManager.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
                     self.updateForUserState()
-                case .error(let error):
+                case .failure(let error):
                     let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 }
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -116,13 +120,19 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             // handle error
             if let email = alert.textFields?.first?.text {
+                SVProgressHUD.show()
                 self.networkManager.sendResetPasswordEmail(forEmail: email, completion: { (result) in
                     switch result {
                     case .success:
                         print("password reset email sent")
-                    case .error:
+                    case .failure (let error):
                         print("password reset email error")
+                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
                     }
+                    SVProgressHUD.dismiss()
                 })
             }
         }))
@@ -132,6 +142,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     @IBAction func alertTapped(_ sender: Any) {
         if let fUser = Auth.auth().currentUser {
+            SVProgressHUD.show()
             networkManager.sendVerificationEmail(forUser: fUser) { (result) in
                 switch result {
                 case .success:
@@ -141,14 +152,15 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
-                case .error (let err):
+                case .failure (let error):
                     let alertController = UIAlertController(title: "Error sending verification email:",
-                                                            message: err.localizedDescription,
+                                                            message: error.localizedDescription,
                                                             preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 }
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -371,7 +383,7 @@ extension MHPSignUpLoginChoiceViewController: UserHandler {
                 self.mhpUser = user
                 self.assertDependencies()
                 self.updateForUserState()
-            case .error(let error):
+            case .failure(let error):
                 let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)

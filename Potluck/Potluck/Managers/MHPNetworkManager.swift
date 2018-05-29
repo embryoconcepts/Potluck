@@ -40,12 +40,12 @@ struct MHPNetworkManager {
                     switch result {
                     case let .success(retrievedUser):
                         completion(.success(retrievedUser))
-                    case .error(_):
-                        completion(.error(error!))
+                    case .failure(_):
+                        completion(.failure(error!))
                     }
                 })
             } else {
-                completion(.error(error!))
+                completion(.failure(error!))
             }
         }
     }
@@ -59,7 +59,7 @@ struct MHPNetworkManager {
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if let error = error {
                             print("Error adding document: \(error)")
-                            completion(.error(error))
+                            completion(.failure(error))
                         } else {
                             print("Anon user added with ID: \(ref.documentID)")
                             // retrieve mhpUser from db
@@ -68,14 +68,14 @@ struct MHPNetworkManager {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
-                                    completion(.error(error!))
+                                    completion(.failure(error!))
                                 }
                             })
                         }
                     }
                 }
             } else {
-                completion(.error(error!))
+                completion(.failure(error!))
             }
         }
     }
@@ -95,7 +95,7 @@ struct MHPNetworkManager {
         ref.setData(dataSet, options: SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
-                completion(.error(error))
+                completion(.failure(error))
             } else {
                 print("User updated with document ID: \(ref.documentID)")
                 completion(.success(true))
@@ -113,8 +113,8 @@ struct MHPNetworkManager {
                         switch result {
                         case .success:
                             return
-                        case .error:
-                            completion(.error(error!))
+                        case .failure:
+                            completion(.failure(error!))
                         }
                         
                     })
@@ -128,15 +128,15 @@ struct MHPNetworkManager {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
-                                    completion(.error(error!))
+                                    completion(.failure(error!))
                                 }
                             })
                         default:
-                            completion(.error(error!))
+                            completion(.failure(error!))
                         }
                     })
                 } else {
-                    completion(.error(error!))
+                    completion(.failure(error!))
                 }
             })
         }
@@ -165,14 +165,14 @@ struct MHPNetworkManager {
                         switch result {
                         case .success(_):
                             return
-                        case .error (let err):
-                            completion(.error(err))
+                        case .failure (let error):
+                            completion(.failure(error))
                         }
                     })
                 }
                 completion(.success(mhpUser))
             } else {
-                completion(.error(error!))
+                completion(.failure(error!))
             }
         })
     }
@@ -190,7 +190,7 @@ struct MHPNetworkManager {
                 } else {
                     // handle error
                     print("Send Verification email error: \(String(describing: error))")
-                    completion(.error(error!))
+                    completion(.failure(error!))
                 }
             })
         }
@@ -205,7 +205,7 @@ struct MHPNetworkManager {
             if error == nil {
                 completion(.success(true))
             } else {
-                completion(.error(error!))
+                completion(.failure(error!))
                 print("Reset password error: \(String(describing: error))")
             }
         }

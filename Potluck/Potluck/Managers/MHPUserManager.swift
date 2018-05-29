@@ -11,7 +11,7 @@ import Firebase
 
 enum Result<T, Error> {
     case success(T)
-    case error(Error)
+    case failure(Error)
 }
 
 protocol Injectable {
@@ -33,13 +33,13 @@ struct MHPUserManager {
                 switch result {
                 case .success(let user):
                     completion(.success(user))
-                case .error(let error):
+                case .failure(let error):
                     do {
                         try Auth.auth().signOut()
-                    } catch let err {
-                        print("create or retreive try/catch error: \(err)")
+                    } catch let error {
+                        print("create or retreive try/catch error: \(error)")
                     }
-                    completion(.error(error))
+                    completion(.failure(error))
                 }
             })
         } else {
@@ -47,8 +47,8 @@ struct MHPUserManager {
                 switch result {
                 case .success (let mhpUser):
                     completion(.success(mhpUser))
-                case .error (let error):
-                    completion(.error(error))
+                case .failure (let error):
+                    completion(.failure(error))
                 }
             }
         }
