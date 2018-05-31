@@ -266,8 +266,8 @@
 		7691722E20C0609D0092F6FE /* ManagersTests */ = {
 			isa = PBXGroup;
 			children = (
-				7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */,
 				7691723120C061A90092F6FE /* MHPUserManagerTests.swift */,
+				7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */,
 				7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */,
 			);
 			name = ManagersTests;

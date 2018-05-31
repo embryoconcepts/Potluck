@@ -141,7 +141,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @IBAction func alertTapped(_ sender: Any) {
-        if let fUser = Auth.auth().currentUser {
+        if let fUser = networkManager.retrieveCurrentLocalFirebaseUser() {
             SVProgressHUD.show()
             networkManager.sendVerificationEmail(forUser: fUser) { (result) in
                 switch result {

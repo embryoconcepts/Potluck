@@ -11,11 +11,11 @@ import Firebase
 
 struct MHPDataManager {
     
-    func buildDataSet(firUser: User, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
+    func buildDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
-        if let email = firUser.email {
+        if let email = firUserEmail {
             userDict["userEmail"] = email
         }
         
@@ -23,7 +23,7 @@ struct MHPDataManager {
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userLastName"] = mu.userLastName ?? ""
-//            userDict["userEmail"] = mu.userEmail ?? ""
+            userDict["userEmail"] = mu.userEmail ?? firUserEmail
             userDict["userPhone"] = mu.userPhone ?? ""
             userDict["userProfileURL"] = mu.userProfileURL ?? ""
             userDict["userFacebookID"] = mu.userFacebookID ?? ""

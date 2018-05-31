@@ -58,7 +58,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         } else {
             if let first = txtFirstName.text,
                 let last = txtLastName.text,
-                let currentUser = Auth.auth().currentUser,
+                let currentUser = networkManager.retrieveCurrentLocalFirebaseUser(),
                 let email = currentUser.email {
                 
                 mhpUser.userFirstName = first

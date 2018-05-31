@@ -9,17 +9,6 @@
 import Foundation
 import Firebase
 
-//enum DatabaseError: Error {
-//    case errorAddingNewUserToDB
-//    case errorRetrievingUserFromDB
-//    case errorUpdatingUserInDB
-//    case errorResetingPassword
-//    case errorSendingVerificationEmail
-//    case errorRegisteringUserInDB
-//    case errorLinkingUser
-//    case errorLoggingIn
-//}
-
 struct MHPNetworkManager {
     let db = Firestore.firestore()
     let dataManager = MHPDataManager()
@@ -28,6 +17,12 @@ struct MHPNetworkManager {
         let settings = db.settings
         settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
+    }
+    
+    // MARK: - Local Firebase methods
+    
+    func retrieveCurrentLocalFirebaseUser() -> User? {
+        return Auth.auth().currentUser
     }
     
     
@@ -49,13 +44,13 @@ struct MHPNetworkManager {
             }
         }
     }
-        
+    
     func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signInAnonymously() { (user, error) in
             if error == nil {
                 if let returnedUser = user {
                     let ref: DocumentReference = self.db.collection("users").document(returnedUser.uid)
-                    let dataSet = self.dataManager.buildDataSet(firUser: returnedUser, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+                    let dataSet = self.dataManager.buildDataSet(firUserEmail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if let error = error {
                             print("Error adding document: \(error)")
@@ -72,6 +67,7 @@ struct MHPNetworkManager {
                                 }
                             })
                         }
+                        
                     }
                 }
             } else {
@@ -91,7 +87,7 @@ struct MHPNetworkManager {
         }
         
         let ref: DocumentReference = db.collection("users").document(firUser.uid)
-        let dataSet = dataManager.buildDataSet(firUser: firUser, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
+        let dataSet = dataManager.buildDataSet(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
         ref.setData(dataSet, options: SetOptions.merge()) { (error) in
             if let error = error {
                 print("Error adding document: \(error)")
@@ -101,12 +97,13 @@ struct MHPNetworkManager {
                 completion(.success(true))
             }
         }
+        
     }
     
     func linkUsers(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         // link newly created user to anon user in Firestore
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-        if let currentUser = Auth.auth().currentUser {
+        if let currentUser = retrieveCurrentLocalFirebaseUser() {
             currentUser.link(with: credential, completion: { (user, error) in
                 if error == nil {
                     self.sendVerificationEmail(forUser: user, completion: { (result) in
