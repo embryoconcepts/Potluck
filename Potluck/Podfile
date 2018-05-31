@@ -23,6 +23,16 @@ target 'Potluck' do
   target 'PotluckTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Firebase/Core'
+    pod 'Firebase/Auth'
+    pod 'FirebaseUI/Auth'
+    pod 'FirebaseUI/Facebook'
+    pod 'FirebaseUI/Phone'
+    pod 'Firebase/Database'
+    pod 'Firebase/DynamicLinks'
+    pod 'Firebase/Firestore'
+    pod 'ScalingCarousel'
+    pod 'SVProgressHUD'
   end
 
 end
