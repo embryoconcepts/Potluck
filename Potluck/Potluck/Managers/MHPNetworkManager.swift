@@ -19,6 +19,7 @@ struct MHPNetworkManager {
         db.settings = settings
     }
     
+    
     // MARK: - Local Firebase methods
     
     func retrieveCurrentLocalFirebaseUser() -> User? {
