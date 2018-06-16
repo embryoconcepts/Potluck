@@ -36,6 +36,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     lazy var networkManager: MHPNetworkManager = {
         return MHPNetworkManager()
     }()
+    lazy var requestHandler: MHPRequestHandler = {
+        return MHPRequestHandler()
+    }()
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
@@ -121,7 +124,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             // handle error
             if let email = alert.textFields?.first?.text {
                 SVProgressHUD.show()
-                self.networkManager.sendResetPasswordEmail(forEmail: email, completion: { (result) in
+                self.requestHandler.sendResetPasswordEmail(forEmail: email, completion: { (result) in
                     switch result {
                     case .success:
                         print("password reset email sent")
