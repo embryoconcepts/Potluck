@@ -15,7 +15,6 @@ import Firebase
 enum ServiceOption {
     case FirebaseFirestore
     case FirebaseRealtimeDatabase
-    case AWS
     
     func router() -> MHPServiceRouter {
         switch self {
@@ -23,8 +22,6 @@ enum ServiceOption {
             return MHPFirebaseFirestoreServiceRouter()
         case .FirebaseRealtimeDatabase:
             return MHPFirebaseRealtimeDBServiceRouter()
-        case .AWS:
-            return MHPAWSServiceRouter()
         }
     }
     
@@ -34,8 +31,6 @@ enum ServiceOption {
             return MHPFirestoreParser()
         case .FirebaseRealtimeDatabase:
             return MHPRealtimeDBParser()
-        case .AWS:
-            return MHPAWSParser()
         }
     }
 }
@@ -45,9 +40,21 @@ enum ServiceOption {
 
 struct MHPRequestHandler {
     private let service: ServiceOption
+    static let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    init(service: ServiceOption = .FirebaseFirestore) {
+    init(service: ServiceOption = appDelegate.serviceOption) {
         self.service = service
+    }
+    
+    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        service.router().sendVerificationEmail(forUser: currentUser) { (result) in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
@@ -63,17 +70,47 @@ struct MHPRequestHandler {
 }
 
 
-// MARK: - Send a request - use a protocol to insure conformity in the routers
+// MARK: - Send a request to the correct service
+
 class MHPServiceRouter {
+    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {}
 }
 
 protocol Routeable {
+    
 }
 
-// FirebaseFirestoreServiceRouter: send the data to the correct service
+// FIXME: would prefer to use stucts and protocols here, but enum func return seems to force class/subclass
 class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter, Routeable {
-    // FIXME: would prefer to use stucts and protocols here, but enum func return seems to force class/subclass
+    let db = Firestore.firestore()
+    let dataManager = MHPDataManager()
+    
+    override init() {
+        let settings = db.settings
+        settings.areTimestampsInSnapshotsEnabled = true
+        db.settings = settings
+    }
+    
+    override func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        let actionCodeSettings =  ActionCodeSettings.init()
+        actionCodeSettings.handleCodeInApp = true
+        if let user = currentUser, let email = user.email {
+            actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
+            actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+            user.sendEmailVerification(completion: { (error) in
+                if error == nil {
+                    print("verification email sent")
+                    completion(.success(true))
+                } else {
+                    // handle error
+                    print("Send Verification email error: \(String(describing: error))")
+                    completion(.failure(error!))
+                }
+            })
+        }
+    }
+    
     override func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
@@ -90,15 +127,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter, Routeable {
     }
 }
 
-// FirebaseRealtimeDBServiceRouter: send the data to the correct service
 class MHPFirebaseRealtimeDBServiceRouter: MHPServiceRouter, Routeable {
-    override func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        
-    }
-}
-
-// AWSServiceRouter: send the data to the correct service
-class MHPAWSServiceRouter: MHPServiceRouter, Routeable {
     override func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
         
     }
@@ -106,41 +135,31 @@ class MHPAWSServiceRouter: MHPServiceRouter, Routeable {
 
 
 // MARK: - Receive the data response from the service, sends it to the correct parser per the service used
+
 struct ResponseHandler {
     private let service: ServiceOption
+    static let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    init(service: ServiceOption = .FirebaseFirestore) {
+    init(service: ServiceOption = appDelegate.serviceOption) {
         self.service = service
     }
 }
 
 
-// MARK: - Parse it real good - use a protocol to insure conformity in the parsers
-/// * future refactor to use generics so there's only one parser
+// MARK: - Parse the response as needed for the service specified (future refactor to use generics so there's only one parser)
 
-class MHPParser { /* only used to return the correct class from the ServiceOptions enum */ }
+class MHPParser {
+
+}
 
 protocol Parseable {
     
 }
 
-// FirestoreParser: map the response to the model
 class MHPFirestoreParser: MHPParser, Parseable {
     
 }
 
-// RealtimeDBParser: map the  response to a model
 class MHPRealtimeDBParser: MHPParser, Parseable {
     
 }
-
-// AWSParser: map the  response to a model
-class MHPAWSParser: MHPParser, Parseable {
-    
-}
-
-
-// MARK: - Complete the call
-// return the model to the original caller
-
-
