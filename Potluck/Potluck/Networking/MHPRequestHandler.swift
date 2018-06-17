@@ -10,32 +10,6 @@ import Foundation
 import Firebase
 
 
-// MARK: - Set the correct service in AppDelegate (enum for now, will do via plists and Xcode configs later)
-
-enum ServiceOption {
-    case FirebaseFirestore
-    case FirebaseRealtimeDatabase
-    
-    func router() -> MHPServiceRouter {
-        switch self {
-        case .FirebaseFirestore:
-            return MHPFirebaseFirestoreServiceRouter()
-        case .FirebaseRealtimeDatabase:
-            return MHPFirebaseRealtimeDBServiceRouter()
-        }
-    }
-    
-    func parser() -> MHPParser {
-        switch self {
-        case .FirebaseFirestore:
-            return MHPFirestoreParser()
-        case .FirebaseRealtimeDatabase:
-            return MHPRealtimeDBParser()
-        }
-    }
-}
-
-
 // MARK: - Build the request for the set service, pass request to the correct ServiceRouter
 
 struct MHPRequestHandler {
@@ -72,7 +46,7 @@ struct MHPRequestHandler {
 
 // MARK: - Send a request to the correct service
 
-class MHPServiceRouter {
+class MHPServiceRouter: Routeable {
     func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {}
 }
@@ -81,8 +55,7 @@ protocol Routeable {
     
 }
 
-// FIXME: would prefer to use stucts and protocols here, but enum func return seems to force class/subclass
-class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter, Routeable {
+class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     let db = Firestore.firestore()
     let dataManager = MHPDataManager()
     
@@ -127,39 +100,8 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter, Routeable {
     }
 }
 
-class MHPFirebaseRealtimeDBServiceRouter: MHPServiceRouter, Routeable {
+class MHPFirebaseRealtimeDBServiceRouter: MHPServiceRouter {
     override func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
         
     }
-}
-
-
-// MARK: - Receive the data response from the service, sends it to the correct parser per the service used
-
-struct ResponseHandler {
-    private let service: ServiceOption
-    static let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    init(service: ServiceOption = appDelegate.serviceOption) {
-        self.service = service
-    }
-}
-
-
-// MARK: - Parse the response as needed for the service specified (future refactor to use generics so there's only one parser)
-
-class MHPParser {
-
-}
-
-protocol Parseable {
-    
-}
-
-class MHPFirestoreParser: MHPParser, Parseable {
-    
-}
-
-class MHPRealtimeDBParser: MHPParser, Parseable {
-    
 }
