@@ -9,9 +9,8 @@
 import Foundation
 import Firebase
 
-
-// MARK: - Build the request for the set service, pass request to the correct ServiceRouter
-
+/// Builds the request for the selected service, passes the request to the correct ServiceRouter
+/// ServiceOption should be set in AppDelegate, default value can be overridden for testing
 struct MHPRequestHandler {
     private let service: ServiceOption
     static let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -20,8 +19,30 @@ struct MHPRequestHandler {
         self.service = service
     }
     
-    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router().sendVerificationEmail(forUser: currentUser) { (result) in
+    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.loginUser(email: email, password: password) { (result) in
+            switch result {
+            case .success (let mhpUser):
+                completion(.success(mhpUser))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.retrieveUser { (result) in
+            switch result {
+            case .success (let mhpUser):
+                completion(.success(mhpUser))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        service.router.updateUserState(mhpUser: mhpUser, state: state) { (result) in
             switch result {
             case .success:
                 completion(.success(true))
@@ -31,8 +52,19 @@ struct MHPRequestHandler {
         }
     }
     
-    func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router().sendResetPasswordEmail(forEmail: email) { (result) in
+    func verifyEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {
+        service.router.sendVerificationEmail { (result) in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func resetPassword(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        service.router.sendResetPasswordEmail(forEmail: email) { (result) in
             switch result {
             case .success:
                 completion(.success(true))
@@ -44,10 +76,12 @@ struct MHPRequestHandler {
 }
 
 
-// MARK: - Send a request to the correct service
-
+/// Sends a request from the RequestHandler to the selected service
 class MHPServiceRouter: Routeable {
-    func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {}
+    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {}
+    func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {}
 }
 
@@ -65,10 +99,79 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         db.settings = settings
     }
     
-    override func sendVerificationEmail(forUser currentUser: User?, completion: @escaping (Result<Bool, Error> ) -> ()) {
+    override func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                self.retrieveUser(completion: { (result) in
+                    switch result {
+                    case let .success(retrievedUser):
+                        completion(.success(retrievedUser))
+                    case .failure(_):
+                        completion(.failure(error!))
+                    }
+                })
+            } else {
+                completion(.failure(error!))
+            }
+        }
+    }
+    
+    override func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        if let firUser = Auth.auth().currentUser {
+            firUser.reload { (error) in
+                if error != nil {
+                    print("User reload error in retrieve: \(String(describing: error))")
+                } else {
+                    let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
+                    ref.getDocument(completion: { (document, error) in
+                        if let document = document, let data = document.data() {
+                            let mhpUser = self.dataManager.parseResponseToUser(document: document, data: data)
+                            if firUser.isEmailVerified && (mhpUser.userState == .anonymous || mhpUser.userState == .unverified) {
+                                self.updateUserState(mhpUser: mhpUser, state: .verified, completion: { (result) in
+                                    switch result {
+                                    case .success(_):
+                                        return
+                                    case .failure (let error):
+                                        completion(.failure(error))
+                                    }
+                                })
+                            }
+                            completion(.success(mhpUser))
+                        } else {
+                            completion(.failure(error!))
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
+    override func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        if let firUser = Auth.auth().currentUser {
+            firUser.reload { (error) in
+                if error != nil {
+                    print("User reload error in updateUserForState: \(String(describing: error))")
+                } else {
+                    let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
+                    let dataSet = self.dataManager.buildDataSet(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
+                    ref.setData(dataSet, options: SetOptions.merge()) { (error) in
+                        if let error = error {
+                            print("Error adding document: \(error)")
+                            completion(.failure(error))
+                        } else {
+                            print("User updated with document ID: \(ref.documentID)")
+                            completion(.success(true))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    override func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {
         let actionCodeSettings =  ActionCodeSettings.init()
         actionCodeSettings.handleCodeInApp = true
-        if let user = currentUser, let email = user.email {
+        if let user = Auth.auth().currentUser, let email = user.email {
             actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
             actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
             user.sendEmailVerification(completion: { (error) in
@@ -101,7 +204,5 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
 }
 
 class MHPFirebaseRealtimeDBServiceRouter: MHPServiceRouter {
-    override func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        
-    }
+
 }

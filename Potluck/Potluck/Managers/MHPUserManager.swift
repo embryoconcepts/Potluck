@@ -28,8 +28,8 @@ struct MHPUserManager {
     let networkManager = MHPNetworkManager()
     
     func createOrRetrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        if let currentUser = networkManager.retrieveCurrentLocalFirebaseUser() {
-            networkManager.retrieve(firUser: currentUser, completion: { (result) in
+        if Auth.auth().currentUser != nil {
+            MHPRequestHandler().retrieveUser(completion: { (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))

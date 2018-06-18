@@ -14,8 +14,9 @@ import Foundation
 enum ServiceOption {
     case FirebaseFirestore
     case FirebaseRealtimeDatabase
+//    case URLService
     
-    func router() -> MHPServiceRouter {
+    var router: MHPServiceRouter {
         switch self {
         case .FirebaseFirestore:
             return MHPFirebaseFirestoreServiceRouter()
@@ -24,7 +25,7 @@ enum ServiceOption {
         }
     }
     
-    func parser() -> MHPParser {
+    var parser: MHPParser {
         switch self {
         case .FirebaseFirestore:
             return MHPFirestoreParser()
@@ -33,3 +34,4 @@ enum ServiceOption {
         }
     }
 }
+

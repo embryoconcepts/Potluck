@@ -19,6 +19,9 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     lazy var networkManager: MHPNetworkManager = {
         return MHPNetworkManager()
     }()
+    lazy var request: MHPRequestHandler = {
+        return MHPRequestHandler()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,17 +61,17 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         } else {
             if let first = txtFirstName.text,
                 let last = txtLastName.text,
-                let currentUser = networkManager.retrieveCurrentLocalFirebaseUser(),
+                let currentUser = Auth.auth().currentUser,
                 let email = currentUser.email {
                 
                 mhpUser.userFirstName = first
                 mhpUser.userLastName = last
                 mhpUser.userEmail = email
                 SVProgressHUD.show()
-                networkManager.updateUserForState(firUser: currentUser, mhpUser: mhpUser, state: .registered) { (result ) in
+                request.updateUserState(mhpUser: mhpUser, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
-                        self.networkManager.retrieve(firUser: currentUser, completion: { (result) in
+                        self.request.retrieveUser(completion: { (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
