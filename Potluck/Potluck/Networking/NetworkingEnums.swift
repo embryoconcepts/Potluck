@@ -9,12 +9,24 @@
 import Foundation
 
 
-// MARK: - Set the correct service in AppDelegate (enum for now, will do via plists and Xcode configs later)
+protocol Injectable {
+    associatedtype T
+    func inject(_: T)
+    func assertDependencies()
+}
+
+protocol UserHandler {
+    func handleUser()
+}
+
+enum Result<T, Error> {
+    case success(T)
+    case failure(Error)
+}
 
 enum ServiceOption {
     case FirebaseFirestore
     case FirebaseRealtimeDatabase
-//    case URLService
     
     var router: MHPServiceRouter {
         switch self {

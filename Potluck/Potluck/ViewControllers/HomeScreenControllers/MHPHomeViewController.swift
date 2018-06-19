@@ -23,6 +23,9 @@
     private let reuseIdentifier = "homeCell"
     var mhpUser: MHPUser?
     var events = [MHPEvent]()
+    lazy var request: MHPRequestHandler = {
+        return MHPRequestHandler()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -191,7 +194,7 @@
                 t.isEnabled = false
             }
             SVProgressHUD.show()
-            MHPUserManager().createOrRetrieveUser { (result) in
+            request.getUser { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user

@@ -10,7 +10,7 @@ Potluck is an iOS app built for collaborative potlucks and community meal organi
 
 ### Features
 
-- Authentication by email, phone, Facebook or Google
+- Authentication via email, phone, Facebook or Google
 - Event creation and management
 - Invite and RSVP handling
 - Requested and pledged dish/item management
@@ -25,12 +25,12 @@ Potluck is an iOS app built for collaborative potlucks and community meal organi
 ### Stack
 
 - Swift 4
-- Google Firebase with Authentication, Firestore, Realtime Database, and Dynamic Links
+- Google Firebase with Authentication, Firestore, Realtime Database (future), and Dynamic Links
 
 ### Reference:
 
 - [Sketch files and Prototype](https://sketch.cloud/s/Oeonw)
-- [Trello board](https://trello.com/b/Ao3BEM1N/potluck-by-manyhandsapp)
+- [Trello board](https://trello.com/invite/b/Ao3BEM1N/fa0bf8af6b96bbce6ad3e1c87a8e79ef/potluck)
 - [MVP Design Document](https://docs.google.com/document/d/1F5GlxtKkticPHnaLD3ct78HSxmm1FFyFbaVzdK345a4/edit)
 
 

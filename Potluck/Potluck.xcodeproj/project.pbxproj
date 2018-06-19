@@ -11,7 +11,8 @@
 		760E7EAD2060658B0025C825 /* MHPItemListNeededCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */; };
 		760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */; };
 		764638D520D6EF6D00C554A1 /* MHPResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D420D6EF6D00C554A1 /* MHPResponseHandler.swift */; };
-		764638D720D6EFB700C554A1 /* ServiceOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D620D6EFB700C554A1 /* ServiceOption.swift */; };
+		764638D720D6EFB700C554A1 /* NetworkingEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D620D6EFB700C554A1 /* NetworkingEnums.swift */; };
+		764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */; };
 		765123BA2053538900E78488 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123B92053538900E78488 /* AppDelegate.swift */; };
 		765123BF2053538900E78488 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123BD2053538900E78488 /* Main.storyboard */; };
 		765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 765123C02053538900E78488 /* Potluck.xcdatamodeld */; };
@@ -47,7 +48,6 @@
 		7691723020C060CF0092F6FE /* MHPNetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */; };
 		7691723220C061A90092F6FE /* MHPUserManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723120C061A90092F6FE /* MHPUserManagerTests.swift */; };
 		7691723420C061BA0092F6FE /* MHPDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */; };
-		76CB0FB020714E5300DF0AAD /* MHPUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB0FAF20714E5300DF0AAD /* MHPUserManager.swift */; };
 		76CB0FB42083A37A00DF0AAD /* MHPDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB0FB32083A37A00DF0AAD /* MHPDataManager.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
@@ -86,7 +86,8 @@
 		760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListNeededCell.swift; sourceTree = "<group>"; };
 		760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListPledgedCell.swift; sourceTree = "<group>"; };
 		764638D420D6EF6D00C554A1 /* MHPResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPResponseHandler.swift; sourceTree = "<group>"; };
-		764638D620D6EFB700C554A1 /* ServiceOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceOption.swift; sourceTree = "<group>"; };
+		764638D620D6EFB700C554A1 /* NetworkingEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEnums.swift; sourceTree = "<group>"; };
+		764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPServiceRouter.swift; sourceTree = "<group>"; };
 		765123B62053538900E78488 /* Potluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Potluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765123B92053538900E78488 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765123BE2053538900E78488 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -127,7 +128,6 @@
 		7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MHPNetworkManagerTests.swift; path = PotluckTests/ManagersTests/MHPNetworkManagerTests.swift; sourceTree = SOURCE_ROOT; };
 		7691723120C061A90092F6FE /* MHPUserManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPUserManagerTests.swift; path = PotluckTests/ManagersTests/MHPUserManagerTests.swift; sourceTree = SOURCE_ROOT; };
 		7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPDataManagerTests.swift; path = PotluckTests/ManagersTests/MHPDataManagerTests.swift; sourceTree = SOURCE_ROOT; };
-		76CB0FAF20714E5300DF0AAD /* MHPUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPUserManager.swift; sourceTree = "<group>"; };
 		76CB0FB32083A37A00DF0AAD /* MHPDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPDataManager.swift; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -271,8 +271,9 @@
 		7657F43420D2F15600C742C0 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				764638D620D6EFB700C554A1 /* ServiceOption.swift */,
+				764638D620D6EFB700C554A1 /* NetworkingEnums.swift */,
 				7657F43520D2F18D00C742C0 /* MHPRequestHandler.swift */,
+				764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */,
 				764638D420D6EF6D00C554A1 /* MHPResponseHandler.swift */,
 			);
 			path = Networking;
@@ -292,7 +293,6 @@
 		76CB0FAE20714E2D00DF0AAD /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				76CB0FAF20714E5300DF0AAD /* MHPUserManager.swift */,
 				76CB0FB32083A37A00DF0AAD /* MHPDataManager.swift */,
 			);
 			path = Managers;
@@ -732,6 +732,7 @@
 				76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */,
 				760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
+				764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */,
 				76CB0FB42083A37A00DF0AAD /* MHPDataManager.swift in Sources */,
 				7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */,
 				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
@@ -744,13 +745,12 @@
 				765123FB20588E1300E78488 /* MHPItem.swift in Sources */,
 				76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */,
 				765124012058902000E78488 /* MHPEventItemList.swift in Sources */,
-				76CB0FB020714E5300DF0AAD /* MHPUserManager.swift in Sources */,
 				7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				764638D520D6EF6D00C554A1 /* MHPResponseHandler.swift in Sources */,
 				765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */,
 				76DF6B79205B35BD00028B3B /* MHPPersonalInfoViewController.swift in Sources */,
-				764638D720D6EFB700C554A1 /* ServiceOption.swift in Sources */,
+				764638D720D6EFB700C554A1 /* NetworkingEnums.swift in Sources */,
 				765124052058932200E78488 /* MHPUserEventList.swift in Sources */,
 				765123FD20588E2400E78488 /* MHPRsvp.swift in Sources */,
 				760E7EAD2060658B0025C825 /* MHPItemListNeededCell.swift in Sources */,

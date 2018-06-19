@@ -375,7 +375,7 @@ extension MHPSignUpLoginChoiceViewController: Injectable {
 extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
         SVProgressHUD.show()
-        MHPUserManager().createOrRetrieveUser { (result) in
+        request.getUser { (result) in
             switch result {
             case .success(let user):
                 self.mhpUser = user
