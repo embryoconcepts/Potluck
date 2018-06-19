@@ -31,6 +31,7 @@ class MHPUserManagerTests: XCTestCase {
     
     
     // MARK: - example method
+    
     func testExampleMethod_shouldReturnSomething() {
         // Arrange
         

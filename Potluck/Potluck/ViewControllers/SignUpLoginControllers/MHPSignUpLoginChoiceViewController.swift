@@ -33,8 +33,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     var mhpUser: MHPUser?
     var firUser: User?
-    lazy var networkManager: MHPNetworkManager = {
-        return MHPNetworkManager()
+    lazy var request: MHPRequestHandler = {
+        return MHPRequestHandler()
     }()
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
@@ -74,7 +74,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func loginTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
             SVProgressHUD.show()
-            networkManager.loginUser(email: email, password: pass) { (result) in
+            request.loginUser(email: email, password: pass) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -94,7 +94,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
             SVProgressHUD.show()
-            networkManager.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
+            request.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -121,7 +121,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             // handle error
             if let email = alert.textFields?.first?.text {
                 SVProgressHUD.show()
-                self.networkManager.sendResetPasswordEmail(forEmail: email, completion: { (result) in
+                self.request.resetPassword(forEmail: email, completion: { (result) in
                     switch result {
                     case .success:
                         print("password reset email sent")
@@ -141,27 +141,25 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     @IBAction func alertTapped(_ sender: Any) {
-        if let fUser = networkManager.retrieveCurrentLocalFirebaseUser() {
-            SVProgressHUD.show()
-            networkManager.sendVerificationEmail(forUser: fUser) { (result) in
-                switch result {
-                case .success:
-                    let alertController = UIAlertController(title: "Verification email sent!",
-                                                            message: "Please check your email and use the enclosed link to verify your account.",
-                                                            preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
-                case .failure (let error):
-                    let alertController = UIAlertController(title: "Error sending verification email:",
-                                                            message: error.localizedDescription,
-                                                            preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
-                }
-                SVProgressHUD.dismiss()
+        SVProgressHUD.show()
+        request.verifyEmail { (result) in
+            switch result {
+            case .success:
+                let alertController = UIAlertController(title: "Verification email sent!",
+                                                        message: "Please check your email and use the enclosed link to verify your account.",
+                                                        preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            case .failure (let error):
+                let alertController = UIAlertController(title: "Error sending verification email:",
+                                                        message: error.localizedDescription,
+                                                        preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
             }
+            SVProgressHUD.dismiss()
         }
     }
     
@@ -377,7 +375,7 @@ extension MHPSignUpLoginChoiceViewController: Injectable {
 extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
         SVProgressHUD.show()
-        MHPUserManager().createOrRetrieveUser { (result) in
+        request.getUser { (result) in
             switch result {
             case .success(let user):
                 self.mhpUser = user
