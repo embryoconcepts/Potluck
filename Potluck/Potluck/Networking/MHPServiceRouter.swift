@@ -88,7 +88,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
             if error == nil {
                 if let returnedUser = user {
                     let ref: DocumentReference = self.db.collection("users").document(returnedUser.uid)
-                    let dataSet = self.dataManager.buildDataSet(firUserEmail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+                    let dataSet = self.dataManager.encodeUser(firUserEmail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if let error = error {
                             print("Error adding document: \(error)")
@@ -161,7 +161,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
                     ref.getDocument(completion: { (document, error) in
                         if let document = document, let data = document.data() {
-                            let mhpUser = self.dataManager.parseResponseToUser(document: document, data: data)
+                            let mhpUser = self.dataManager.decodeUser(document: document, data: data)
                             if firUser.isEmailVerified && (mhpUser.userState == .anonymous || mhpUser.userState == .unverified) {
                                 self.updateUserState(mhpUser: mhpUser, state: .verified, completion: { (result) in
                                     switch result {
@@ -189,7 +189,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     print("User reload error in updateUserForState: \(String(describing: error))")
                 } else {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
-                    let dataSet = self.dataManager.buildDataSet(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
+                    let dataSet = self.dataManager.encodeUser(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if let error = error {
                             print("Error adding document: \(error)")

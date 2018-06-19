@@ -1,17 +1,26 @@
 //
-//  MHPDataManager.swift
+//  MHPParser.swift
 //  Potluck
 //
-//  Created by Jennifer Hamilton on 4/15/18.
+//  Created by Jennifer Hamilton on 6/19/18.
 //  Copyright © 2018 Many Hands Apps. All rights reserved.
 //
 
 import Foundation
 import Firebase
 
-struct MHPDataManager {
+/// Parse the response as needed for the service specified (future refactor to use generics so there's only one parser)
+class MHPParser: Parseable {
+    func buildDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] { return [String: Any]() }
+    func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser { return MHPUser() }
+}
+
+protocol Parseable {
     
-    func buildDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
+}
+
+class MHPFirestoreParser: MHPParser {
+    override func buildDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
@@ -39,7 +48,7 @@ struct MHPDataManager {
         return userDict
     }
     
-    func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
+    override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
         var user = MHPUser()
         user.userID = document.documentID
         user.userFirstName = data["userFirstName"] as? String ?? ""
@@ -68,5 +77,9 @@ struct MHPDataManager {
         }
         return user
     }
+    
+}
+
+class MHPRealtimeDBParser: MHPParser {
     
 }
