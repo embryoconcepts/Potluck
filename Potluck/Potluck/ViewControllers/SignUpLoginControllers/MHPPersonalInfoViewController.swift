@@ -16,9 +16,6 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var txtLastName: UITextField!
     
     var mhpUser = MHPUser()
-    lazy var networkManager: MHPNetworkManager = {
-        return MHPNetworkManager()
-    }()
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()

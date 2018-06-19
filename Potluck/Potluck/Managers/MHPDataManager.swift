@@ -15,15 +15,11 @@ struct MHPDataManager {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
-        if let email = firUserEmail {
-            userDict["userEmail"] = email
-        }
-        
         if let mu = mhpUser {
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userFirstName"] = mu.userFirstName ?? ""
             userDict["userLastName"] = mu.userLastName ?? ""
-            userDict["userEmail"] = mu.userEmail ?? firUserEmail
+            userDict["userEmail"] = mu.userEmail ?? ""
             userDict["userPhone"] = mu.userPhone ?? ""
             userDict["userProfileURL"] = mu.userProfileURL ?? ""
             userDict["userFacebookID"] = mu.userFacebookID ?? ""
@@ -35,6 +31,10 @@ struct MHPDataManager {
         } else if let fn = firstName, let ln = lastName {
             userDict["userFirstName"] = fn
             userDict["userLastName"] = ln
+        }
+        
+        if let email = firUserEmail {
+            userDict["userEmail"] = email
         }
         return userDict
     }

@@ -25,7 +25,6 @@ protocol UserHandler {
 }
 
 struct MHPUserManager {
-    let networkManager = MHPNetworkManager()
     
     func createOrRetrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if Auth.auth().currentUser != nil {
@@ -43,7 +42,7 @@ struct MHPUserManager {
                 }
             })
         } else {
-            networkManager.signInAnon { (result) in
+            MHPRequestHandler().signInAnon { (result) in
                 switch result {
                 case .success (let mhpUser):
                     completion(.success(mhpUser))

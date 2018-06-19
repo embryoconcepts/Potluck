@@ -33,9 +33,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     var mhpUser: MHPUser?
     var firUser: User?
-    lazy var networkManager: MHPNetworkManager = {
-        return MHPNetworkManager()
-    }()
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()
@@ -97,7 +94,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
             SVProgressHUD.show()
-            networkManager.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
+            request.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
