@@ -166,10 +166,11 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                 if error == nil {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
                     ref.getDocument { (document, error) in
-                        if let document = document, let data = document.data() {
-                            let mhpUser = self.dataManager.decodeUser(document: document, data: data)
-                            if firUser.isEmailVerified && (mhpUser.userState == .anonymous || mhpUser.userState == .unverified) {
-                                self.updateUserState(mhpUser: mhpUser, state: .verified) { (result) in
+                        if  let document = document,
+                            let data = document.data(),
+                            let user = self.dataManager.decodeUser(document: document, data: data) {
+                            if firUser.isEmailVerified && (user.userState == .anonymous || user.userState == .unverified) {
+                                self.updateUserState(mhpUser: user, state: .verified) { (result) in
                                     switch result {
                                     case .success(_):
                                         return
@@ -178,7 +179,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                                     }
                                 }
                             }
-                            completion(.success(mhpUser))
+                            completion(.success(user))
                         } else {
                             completion(.failure(error!))
                         }

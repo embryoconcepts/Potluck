@@ -115,9 +115,9 @@
     // MARK: - Action Handlers
     
     @IBAction func alertTapped(_ sender: Any) {
-        if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+        if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController, let user = mhpUser {
             let navController = UINavigationController(rootViewController: signinVC)
-            signinVC.mhpUser = mhpUser
+            signinVC.inject(user)
             signinVC.homeUserDelegate = self
             present(navController, animated: true, completion: nil)
         }

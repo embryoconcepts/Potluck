@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let rootVCArray = tabBarController.viewControllers {
             let navCon = rootVCArray[0] as! UINavigationController
             if let homeVC = navCon.topViewController as? MHPHomeViewController {
-                homeVC.mhpUser = self.mhpUser
+                homeVC.inject(self.mhpUser)
                 navCon.present(homeVC, animated: true, completion: nil)
             }
         }

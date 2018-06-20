@@ -183,7 +183,9 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
             case .verified:
                 viewAlert.isHidden = true
                 if let personalVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
-                    personalVC.mhpUser = self.mhpUser!
+                    if let user = self.mhpUser {
+                        personalVC.inject(user)
+                    }
                     navigationController?.present(personalVC, animated: true, completion: nil)
                 }
             case .unverified:

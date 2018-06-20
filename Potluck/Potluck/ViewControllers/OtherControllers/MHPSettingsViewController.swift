@@ -62,7 +62,7 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
                 if tabs.count > 0 {
                     self.tabBarController?.selectedIndex = 0
                     if let homeVC = tabBarController?.childViewControllers[(self.tabBarController?.selectedIndex)!].childViewControllers[0] as? MHPHomeViewController {
-                        homeVC.mhpUser = self.mhpUser
+                        homeVC.inject(self.mhpUser)
                     }
                 }
             }

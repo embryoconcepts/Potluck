@@ -22,7 +22,7 @@ struct MHPDataManager {
         return service.parser.buildDataSet(firUserEmail: firUserEmail, mhpUser: mhpUser, firstName: firstName, lastName: lastName, state: state)
     }
     
-    func decodeUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
+    func decodeUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {
         return service.parser.parseResponseToUser(document: document, data: data)
     }
 }

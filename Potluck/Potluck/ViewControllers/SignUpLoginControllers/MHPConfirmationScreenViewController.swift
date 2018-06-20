@@ -12,11 +12,12 @@ import Firebase
 class MHPConfirmationScreenViewController: UIViewController {
 
     @IBOutlet weak var lblMessage: UILabel!
-    var user = MHPUser()
+    var mhpUser: MHPUser?
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let name = user.userFirstName {
+        assertDependencies()
+        if let user = mhpUser, let name = user.userFirstName {
             lblMessage.text = "Welcome, \(name)! Your account is all set up and ready to go."
         }
         // Do any additional setup after loading the view.
@@ -40,12 +41,24 @@ class MHPConfirmationScreenViewController: UIViewController {
             if let tabBarController = appDelegate.window?.rootViewController as? UITabBarController,
                 let rootVCArray = tabBarController.viewControllers {
                 let navCon = rootVCArray[0] as! UINavigationController
-                if let homeVC = navCon.topViewController as? MHPHomeViewController {
-                    homeVC.mhpUser = self.user
+                if let homeVC = navCon.topViewController as? MHPHomeViewController, let user = self.mhpUser {
+                    homeVC.inject(user)
                     navCon.dismiss(animated: true, completion: nil)
                 }
             }
         }
     }
     
+}
+
+extension MHPConfirmationScreenViewController: Injectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+    }
 }

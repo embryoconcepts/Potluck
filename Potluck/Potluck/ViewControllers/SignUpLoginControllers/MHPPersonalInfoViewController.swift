@@ -15,14 +15,14 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     
-    var mhpUser = MHPUser()
+    var mhpUser: MHPUser?
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        assertDependencies()
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,18 +61,18 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 let currentUser = Auth.auth().currentUser,
                 let email = currentUser.email {
                 
-                mhpUser.userFirstName = first
-                mhpUser.userLastName = last
-                mhpUser.userEmail = email
+                mhpUser!.userFirstName = first
+                mhpUser!.userLastName = last
+                mhpUser!.userEmail = email
                 SVProgressHUD.show()
-                request.updateUserState(mhpUser: mhpUser, state: .registered) { (result ) in
+                request.updateUserState(mhpUser: mhpUser!, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
                         self.request.retrieveUser{ (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
-                                    congratsVC.user = retrievedUser
+                                    congratsVC.inject(retrievedUser)
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
                             case .failure(let error):
@@ -121,4 +121,16 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         return shouldChange
     }
     
+}
+
+extension MHPPersonalInfoViewController: Injectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+    }
 }

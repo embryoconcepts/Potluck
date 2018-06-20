@@ -12,7 +12,7 @@ import Firebase
 /// Parse the response as needed for the service specified (future refactor to use generics so there's only one parser)
 class MHPParser: Parseable {
     func buildDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] { return [String: Any]() }
-    func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser { return MHPUser() }
+    func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? { return nil }
 }
 
 protocol Parseable {
@@ -48,9 +48,9 @@ class MHPFirestoreParser: MHPParser {
         return userDict
     }
     
-    override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else { return MHPUser() }
-        guard var user = try? JSONDecoder().decode(MHPUser.self, from: jsonData) else { return MHPUser() }
+    override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else { return nil }
+        guard var user = try? JSONDecoder().decode(MHPUser.self, from: jsonData) else { return nil }
         user.userID = document.documentID
         let state = data["userState"] as! String
         switch state {
