@@ -94,7 +94,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
             SVProgressHUD.show()
-            request.linkUsers(email: email, password: pass, mhpUser: mhpUser) { (result) in
+            request.signUp(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -113,15 +113,15 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     @IBAction func forgotPasswordTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addTextField(configurationHandler: { textField in
+        alert.addTextField { textField in
             textField.placeholder = "Input your email here..."
-        })
+        }
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             // handle error
             if let email = alert.textFields?.first?.text {
                 SVProgressHUD.show()
-                self.request.resetPassword(forEmail: email, completion: { (result) in
+                self.request.resetPassword(forEmail: email) { (result) in
                     switch result {
                     case .success:
                         print("password reset email sent")
@@ -133,7 +133,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                         self.present(alertController, animated: true, completion: nil)
                     }
                     SVProgressHUD.dismiss()
-                })
+                }
             }
         }))
         
@@ -192,6 +192,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 btnAlert.isEnabled = true
             case .anonymous:
                 viewAlert.isHidden = true
+                return
+            case .unset:
                 return
             }
         }

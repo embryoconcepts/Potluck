@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum UserAuthorizationState: String {
+enum UserAuthorizationState: String, Codable {
     /// not registered or logged in
     case anonymous
     /// initial sign up complete, email not verified
@@ -17,9 +17,11 @@ enum UserAuthorizationState: String {
     case verified
     /// verified and confirmed, basic profile complete, added to database
     case registered
+    /// default value
+    case unset
 }
 
-struct MHPUser {
+struct MHPUser: Codable {
     var userID: String?
     var userFirstName: String?
     var userLastName: String?
@@ -32,5 +34,38 @@ struct MHPUser {
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
-    var userState: UserAuthorizationState!
+    var userState: UserAuthorizationState = .unset
+    
+//    init(from decoder: Decoder) throws {
+//        
+//    }
+    
+//    init(userID: String,
+//         userFirstName: String,
+//         userLastName: String,
+//         userEmail: String,
+//         userPhone: String,
+//         userProfileURL: URL,
+//         userFacebookID: String,
+//         userEventListID: String,
+//         notificationPermissions: Bool,
+//         notificationPreferences: Bool,
+//         locationPermissions: Bool,
+//         facebookPermissions: Bool,
+//         userState: UserAuthorizationState) {
+//        
+//        self.userID = userID
+//        self.userFirstName = userFirstName
+//        self.userLastName = userLastName
+//        self.userEmail = userEmail
+//        self.userPhone = userPhone
+//        self.userProfileURL = userProfileURL
+//        self.userFacebookID = userFacebookID
+//        self.userEventListID = userEventListID
+//        self.notificationPermissions = notificationPermissions
+//        self.notificationPreferences = notificationPreferences
+//        self.locationPermissions = locationPermissions
+//        self.facebookPermissions = facebookPermissions
+//        self.userState = userState
+//    }
 }

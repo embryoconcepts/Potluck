@@ -68,7 +68,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 request.updateUserState(mhpUser: mhpUser, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
-                        self.request.retrieveUser(completion: { (result) in
+                        self.request.retrieveUser{ (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {
@@ -81,7 +81,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                                 alertController.addAction(defaultAction)
                                 self.present(alertController, animated: true, completion: nil)
                             }
-                        })
+                        }
                     case .failure(let error):
                         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)

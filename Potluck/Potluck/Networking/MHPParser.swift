@@ -25,18 +25,18 @@ class MHPFirestoreParser: MHPParser {
         userDict["userState"] = state.rawValue
         
         if let mu = mhpUser {
-            userDict["userFirstName"] = mu.userFirstName ?? ""
-            userDict["userFirstName"] = mu.userFirstName ?? ""
-            userDict["userLastName"] = mu.userLastName ?? ""
-            userDict["userEmail"] = mu.userEmail ?? ""
-            userDict["userPhone"] = mu.userPhone ?? ""
-            userDict["userProfileURL"] = mu.userProfileURL ?? ""
-            userDict["userFacebookID"] = mu.userFacebookID ?? ""
-            userDict["userEventListID"] = mu.userEventListID ?? ""
-            userDict["notificationPermissions"] = mu.notificationPermissions ?? false
-            userDict["notificationPreferences"] = mu.notificationPreferences ?? false
-            userDict["locationPermissions"] = mu.locationPermissions ?? false
-            userDict["facebookPermissions"] = mu.facebookPermissions ?? false
+            userDict["userFirstName"] = mu.userFirstName
+            userDict["userFirstName"] = mu.userFirstName
+            userDict["userLastName"] = mu.userLastName
+            userDict["userEmail"] = mu.userEmail
+            userDict["userPhone"] = mu.userPhone
+            userDict["userProfileURL"] = mu.userProfileURL
+            userDict["userFacebookID"] = mu.userFacebookID
+            userDict["userEventListID"] = mu.userEventListID
+            userDict["notificationPermissions"] = mu.notificationPermissions
+            userDict["notificationPreferences"] = mu.notificationPreferences
+            userDict["locationPermissions"] = mu.locationPermissions
+            userDict["facebookPermissions"] = mu.facebookPermissions 
         } else if let fn = firstName, let ln = lastName {
             userDict["userFirstName"] = fn
             userDict["userLastName"] = ln
@@ -49,20 +49,10 @@ class MHPFirestoreParser: MHPParser {
     }
     
     override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser {
-        var user = MHPUser()
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else { return MHPUser() }
+        guard var user = try? JSONDecoder().decode(MHPUser.self, from: jsonData) else { return MHPUser() }
         user.userID = document.documentID
-        user.userFirstName = data["userFirstName"] as? String ?? ""
-        user.userLastName = data["userLastName"] as? String ?? ""
-        user.userEmail = data["userEmail"] as? String ?? ""
-        user.userPhone = data["userPhone"] as? String ?? ""
-        user.userProfileURL = URL(string: data["userProfileURL"] as? String ?? "")
-        user.userFacebookID = data["userFacebookID"] as? String ?? ""
-        user.userEventListID = data["userEventListID"] as? String ?? ""
-        user.notificationPermissions = data["notificationPermissions"] as? Bool ?? false
-        user.notificationPreferences = data["notificationPreferences"] as? Bool ?? false
-        user.locationPermissions = data["locationPermissions"] as? Bool ?? false
-        user.facebookPermissions = data["facebookPermissions"] as? Bool ?? false
-        let state = data["userState"] as? String ?? "unknown"
+        let state = data["userState"] as! String
         switch state {
         case "unverified":
             user.userState = .unverified
@@ -73,7 +63,7 @@ class MHPFirestoreParser: MHPParser {
         case "anonymous":
             user.userState = .anonymous
         default:
-            user.userState = nil
+            user.userState = .unset
         }
         return user
     }

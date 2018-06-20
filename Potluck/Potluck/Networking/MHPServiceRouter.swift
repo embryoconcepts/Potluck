@@ -14,7 +14,7 @@ class MHPServiceRouter: Routeable {
     func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
-    func linkUsers(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func signUp(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {}
@@ -41,7 +41,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     
     override func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if Auth.auth().currentUser != nil {
-            self.retrieveUser(completion: { (result) in
+            self.retrieveUser { (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))
@@ -53,7 +53,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     }
                     completion(.failure(error))
                 }
-            })
+            }
         } else {
             self.signInAnon { (result) in
                 switch result {
@@ -69,14 +69,23 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     override func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error == nil {
-                self.retrieveUser(completion: { (result) in
-                    switch result {
-                    case let .success(retrievedUser):
-                        completion(.success(retrievedUser))
-                    case .failure(_):
-                        completion(.failure(error!))
+                let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+                if let currentUser = Auth.auth().currentUser {
+                    currentUser.link(with: credential) { (user, error) in
+                        if error == nil {
+                            self.retrieveUser{ (result) in
+                                switch result {
+                                case let .success(retrievedUser):
+                                    completion(.success(retrievedUser))
+                                case .failure(_):
+                                    completion(.failure(error!))
+                                }
+                            }
+                        } else {
+                            completion(.failure(error!))
+                        }
                     }
-                })
+                }
             } else {
                 completion(.failure(error!))
             }
@@ -90,22 +99,21 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     let ref: DocumentReference = self.db.collection("users").document(returnedUser.uid)
                     let dataSet = self.dataManager.encodeUser(firUserEmail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
-                        if let error = error {
-                            print("Error adding document: \(error)")
-                            completion(.failure(error))
-                        } else {
+                        if error == nil {
                             print("Anon user added with ID: \(ref.documentID)")
                             // retrieve mhpUser from db
-                            self.retrieveUser(completion: { (result) in
+                            self.retrieveUser { (result) in
                                 switch result {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
                                     completion(.failure(error!))
                                 }
-                            })
+                            }
+                        } else {
+                            print("Error adding document: \(String(describing: error))")
+                            completion(.failure(error!))
                         }
-                        
                     }
                 }
             } else {
@@ -114,11 +122,11 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         }
     }
     
-    override func linkUsers(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+    override func signUp(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         // link newly created user to anon user in Firestore
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         if let currentUser = Auth.auth().currentUser {
-            currentUser.link(with: credential, completion: { (user, error) in
+            currentUser.link(with: credential) { (user, error) in
                 if error == nil {
                     self.sendVerificationEmail { (result) in
                         switch result {
@@ -129,54 +137,55 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                         }
                     }
                     // save updated mhpUser info to DB
-                    self.updateUserState(mhpUser: mhpUser, state: .unverified, completion: { (result) in
+                    self.updateUserState(mhpUser: mhpUser, state: .unverified) { (result) in
                         switch result {
                         case .success(_):
                             // retrieve mhpUser from db
-                            self.retrieveUser(completion: { (result) in
+                            self.retrieveUser { (result) in
                                 switch result {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
                                 default:
                                     completion(.failure(error!))
                                 }
-                            })
+                            }
                         default:
                             completion(.failure(error!))
                         }
-                    })
+                    }
                 } else {
                     completion(.failure(error!))
                 }
-            })
+            }
         }
     }
     
     override func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if let firUser = Auth.auth().currentUser {
             firUser.reload { (error) in
-                if error != nil {
-                    print("User reload error in retrieve: \(String(describing: error))")
-                } else {
+                if error == nil {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
-                    ref.getDocument(completion: { (document, error) in
+                    ref.getDocument { (document, error) in
                         if let document = document, let data = document.data() {
                             let mhpUser = self.dataManager.decodeUser(document: document, data: data)
                             if firUser.isEmailVerified && (mhpUser.userState == .anonymous || mhpUser.userState == .unverified) {
-                                self.updateUserState(mhpUser: mhpUser, state: .verified, completion: { (result) in
+                                self.updateUserState(mhpUser: mhpUser, state: .verified) { (result) in
                                     switch result {
                                     case .success(_):
                                         return
                                     case .failure (let error):
                                         completion(.failure(error))
                                     }
-                                })
+                                }
                             }
                             completion(.success(mhpUser))
                         } else {
                             completion(.failure(error!))
                         }
-                    })
+                    }
+                } else {
+                    print("User reload error in retrieve: \(String(describing: error))")
+                    completion(.failure(error!))
                 }
             }
         }
@@ -185,20 +194,21 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     override func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {
         if let firUser = Auth.auth().currentUser {
             firUser.reload { (error) in
-                if error != nil {
-                    print("User reload error in updateUserForState: \(String(describing: error))")
-                } else {
+                if error == nil {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
                     let dataSet = self.dataManager.encodeUser(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
-                        if let error = error {
-                            print("Error adding document: \(error)")
-                            completion(.failure(error))
-                        } else {
+                        if error == nil {
                             print("User updated with document ID: \(ref.documentID)")
                             completion(.success(true))
+                        } else {
+                            print("Error adding document: \(String(describing: error))")
+                            completion(.failure(error!))
                         }
                     }
+                } else {
+                    print("User reload error in updateUserForState: \(String(describing: error))")
+                    completion(.failure(error!))
                 }
             }
         }
@@ -207,16 +217,15 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     override func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {
         if let user = Auth.auth().currentUser, let email = user.email {
             actionCodeSettings.url = URL(string: "https://tza3e.app.goo.gl/emailVerification/?email=\(email)")
-            user.sendEmailVerification(completion: { (error) in
+            user.sendEmailVerification { (error) in
                 if error == nil {
                     print("verification email sent")
                     completion(.success(true))
                 } else {
-                    // handle error
                     print("Send Verification email error: \(String(describing: error))")
                     completion(.failure(error!))
                 }
-            })
+            }
         }
     }
     

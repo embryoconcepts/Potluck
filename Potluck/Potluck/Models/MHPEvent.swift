@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MHPEvent {
+struct MHPEvent: Codable {
     var eventID: String?
     var eventName: String?
     var eventDate: String?

@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MHPUserEventList {
+struct MHPUserEventList: Codable  {
     var userEventListID: String?
     var userID: String?
     var userEvents: [MHPEvent]?
