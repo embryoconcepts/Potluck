@@ -38,8 +38,7 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Action Handlers
     
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
-        // FIXME: Should return user to original flow
-        dismiss(animated: true, completion: nil)
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func nextTapped(_ sender: Any) {
@@ -56,16 +55,11 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
                 present(alertController, animated: true, completion: nil)
             }
         } else {
-            if let first = txtFirstName.text,
-                let last = txtLastName.text,
-                let currentUser = Auth.auth().currentUser,
-                let email = currentUser.email {
-                
-                mhpUser!.userFirstName = first
-                mhpUser!.userLastName = last
-                mhpUser!.userEmail = email
+            if let first = txtFirstName.text, let last = txtLastName.text, var user = mhpUser {
+                user.userFirstName = first
+                user.userLastName = last
                 SVProgressHUD.show()
-                request.updateUserState(mhpUser: mhpUser!, state: .registered) { (result ) in
+                request.updateUserState(mhpUser: user, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
                         self.request.retrieveUser{ (result) in

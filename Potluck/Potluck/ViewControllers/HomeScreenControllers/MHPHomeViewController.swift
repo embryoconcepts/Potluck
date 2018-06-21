@@ -153,8 +153,6 @@
         case .anonymous:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
-        default:
-            return
         }
     }
     

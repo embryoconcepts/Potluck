@@ -60,10 +60,8 @@ class MHPFirestoreParser: MHPParser {
             user.userState = .verified
         case "registered":
             user.userState = .registered
-        case "anonymous":
-            user.userState = .anonymous
         default:
-            user.userState = .unset
+            user.userState = .anonymous
         }
         return user
     }

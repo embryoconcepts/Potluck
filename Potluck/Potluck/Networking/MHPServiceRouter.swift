@@ -14,7 +14,8 @@ class MHPServiceRouter: Routeable {
     func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
-    func signUp(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {}
@@ -55,24 +56,14 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                 }
             }
         } else {
-            self.signInAnon { (result) in
-                switch result {
-                case .success (let mhpUser):
-                    completion(.success(mhpUser))
-                case .failure (let error):
-                    completion(.failure(error))
-                }
-            }
+            let mhpUser = MHPUser()
+            completion(.success(mhpUser))
         }
     }
     
     override func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error == nil {
-                let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-                if let currentUser = Auth.auth().currentUser {
-                    currentUser.link(with: credential) { (user, error) in
-                        if error == nil {
                             self.retrieveUser{ (result) in
                                 switch result {
                                 case let .success(retrievedUser):
@@ -81,11 +72,6 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                                     completion(.failure(error!))
                                 }
                             }
-                        } else {
-                            completion(.failure(error!))
-                        }
-                    }
-                }
             } else {
                 completion(.failure(error!))
             }
@@ -122,8 +108,42 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         }
     }
     
-    override func signUp(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        // link newly created user to anon user in Firestore
+    override func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            if error == nil {
+                self.sendVerificationEmail { (result) in
+                    switch result {
+                    case .success:
+                        return
+                    case .failure:
+                        completion(.failure(error!))
+                    }
+                }
+                // save updated mhpUser info to DB
+                self.updateUserState(mhpUser: mhpUser, state: .unverified) { (result) in
+                    switch result {
+                    case .success(_):
+                        // retrieve mhpUser from db
+                        self.retrieveUser { (result) in
+                            switch result {
+                            case .success(let mhpUser):
+                                completion(.success(mhpUser))
+                            default:
+                                completion(.failure(error!))
+                            }
+                        }
+                    default:
+                        completion(.failure(error!))
+                    }
+                }
+            } else {
+                completion(.failure(error!))
+            }
+        }
+    }
+    
+    /// link newly created user to anon user in Firestore
+    override func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         if let currentUser = Auth.auth().currentUser {
             currentUser.link(with: credential) { (user, error) in

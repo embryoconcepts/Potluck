@@ -36,7 +36,6 @@ class MHPConfirmationScreenViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func closeTapped(_ sender: UIButton) {
-        // FIXME: should send user back to their original flow (see signup flow)
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             if let tabBarController = appDelegate.window?.rootViewController as? UITabBarController,
                 let rootVCArray = tabBarController.viewControllers {
@@ -48,7 +47,6 @@ class MHPConfirmationScreenViewController: UIViewController {
             }
         }
     }
-    
 }
 
 extension MHPConfirmationScreenViewController: Injectable {
