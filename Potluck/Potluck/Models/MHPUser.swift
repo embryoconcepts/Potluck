@@ -18,7 +18,7 @@ enum UserAuthorizationState: String, Codable {
     /// verified and confirmed, basic profile complete, added to database
     case registered
     /// default value
-    case unset
+//    case unset
 }
 
 struct MHPUser: Codable {
@@ -34,7 +34,7 @@ struct MHPUser: Codable {
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
-    var userState: UserAuthorizationState = .unset
+    var userState: UserAuthorizationState = .anonymous
     
 //    init(from decoder: Decoder) throws {
 //        

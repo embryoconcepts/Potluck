@@ -52,8 +52,19 @@ struct MHPRequestHandler {
         }
     }
     
-    func signUp(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.signUp(email: email, password: password, mhpUser: mhpUser) { (result) in
+    func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { (result) in
+            switch result {
+            case .success (let mhpUser):
+                completion(.success(mhpUser))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { (result) in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))

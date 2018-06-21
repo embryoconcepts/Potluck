@@ -92,9 +92,8 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     @IBAction func signupTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
-            // FIXME: fix issue when a current user exists, but is not verified, and user attempts to sign up as a new user
             SVProgressHUD.show()
-            request.signUp(email: email, password: pass, mhpUser: mhpUser) { (result) in
+            request.registerUser(email: email, password: pass, mhpUser: mhpUser) { (result) in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -194,8 +193,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
                 btnAlert.isEnabled = true
             case .anonymous:
                 viewAlert.isHidden = true
-                return
-            case .unset:
                 return
             }
         }
