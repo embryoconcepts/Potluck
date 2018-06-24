@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GOF-Qe-HBg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GOF-Qe-HBg">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,21 +29,21 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KiC-95-h69" customClass="ScalingCarouselView" customModule="ScalingCarousel">
                                 <rect key="frame" x="0.0" y="194" width="320" height="245"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o6Z-fR-7Y4">
-                                    <size key="itemSize" width="179" height="230"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iiz-s4-FLd" customClass="ScalingCarouselLayout" customModule="ScalingCarousel">
+                                    <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="homeCell" id="2bT-I4-2i4" customClass="MHPHomeCarouselViewCell" customModule="Potluck" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="eventCell" id="2bT-I4-2i4" customClass="MHPHomeCarouselViewCell" customModule="Potluck" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="8" width="180" height="230"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="180" height="230"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-Z2-Bf9">
+                                                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-Z2-Bf9">
                                                     <rect key="frame" x="15" y="15" width="150" height="200"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G0c-5y-K5V">
@@ -103,10 +103,56 @@
                                             <segue destination="hls-Wi-d70" kind="show" identifier="HomeToEventSegue" id="4CO-ei-c93"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="createCell" id="2vw-y7-jVv" customClass="MHPCreateEventCell" customModule="Potluck" customModuleProvider="target">
+                                        <rect key="frame" x="190" y="8" width="180" height="230"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="180" height="230"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GIz-no-Jn6">
+                                                    <rect key="frame" x="15" y="15" width="150" height="200"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="88d-bS-pMF">
+                                                            <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Event" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGe-yH-f4O">
+                                                            <rect key="frame" x="30" y="90.5" width="90" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.75294117650000003" green="0.75294117650000003" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="88d-bS-pMF" firstAttribute="leading" secondItem="GIz-no-Jn6" secondAttribute="leading" id="7C2-KY-wab"/>
+                                                        <constraint firstAttribute="bottom" secondItem="88d-bS-pMF" secondAttribute="bottom" id="GjQ-4i-rh6"/>
+                                                        <constraint firstItem="88d-bS-pMF" firstAttribute="top" secondItem="GIz-no-Jn6" secondAttribute="top" id="In9-WB-7Pj"/>
+                                                        <constraint firstItem="bGe-yH-f4O" firstAttribute="centerX" secondItem="GIz-no-Jn6" secondAttribute="centerX" id="UuR-2e-XjV"/>
+                                                        <constraint firstAttribute="trailing" secondItem="88d-bS-pMF" secondAttribute="trailing" id="Wov-G7-j55"/>
+                                                        <constraint firstItem="bGe-yH-f4O" firstAttribute="centerY" secondItem="GIz-no-Jn6" secondAttribute="centerY" id="yhw-dm-iIP"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="GIz-no-Jn6" firstAttribute="top" secondItem="2vw-y7-jVv" secondAttribute="top" constant="15" id="0YH-GD-OCN"/>
+                                            <constraint firstItem="GIz-no-Jn6" firstAttribute="leading" secondItem="2vw-y7-jVv" secondAttribute="leading" constant="15" id="awk-yc-bcK"/>
+                                            <constraint firstAttribute="bottom" secondItem="GIz-no-Jn6" secondAttribute="bottom" constant="15" id="hnd-Mt-R5k"/>
+                                            <constraint firstAttribute="trailing" secondItem="GIz-no-Jn6" secondAttribute="trailing" constant="15" id="p00-tX-5Xx"/>
+                                        </constraints>
+                                        <size key="customSize" width="180" height="230"/>
+                                        <connections>
+                                            <outlet property="imgEvent" destination="88d-bS-pMF" id="7cW-l2-78J"/>
+                                            <outlet property="lblCreateEvent" destination="bGe-yH-f4O" id="5aV-4n-hvn"/>
+                                            <outlet property="mainView" destination="GIz-no-Jn6" id="DwH-sV-IaA"/>
+                                            <segue destination="eeU-Oe-7cc" kind="presentation" id="MxX-MQ-hM3"/>
+                                        </connections>
+                                    </collectionViewCell>
                                 </cells>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="inset">
-                                        <real key="value" value="44"/>
+                                        <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -327,4 +373,7 @@
             <point key="canvasLocation" x="-99" y="-196"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="MxX-MQ-hM3"/>
+    </inferredMetricsTieBreakers>
 </document>

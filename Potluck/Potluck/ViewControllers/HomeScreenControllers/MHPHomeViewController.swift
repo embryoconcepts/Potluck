@@ -20,7 +20,6 @@
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var lblAlertMessage: UILabel!
     
-    private let reuseIdentifier = "homeCell"
     var mhpUser: MHPUser?
     var events = [MHPEvent]()
     lazy var request: MHPRequestHandler = {
@@ -36,8 +35,7 @@
         super.viewWillAppear(animated)
         
         handleUser()
-        
-        //    setupMockData() // TODO: remove for production
+        setupMockData() // TODO: remove for production
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,8 +51,8 @@
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
-            if segue.identifier == "HomeToEventSegue" {
+        if segue.identifier == "HomeToEventSegue" {
+            if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
                 let eventDetailVC = segue.destination as? MHPEventViewController
                 eventDetailVC?.inject((injectedUser: mhpUser!, injectedEvent: events[indexPath.row]))
             }
@@ -83,34 +81,34 @@
     // MARK: UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count
+        switch section {
+        case 0:
+            return events.count
+        default:
+            return 1
+        }
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MHPHomeCarouselViewCell
-        let selectedEvent = events[indexPath.row]
-        
-        cell.lblEventName.text = selectedEvent.eventName ?? ""
-        cell.lblHostName.text = "Hosted by: \(selectedEvent.eventHost?.userFirstName ?? "")" 
-        cell.lblDateTime.text = selectedEvent.eventDate ?? ""
-        
-        // TODO: set up proper image handling
-        if let tempImage = UIImage(named: selectedEvent.eventImageURL!) {
-            cell.imgEvent.image = tempImage
+        switch indexPath.section {
+        case 0:
+            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
+            eventCell.setupEventCell(for: events[indexPath.row])
+            eventCell.setNeedsLayout()
+            eventCell.layoutIfNeeded()
+            return eventCell
+        default:
+            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
+            createCell.setupCreateEventCell()
+            createCell.setNeedsLayout()
+            createCell.layoutIfNeeded()
+            return createCell
         }
-        return cell
     }
-    
-    
-    // MARK: ScalingCarousel Methods
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        carousel.didScroll()
-        // set up page control coordination?
-        //        guard let currentCenterIndex = carousel.currentCenterCellIndex?.row else { return }
-        //        output.text = String(describing: currentCenterIndex)
-    }
-    
     
     // MARK: - Action Handlers
     
