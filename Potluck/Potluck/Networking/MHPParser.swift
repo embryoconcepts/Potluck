@@ -24,11 +24,15 @@ class MHPFirestoreParser: MHPParser {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
+        if let email = firUserEmail {
+            userDict["userEmail"] = email
+        }
+        
         if let mu = mhpUser {
             userDict["userFirstName"] = mu.userFirstName
             userDict["userFirstName"] = mu.userFirstName
             userDict["userLastName"] = mu.userLastName
-            userDict["userEmail"] = mu.userEmail
+            userDict["userEmail"] = mu.userEmail ?? firUserEmail
             userDict["userPhone"] = mu.userPhone
             userDict["userProfileURL"] = mu.userProfileURL
             userDict["userFacebookID"] = mu.userFacebookID
@@ -36,14 +40,10 @@ class MHPFirestoreParser: MHPParser {
             userDict["notificationPermissions"] = mu.notificationPermissions
             userDict["notificationPreferences"] = mu.notificationPreferences
             userDict["locationPermissions"] = mu.locationPermissions
-            userDict["facebookPermissions"] = mu.facebookPermissions 
+            userDict["facebookPermissions"] = mu.facebookPermissions
         } else if let fn = firstName, let ln = lastName {
             userDict["userFirstName"] = fn
             userDict["userLastName"] = ln
-        }
-        
-        if let email = firUserEmail {
-            userDict["userEmail"] = email
         }
         return userDict
     }

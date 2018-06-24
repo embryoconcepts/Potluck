@@ -46,6 +46,7 @@ class MHPConfirmationScreenViewController: UIViewController {
                 }
             }
         }
+        // TODO: Or? self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
 

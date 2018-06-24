@@ -46,9 +46,7 @@
 		76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D35205FB23D004940DE /* MHPGuestListViewController.swift */; };
 		76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D37205FB246004940DE /* MHPItemListViewController.swift */; };
 		767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767F637420B6F638007F3D10 /* UIColorExtensions.swift */; };
-		7691723020C060CF0092F6FE /* MHPNetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */; };
-		7691723220C061A90092F6FE /* MHPUserManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723120C061A90092F6FE /* MHPUserManagerTests.swift */; };
-		7691723420C061BA0092F6FE /* MHPDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */; };
+		7691723420C061BA0092F6FE /* MHPFirestoreParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -126,9 +124,7 @@
 		76723D35205FB23D004940DE /* MHPGuestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListViewController.swift; sourceTree = "<group>"; };
 		76723D37205FB246004940DE /* MHPItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListViewController.swift; sourceTree = "<group>"; };
 		767F637420B6F638007F3D10 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MHPNetworkManagerTests.swift; path = PotluckTests/ManagersTests/MHPNetworkManagerTests.swift; sourceTree = SOURCE_ROOT; };
-		7691723120C061A90092F6FE /* MHPUserManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPUserManagerTests.swift; path = PotluckTests/ManagersTests/MHPUserManagerTests.swift; sourceTree = SOURCE_ROOT; };
-		7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPDataManagerTests.swift; path = PotluckTests/ManagersTests/MHPDataManagerTests.swift; sourceTree = SOURCE_ROOT; };
+		7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPFirestoreParserTests.swift; path = PotluckTests/NetworkingTests/MHPFirestoreParserTests.swift; sourceTree = SOURCE_ROOT; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -223,7 +219,7 @@
 		765123D02053538900E78488 /* PotluckTests */ = {
 			isa = PBXGroup;
 			children = (
-				7691722E20C0609D0092F6FE /* ManagersTests */,
+				7691722E20C0609D0092F6FE /* NetworkingTests */,
 				765123D12053538900E78488 /* PotluckTests.swift */,
 				765123D32053538900E78488 /* Info.plist */,
 			);
@@ -279,15 +275,12 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		7691722E20C0609D0092F6FE /* ManagersTests */ = {
+		7691722E20C0609D0092F6FE /* NetworkingTests */ = {
 			isa = PBXGroup;
 			children = (
-				7691723120C061A90092F6FE /* MHPUserManagerTests.swift */,
-				7691722F20C060CF0092F6FE /* MHPNetworkManagerTests.swift */,
-				7691723320C061BA0092F6FE /* MHPDataManagerTests.swift */,
+				7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */,
 			);
-			name = ManagersTests;
-			path = "New Group";
+			path = NetworkingTests;
 			sourceTree = "<group>";
 		};
 		76DF6B51205A298F00028B3B /* Supporting Files */ = {
@@ -757,9 +750,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7691723020C060CF0092F6FE /* MHPNetworkManagerTests.swift in Sources */,
-				7691723420C061BA0092F6FE /* MHPDataManagerTests.swift in Sources */,
-				7691723220C061A90092F6FE /* MHPUserManagerTests.swift in Sources */,
+				7691723420C061BA0092F6FE /* MHPFirestoreParserTests.swift in Sources */,
 				765123D22053538900E78488 /* PotluckTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
