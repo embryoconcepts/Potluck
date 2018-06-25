@@ -9,10 +9,13 @@
 import UIKit
 import Firebase
 
-class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
+class MHPSettingsViewController: UIViewController {
     
     @IBOutlet weak var btnLogInOut: UIButton!
-    var mhpUser: MHPUser!
+    var mhpUser: MHPUser?
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,16 +28,17 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if mhpUser.userState != .registered {
-            btnLogInOut.isHidden = true
-            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
-                let navController = UINavigationController(rootViewController: signinVC)
-                signinVC.inject(mhpUser)
-                signinVC.settingsDelegate = self
-                present(navController, animated: true, completion: nil)
+        if let user = mhpUser {
+            if user.userState != .registered {
+                if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+                    let navController = UINavigationController(rootViewController: signinVC)
+                    signinVC.inject(user)
+                    signinVC.settingsDelegate = self
+                    present(navController, animated: true, completion: nil)
+                }
+            } else {
+                setupView()
             }
-        } else {
-            setupView()
         }
     }
     
@@ -70,15 +74,19 @@ class MHPSettingsViewController: UIViewController, SettingsUserDelegate {
             self.present(alertController, animated: true, completion: nil)
         }
     }
-    
-    
-    // MARK: - SettingsUserDelegate
-    
+}
+
+
+// MARK: - SettingsUserDelegate
+
+extension MHPSettingsViewController: SettingsUserDelegate {
     func updateUser(mhpUser: MHPUser) {
         self.mhpUser = mhpUser
     }
-    
 }
+
+
+// MARK: - InjectableProtocol
 
 extension MHPSettingsViewController: Injectable {
     typealias T = MHPUser

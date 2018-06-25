@@ -8,8 +8,8 @@
 
 import UIKit
 
-class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
-
+class MHPItemListViewController: UIViewController {
+    
     @IBOutlet weak var btnRsvp: UIButton!
     @IBOutlet weak var tagContainerView: UIView!
     @IBOutlet weak var btnInfo: UIButton!
@@ -22,12 +22,15 @@ class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableV
     var event: MHPEvent?
     var items = [MHPItem]()
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -38,7 +41,7 @@ class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableV
         // handle moving to rsvp
         // handle moving to item card
     }
-
+    
     
     // MARK: - Action Handlers
     
@@ -47,10 +50,12 @@ class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableV
             present(rsvpVC, animated: true, completion: nil)
         }
     }
-    
-    
-    // MARK: - UITableViewSourceAction
-    
+}
+
+
+// MARK: - UITableViewDataSource and Delegate
+
+extension MHPItemListViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -63,9 +68,12 @@ class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableV
         return UITableViewCell()
     }
     
-    
-    // MARK: - Injectable Protocol
-    
+}
+
+
+// MARK: - Injectable Protocol
+
+extension MHPItemListViewController: Injectable {
     func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
         user = data.injectedUser
         event = data.injectedEvent
@@ -75,5 +83,4 @@ class MHPItemListViewController: UIViewController, UITableViewDelegate, UITableV
         assert(user != nil)
         assert(event != nil)
     }
-    
 }

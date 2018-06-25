@@ -47,16 +47,16 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-        
-
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    
+    
     // MARK: - Action Handlers
     
     @IBAction func pickerChanged(_ sender: Any) {
@@ -65,7 +65,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     @IBAction func cancelTappped(_ sender: UIButton) {
         cancel()
     }
-
+    
     @IBAction func nextTapped(_ sender: Any) {
         next()
     }
@@ -99,6 +99,9 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
 }
 
+
+// MARK: - UITextViewDelegate
+
 extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
@@ -113,8 +116,11 @@ extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
     }
-
+    
 }
+
+
+// MARK: - UITextFieldDelegate
 
 extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

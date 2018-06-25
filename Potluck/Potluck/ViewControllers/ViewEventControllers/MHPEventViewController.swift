@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPEventViewController: UIViewController, Injectable {
+class MHPEventViewController: UIViewController {
     
     @IBOutlet weak var lblEventHost: UILabel!
     @IBOutlet weak var lblEventDescription: UILabel!
@@ -27,6 +27,9 @@ class MHPEventViewController: UIViewController, Injectable {
     var userIsHost: Bool?
     var userIsGuest: Bool?
     var userHasRsvp: Bool?
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +53,12 @@ class MHPEventViewController: UIViewController, Injectable {
     }
     
     
-     // MARK: - Navigation
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
         // handle moving to rsvp
-
+        
         if segue.identifier == "EventToGuestList" {
             let guestListVC = segue.destination as? MHPGuestListViewController
             if let tempEvent = event, let tempUser = user {
@@ -71,10 +74,10 @@ class MHPEventViewController: UIViewController, Injectable {
         }
     }
     
-
+    
     // MARK: Styling the View
     
-    func styleNavigation() {
+    fileprivate func styleNavigation() {
         // Navigation Bar
         var rightBarButton: UIBarButtonItem?
         if userIsHost != nil {
@@ -87,7 +90,7 @@ class MHPEventViewController: UIViewController, Injectable {
         self.title = event?.eventName ?? ""
     }
     
-    func styleLabels() {
+    fileprivate func styleLabels() {
         // Event Details
         lblEventHost.text = event?.eventHost?.userFirstName ?? ""
         lblEventDescription.text = event?.eventDescription ?? ""
@@ -138,8 +141,18 @@ class MHPEventViewController: UIViewController, Injectable {
     }
     
     
-    // MARK: - Injectable Protocol
+    // MARK: - Helper Methods
     
+    fileprivate func sendToSignUpLogin() {
+        // move to sign up flow
+    }
+    
+}
+
+
+// MARK: - Injectable Protocol
+
+extension MHPEventViewController: Injectable {
     func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
         user = data.injectedUser
         event = data.injectedEvent
@@ -149,12 +162,4 @@ class MHPEventViewController: UIViewController, Injectable {
         assert(user != nil)
         assert(event != nil)
     }
-    
-    
-    // MARK: - Helper Methods
-    
-    func sendToSignUpLogin() {
-        // move to sign up flow
-    }
-    
 }

@@ -12,7 +12,7 @@
  import FirebaseFirestore
  import SVProgressHUD
  
- class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
+ class MHPHomeViewController: UIViewController {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -26,9 +26,13 @@
         return MHPRequestHandler()
     }()
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
+        self.carousel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,54 +66,6 @@
     }
     
     
-    // MARK: - UITabBarControllerDelegate
-    
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
-            createEventVC.mhpUser = user
-        }
-        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
-            profileVC.inject(user)
-        }
-        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
-            settingsVC.inject(user)
-        }
-        return true
-    }
-    
-    
-    // MARK: UICollectionViewDataSource
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return events.count
-        default:
-            return 1
-        }
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
-            eventCell.setupEventCell(for: events[indexPath.row])
-            eventCell.setNeedsLayout()
-            eventCell.layoutIfNeeded()
-            return eventCell
-        default:
-            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
-            createCell.setupCreateEventCell()
-            createCell.setNeedsLayout()
-            createCell.layoutIfNeeded()
-            return createCell
-        }
-    }
-    
     // MARK: - Action Handlers
     
     @IBAction func alertTapped(_ sender: Any) {
@@ -119,13 +75,6 @@
             signinVC.homeUserDelegate = self
             present(navController, animated: true, completion: nil)
         }
-    }
-    
-    
-    // MARK: - HomeUserDelegate
-    
-    func updateUser(mhpUser: MHPUser) {
-        self.mhpUser = mhpUser
     }
     
     
@@ -167,8 +116,73 @@
         events.append(event1)
         events.append(event2)
     }
-
+    
  }
+ 
+ 
+ // MARK: UICollectionViewDataSource
+ 
+ extension MHPHomeViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return events.count
+        default:
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+        case 0:
+            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
+            eventCell.setupEventCell(for: events[indexPath.row])
+            eventCell.setNeedsLayout()
+            eventCell.layoutIfNeeded()
+            return eventCell
+        default:
+            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
+            createCell.setupCreateEventCell()
+            createCell.setNeedsLayout()
+            createCell.layoutIfNeeded()
+            return createCell
+        }
+    }
+ }
+ 
+ 
+ // MARK: - UITabBarControllerDelegate
+ 
+ extension MHPHomeViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            createEventVC.mhpUser = user
+        }
+        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+            profileVC.inject(user)
+        }
+        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+            settingsVC.inject(user)
+        }
+        return true
+    }
+ }
+ 
+ 
+ // MARK: - HomeUserDelegate
+ 
+ extension MHPHomeViewController: HomeUserDelegate {
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+ }
+ 
+ 
+ // MARK: - Injectable Protocol
  
  extension MHPHomeViewController: Injectable {
     typealias T = MHPUser
@@ -181,6 +195,9 @@
         assert(self.mhpUser != nil)
     }
  }
+ 
+ 
+ // MARK: - UserHandler Protocol
  
  extension MHPHomeViewController: UserHandler {
     func handleUser() {

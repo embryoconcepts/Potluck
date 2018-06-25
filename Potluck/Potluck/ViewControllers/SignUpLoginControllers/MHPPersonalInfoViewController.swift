@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SVProgressHUD
 
-class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
+class MHPPersonalInfoViewController: UIViewController {
     
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
@@ -20,8 +20,13 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         return MHPRequestHandler()
     }()
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.txtFirstName.delegate = self
+        self.txtLastName.delegate = self
         assertDependencies()
     }
     
@@ -88,9 +93,12 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    // MARK: - UITextFieldDelegate
-    
+}
+
+
+// MARK: - UITextFieldDelegate
+
+extension MHPPersonalInfoViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case txtFirstName:
@@ -116,6 +124,9 @@ class MHPPersonalInfoViewController: UIViewController, UITextFieldDelegate {
     }
     
 }
+
+
+// MARK: - Injectable Protocol
 
 extension MHPPersonalInfoViewController: Injectable {
     typealias T = MHPUser
