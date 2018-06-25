@@ -19,6 +19,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     @IBOutlet weak var btnNext: UIButton!
     
     var mhpUser: MHPUser?
+    var event: MHPEvent?
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     
     
@@ -84,14 +85,29 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func cancel() {
-        // TODO: add alert - do you really wanna?
-        self.tabBarController?.tabBar.isHidden = false
-        if let tabs = tabBarController?.viewControllers {
-            if tabs.count > 0 {
-                self.tabBarController?.selectedIndex = 0
+        let alert = UIAlertController(title: "Cancel Event",
+                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            // clear event
+            self.event = nil
+            self.txtName.text = ""
+            self.txtDescription.text = self.txtViewPlaceholderText
+            self.txtDescription.textColor = .lightGray
+            self.datePicker.date = Date()
+            self.txtLocation.text = ""
+            
+            // return to Home
+            self.tabBarController?.tabBar.isHidden = false
+            if let tabs = self.tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
+                }
             }
-        }
-        dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true)
     }
     
     fileprivate func next() {
