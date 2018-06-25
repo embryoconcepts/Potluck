@@ -9,6 +9,16 @@
 import UIKit
 
 class MHPCreateEvent1DetailsViewController: UIViewController {
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var datePicker: UIDatePicker!
+   
+    @IBOutlet weak var txtName: UITextField!
+    @IBOutlet weak var txtDescription: UITextView!
+    @IBOutlet weak var txtLocation: UITextField!
+    
+    @IBOutlet weak var btnNext: UIButton!
+    
+    
     var mhpUser: MHPUser?
     
     override func viewDidLoad() {
@@ -39,7 +49,26 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    
+    
+    // MARK: - Action Handlers
+    
+    @IBAction func pickerChanged(_ sender: Any) {
+    }
+    
     @IBAction func cancelTappped(_ sender: UIButton) {
+        cancel()
+    }
+
+    @IBAction func nextTapped(_ sender: Any) {
+        next()
+    }
+    
+    
+    // MARK: - Private methods
+    
+    
+    fileprivate func cancel() {
         // TODO: add alert - do you really wanna?
         self.tabBarController?.tabBar.isHidden = false
         if let tabs = tabBarController?.viewControllers {
@@ -49,8 +78,8 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         }
         dismiss(animated: true, completion: nil)
     }
-
-    func next() {
+    
+    fileprivate func next() {
         // TODO: save current values to user preferences, move to next screen
     }
 }
