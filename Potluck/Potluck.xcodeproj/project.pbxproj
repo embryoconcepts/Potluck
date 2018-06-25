@@ -15,6 +15,7 @@
 		764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */; };
 		764638DB20D9C25C00C554A1 /* MHPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638DA20D9C25C00C554A1 /* MHPParser.swift */; };
 		764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A4B20DFCED20032D982 /* MHPCreateEventCell.swift */; };
+		764D1A4E20E0D6E60032D982 /* MHPLocationSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */; };
 		765123BA2053538900E78488 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123B92053538900E78488 /* AppDelegate.swift */; };
 		765123BF2053538900E78488 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123BD2053538900E78488 /* Main.storyboard */; };
 		765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 765123C02053538900E78488 /* Potluck.xcdatamodeld */; };
@@ -89,6 +90,7 @@
 		764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPServiceRouter.swift; sourceTree = "<group>"; };
 		764638DA20D9C25C00C554A1 /* MHPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPParser.swift; sourceTree = "<group>"; };
 		764D1A4B20DFCED20032D982 /* MHPCreateEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEventCell.swift; sourceTree = "<group>"; };
+		764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPLocationSearchViewController.swift; sourceTree = "<group>"; };
 		765123B62053538900E78488 /* Potluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Potluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765123B92053538900E78488 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765123BE2053538900E78488 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
+				764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */,
 			);
 			path = CreateEventControllers;
 			sourceTree = "<group>";
@@ -715,6 +718,7 @@
 			files = (
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
+				764D1A4E20E0D6E60032D982 /* MHPLocationSearchViewController.swift in Sources */,
 				767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */,
 				764638DB20D9C25C00C554A1 /* MHPParser.swift in Sources */,
 				760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */,
