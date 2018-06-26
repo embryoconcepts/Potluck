@@ -22,8 +22,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
+    
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
+
     
     // MARK: - Lifecycle
     
@@ -38,6 +40,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        assertDependencies()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -62,6 +65,11 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func pickerChanged(_ sender: Any) {
+        let selectedDate = datePicker.date
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        event?.eventDate = formatter.string(from: selectedDate)
     
     }
     
@@ -93,19 +101,24 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         datePicker.minimumDate = Date()
     }
     
+    fileprivate func resetView() {
+        // TODO: improve clearing event handling
+        self.event = nil
+        self.mhpUser = nil
+        self.txtName.text = ""
+        self.txtDescription.text = self.txtViewPlaceholderText
+        self.txtDescription.textColor = .lightGray
+        self.datePicker.date = Date()
+        self.txtLocationName.text = ""
+        self.btnLocationSearch.titleLabel?.text = "Tap for Address Search"
+    }
+    
     fileprivate func cancel() {
         let alert = UIAlertController(title: "Cancel Event",
                                       message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            // TODO: improve clearing event handling
-            self.event = nil
-            self.txtName.text = ""
-            self.txtDescription.text = self.txtViewPlaceholderText
-            self.txtDescription.textColor = .lightGray
-            self.datePicker.date = Date()
-            self.txtLocationName.text = ""
-            self.lblAddress.text = "Tap for Address Search"
+            self.resetView()
             
             // return to Home
             self.tabBarController?.tabBar.isHidden = false
@@ -121,10 +134,11 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func next() {
-        // TODO: save current values to user preferences, move to next screen
+       
+        // TODO: validate, move to next screen
     }
 }
-
+        
 
 // MARK: - UITextViewDelegate
 
@@ -140,6 +154,8 @@ extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = txtViewPlaceholderText
             textView.textColor = UIColor.lightGray
+        } else {
+            event?.eventDescription = textView.text
         }
     }
     
@@ -153,14 +169,27 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
         switch textField {
         case txtName:
             txtName.becomeFirstResponder()
-        case txtDescription:
+        case txtDescription:    
             txtDescription.becomeFirstResponder()
         case datePicker:
             datePicker.becomeFirstResponder()
+        case txtLocationName:
+            txtLocationName.becomeFirstResponder()
         default:
             txtLocationName.resignFirstResponder()
         }
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case txtName:
+            event?.eventName = txtName.text
+        case txtLocationName:
+            event?.eventLocation = txtLocationName.text
+        default:
+            return
+        }
     }
 }
 
@@ -169,6 +198,32 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
 
 extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate {
     func didSelectLocation(controller: MHPLocationSearchViewController, address: String) {
+        btnLocationSearch.titleLabel?.text = ""
         lblAddress.text = address
+        event?.eventAddress = address
+    }
+}
+
+// MARK: - UserInjectable Protocol
+
+extension MHPCreateEvent1DetailsViewController: Injectable {
+    typealias T = MHPUser
+    typealias U = MHPEvent
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func inject(_ event: U) {
+        self.event = event
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+        
+        if event == nil {
+            event = MHPEvent()
+            event?.eventHost = mhpUser
+        }
     }
 }

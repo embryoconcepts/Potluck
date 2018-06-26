@@ -146,7 +146,6 @@
                                             <outlet property="imgEvent" destination="88d-bS-pMF" id="7cW-l2-78J"/>
                                             <outlet property="lblCreateEvent" destination="bGe-yH-f4O" id="5aV-4n-hvn"/>
                                             <outlet property="mainView" destination="GIz-no-Jn6" id="DwH-sV-IaA"/>
-                                            <segue destination="eeU-Oe-7cc" kind="presentation" id="MxX-MQ-hM3"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -373,7 +372,4 @@
             <point key="canvasLocation" x="-99" y="-196"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="MxX-MQ-hM3"/>
-    </inferredMetricsTieBreakers>
 </document>

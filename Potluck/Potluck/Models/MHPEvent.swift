@@ -13,6 +13,7 @@ struct MHPEvent: Codable {
     var eventName: String?
     var eventDate: String?
     var eventLocation: String?
+    var eventAddress: String?
     var eventDescription: String?
     var eventImageURL: String?
     var eventHost: MHPUser?
