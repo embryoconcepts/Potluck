@@ -31,15 +31,13 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        txtName.delegate = self
-        txtDescription.delegate = self
-        
+    
         setupView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        
         assertDependencies()
     }
     
@@ -89,9 +87,43 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     
+    // MARK: - Keyboard Handlers
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentInset.bottom = keyboardSize.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset.bottom = 0
+    }
+    
+    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
+    
     // MARK: - Private methods
     
     fileprivate func setupView() {
+        // delegates
+        scrollView.delegate = self
+        txtName.delegate = self
+        txtDescription.delegate = self
+        txtLocationName.delegate = self
+        
+        // hide tab bar
+        self.tabBarController?.tabBar.isHidden = true
+        
+        // set up scrollview + keyboard
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tapGesture)
+        
+        // style description text view
         txtDescription.text = txtViewPlaceholderText
         txtDescription.textColor = .lightGray
         txtDescription.layer.borderColor = UIColor(hexString: "ebebeb").cgColor
@@ -168,15 +200,11 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case txtName:
-            txtName.becomeFirstResponder()
-        case txtDescription:    
-            txtDescription.becomeFirstResponder()
-        case datePicker:
-            datePicker.becomeFirstResponder()
+            textField.becomeFirstResponder()
         case txtLocationName:
-            txtLocationName.becomeFirstResponder()
+            textField.becomeFirstResponder()
         default:
-            txtLocationName.resignFirstResponder()
+            textField.resignFirstResponder()
         }
         return true
     }
@@ -184,9 +212,9 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case txtName:
-            event?.eventName = txtName.text
+            event?.eventName = textField.text
         case txtLocationName:
-            event?.eventLocation = txtLocationName.text
+            event?.eventLocation = textField.text
         default:
             return
         }
@@ -198,7 +226,7 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
 
 extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate {
     func didSelectLocation(controller: MHPLocationSearchViewController, address: String) {
-        btnLocationSearch.titleLabel?.text = ""
+        btnLocationSearch.setTitle("", for: .normal)
         lblAddress.text = address
         event?.eventAddress = address
     }
