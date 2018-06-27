@@ -10,10 +10,14 @@ import Foundation
 import UIKit
 
 class MHPCreateEvent2InvitesViewController: UIViewController {
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tblView: UITableView!
+    @IBOutlet weak var lblGuestList: UILabel!
+    @IBOutlet weak var viewEmptyState: UIView!
+    @IBOutlet weak var viewHeader: UIView!
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
+    var guests = [MHPUser]()
     
     
     // MARK: - Lifecycle
@@ -21,12 +25,12 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setupView()
         assertDependencies()
     }
     
@@ -40,39 +44,121 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     
-    // MARK: - Keyboard Handlers
+    // MARK: - Action Handlers
     
-    @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollView.contentInset.bottom = keyboardSize.height
-        }
+    @IBAction func contactsTapped(_ sender: Any) {
+    
     }
     
-    @objc func keyboardWillHide(notification: Notification) {
-        scrollView.contentInset.bottom = 0
+    @IBAction func emailTapped(_ sender: Any) {
+    
     }
     
-    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+    @IBAction func facebookTapped(_ sender: Any) {
+    
+    }
+    
+    @IBAction func cancelTappped(_ sender: UIButton) {
+        cancel()
+    }
+    
+    @IBAction func nextTapped(_ sender: Any) {
+        next()
     }
     
     
     // MARK: - Private methods
     
     fileprivate func setupView() {
-        // delegates
-//        scrollView.delegate = self
-        
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
         
-        // set up scrollview + keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        lblGuestList.text = "Guest List (\(guests.count))"
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tapGesture)
+        if guests.count == 0 {
+            tblView.isHidden = true
+            viewEmptyState.isHidden = false
+        } else {
+            tblView.isHidden = false
+            viewEmptyState.isHidden = true
+        }
+    }
+    
+    fileprivate func resetView() {
+        // TODO: improve clearing event handling
+        self.event = nil
+        self.mhpUser = nil
 
+    }
+    
+    fileprivate func cancel() {
+        let alert = UIAlertController(title: "Cancel Event",
+                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+            self.resetView()
+            
+            // return to Home
+            self.tabBarController?.tabBar.isHidden = false
+            if let tabs = self.tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
+                }
+            }
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true)
+    }
+    
+    fileprivate func next() {
+        if validate() {
+            // TODO: update for screen 3
+            if  let user = mhpUser,
+                let event = event,
+                let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
+                createEvent2.inject(user)
+                createEvent2.inject(event)
+                navigationController?.pushViewController(createEvent2, animated: true)
+            }
+        }
+    }
+    
+    fileprivate func validate() -> Bool {
+        let isValid = true
+        // TODO: validate info
+        return isValid
+    }
+    
+    @objc fileprivate func back() {
+        // TODO: double check data injection, may need a delegate instead
+        if  let user = mhpUser,
+            let event = event,
+            let createEvent1 = navigationController?.presentingViewController as? MHPCreateEvent1DetailsViewController {
+            // storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent1DetailsViewController") as? MHPCreateEvent1DetailsViewController {
+            createEvent1.inject(user)
+            createEvent1.inject(event)
+            navigationController?.popViewController(animated: true)
+        }
+    }
+}
+
+
+// MARK: - UITableViewControllerDelegate and Datasource
+
+extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return guests.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "inviteCell", for: indexPath) as! MHPCreateEventInvitesCell
+        cell.setupCell(with: guests[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 30
     }
 }
 
@@ -92,10 +178,6 @@ extension MHPCreateEvent2InvitesViewController: Injectable {
     
     func assertDependencies() {
         assert(self.mhpUser != nil)
-        
-        if event == nil {
-            event = MHPEvent()
-            event?.eventHost = mhpUser
-        }
+        assert(self.event != nil)
     }
 }
