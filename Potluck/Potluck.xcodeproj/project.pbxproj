@@ -37,7 +37,7 @@
 		765124012058902000E78488 /* MHPEventItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124002058902000E78488 /* MHPEventItemList.swift */; };
 		765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124022058903000E78488 /* MHPEventRsvpList.swift */; };
 		765124052058932200E78488 /* MHPUserEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124042058932200E78488 /* MHPUserEventList.swift */; };
-		7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */; };
+		7657AC2E205CC52800FE7833 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* Extensions.swift */; };
 		7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */; };
 		7657AC38205CFC8100FE7833 /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */; };
 		7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */; };
@@ -118,7 +118,7 @@
 		765124002058902000E78488 /* MHPEventItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPEventItemList.swift; sourceTree = "<group>"; };
 		765124022058903000E78488 /* MHPEventRsvpList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPEventRsvpList.swift; sourceTree = "<group>"; };
 		765124042058932200E78488 /* MHPUserEventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPUserEventList.swift; sourceTree = "<group>"; };
-		7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		7657AC2D205CC52800FE7833 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUpLogin.storyboard; sourceTree = "<group>"; };
 		7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewEvent.storyboard; sourceTree = "<group>"; };
@@ -293,7 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				767F637420B6F638007F3D10 /* UIColorExtensions.swift */,
-				7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */,
+				7657AC2D205CC52800FE7833 /* Extensions.swift */,
 				76DF6B52205A29A600028B3B /* Fonts */,
 			);
 			path = "Supporting Files";
@@ -741,7 +741,7 @@
 				765123FB20588E1300E78488 /* MHPItem.swift in Sources */,
 				76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */,
 				765124012058902000E78488 /* MHPEventItemList.swift in Sources */,
-				7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */,
+				7657AC2E205CC52800FE7833 /* Extensions.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */,
 				764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */,

@@ -25,13 +25,13 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
-
+    
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         setupView()
     }
     
@@ -59,7 +59,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         event?.eventDate = formatter.string(from: selectedDate)
-    
+        
     }
     
     @IBAction func locationSearchTapped(_ sender: Any) {
@@ -157,22 +157,53 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func next() {
-        // TODO: validate
-        if  event?.eventName != nil &&
-            event?.eventDescription != nil &&
-            event?.eventDate != nil &&
-            event?.eventLocation != nil {
-                if  let user = mhpUser,
-                    let event = event,
-                    let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
-                    createEvent2.inject(user)
-                    createEvent2.inject(event)
-                    navigationController?.pushViewController(createEvent2, animated: true)
-                }
+        if validate() {
+            if  let user = mhpUser,
+                let event = event,
+                let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
+                createEvent2.inject(user)
+                createEvent2.inject(event)
+                navigationController?.pushViewController(createEvent2, animated: true)
+            }
         }
     }
-}
+    
+    fileprivate func validate() -> Bool {
+        var errorMsg = "Required fields:"
+        var isValid = true
         
+        if txtName.text == "" {
+            errorMsg += "\nname"
+            isValid = false
+        }
+        
+        if txtDescription.text == "" || txtDescription.text == txtViewPlaceholderText {
+            errorMsg += "\ndescription"
+            isValid = false
+        }
+        
+        let nextHour = Date().add(component: .hour, value: 1)
+        if datePicker.date < nextHour! {
+            errorMsg += "\nvalid date"
+            isValid = false
+        }
+        
+        if txtLocationName.text == "" {
+            errorMsg += "\nlocation"
+            isValid = false
+        }
+        
+        if !isValid {
+            let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        return isValid
+    }
+    
+}
+
 
 // MARK: - UITextViewDelegate
 
@@ -202,11 +233,13 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case txtName:
-            textField.becomeFirstResponder()
+            txtName.resignFirstResponder()
+            txtLocationName.becomeFirstResponder()
         case txtLocationName:
-            textField.becomeFirstResponder()
+            txtLocationName.resignFirstResponder()
+            txtName.becomeFirstResponder()
         default:
-            textField.resignFirstResponder()
+            return true
         }
         return true
     }
