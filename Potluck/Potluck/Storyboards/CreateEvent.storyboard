@@ -17,10 +17,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Create Event-->
+        <!--Create Event 1 - Details-->
         <scene sceneID="gMI-Ab-Jyr">
             <objects>
-                <viewController id="DgA-GW-4rN" userLabel="Create Event" customClass="MHPCreateEvent1DetailsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Create Event 1 - Details" id="DgA-GW-4rN" customClass="MHPCreateEvent1DetailsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d1K-x2-2o4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -295,6 +295,89 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1t8-kd-EG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-644" y="-196"/>
+        </scene>
+        <!--Event Invites-->
+        <scene sceneID="5vs-8L-Rlf">
+            <objects>
+                <viewController storyboardIdentifier="MHPCreateEvent2InvitesViewController" title="Event Invites" id="wGx-gJ-Qul" customClass="MHPCreateEvent2InvitesViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hnc-mw-sKk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HZQ-BX-OFE">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ig3-AZ-OnU">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XHV-yO-F8c">
+                                                <rect key="frame" x="191.5" y="548" width="168.5" height="40"/>
+                                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="nextTapped:" destination="DgA-GW-4rN" eventType="touchUpInside" id="pcf-7Z-rH2"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xHq-7p-eHv">
+                                                <rect key="frame" x="15" y="548" width="168.5" height="40"/>
+                                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="HYB-vx-ml1"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelTappped:" destination="DgA-GW-4rN" eventType="touchUpInside" id="SsU-Ss-IHO"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="xHq-7p-eHv" firstAttribute="bottom" secondItem="XHV-yO-F8c" secondAttribute="bottom" id="5D4-eZ-Lhh"/>
+                                            <constraint firstItem="xHq-7p-eHv" firstAttribute="width" secondItem="XHV-yO-F8c" secondAttribute="width" id="OOT-ye-foh"/>
+                                            <constraint firstItem="XHV-yO-F8c" firstAttribute="leading" secondItem="xHq-7p-eHv" secondAttribute="trailing" constant="8" id="URU-tC-0g8"/>
+                                            <constraint firstAttribute="bottom" secondItem="xHq-7p-eHv" secondAttribute="bottom" constant="15" id="YFJ-X8-dcS"/>
+                                            <constraint firstItem="xHq-7p-eHv" firstAttribute="height" secondItem="XHV-yO-F8c" secondAttribute="height" id="fgn-Er-nSI"/>
+                                            <constraint firstAttribute="trailing" secondItem="XHV-yO-F8c" secondAttribute="trailing" constant="15" id="v1y-nN-c7U"/>
+                                            <constraint firstItem="xHq-7p-eHv" firstAttribute="leading" secondItem="ig3-AZ-OnU" secondAttribute="leading" constant="15" id="vyT-v4-OIT"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ig3-AZ-OnU" firstAttribute="top" secondItem="HZQ-BX-OFE" secondAttribute="top" id="CpS-GU-Swa"/>
+                                    <constraint firstItem="ig3-AZ-OnU" firstAttribute="centerY" secondItem="HZQ-BX-OFE" secondAttribute="centerY" priority="250" id="HNd-v0-6WP"/>
+                                    <constraint firstItem="ig3-AZ-OnU" firstAttribute="centerX" secondItem="HZQ-BX-OFE" secondAttribute="centerX" id="Sja-lz-1bs"/>
+                                    <constraint firstAttribute="trailing" secondItem="ig3-AZ-OnU" secondAttribute="trailing" id="XcN-3j-u6I"/>
+                                    <constraint firstItem="ig3-AZ-OnU" firstAttribute="leading" secondItem="HZQ-BX-OFE" secondAttribute="leading" id="gyD-fG-dcD"/>
+                                    <constraint firstAttribute="bottom" secondItem="ig3-AZ-OnU" secondAttribute="bottom" priority="250" id="rMf-k4-1Dv"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="wGx-gJ-Qul" id="Hbz-rq-Wgb"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HZQ-BX-OFE" firstAttribute="trailing" secondItem="h5q-rx-LH1" secondAttribute="trailing" id="Lki-4Y-qrk"/>
+                            <constraint firstItem="HZQ-BX-OFE" firstAttribute="leading" secondItem="h5q-rx-LH1" secondAttribute="leading" id="PKG-SG-uaL"/>
+                            <constraint firstItem="h5q-rx-LH1" firstAttribute="bottom" secondItem="HZQ-BX-OFE" secondAttribute="bottom" id="ieb-y3-Gkf"/>
+                            <constraint firstItem="HZQ-BX-OFE" firstAttribute="top" secondItem="h5q-rx-LH1" secondAttribute="top" id="k7o-eZ-rc6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="h5q-rx-LH1"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="scrollView" destination="HZQ-BX-OFE" id="qGG-Y2-Y0Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="brW-TL-jrC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="898.39999999999998" y="-196.55172413793105"/>
         </scene>
     </scenes>
     <resources>

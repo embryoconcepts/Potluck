@@ -51,15 +51,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    
-    
     // MARK: - Action Handlers
     
     @IBAction func pickerChanged(_ sender: Any) {
@@ -166,8 +157,19 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func next() {
-       
-        // TODO: validate, move to next screen
+        // TODO: validate
+        if  event?.eventName != nil &&
+            event?.eventDescription != nil &&
+            event?.eventDate != nil &&
+            event?.eventLocation != nil {
+                if  let user = mhpUser,
+                    let event = event,
+                    let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
+                    createEvent2.inject(user)
+                    createEvent2.inject(event)
+                    navigationController?.pushViewController(createEvent2, animated: true)
+                }
+        }
     }
 }
         
