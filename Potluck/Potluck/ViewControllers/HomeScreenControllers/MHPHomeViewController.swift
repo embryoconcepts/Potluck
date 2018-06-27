@@ -12,7 +12,7 @@
  import FirebaseFirestore
  import SVProgressHUD
  
- class MHPHomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, HomeUserDelegate {
+ class MHPHomeViewController: UIViewController {
     
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -26,16 +26,20 @@
         return MHPRequestHandler()
     }()
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
+        self.carousel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         handleUser()
-        setupMockData() // TODO: remove for production
+//        setupMockData() // TODO: remove for production
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,63 +56,16 @@
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
         if segue.identifier == "HomeToEventSegue" {
-            if let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell) {
-                let eventDetailVC = segue.destination as? MHPEventViewController
-                eventDetailVC?.inject((injectedUser: mhpUser!, injectedEvent: events[indexPath.row]))
+            if  let user = mhpUser,
+                let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell),
+                let eventDetailVC = segue.destination as? MHPEventViewController {
+                eventDetailVC.inject((injectedUser: user, injectedEvent: events[indexPath.row]))
             }
         } else {
             // error handling
         }
     }
     
-    
-    // MARK: - UITabBarControllerDelegate
-    
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
-            createEventVC.mhpUser = user
-        }
-        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
-            profileVC.inject(user)
-        }
-        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
-            settingsVC.inject(user)
-        }
-        return true
-    }
-    
-    
-    // MARK: UICollectionViewDataSource
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return events.count
-        default:
-            return 1
-        }
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
-            eventCell.setupEventCell(for: events[indexPath.row])
-            eventCell.setNeedsLayout()
-            eventCell.layoutIfNeeded()
-            return eventCell
-        default:
-            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
-            createCell.setupCreateEventCell()
-            createCell.setNeedsLayout()
-            createCell.layoutIfNeeded()
-            return createCell
-        }
-    }
     
     // MARK: - Action Handlers
     
@@ -119,13 +76,6 @@
             signinVC.homeUserDelegate = self
             present(navController, animated: true, completion: nil)
         }
-    }
-    
-    
-    // MARK: - HomeUserDelegate
-    
-    func updateUser(mhpUser: MHPUser) {
-        self.mhpUser = mhpUser
     }
     
     
@@ -159,16 +109,95 @@
         mhpUser!.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userFirstName = "Jill of AllTrades"
-        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventAddress: "123 Elm Grove", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         
         var host2 = MHPUser()
         host2.userFirstName = "Mary Contrary"
-        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventAddress: "123 Elm Grove", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
         events.append(event1)
         events.append(event2)
     }
-
+    
  }
+ 
+ 
+ // MARK: UICollectionViewDataSource
+ 
+ extension MHPHomeViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return events.count
+        default:
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+        case 0:
+            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
+            eventCell.setupEventCell(for: events[indexPath.row])
+            eventCell.setNeedsLayout()
+            eventCell.layoutIfNeeded()
+            return eventCell
+        default:
+            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
+            createCell.setupCreateEventCell()
+            createCell.setNeedsLayout()
+            createCell.layoutIfNeeded()
+            return createCell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 1:
+            if let user = self.mhpUser, let createEventVC = tabBarController?.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+                createEventVC.inject(user)
+                if let tabBarCon = tabBarController {
+                    tabBarCon.selectedIndex = 1
+                }
+            }
+        default:
+            return
+        }
+    }
+ }
+ 
+ 
+ // MARK: - UITabBarControllerDelegate
+ 
+ extension MHPHomeViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            createEventVC.inject(user)
+        } 
+        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+            profileVC.inject(user)
+        }
+        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+            settingsVC.inject(user)
+        }
+        return true
+    }
+ }
+ 
+ 
+ // MARK: - HomeUserDelegate
+ 
+ extension MHPHomeViewController: HomeUserDelegate {
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+ }
+ 
+ 
+ // MARK: - Injectable Protocol
  
  extension MHPHomeViewController: Injectable {
     typealias T = MHPUser
@@ -182,14 +211,17 @@
     }
  }
  
+ 
+ // MARK: - UserHandler Protocol
+ 
  extension MHPHomeViewController: UserHandler {
     func handleUser() {
         if let tabCon = tabBarController, let tabItems = tabCon.tabBar.items {
+            SVProgressHUD.show()
             // disable the tabs while retrieving the user to prevent issues with nil value upon loading child VCs
             for t in tabItems {
                 t.isEnabled = false
             }
-            SVProgressHUD.show()
             request.getUser { (result) in
                 switch result {
                 case .success(let user):
@@ -202,6 +234,7 @@
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 }
+                
                 SVProgressHUD.dismiss()
                 // enable tabs after completion
                 for t in tabItems {

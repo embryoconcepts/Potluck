@@ -13,6 +13,9 @@ class MHPConfirmationScreenViewController: UIViewController {
 
     @IBOutlet weak var lblMessage: UILabel!
     var mhpUser: MHPUser?
+    
+    
+    // MARK: - Lifecycle
    
     override func viewDidLoad() {
         super.viewDidLoad()

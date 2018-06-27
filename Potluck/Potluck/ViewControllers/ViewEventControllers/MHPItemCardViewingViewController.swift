@@ -10,6 +10,9 @@ import UIKit
 
 class MHPItemCardViewingViewController: UIViewController {
 
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

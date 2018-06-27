@@ -22,7 +22,7 @@ protocol SettingsUserDelegate: class {
     func updateUser(mhpUser: MHPUser)
 }
 
-class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate {
+class MHPSignUpLoginChoiceViewController: UIViewController {
     
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
@@ -42,12 +42,15 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     
     var isPasswordValid = true
     
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
         txtPassword.addTarget(self, action: #selector(textFieldDidChange(_: )), for: UIControlEvents.editingChanged)
+        self.txtEmail.delegate = self
+        self.txtPassword.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -231,8 +234,87 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
     }
     
     
-    // MARK: - UITextFieldDelegate
+    // MARK: - In-Place Validation Helpers
     
+    fileprivate func setupAttributeColor(if isValid: Bool) -> [NSAttributedStringKey: Any] {
+        if isValid {
+            return [NSAttributedStringKey.foregroundColor: UIColor.blue]
+        } else {
+            isPasswordValid = false
+            return [NSAttributedStringKey.foregroundColor: UIColor(hexString: "6A6A6A")]
+        }
+    }
+    
+    fileprivate func findRange(in baseString: String, for substring: String) -> NSRange {
+        if let range = baseString.localizedStandardRange(of: substring) {
+            let startIndex = baseString.distance(from: baseString.startIndex, to: range.lowerBound)
+            let length = substring.count
+            return NSMakeRange(startIndex, length)
+        } else {
+            print("Range does not exist in the base string.")
+            return NSMakeRange(0, 0)
+        }
+    }
+    
+    
+    // MARK: - Validation Methods
+    
+    fileprivate func validateEmail(email: String?) -> String? {
+        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
+        
+        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+        let allMatches = dataDetector.matches(in: trimmedText,
+                                              options: [],
+                                              range: range)
+        
+        if allMatches.count == 1,
+            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
+            return trimmedText
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return nil
+        }
+    }
+    
+    fileprivate func validatePassword(password: String?) -> String? {
+        var errorMsg = "Password requires at least:"
+        
+        if let txt = txtPassword.text {
+            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
+                errorMsg += "\none upper case letter"
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
+                errorMsg += "\none lower case letter"
+            }
+            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
+                errorMsg += "\none number"
+            }
+            if txt.count < 8 {
+                errorMsg += "\neight characters"
+            }
+        }
+        
+        if isPasswordValid {
+            return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        } else {
+            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return nil
+        }
+    }
+    
+}
+
+
+// MARK: - UITextFieldDelegate
+
+extension MHPSignUpLoginChoiceViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case txtEmail:
@@ -277,82 +359,6 @@ class MHPSignUpLoginChoiceViewController: UIViewController, UITextFieldDelegate 
         }
         
         lblPasswordValidation.attributedText = attrStr
-    }
-    
-    
-    // MARK: - In-Place Validation Helpers
-    
-    func setupAttributeColor(if isValid: Bool) -> [NSAttributedStringKey: Any] {
-        if isValid {
-            return [NSAttributedStringKey.foregroundColor: UIColor.blue]
-        } else {
-            isPasswordValid = false
-            return [NSAttributedStringKey.foregroundColor: UIColor(hexString: "6A6A6A")]
-        }
-    }
-    
-    func findRange(in baseString: String, for substring: String) -> NSRange {
-        if let range = baseString.localizedStandardRange(of: substring) {
-            let startIndex = baseString.distance(from: baseString.startIndex, to: range.lowerBound)
-            let length = substring.count
-            return NSMakeRange(startIndex, length)
-        } else {
-            print("Range does not exist in the base string.")
-            return NSMakeRange(0, 0)
-        }
-    }
-    
-    
-    // MARK: - Validation Methods
-    
-    func validateEmail(email: String?) -> String? {
-        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
-        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
-        
-        let range = NSMakeRange(0, NSString(string: trimmedText).length)
-        let allMatches = dataDetector.matches(in: trimmedText,
-                                              options: [],
-                                              range: range)
-        
-        if allMatches.count == 1,
-            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
-            return trimmedText
-        } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-            return nil
-        }
-    }
-    
-    func validatePassword(password: String?) -> String? {
-        var errorMsg = "Password requires at least:"
-        
-        if let txt = txtPassword.text {
-            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
-                errorMsg += "\none upper case letter"
-            }
-            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
-                errorMsg += "\none lower case letter"
-            }
-            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
-                errorMsg += "\none number"
-            }
-            if txt.count < 8 {
-                errorMsg += "\neight characters"
-            }
-        }
-        
-        if isPasswordValid {
-            return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        } else {
-            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-            return nil
-        }
     }
     
 }

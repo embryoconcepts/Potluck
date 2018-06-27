@@ -30,7 +30,8 @@ Potluck is an iOS app built for collaborative potlucks and community meal organi
 ### Reference:
 
 - [Sketch files and Prototype](https://sketch.cloud/s/Oeonw)
-- [Trello board](https://trello.com/invite/b/Ao3BEM1N/fa0bf8af6b96bbce6ad3e1c87a8e79ef/potluck)
+- [Current Sprint & Backlog](https://trello.com/invite/b/Ao3BEM1N/fa0bf8af6b96bbce6ad3e1c87a8e79ef/potluck)
+- [Feature Request board](https://trello.com/invite/b/N5ilvxA2/f5c9e121d3d01d98a8a8147ca396d9e0/potluck-feature-requests)
 - [MVP Design Document](https://docs.google.com/document/d/1F5GlxtKkticPHnaLD3ct78HSxmm1FFyFbaVzdK345a4/edit)
 
 

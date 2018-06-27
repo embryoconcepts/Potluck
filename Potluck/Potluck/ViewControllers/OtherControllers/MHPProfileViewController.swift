@@ -9,9 +9,12 @@
 import UIKit
 import Firebase
 
-class MHPProfileViewController: UIViewController, ProfileUserDelegate {
+class MHPProfileViewController: UIViewController {
     
-    var mhpUser: MHPUser!
+    var mhpUser: MHPUser?
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +27,17 @@ class MHPProfileViewController: UIViewController, ProfileUserDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if mhpUser.userState != .registered {
-            if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
-                let navController = UINavigationController(rootViewController: signinVC)
-                signinVC.inject(mhpUser)
-                signinVC.profileDelegate = self
-                present(navController, animated: true, completion: nil)
+        if let user = mhpUser {
+            if user.userState != .registered {
+                if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+                    let navController = UINavigationController(rootViewController: signinVC)
+                    signinVC.inject(user)
+                    signinVC.profileDelegate = self
+                    present(navController, animated: true, completion: nil)
+                }
+            } else {
+                setupView()
             }
-        } else {
-            setupView()
         }
     }
     
@@ -47,14 +52,20 @@ class MHPProfileViewController: UIViewController, ProfileUserDelegate {
     fileprivate func setupView() {
         // populate view with user data
     }
-    
-    
-    // MARK: - ProfileUserDelegate
-    
+}
+
+
+// MARK: - ProfileUserDelegate
+
+extension MHPProfileViewController: ProfileUserDelegate {
     func updateUser(mhpUser: MHPUser) {
         self.mhpUser = mhpUser
     }
+    
 }
+
+
+// MARK: - InjectableProtocol
 
 extension MHPProfileViewController: Injectable {
     typealias T = MHPUser

@@ -8,9 +8,7 @@
 
 import UIKit
 
-class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Injectable {
-    
-    
+class MHPGuestListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var btnRSVP: UIButton!
     
@@ -21,14 +19,18 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
     var guestsNo = [MHPRsvp]()
     var guestsInvited = [MHPRsvp]()
     
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         countRsvps()
         assertDependencies()
         // Do any additional setup after loading the view.
         self.title = event?.eventName ?? "Title"
+        self.tableView.delegate = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,8 +51,30 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     
-    // MARK: - UITableViewDataSource
+    // MARK: - Private Methods
     
+    fileprivate func countRsvps() {
+        if let tempRsvps = event?.eventRsvpList?.eventRsvps {
+            for rsvp in tempRsvps {
+                if let response = rsvp.response {
+                    switch response {
+                    case "YES":
+                        guestsYes.append(rsvp)
+                    case "NO":
+                        guestsNo.append(rsvp)
+                    default:
+                        guestsInvited.append(rsvp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// MARK: - UITableViewDataSource and Delegate
+
+extension MHPGuestListViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         var numOfSections = 1
         
@@ -90,22 +114,25 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
         let cell = tableView.dequeueReusableCell(withIdentifier: "GuestListCell", for: indexPath) as! MHPGuestListCell
         var sectionGuests = [MHPRsvp]()
         switch (indexPath.section) {
-            case 0:
-                sectionGuests = guestsYes
-            case 1:
-                sectionGuests = guestsInvited
-            default:
-                sectionGuests = guestsNo
+        case 0:
+            sectionGuests = guestsYes
+        case 1:
+            sectionGuests = guestsInvited
+        default:
+            sectionGuests = guestsNo
         }
-
+        
         cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userFirstName ?? ""
         cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
         return cell
     }
     
-    
-    // MARK: - Injectable Protocol
-    
+}
+
+
+// MARK: - Injectable Protocol
+
+extension MHPGuestListViewController: Injectable {
     func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
         user = data.injectedUser
         event = data.injectedEvent
@@ -114,25 +141,5 @@ class MHPGuestListViewController: UIViewController, UITableViewDelegate, UITable
     func assertDependencies() {
         assert(user != nil)
         assert(event != nil)
-    }
-    
-    
-    // MARK: - Private Methods
- 
-    fileprivate func countRsvps() {
-        if let tempRsvps = event?.eventRsvpList?.eventRsvps {
-            for rsvp in tempRsvps {
-                if let response = rsvp.response {
-                    switch response {
-                    case "YES":
-                        guestsYes.append(rsvp)
-                    case "NO":
-                        guestsNo.append(rsvp)
-                    default:
-                        guestsInvited.append(rsvp)
-                    }
-                }
-            }
-        }
     }
 }
