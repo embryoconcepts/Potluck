@@ -9,10 +9,13 @@
 import UIKit
 
 struct MHPEventItemList: Codable  {
-    var eventItemListID: String = UUID().uuidString
+    var eventItemListID: String?
     var eventID: String?
     var eventItemListDescription: String?
     var eventItemListTags: [String]?
     var eventItems: [MHPItem]?
 
+    init(itemListID: String = UUID().uuidString) {
+        self.eventItemListID = itemListID
+    }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 struct MHPItem: Codable {
-    var itemID: String = UUID().uuidString
+    var itemID: String?
     var user: MHPUser?
     var event: MHPEvent?
     var itemTags: [String]?
@@ -19,4 +19,7 @@ struct MHPItem: Codable {
     var itemPlaceholderName: String?
     var itemSuggestedPortions: Int?
     
+    init(itemID: String = UUID().uuidString) {
+        self.itemID = itemID
+    }
 }

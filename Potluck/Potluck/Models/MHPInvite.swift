@@ -9,7 +9,7 @@
 import UIKit
 
 class MHPInvite: Codable, TableViewCompatible {
-    var inviteID: String = UUID().uuidString
+    var inviteID: String?
     var userFirstName: String?
     var userLastName: String?
     var userEmail: String?
@@ -22,9 +22,10 @@ class MHPInvite: Codable, TableViewCompatible {
         return "inviteCell"
     }
     
-    init(userFirstName: String, userLastName: String) {
+    init(userFirstName: String, userLastName: String, inviteID: String = UUID().uuidString) {
         self.userFirstName = userFirstName
         self.userLastName = userLastName
+        self.inviteID = inviteID
     }
     
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {

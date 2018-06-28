@@ -101,6 +101,8 @@
         case .anonymous:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
+        default:
+            return
         }
     }
     
@@ -109,11 +111,11 @@
         mhpUser!.userFirstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.userFirstName = "Jill of AllTrades"
-        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventAddress: "123 Elm Grove", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        let event1 = MHPEvent(eventID: "12345", eventName: "Potluck Test 1", eventDate: "1/25/2025", eventLocation: "Nowhere", eventAddress: "123 Elm Grove", eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.", eventImageURL: "url for event image", eventHost: host1, eventItemList: MHPEventItemList(itemListID: UUID().uuidString), eventRsvpList: MHPEventRsvpList(eventRsvpListID: UUID().uuidString))
         
         var host2 = MHPUser()
         host2.userFirstName = "Mary Contrary"
-        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventAddress: "123 Elm Grove", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(), eventRsvpList: MHPEventRsvpList())
+        let event2 = MHPEvent(eventID: "67890", eventName: "Potluck Test 2", eventDate: "10/28/2018", eventLocation: "Somewhere", eventAddress: "123 Elm Grove", eventDescription: "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!", eventImageURL: "url for event image", eventHost: host2, eventItemList: MHPEventItemList(itemListID: UUID().uuidString), eventRsvpList: MHPEventRsvpList(eventRsvpListID: UUID().uuidString))
         events.append(event1)
         events.append(event2)
     }

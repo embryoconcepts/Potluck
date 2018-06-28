@@ -34,38 +34,38 @@ struct MHPUser: Codable {
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
-    var userState: UserAuthorizationState = .anonymous
+    var userState: UserAuthorizationState!
     
-//    init(from decoder: Decoder) throws {
-//        
-//    }
+    init(userState: UserAuthorizationState = .anonymous) {
+        self.userState = userState
+    }
     
-//    init(userID: String,
-//         userFirstName: String,
-//         userLastName: String,
-//         userEmail: String,
-//         userPhone: String,
-//         userProfileURL: URL,
-//         userFacebookID: String,
-//         userEventListID: String,
-//         notificationPermissions: Bool,
-//         notificationPreferences: Bool,
-//         locationPermissions: Bool,
-//         facebookPermissions: Bool,
-//         userState: UserAuthorizationState) {
-//        
-//        self.userID = userID
-//        self.userFirstName = userFirstName
-//        self.userLastName = userLastName
-//        self.userEmail = userEmail
-//        self.userPhone = userPhone
-//        self.userProfileURL = userProfileURL
-//        self.userFacebookID = userFacebookID
-//        self.userEventListID = userEventListID
-//        self.notificationPermissions = notificationPermissions
-//        self.notificationPreferences = notificationPreferences
-//        self.locationPermissions = locationPermissions
-//        self.facebookPermissions = facebookPermissions
-//        self.userState = userState
-//    }
+    init(userID: String,
+         userFirstName: String,
+         userLastName: String,
+         userEmail: String,
+         userPhone: String,
+         userProfileURL: URL,
+         userFacebookID: String,
+         userEventListID: String,
+         notificationPermissions: Bool,
+         notificationPreferences: Bool,
+         locationPermissions: Bool,
+         facebookPermissions: Bool,
+         userState: UserAuthorizationState) {
+        
+        self.userID = userID
+        self.userFirstName = userFirstName
+        self.userLastName = userLastName
+        self.userEmail = userEmail
+        self.userPhone = userPhone
+        self.userProfileURL = userProfileURL
+        self.userFacebookID = userFacebookID
+        self.userEventListID = userEventListID
+        self.notificationPermissions = notificationPermissions
+        self.notificationPreferences = notificationPreferences
+        self.locationPermissions = locationPermissions
+        self.facebookPermissions = facebookPermissions
+        self.userState = userState
+    }
 }

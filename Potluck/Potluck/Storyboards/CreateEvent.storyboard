@@ -528,6 +528,51 @@
             </objects>
             <point key="canvasLocation" x="860" y="-198.35082458770617"/>
         </scene>
+        <!--Items-->
+        <scene sceneID="lmH-zd-08V">
+            <objects>
+                <viewController storyboardIdentifier="createEvent3Items" title="Items" id="Orv-Ds-qbQ" customClass="MHPCreateEvent3_ItemsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YNL-9n-F21">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="p8H-6L-j0C"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uH5-OB-ZDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1667" y="-189"/>
+        </scene>
+        <!--Restrictions-->
+        <scene sceneID="7VC-92-LFM">
+            <objects>
+                <viewController storyboardIdentifier="createEvent4Restrictions" title="Restrictions" id="ddo-vg-sdj" customClass="MHPCreateEvent4_RestrictionsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OcX-lv-iBB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="bnF-5F-aS6"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wwW-ha-YeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2529" y="-189"/>
+        </scene>
+        <!--Save & Send-->
+        <scene sceneID="5Ak-du-rtM">
+            <objects>
+                <viewController storyboardIdentifier="createEvent5Save" title="Save &amp; Send" id="0sj-DU-nGR" customClass="MHPCreateEvent5_SaveAndSendViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tlk-mD-9Ic">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="PMc-of-m7H"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AjL-zu-NlC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3377" y="-189"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_email.png" width="24" height="24"/>

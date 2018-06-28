@@ -9,7 +9,7 @@
 import UIKit
 
 struct MHPRsvp: Codable {
-    var rsvpID: String = UUID().uuidString
+    var rsvpID: String?
     var invite: MHPInvite?
     var user: MHPUser?
     var event: MHPEvent?
@@ -20,4 +20,7 @@ struct MHPRsvp: Codable {
     var notificationsOn: Bool?
     var numOfGuest: Int?
 
+    init(rsvpID: String = UUID().uuidString) {
+        self.rsvpID = rsvpID
+    }
 }
