@@ -9,7 +9,7 @@
 import UIKit
 
 struct MHPItem: Codable {
-    var itemID: String?
+    var itemID: String = UUID().uuidString
     var user: MHPUser?
     var event: MHPEvent?
     var itemTags: [String]?

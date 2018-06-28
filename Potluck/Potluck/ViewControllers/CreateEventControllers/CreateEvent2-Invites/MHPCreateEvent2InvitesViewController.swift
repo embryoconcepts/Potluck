@@ -12,19 +12,19 @@ import UIKit
 class MHPCreateEvent2InvitesViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var lblGuestList: UILabel!
-    @IBOutlet weak var viewEmptyState: UIView!
     @IBOutlet weak var viewHeader: UIView!
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
-    var guests = [MHPUser]()
+    var invites = [MHPInvite]()
     
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tblView.delegate = self
+        tblView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,30 +70,24 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Private methods
     
     fileprivate func setupView() {
+       
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
         
-        lblGuestList.text = "Guest List (\(guests.count))"
-        
-        if guests.count == 0 {
-            tblView.isHidden = true
-            viewEmptyState.isHidden = false
-        } else {
-            tblView.isHidden = false
-            viewEmptyState.isHidden = true
-        }
+        lblGuestList.text = "Guest List (\(invites.count))"
+        tblView.reloadData()
     }
     
     fileprivate func resetView() {
-        // TODO: improve clearing event handling
         self.event = nil
         self.mhpUser = nil
-
+        self.invites = [MHPInvite]()
     }
     
     fileprivate func cancel() {
         let alert = UIAlertController(title: "Cancel Event",
-                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.", preferredStyle: .alert)
+                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.",
+                                      preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
             self.resetView()
@@ -147,19 +141,38 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
 // MARK: - UITableViewControllerDelegate and Datasource
 
 extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return guests.count
+        if invites.count > 0 {
+            return invites.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "inviteCell", for: indexPath) as! MHPCreateEventInvitesCell
-        cell.setupCell(with: guests[indexPath.row])
-        return cell
+        if invites.count > 0 {
+            let invite = invites[indexPath.row]
+            return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyStateCell", for: indexPath) as! MHPInviteEmptyStateCell
+            cell.isUserInteractionEnabled = false
+            cell.isHighlighted = false
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        if invites.count > 0 {
+            return 20
+        } else {
+            return tblView.frame.height
+        }
     }
+    
 }
 
 // MARK: - UserInjectable Protocol

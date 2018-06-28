@@ -9,7 +9,8 @@
 import UIKit
 
 struct MHPRsvp: Codable {
-    var rsvpID: String?
+    var rsvpID: String = UUID().uuidString
+    var invite: MHPInvite?
     var user: MHPUser?
     var event: MHPEvent?
     var item: MHPItem?
