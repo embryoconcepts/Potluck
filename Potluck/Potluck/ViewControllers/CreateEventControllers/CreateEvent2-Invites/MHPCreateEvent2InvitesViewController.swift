@@ -23,8 +23,6 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tblView.delegate = self
-        tblView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +49,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     @IBAction func emailTapped(_ sender: Any) {
-    
+        if let emailInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteEmailOrPhoneViewController") as? MHPInviteEmailOrPhoneViewController {
+            present(emailInvite, animated: true, completion: nil)
+        }
     }
     
     @IBAction func facebookTapped(_ sender: Any) {
@@ -167,7 +167,7 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if invites.count > 0 {
-            return 20
+            return 35
         } else {
             return tblView.frame.height
         }

@@ -19,7 +19,7 @@ class MHPInvite: Codable, TableViewCompatible {
     var eventID: MHPEvent?
     
     var reuseIdentifier: String {
-        return "inviteCell"
+        return "MHPCreateEventInvitesCell"
     }
     
     init(userFirstName: String, userLastName: String, inviteID: String = UUID().uuidString) {

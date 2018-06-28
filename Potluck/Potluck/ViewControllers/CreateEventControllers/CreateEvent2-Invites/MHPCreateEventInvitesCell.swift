@@ -17,7 +17,13 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
     
     func configureWithModel(_ model: MHPInvite) {
         self.model = model
-        self.lblGuestName.text = "\(String(describing: model.userFirstName)) \(String(describing: model.userLastName))"
-        // TODO: self.imgGuest.image = UIImage from self.model?.userProfileURL OR placeholder
+        if let first = model.userFirstName, let last = model.userLastName {
+            self.lblGuestName.text = "\(first) \(last)"
+        }
+        if let url = self.model?.userProfileURL {
+            // TODO: self.imgGuest.image = UIImage(url)
+        } else {
+            self.imgGuest.image = UIImage(named: "userPlaceholder")
+        }
     }
 }
