@@ -16,24 +16,26 @@ struct MHPEvent: Codable {
     var eventAddress: String?
     var eventDescription: String?
     var eventImageURL: String?
-    var eventHost: MHPUser?
-    var eventItemList: MHPEventItemList?
-    var eventRsvpList: MHPEventRsvpList?
+    var eventRestrictions: [String]?
+    var eventHostID: String?
+    var eventItemListID: String?
+    var eventRsvpListID: String?
     
     init(eventID: String = UUID().uuidString) {
         self.eventID = eventID
     }
     
-    init(eventID: String?,
+    init(eventID: String = UUID().uuidString,
          eventName: String?,
          eventDate: String?,
          eventLocation: String?,
          eventAddress: String?,
          eventDescription: String?,
          eventImageURL: String?,
-         eventHost: MHPUser?,
-         eventItemList: MHPEventItemList?,
-         eventRsvpList: MHPEventRsvpList?) {
+         eventRestrictions: [String]?,
+         eventHostID: String?,
+         eventItemListID: String?,
+         eventRsvpListID: String?) {
         
         self.eventID = eventID
         self.eventName = eventName
@@ -42,8 +44,8 @@ struct MHPEvent: Codable {
         self.eventAddress = eventAddress
         self.eventDescription = eventDescription
         self.eventImageURL = eventImageURL
-        self.eventHost = eventHost
-        self.eventItemList = eventItemList
-        self.eventRsvpList = eventRsvpList
+        self.eventHostID = eventHostID
+        self.eventItemListID = eventItemListID
+        self.eventRsvpListID = eventRsvpListID
     }
 }

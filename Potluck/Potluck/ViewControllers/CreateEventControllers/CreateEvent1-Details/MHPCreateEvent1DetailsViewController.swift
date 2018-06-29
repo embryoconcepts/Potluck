@@ -290,7 +290,7 @@ extension MHPCreateEvent1DetailsViewController: Injectable {
         
         if event == nil {
             event = MHPEvent()
-            event?.eventHost = mhpUser
+            event?.eventHostID = mhpUser?.userID
         }
     }
 }
