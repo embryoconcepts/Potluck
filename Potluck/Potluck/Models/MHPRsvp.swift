@@ -15,7 +15,7 @@ struct MHPRsvp: Codable {
     var itemID: String?
     var isGuest: Bool?
     var isHost: Bool?
-    var response: Bool?
+    var response: String?
     var notificationsOn: Bool?
     var numOfGuest: Int?
     
@@ -29,7 +29,7 @@ struct MHPRsvp: Codable {
          itemID: String?,
          isGuest: Bool?,
          isHost: Bool?,
-         response: Bool?,
+         response: String?,
          notificationsOn: Bool?,
          numOfGuest: Int?) {
         

@@ -27,7 +27,7 @@ struct MHPUser: Codable {
     var userLastName: String?
     var userEmail: String?
     var userPhone: String?
-    var userProfileURL: URL?
+    var userProfileURL: String?
     var userFacebookID: String?
     var userEventListID: String?
     var notificationPermissions: Bool?
@@ -45,7 +45,7 @@ struct MHPUser: Codable {
          userLastName: String,
          userEmail: String,
          userPhone: String,
-         userProfileURL: URL,
+         userProfileURL: String,
          userFacebookID: String,
          userEventListID: String,
          notificationPermissions: Bool,

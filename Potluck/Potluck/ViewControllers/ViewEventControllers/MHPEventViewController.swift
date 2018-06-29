@@ -107,11 +107,15 @@ class MHPEventViewController: UIViewController {
         
         // Guest List Summary
         var guestsConfirmed = 0
+        var guestsNotAttending = 0
+        
         if let safeRsvps = rsvps {
             for rsvp in safeRsvps {
-                if rsvp.response! {
+                if rsvp.response == "yes" {
                     guestsConfirmed += 1
-                }
+                } else if rsvp.response == "no" {
+                    guestsNotAttending += 1
+                } 
             }
         }
         lblGuestListTotals.text = "\(rsvps?.count ?? 0) invited, \(guestsConfirmed) confirmed"

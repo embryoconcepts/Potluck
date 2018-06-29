@@ -65,6 +65,8 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     @IBAction func nextTapped(_ sender: Any) {
+        mapInvitesToRsvps()
+        updateEventRsvpList()
         next()
     }
     
@@ -86,25 +88,53 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         self.invites = [MHPInvite]()
     }
     
-    fileprivate func cancel() {
-        let alert = UIAlertController(title: "Cancel Event",
-                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.resetView()
+    fileprivate func mapInvitesToRsvps() {
+        // TODO: map invites to rsvps - remember to generate rsvp for host
+        for invite in invites {
+            var rsvp = MHPRsvp()
+            invite.eventID = rsvp.eventID
+            rsvp.itemID = MHPItem().itemID
+            rsvp.isGuest = true
+            rsvp.isHost = false
+            rsvp.response = "none"
+            rsvp.notificationsOn = false
+            rsvp.numOfGuest = 0
             
-            // return to Home
-            self.tabBarController?.tabBar.isHidden = false
-            if let tabs = self.tabBarController?.viewControllers {
-                if tabs.count > 0 {
-                    self.tabBarController?.selectedIndex = 0
-                }
+            if let userID = invite.userID {
+                rsvp.userID = userID
+            } else {
+                // TODO: do something with this
+                var user = MHPUser()
+                user.userFirstName = invite.userFirstName
+                user.userLastName = invite.userLastName
+                user.userEmail = invite.userEmail
+                user.userPhone = invite.userPhone
+                user.userProfileURL = invite.userProfileURL
+                user.userFacebookID = invite.userFacebookID
             }
-            self.dismiss(animated: true, completion: nil)
-        }))
+            rsvps.append(rsvp)
+        }
         
-        self.present(alert, animated: true)
+        var hostRsvp = MHPRsvp()
+        hostRsvp.userID = mhpUser?.userID
+        hostRsvp.eventID = event?.eventID
+        hostRsvp.isGuest = false
+        hostRsvp.isHost = true
+        hostRsvp.response = "yes"
+        rsvps.append(hostRsvp)
+    }
+    
+    fileprivate func updateEventRsvpList() {
+        // TODO: build eventRsvpList from rsvps (if in manage mode, search to pull existing list, otherwise init list here)
+        // if there is an existing list id for the event, retrieve the list, modify only the elements that are different
+        
+        // if there is not a list id for the event, create one with the rsvp array
+        eventRsvpList = MHPEventRsvpList()
+        eventRsvpList?.eventRsvps = rsvps
+        eventRsvpList?.eventHostID = mhpUser?.userID
+        
+        // TODO: add eventRsvpListID to Event, or update existing list
+        event?.eventRsvpListID = eventRsvpList?.eventRsvpListID
     }
     
     fileprivate func next() {
@@ -125,6 +155,27 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         let isValid = true
         // TODO: validate info
         return isValid
+    }
+    
+    fileprivate func cancel() {
+        let alert = UIAlertController(title: "Cancel Event",
+                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+            self.resetView()
+            
+            // return to Home
+            self.tabBarController?.tabBar.isHidden = false
+            if let tabs = self.tabBarController?.viewControllers {
+                if tabs.count > 0 {
+                    self.tabBarController?.selectedIndex = 0
+                }
+            }
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true)
     }
     
     @objc fileprivate func back() {
