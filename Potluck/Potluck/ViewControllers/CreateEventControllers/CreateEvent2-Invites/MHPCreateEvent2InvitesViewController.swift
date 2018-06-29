@@ -17,7 +17,8 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     var mhpUser: MHPUser?
     var event: MHPEvent?
     var invites = [MHPInvite]()
-    
+    var rsvps = [MHPRsvp]()
+    var eventRsvpList: MHPEventRsvpList?
     
     // MARK: - Lifecycle
     
@@ -50,6 +51,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     @IBAction func emailTapped(_ sender: Any) {
         if let emailInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteEmailOrPhoneViewController") as? MHPInviteEmailOrPhoneViewController {
+            emailInvite.enteredInvitesDelegate = self
             present(emailInvite, animated: true, completion: nil)
         }
     }
@@ -107,13 +109,14 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     fileprivate func next() {
         if validate() {
-            // TODO: update for screen 3
             if  let user = mhpUser,
                 let event = event,
-                let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
-                createEvent2.inject(user)
-                createEvent2.inject(event)
-                navigationController?.pushViewController(createEvent2, animated: true)
+                let eventRsvpList = eventRsvpList,
+                let createEvent3 = navigationController?.presentingViewController as? MHPCreateEvent3_ItemsViewController {
+                createEvent3.inject(user)
+                createEvent3.inject(event)
+                createEvent3.inject(eventRsvpList)
+                navigationController?.pushViewController(createEvent3, animated: true)
             }
         }
     }
@@ -173,6 +176,27 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            invites.remove(at: indexPath.row)
+            tblView.reloadData()
+        }
+    }
+
+}
+
+
+// MARK: - EnteredInvitesDelegate
+
+extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
+    func submit(pendingInvites: [MHPInvite]) {
+        invites.append(contentsOf: pendingInvites)
+        
+    }
 }
 
 // MARK: - UserInjectable Protocol

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EnteredInvitesDelegate {
+    func submit(pendingInvites: [MHPInvite])
+}
+
 class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var txtFirst: UITextField!
@@ -16,14 +20,15 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var btnAddToList: UIButton!
     
     var event: MHPEvent?
-    let tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+    var tempInvite = MHPInvite(userFirstName: "", userLastName: "")
     var pendingInvites = [MHPInvite]()
-    
+    var enteredInvitesDelegate: EnteredInvitesDelegate?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -34,32 +39,48 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
     }
     
     
     // MARK: - Action Handlers
     
     @IBAction func addToListTapped(_ sender: Any) {
-        // TODO: all fields must be != ""
+        // TODO: validate fields, alert if missing info
         pendingInvites.append(tempInvite)
+        resetTextFields()
         tblView.reloadData()
     }
     
     @IBAction func saveTapped(_ sender: Any) {
-        guestsSelected()
+        enteredInvitesDelegate?.submit(pendingInvites: pendingInvites)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        // TODO: alert about losing pending invites
+        let alert = UIAlertController(title: "Cancel Invites",
+                                      message: "Are you sure you want to cancel inviting guests? All event data will be lost.",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true)
     }
     
     
     // MARK: - Private Methods
     
-    fileprivate func guestsSelected() {
-        // TODO: create delegate to pass pending invites back to main Invites view
+    func resetTextFields() {
+        txtFirst.text = ""
+        txtLast.text = ""
+        txtEmailOrPhone.text = ""
+        tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+        txtFirst.becomeFirstResponder()
     }
+
 }
 
 // MARK: - UITableViewControllerDelegate and Datasource
@@ -80,6 +101,17 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 35
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            pendingInvites.remove(at: indexPath.row)
+            tblView.reloadData()
+        }
     }
     
 }

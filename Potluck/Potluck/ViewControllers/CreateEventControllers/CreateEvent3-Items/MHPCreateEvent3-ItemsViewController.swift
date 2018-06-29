@@ -10,26 +10,55 @@ import UIKit
 
 class MHPCreateEvent3_ItemsViewController: UIViewController {
 
+    var mhpUser: MHPUser?
+    var event: MHPEvent?
+    var eventRsvpList: MHPEventRsvpList?
+    
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        assertDependencies()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
 
+}
+
+
+// MARK: - UserInjectable Protocol
+
+extension MHPCreateEvent3_ItemsViewController: Injectable {
+    typealias T = MHPUser
+    typealias U = MHPEvent
+    typealias R = MHPEventRsvpList
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func inject(_ event: U) {
+        self.event = event
+    }
+    
+    func inject(_ eventRsvpList: R) {
+        self.eventRsvpList = eventRsvpList
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+        assert(self.event != nil)
+        assert(self.eventRsvpList != nil)
+    }
 }

@@ -58,6 +58,7 @@
 		767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767F637420B6F638007F3D10 /* UIColorExtensions.swift */; };
 		7691723420C061BA0092F6FE /* MHPFirestoreParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */; };
 		76D54A3120E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */; };
+		76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -147,6 +148,7 @@
 		767F637420B6F638007F3D10 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPFirestoreParserTests.swift; path = PotluckTests/NetworkingTests/MHPFirestoreParserTests.swift; sourceTree = SOURCE_ROOT; };
 		76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteEmailOrPhoneViewController.swift; sourceTree = "<group>"; };
+		76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MHPCreateEventInvitesCell.xib; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			children = (
 				764D1A4F20E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift */,
 				764D1A5120E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift */,
+				76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */,
 				764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */,
 				76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */,
 			);
@@ -587,6 +590,7 @@
 				7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */,
 				76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */,
 				76DF6B64205A29C300028B3B /* Roboto-Italic.ttf in Resources */,
+				76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */,
 				76DF6B68205A29C300028B3B /* Roboto-ThinItalic.ttf in Resources */,
 				76DF6B6A205A29C300028B3B /* Roboto-MediumItalic.ttf in Resources */,
 				765123BF2053538900E78488 /* Main.storyboard in Resources */,
