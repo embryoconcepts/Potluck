@@ -16,7 +16,8 @@ class MHPServiceRouter: Routeable {
     func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
-    func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func retrieveUserByID(completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
+    func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {}
     func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {}
@@ -42,7 +43,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     
     override func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if Auth.auth().currentUser != nil {
-            self.retrieveUser { (result) in
+            self.retrieveUserByID { (result) in
                 switch result {
                 case .success(let user):
                     completion(.success(user))
@@ -64,7 +65,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     override func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error == nil {
-                            self.retrieveUser{ (result) in
+                            self.retrieveUserByID{ (result) in
                                 switch result {
                                 case let .success(retrievedUser):
                                     completion(.success(retrievedUser))
@@ -88,7 +89,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                         if error == nil {
                             print("Anon user added with ID: \(ref.documentID)")
                             // retrieve mhpUser from db
-                            self.retrieveUser { (result) in
+                            self.retrieveUserByID { (result) in
                                 switch result {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
@@ -124,7 +125,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     switch result {
                     case .success(_):
                         // retrieve mhpUser from db
-                        self.retrieveUser { (result) in
+                        self.retrieveUserByID { (result) in
                             switch result {
                             case .success(let mhpUser):
                                 completion(.success(mhpUser))
@@ -161,7 +162,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                         switch result {
                         case .success(_):
                             // retrieve mhpUser from db
-                            self.retrieveUser { (result) in
+                            self.retrieveUserByID { (result) in
                                 switch result {
                                 case .success(let mhpUser):
                                     completion(.success(mhpUser))
@@ -180,7 +181,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         }
     }
     
-    override func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+    override func retrieveUserByID(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if let firUser = Auth.auth().currentUser {
             firUser.reload { (error) in
                 if error == nil {
@@ -208,6 +209,31 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                     print("User reload error in retrieve: \(String(describing: error))")
                     completion(.failure(error!))
                 }
+            }
+        }
+    }
+    
+    override func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        let userQuery = db.collection("users").whereField("userEmail", isEqualTo: email)
+        userQuery.getDocuments { (snap, error) in
+            if error == nil {
+                if let documents = snap?.documents {
+                    if documents.count > 0 {
+                        for document in documents {
+                            if let user: MHPUser = MHPDataManager().decodeUser(document: document, data: document.data()) {
+                                completion(.success(user))
+                            } else {
+                                completion(.failure(OtherError.noUserToRetrieve))
+                            }
+                        }
+                    } else {
+                        completion(.failure(OtherError.noUserToRetrieve))
+                    }
+                } else {
+                     completion(.failure(OtherError.noUserToRetrieve))
+                }
+            } else {
+                completion(.failure(error!))
             }
         }
     }

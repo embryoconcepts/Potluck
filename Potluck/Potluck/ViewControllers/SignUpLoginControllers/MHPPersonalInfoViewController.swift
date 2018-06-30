@@ -67,7 +67,7 @@ class MHPPersonalInfoViewController: UIViewController {
                 request.updateUserState(mhpUser: user, state: .registered) { (result ) in
                     switch result {
                     case .success(_):
-                        self.request.retrieveUser{ (result) in
+                        self.request.retrieveUserByID { (result) in
                             switch result {
                             case let .success(retrievedUser):
                                 if let congratsVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "ConfirmationScreenVC") as? MHPConfirmationScreenViewController {

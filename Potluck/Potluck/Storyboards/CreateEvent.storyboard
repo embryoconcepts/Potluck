@@ -387,16 +387,17 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lF1-6f-BJi" userLabel="btnEmailOrSMS">
                                         <rect key="frame" x="162" y="51.5" width="50" height="50"/>
-                                        <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" image="ic_email.png"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="6"/>
+                                        <state key="normal" image="btnPencil">
+                                            <color key="titleColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="emailTapped:" destination="wGx-gJ-Qul" eventType="touchUpInside" id="7Pz-lK-yo7"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQx-IG-MvY" userLabel="btnFacebook">
                                         <rect key="frame" x="265" y="51.5" width="50" height="50"/>
-                                        <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" image="ic_facebook.png"/>
+                                        <state key="normal" image="btnFacebook"/>
                                         <connections>
                                             <action selector="facebookTapped:" destination="wGx-gJ-Qul" eventType="touchUpInside" id="t3X-A6-JQs"/>
                                         </connections>
@@ -410,12 +411,11 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4P-gw-Jkj" userLabel="btnContacts">
                                         <rect key="frame" x="60" y="51.5" width="50" height="50"/>
-                                        <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="53x-ri-jIS"/>
                                             <constraint firstAttribute="height" constant="50" id="xpX-aL-YLZ"/>
                                         </constraints>
-                                        <state key="normal" image="ic_phone.png"/>
+                                        <state key="normal" image="btnContacts"/>
                                         <connections>
                                             <action selector="contactsTapped:" destination="wGx-gJ-Qul" eventType="touchUpInside" id="G9g-tr-FFL"/>
                                         </connections>
@@ -711,9 +711,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_email.png" width="24" height="24"/>
-        <image name="ic_facebook.png" width="24" height="24"/>
-        <image name="ic_phone.png" width="24" height="24"/>
+        <image name="btnContacts" width="34" height="38"/>
+        <image name="btnFacebook" width="34" height="34"/>
+        <image name="btnPencil" width="32" height="32"/>
         <image name="imgProgressFlow1" width="320" height="30"/>
         <image name="imgProgressFlow2" width="320" height="29"/>
         <image name="mapMarkerIcon" width="16" height="20"/>

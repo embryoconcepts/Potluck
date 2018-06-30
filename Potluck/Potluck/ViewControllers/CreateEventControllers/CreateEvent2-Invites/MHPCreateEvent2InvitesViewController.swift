@@ -89,10 +89,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     fileprivate func mapInvitesToRsvps() {
-        // TODO: map invites to rsvps - remember to generate rsvp for host
         for invite in invites {
             var rsvp = MHPRsvp()
-            invite.eventID = rsvp.eventID
+            rsvp.eventID = event?.eventID
             rsvp.itemID = MHPItem().itemID
             rsvp.isGuest = true
             rsvp.isHost = false
@@ -102,30 +101,24 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             
             if let userID = invite.userID {
                 rsvp.userID = userID
-            } else {
-                // TODO: do something with this
-                var user = MHPUser()
-                user.userFirstName = invite.userFirstName
-                user.userLastName = invite.userLastName
-                user.userEmail = invite.userEmail
-                user.userPhone = invite.userPhone
-                user.userProfileURL = invite.userProfileURL
-                user.userFacebookID = invite.userFacebookID
             }
+            
             rsvps.append(rsvp)
         }
         
         var hostRsvp = MHPRsvp()
         hostRsvp.userID = mhpUser?.userID
         hostRsvp.eventID = event?.eventID
+        hostRsvp.itemID = MHPItem().itemID
         hostRsvp.isGuest = false
         hostRsvp.isHost = true
         hostRsvp.response = "yes"
+        hostRsvp.notificationsOn = false
+        hostRsvp.numOfGuest = 0
         rsvps.append(hostRsvp)
     }
     
     fileprivate func updateEventRsvpList() {
-        // TODO: build eventRsvpList from rsvps (if in manage mode, search to pull existing list, otherwise init list here)
         // if there is an existing list id for the event, retrieve the list, modify only the elements that are different
         
         // if there is not a list id for the event, create one with the rsvp array
@@ -133,7 +126,6 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         eventRsvpList?.eventRsvps = rsvps
         eventRsvpList?.eventHostID = mhpUser?.userID
         
-        // TODO: add eventRsvpListID to Event, or update existing list
         event?.eventRsvpListID = eventRsvpList?.eventRsvpListID
     }
     
@@ -152,9 +144,16 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     fileprivate func validate() -> Bool {
-        let isValid = true
-        // TODO: validate info
-        return isValid
+        if rsvps.count < 1 {
+            let alertController = UIAlertController(title: "No Guests",
+                                                    message: "What's a Potluck without guests? Please add some guests to continue.",
+                                                    preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
     
     fileprivate func cancel() {

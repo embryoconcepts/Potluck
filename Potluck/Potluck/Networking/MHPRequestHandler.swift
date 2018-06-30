@@ -74,8 +74,19 @@ struct MHPRequestHandler {
         }
     }
     
-    func retrieveUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.retrieveUser { (result) in
+    func retrieveUserByID(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.retrieveUserByID { (result) in
+            switch result {
+            case .success (let mhpUser):
+                completion(.success(mhpUser))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
+        service.router.retrieveUserByEmail(email: email) { (result) in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))

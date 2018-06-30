@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 protocol EnteredInvitesDelegate {
     func submit(pendingInvites: [MHPInvite])
@@ -23,6 +24,10 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     var tempInvite = MHPInvite(userFirstName: "", userLastName: "")
     var pendingInvites = [MHPInvite]()
     var enteredInvitesDelegate: EnteredInvitesDelegate?
+    lazy var request: MHPRequestHandler = {
+        return MHPRequestHandler()
+    }()
+    
     
     // MARK: - Lifecycle
     
@@ -46,10 +51,24 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func addToListTapped(_ sender: Any) {
-        // TODO: validate fields, alert if missing info
-        pendingInvites.append(tempInvite)
-        resetTextFields()
-        tblView.reloadData()
+        if validTextFields() {
+            if let email = validateEmail(email: txtEmailOrPhone.text) {
+                request.retrieveUserByEmail(email: email) { (result) in
+                    switch result {
+                    case .success(let user):
+                        self.tempInvite.userID = user.userID
+                        self.tempInvite.userFirstName = user.userFirstName
+                        self.tempInvite.userLastName = user.userLastName
+                        self.tempInvite.userProfileURL = user.userProfileURL
+                    case .failure(_):
+                        break
+                    }
+                    self.pendingInvites.append(self.tempInvite)
+                    self.resetTextFields()
+                    self.tblView.reloadData()
+                }
+            }
+        }
     }
     
     @IBAction func saveTapped(_ sender: Any) {
@@ -59,7 +78,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     
     @IBAction func cancelTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Cancel Invites",
-                                      message: "Are you sure you want to cancel inviting guests? All event data will be lost.",
+                                      message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
@@ -73,7 +92,56 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    func resetTextFields() {
+    fileprivate func validTextFields() -> Bool {
+        var errorMsg = "Required fields:"
+        var isValid = true
+        
+        if txtFirst.text == "" {
+            errorMsg += "\nfirst name"
+            isValid = false
+        }
+        
+        if txtLast.text == "" {
+            errorMsg += "\nlast name"
+            isValid = false
+        }
+        
+        if txtEmailOrPhone.text == "" {
+            errorMsg += "\nemail"
+            isValid = false
+        }
+        
+        if !isValid {
+            let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        return isValid
+    }
+    
+    fileprivate func validateEmail(email: String?) -> String? {
+        guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
+        
+        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+        let allMatches = dataDetector.matches(in: trimmedText,
+                                              options: [],
+                                              range: range)
+        
+        if allMatches.count == 1,
+            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
+            return trimmedText
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+            return nil
+        }
+    }
+    
+    fileprivate func resetTextFields() {
         txtFirst.text = ""
         txtLast.text = ""
         txtEmailOrPhone.text = ""
