@@ -1,5 +1,5 @@
 //
-//  MHPCreateEvent3-ItemsViewController.swift
+//  MHPCreateEvent3ItemsViewController.swift
 //  Potluck
 //
 //  Created by Jennifer Hamilton on 6/28/18.
@@ -8,18 +8,29 @@
 
 import UIKit
 
-class MHPCreateEvent3_ItemsViewController: UIViewController {
+protocol CreateEvent3DataDelegate {
+    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList)
+}
+
+class MHPCreateEvent3ItemsViewController: UIViewController {
 
     var mhpUser: MHPUser?
     var event: MHPEvent?
     var eventRsvpList: MHPEventRsvpList?
+    var invites: [MHPInvite]?
     
+    var dataDelegate: CreateEvent3DataDelegate?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         assertDependencies()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,16 +44,26 @@ class MHPCreateEvent3_ItemsViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
+    
+    func back() {
+        if let user = mhpUser,
+            let event = event,
+            let invites = invites,
+            let rsvpList = eventRsvpList {
+            dataDelegate?.back(user: user, event: event, invites: invites, rsvpList: rsvpList)
+        }
+    }
 
 }
 
 
 // MARK: - UserInjectable Protocol
 
-extension MHPCreateEvent3_ItemsViewController: Injectable {
+extension MHPCreateEvent3ItemsViewController: Injectable {
     typealias T = MHPUser
     typealias U = MHPEvent
     typealias R = MHPEventRsvpList
+    typealias I = [MHPInvite]
     
     func inject(_ user: T) {
         self.mhpUser = user
@@ -52,13 +73,18 @@ extension MHPCreateEvent3_ItemsViewController: Injectable {
         self.event = event
     }
     
-    func inject(_ eventRsvpList: R) {
-        self.eventRsvpList = eventRsvpList
+    func inject(_ rsvpList: R) {
+        self.eventRsvpList = rsvpList
+    }
+    
+    func inject(_ invites: I) {
+        self.invites = invites
     }
     
     func assertDependencies() {
         assert(self.mhpUser != nil)
         assert(self.event != nil)
         assert(self.eventRsvpList != nil)
+        assert(self.invites != nil)
     }
 }

@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol CreateEvent2DataDelegate {
+    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite])
+}
+
 class MHPCreateEvent2InvitesViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var lblGuestList: UILabel!
@@ -19,6 +23,8 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     var invites = [MHPInvite]()
     var rsvps = [MHPRsvp]()
     var eventRsvpList: MHPEventRsvpList?
+    
+    var dataDelegate: CreateEvent2DataDelegate?
     
     // MARK: - Lifecycle
     
@@ -74,6 +80,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Private methods
     
     fileprivate func setupView() {
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(back(sender: )))
+        self.navigationItem.leftBarButtonItem = newBackButton
        
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
@@ -134,7 +143,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             if  let user = mhpUser,
                 let event = event,
                 let eventRsvpList = eventRsvpList,
-                let createEvent3 = navigationController?.presentingViewController as? MHPCreateEvent3_ItemsViewController {
+                let createEvent3 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent3ItemsViewController") as? MHPCreateEvent3ItemsViewController {
                 createEvent3.inject(user)
                 createEvent3.inject(event)
                 createEvent3.inject(eventRsvpList)
@@ -177,14 +186,10 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    @objc fileprivate func back() {
-        // TODO: double check data injection, may need a delegate instead
+    @objc fileprivate func back(sender: UIBarButtonItem) {
         if  let user = mhpUser,
-            let event = event,
-            let createEvent1 = navigationController?.presentingViewController as? MHPCreateEvent1DetailsViewController {
-            // storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent1DetailsViewController") as? MHPCreateEvent1DetailsViewController {
-            createEvent1.inject(user)
-            createEvent1.inject(event)
+            let event = event {
+            dataDelegate?.back(user: user, event: event, invites: self.invites)
             navigationController?.popViewController(animated: true)
         }
     }
@@ -249,11 +254,25 @@ extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
     }
 }
 
+
+// MARK: - CreateEvent2DataDelegate
+
+extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
+    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList) {
+        inject(user)
+        inject(event)
+        inject(invites)
+        inject(rsvpList)
+    }
+}
+
 // MARK: - UserInjectable Protocol
 
 extension MHPCreateEvent2InvitesViewController: Injectable {
     typealias T = MHPUser
     typealias U = MHPEvent
+    typealias I = [MHPInvite]
+    typealias R = MHPEventRsvpList
     
     func inject(_ user: T) {
         self.mhpUser = user
@@ -261,6 +280,14 @@ extension MHPCreateEvent2InvitesViewController: Injectable {
     
     func inject(_ event: U) {
         self.event = event
+    }
+    
+    func inject(_ invites: I) {
+        self.invites = invites
+    }
+    
+    func inject(_ rsvpList: R) {
+        self.eventRsvpList = rsvpList
     }
     
     func assertDependencies() {

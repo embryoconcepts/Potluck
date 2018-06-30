@@ -483,7 +483,6 @@
                         <viewLayoutGuide key="safeArea" id="h5q-rx-LH1"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="lblGuestList" destination="aNU-mi-n1s" id="4MY-xq-Wk2"/>
                         <outlet property="tblView" destination="WrI-CN-LJE" id="bHl-k6-xL8"/>
@@ -667,13 +666,14 @@
         <!--Items-->
         <scene sceneID="lmH-zd-08V">
             <objects>
-                <viewController storyboardIdentifier="createEvent3Items" title="Items" id="Orv-Ds-qbQ" customClass="MHPCreateEvent3_ItemsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MHPCreateEvent3ItemsViewController" title="Items" id="Orv-Ds-qbQ" customClass="MHPCreateEvent3ItemsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YNL-9n-F21">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="p8H-6L-j0C"/>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uH5-OB-ZDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -682,13 +682,14 @@
         <!--Restrictions-->
         <scene sceneID="7VC-92-LFM">
             <objects>
-                <viewController storyboardIdentifier="createEvent4Restrictions" title="Restrictions" id="ddo-vg-sdj" customClass="MHPCreateEvent4_RestrictionsViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MHPCreateEvent4RestrictionsViewController" title="Restrictions" id="ddo-vg-sdj" customClass="MHPCreateEvent4RestrictionsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OcX-lv-iBB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="bnF-5F-aS6"/>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wwW-ha-YeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -697,13 +698,14 @@
         <!--Save & Send-->
         <scene sceneID="5Ak-du-rtM">
             <objects>
-                <viewController storyboardIdentifier="createEvent5Save" title="Save &amp; Send" id="0sj-DU-nGR" customClass="MHPCreateEvent5_SaveAndSendViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MHPCreateEvent5SaveAndSendViewController" title="Save &amp; Send" id="0sj-DU-nGR" customClass="MHPCreateEvent5SaveAndSendViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tlk-mD-9Ic">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="PMc-of-m7H"/>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AjL-zu-NlC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

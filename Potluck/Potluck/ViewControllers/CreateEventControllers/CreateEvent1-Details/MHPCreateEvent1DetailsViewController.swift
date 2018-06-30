@@ -22,6 +22,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
+    var invites: [MHPInvite]?
     
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
@@ -39,6 +40,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         assertDependencies()
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -165,8 +167,12 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
             if  let user = mhpUser,
                 let event = event,
                 let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
+                createEvent2.dataDelegate = self
                 createEvent2.inject(user)
                 createEvent2.inject(event)
+                if let invites = invites {
+                    createEvent2.inject(invites)
+                }
                 navigationController?.pushViewController(createEvent2, animated: true)
             }
         }
@@ -271,11 +277,23 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
     }
 }
 
+
+// MARK: - CreateEvent2DataDelegate
+
+extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
+    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite]) {
+        inject(user)
+        inject(event)
+        inject(invites)
+    }
+}
+
 // MARK: - UserInjectable Protocol
 
 extension MHPCreateEvent1DetailsViewController: Injectable {
     typealias T = MHPUser
     typealias U = MHPEvent
+    typealias I = [MHPInvite]
     
     func inject(_ user: T) {
         self.mhpUser = user
@@ -283,6 +301,10 @@ extension MHPCreateEvent1DetailsViewController: Injectable {
     
     func inject(_ event: U) {
         self.event = event
+    }
+    
+    func inject(_ invites: I) {
+        self.invites = invites
     }
     
     func assertDependencies() {

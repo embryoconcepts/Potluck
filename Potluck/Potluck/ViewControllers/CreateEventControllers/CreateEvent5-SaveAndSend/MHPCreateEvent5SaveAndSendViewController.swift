@@ -1,5 +1,5 @@
 //
-//  MHPCreateEvent4-RestrictionsViewController.swift
+//  MHPCreateEvent5SaveAndSendViewController.swift
 //  Potluck
 //
 //  Created by Jennifer Hamilton on 6/28/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPCreateEvent4_RestrictionsViewController: UIViewController {
+class MHPCreateEvent5SaveAndSendViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
