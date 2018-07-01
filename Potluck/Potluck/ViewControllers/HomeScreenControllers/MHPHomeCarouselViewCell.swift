@@ -26,7 +26,8 @@ class MHPHomeCarouselViewCell: ScalingCarouselCell {
     
     func setupEventCell(for event: MHPEvent) {        
         self.lblEventName.text = event.eventName ?? ""
-        self.lblHostName.text = "Hosted by: \(event.eventHost?.userFirstName ?? "")"
+        // FIXME: look up event host to get name
+//        self.lblHostName.text = "Hosted by: \(event.eventHost?.userFirstName ?? "")"
         self.lblDateTime.text = event.eventDate ?? ""
         
         // TODO: set up proper image handling

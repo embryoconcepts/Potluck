@@ -54,20 +54,21 @@ class MHPGuestListViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func countRsvps() {
-        if let tempRsvps = event?.eventRsvpList?.eventRsvps {
-            for rsvp in tempRsvps {
-                if let response = rsvp.response {
-                    switch response {
-                    case "YES":
-                        guestsYes.append(rsvp)
-                    case "NO":
-                        guestsNo.append(rsvp)
-                    default:
-                        guestsInvited.append(rsvp)
-                    }
-                }
-            }
-        }
+        // FIXME: look up eventRsvpList by id
+//        if let tempRsvps = event?.eventRsvpListID?.eventRsvps {
+//            for rsvp in tempRsvps {
+//                if let response = rsvp.response {
+//                    switch response {
+//                    case true:
+//                        guestsYes.append(rsvp)
+//                    case false:
+//                        guestsNo.append(rsvp)
+//                    default:
+//                        guestsInvited.append(rsvp)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
@@ -122,8 +123,9 @@ extension MHPGuestListViewController: UITableViewDataSource, UITableViewDelegate
             sectionGuests = guestsNo
         }
         
-        cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userFirstName ?? ""
-        cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
+        // FIXME: look up user and item
+//        cell.lblGuestName.text = sectionGuests[indexPath.row].user?.userFirstName ?? ""
+//        cell.lblItem.text = sectionGuests[indexPath.row].item?.itemName ?? ""
         return cell
     }
     

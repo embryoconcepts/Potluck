@@ -10,7 +10,19 @@ import UIKit
 
 struct MHPEventRsvpList: Codable  {
     var eventRsvpListID: String?
-    var eventHost: MHPUser?
+    var eventHostID: String?
     var eventRsvps: [MHPRsvp]?
 
+    init(eventRsvpListID: String = UUID().uuidString) {
+        self.eventRsvpListID = eventRsvpListID
+    }
+    
+    init(eventRsvpListID: String = UUID().uuidString,
+         eventHostID: String?,
+         eventRsvps: [MHPRsvp]?) {
+        
+        self.eventRsvpListID = eventRsvpListID
+        self.eventHostID = eventRsvpListID
+        self.eventRsvps = eventRsvps
+    }
 }

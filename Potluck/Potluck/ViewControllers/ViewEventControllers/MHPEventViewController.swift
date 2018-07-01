@@ -92,7 +92,8 @@ class MHPEventViewController: UIViewController {
     
     fileprivate func styleLabels() {
         // Event Details
-        lblEventHost.text = event?.eventHost?.userFirstName ?? ""
+        // FIXME: look up event host to get name
+//        lblEventHost.text = event?.eventHost?.userFirstName ?? ""
         lblEventDescription.text = event?.eventDescription ?? ""
         lblEventDateTime.text = event?.eventDate ?? ""
         lblEventLocation.text = event?.eventLocation ?? ""
@@ -106,11 +107,15 @@ class MHPEventViewController: UIViewController {
         
         // Guest List Summary
         var guestsConfirmed = 0
+        var guestsNotAttending = 0
+        
         if let safeRsvps = rsvps {
             for rsvp in safeRsvps {
-                if rsvp.response == "YES" {
+                if rsvp.response == "yes" {
                     guestsConfirmed += 1
-                }
+                } else if rsvp.response == "no" {
+                    guestsNotAttending += 1
+                } 
             }
         }
         lblGuestListTotals.text = "\(rsvps?.count ?? 0) invited, \(guestsConfirmed) confirmed"
@@ -119,7 +124,7 @@ class MHPEventViewController: UIViewController {
         var pledged = 0
         if let safeItems = items {
             for item in safeItems {
-                if (item.user != nil) {
+                if (item.userID != nil) {
                     pledged += 1
                 }
             }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tax-il-kPs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tax-il-kPs">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -31,7 +31,7 @@
         <!--Event-->
         <scene sceneID="MEw-NO-3JF">
             <objects>
-                <viewController id="tax-il-kPs" customClass="MHPEventViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="viewEventVC" id="tax-il-kPs" customClass="MHPEventViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GpH-fF-O6I">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -207,7 +207,7 @@
         <!--Guest List-->
         <scene sceneID="2JG-CS-ANw">
             <objects>
-                <viewController title="Guest List" id="UUw-qd-Pfl" customClass="MHPGuestListViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="guestListVC" title="Guest List" id="UUw-qd-Pfl" customClass="MHPGuestListViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Phq-8H-kjp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -373,7 +373,7 @@
         <!--Item Card - Viewing-->
         <scene sceneID="aeh-eK-DJy">
             <objects>
-                <viewController title="Item Card - Viewing" id="eWb-XF-vCo" customClass="MHPItemCardViewingViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="itemCardViewing" title="Item Card - Viewing" id="eWb-XF-vCo" customClass="MHPItemCardViewingViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8zT-xh-h4n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -388,7 +388,7 @@
         <!--Item Card - Pledging and Editing-->
         <scene sceneID="zc4-bQ-RnI">
             <objects>
-                <viewController title="Item Card - Pledging and Editing" id="kf7-6w-JPB" customClass="MHPItemCardPledgingViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="itemCardPledging" title="Item Card - Pledging and Editing" id="kf7-6w-JPB" customClass="MHPItemCardPledgingViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0BH-Vc-9RG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -457,7 +457,7 @@
         <!--Item List-->
         <scene sceneID="SEQ-UV-Kyl">
             <objects>
-                <viewController title="Item List" id="h9h-FM-LQm" customClass="MHPItemListViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="itemListVC" title="Item List" id="h9h-FM-LQm" customClass="MHPItemListViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Vb-3x-QPD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

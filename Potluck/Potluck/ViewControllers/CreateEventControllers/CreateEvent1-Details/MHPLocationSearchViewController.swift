@@ -134,34 +134,3 @@ extension MHPLocationSearchViewController: MKLocalSearchCompleterDelegate {
         // handle error
     }
 }
-
-
-extension CLPlacemark {
-    var compactAddress: String? {
-        var result = ""
-        if let name = name {
-            result += "\(name)"
-        }
-        
-        if let street = thoroughfare, let number = subThoroughfare {
-            let streetAddress = "\(number) \(street)"
-            if result != streetAddress {
-                result += ", \(streetAddress)"
-            }
-        }
-        
-        if let city = locality {
-            result += ", \(city)"
-        }
-        
-        if let state = administrativeArea {
-            result += ", \(state)"
-        }
-        
-        if let zip = postalCode {
-            result += ", \(zip)"
-        }
-        return result
-    }
-    
-}

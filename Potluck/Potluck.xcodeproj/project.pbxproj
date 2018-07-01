@@ -17,6 +17,13 @@
 		764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A4B20DFCED20032D982 /* MHPCreateEventCell.swift */; };
 		764D1A4E20E0D6E60032D982 /* MHPLocationSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */; };
 		764D1A5020E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A4F20E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift */; };
+		764D1A5220E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A5120E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift */; };
+		764D1A5420E4CEF50032D982 /* MHPInviteEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */; };
+		764D1A5620E4D0270032D982 /* UITableViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A5520E4D0270032D982 /* UITableViewProtocols.swift */; };
+		764D1A5820E4D5820032D982 /* MHPInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A5720E4D5820032D982 /* MHPInvite.swift */; };
+		764D1A6220E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A6120E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift */; };
+		764D1A6420E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A6320E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift */; };
+		764D1A6620E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D1A6520E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift */; };
 		765123BA2053538900E78488 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765123B92053538900E78488 /* AppDelegate.swift */; };
 		765123BF2053538900E78488 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765123BD2053538900E78488 /* Main.storyboard */; };
 		765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 765123C02053538900E78488 /* Potluck.xcdatamodeld */; };
@@ -37,7 +44,7 @@
 		765124012058902000E78488 /* MHPEventItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124002058902000E78488 /* MHPEventItemList.swift */; };
 		765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124022058903000E78488 /* MHPEventRsvpList.swift */; };
 		765124052058932200E78488 /* MHPUserEventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765124042058932200E78488 /* MHPUserEventList.swift */; };
-		7657AC2E205CC52800FE7833 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* Extensions.swift */; };
+		7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */; };
 		7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */; };
 		7657AC38205CFC8100FE7833 /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */; };
 		7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */; };
@@ -50,6 +57,9 @@
 		76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D37205FB246004940DE /* MHPItemListViewController.swift */; };
 		767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767F637420B6F638007F3D10 /* UIColorExtensions.swift */; };
 		7691723420C061BA0092F6FE /* MHPFirestoreParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */; };
+		76D54A3120E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */; };
+		76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */; };
+		76D54A3720E8FD5500349763 /* DataTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D54A3620E8FD5500349763 /* DataTypeExtensions.swift */; };
 		76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */; };
 		76DF6B60205A29C300028B3B /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */; };
 		76DF6B61205A29C300028B3B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */; };
@@ -93,6 +103,13 @@
 		764D1A4B20DFCED20032D982 /* MHPCreateEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEventCell.swift; sourceTree = "<group>"; };
 		764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPLocationSearchViewController.swift; sourceTree = "<group>"; };
 		764D1A4F20E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEvent2InvitesViewController.swift; sourceTree = "<group>"; };
+		764D1A5120E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEventInvitesCell.swift; sourceTree = "<group>"; };
+		764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteEmptyStateCell.swift; sourceTree = "<group>"; };
+		764D1A5520E4D0270032D982 /* UITableViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewProtocols.swift; sourceTree = "<group>"; };
+		764D1A5720E4D5820032D982 /* MHPInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInvite.swift; sourceTree = "<group>"; };
+		764D1A6120E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEvent3ItemsViewController.swift; sourceTree = "<group>"; };
+		764D1A6320E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEvent4RestrictionsViewController.swift; sourceTree = "<group>"; };
+		764D1A6520E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPCreateEvent5SaveAndSendViewController.swift; sourceTree = "<group>"; };
 		765123B62053538900E78488 /* Potluck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Potluck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		765123B92053538900E78488 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		765123BE2053538900E78488 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -118,7 +135,7 @@
 		765124002058902000E78488 /* MHPEventItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPEventItemList.swift; sourceTree = "<group>"; };
 		765124022058903000E78488 /* MHPEventRsvpList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPEventRsvpList.swift; sourceTree = "<group>"; };
 		765124042058932200E78488 /* MHPUserEventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPUserEventList.swift; sourceTree = "<group>"; };
-		7657AC2D205CC52800FE7833 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		7657AC2F205CD34100FE7833 /* SignUpLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUpLogin.storyboard; sourceTree = "<group>"; };
 		7657AC37205CFC8100FE7833 /* CreateEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewEvent.storyboard; sourceTree = "<group>"; };
@@ -131,6 +148,9 @@
 		76723D37205FB246004940DE /* MHPItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListViewController.swift; sourceTree = "<group>"; };
 		767F637420B6F638007F3D10 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPFirestoreParserTests.swift; path = PotluckTests/NetworkingTests/MHPFirestoreParserTests.swift; sourceTree = SOURCE_ROOT; };
+		76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteEmailOrPhoneViewController.swift; sourceTree = "<group>"; };
+		76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MHPCreateEventInvitesCell.xib; sourceTree = "<group>"; };
+		76D54A3620E8FD5500349763 /* DataTypeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeExtensions.swift; sourceTree = "<group>"; };
 		76DF6B53205A29BA00028B3B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		76DF6B54205A29BB00028B3B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		76DF6B55205A29BC00028B3B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -180,6 +200,79 @@
 				422129C2E6E9BD54DA154C64 /* Pods-PotluckTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		764D1A5920E4E9C20032D982 /* CreateEvent1-Details */ = {
+			isa = PBXGroup;
+			children = (
+				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
+				764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */,
+			);
+			path = "CreateEvent1-Details";
+			sourceTree = "<group>";
+		};
+		764D1A5A20E4E9D50032D982 /* CreateEvent2-Invites */ = {
+			isa = PBXGroup;
+			children = (
+				764D1A4F20E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift */,
+				764D1A5120E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift */,
+				76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */,
+				764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */,
+				76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */,
+			);
+			path = "CreateEvent2-Invites";
+			sourceTree = "<group>";
+		};
+		764D1A5B20E4F8730032D982 /* ItemList */ = {
+			isa = PBXGroup;
+			children = (
+				76723D37205FB246004940DE /* MHPItemListViewController.swift */,
+				760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */,
+				760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */,
+			);
+			path = ItemList;
+			sourceTree = "<group>";
+		};
+		764D1A5C20E4F87F0032D982 /* ItemCards */ = {
+			isa = PBXGroup;
+			children = (
+				76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */,
+				76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */,
+			);
+			path = ItemCards;
+			sourceTree = "<group>";
+		};
+		764D1A5D20E4F88D0032D982 /* GuestList */ = {
+			isa = PBXGroup;
+			children = (
+				76723D35205FB23D004940DE /* MHPGuestListViewController.swift */,
+				760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */,
+			);
+			path = GuestList;
+			sourceTree = "<group>";
+		};
+		764D1A5E20E4F8AF0032D982 /* CreateEvent3-Items */ = {
+			isa = PBXGroup;
+			children = (
+				764D1A6120E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift */,
+			);
+			path = "CreateEvent3-Items";
+			sourceTree = "<group>";
+		};
+		764D1A5F20E4F8C10032D982 /* CreateEvent5-SaveAndSend */ = {
+			isa = PBXGroup;
+			children = (
+				764D1A6520E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift */,
+			);
+			path = "CreateEvent5-SaveAndSend";
+			sourceTree = "<group>";
+		};
+		764D1A6020E4F8C50032D982 /* CreateEvent4-Restrictions */ = {
+			isa = PBXGroup;
+			children = (
+				764D1A6320E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift */,
+			);
+			path = "CreateEvent4-Restrictions";
 			sourceTree = "<group>";
 		};
 		765123AD2053538900E78488 = {
@@ -261,6 +354,7 @@
 				765123FE20588F8800E78488 /* MHPUser.swift */,
 				765123F820588DF200E78488 /* MHPEvent.swift */,
 				765123FA20588E1300E78488 /* MHPItem.swift */,
+				764D1A5720E4D5820032D982 /* MHPInvite.swift */,
 				765123FC20588E2400E78488 /* MHPRsvp.swift */,
 				765124042058932200E78488 /* MHPUserEventList.swift */,
 				765124002058902000E78488 /* MHPEventItemList.swift */,
@@ -292,8 +386,10 @@
 		76DF6B51205A298F00028B3B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				76D54A3620E8FD5500349763 /* DataTypeExtensions.swift */,
 				767F637420B6F638007F3D10 /* UIColorExtensions.swift */,
-				7657AC2D205CC52800FE7833 /* Extensions.swift */,
+				7657AC2D205CC52800FE7833 /* UIViewControllerExtensions.swift */,
+				764D1A5520E4D0270032D982 /* UITableViewProtocols.swift */,
 				76DF6B52205A29A600028B3B /* Fonts */,
 			);
 			path = "Supporting Files";
@@ -342,14 +438,10 @@
 			isa = PBXGroup;
 			children = (
 				765123EB2055DDFC00E78488 /* MHPEventViewController.swift */,
-				76723D35205FB23D004940DE /* MHPGuestListViewController.swift */,
-				760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */,
+				764D1A5D20E4F88D0032D982 /* GuestList */,
 				7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */,
-				76723D37205FB246004940DE /* MHPItemListViewController.swift */,
-				760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */,
-				760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */,
-				76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */,
-				76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */,
+				764D1A5B20E4F8730032D982 /* ItemList */,
+				764D1A5C20E4F87F0032D982 /* ItemCards */,
 			);
 			path = ViewEventControllers;
 			sourceTree = "<group>";
@@ -357,9 +449,11 @@
 		76DF6B72205B33EF00028B3B /* CreateEventControllers */ = {
 			isa = PBXGroup;
 			children = (
-				765123E92055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift */,
-				764D1A4D20E0D6E60032D982 /* MHPLocationSearchViewController.swift */,
-				764D1A4F20E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift */,
+				764D1A5920E4E9C20032D982 /* CreateEvent1-Details */,
+				764D1A5A20E4E9D50032D982 /* CreateEvent2-Invites */,
+				764D1A5E20E4F8AF0032D982 /* CreateEvent3-Items */,
+				764D1A6020E4F8C50032D982 /* CreateEvent4-Restrictions */,
+				764D1A5F20E4F8C10032D982 /* CreateEvent5-SaveAndSend */,
 			);
 			path = CreateEventControllers;
 			sourceTree = "<group>";
@@ -499,6 +593,7 @@
 				7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */,
 				76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */,
 				76DF6B64205A29C300028B3B /* Roboto-Italic.ttf in Resources */,
+				76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */,
 				76DF6B68205A29C300028B3B /* Roboto-ThinItalic.ttf in Resources */,
 				76DF6B6A205A29C300028B3B /* Roboto-MediumItalic.ttf in Resources */,
 				765123BF2053538900E78488 /* Main.storyboard in Resources */,
@@ -722,6 +817,7 @@
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
 				764D1A4E20E0D6E60032D982 /* MHPLocationSearchViewController.swift in Sources */,
+				764D1A6620E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift in Sources */,
 				767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */,
 				764638DB20D9C25C00C554A1 /* MHPParser.swift in Sources */,
 				760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */,
@@ -729,6 +825,9 @@
 				764D1A5020E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift in Sources */,
 				760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
+				76D54A3720E8FD5500349763 /* DataTypeExtensions.swift in Sources */,
+				764D1A5620E4D0270032D982 /* UITableViewProtocols.swift in Sources */,
+				764D1A5420E4CEF50032D982 /* MHPInviteEmptyStateCell.swift in Sources */,
 				764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */,
 				7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */,
 				765123EA2055DDEB00E78488 /* MHPCreateEvent1DetailsViewController.swift in Sources */,
@@ -741,15 +840,20 @@
 				765123FB20588E1300E78488 /* MHPItem.swift in Sources */,
 				76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */,
 				765124012058902000E78488 /* MHPEventItemList.swift in Sources */,
-				7657AC2E205CC52800FE7833 /* Extensions.swift in Sources */,
+				7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */,
 				764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */,
 				765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */,
+				764D1A6420E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift in Sources */,
 				76DF6B79205B35BD00028B3B /* MHPPersonalInfoViewController.swift in Sources */,
+				764D1A6220E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift in Sources */,
+				764D1A5820E4D5820032D982 /* MHPInvite.swift in Sources */,
 				764638D720D6EFB700C554A1 /* NetworkingEnums.swift in Sources */,
 				765124052058932200E78488 /* MHPUserEventList.swift in Sources */,
+				764D1A5220E3B8FF0032D982 /* MHPCreateEventInvitesCell.swift in Sources */,
 				765123FD20588E2400E78488 /* MHPRsvp.swift in Sources */,
+				76D54A3120E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift in Sources */,
 				760E7EAD2060658B0025C825 /* MHPItemListNeededCell.swift in Sources */,
 				765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */,
 				765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */,

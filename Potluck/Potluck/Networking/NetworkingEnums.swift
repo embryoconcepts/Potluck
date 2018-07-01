@@ -47,3 +47,6 @@ enum ServiceOption {
     }
 }
 
+enum OtherError: Error {
+    case noUserToRetrieve
+}

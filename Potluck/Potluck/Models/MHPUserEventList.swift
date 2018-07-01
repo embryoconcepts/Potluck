@@ -13,4 +13,16 @@ struct MHPUserEventList: Codable  {
     var userID: String?
     var userEvents: [MHPEvent]?
     
+    init(eventListID: String = UUID().uuidString) {
+        self.userEventListID = eventListID
+    }
+    
+    init(userEventListID: String = UUID().uuidString,
+         userID: String?,
+         userEvents: [MHPEvent]) {
+        
+    self.userEventListID = userEventListID
+    self.userID = userID
+    self.userEvents = userEvents
+    }
 }
