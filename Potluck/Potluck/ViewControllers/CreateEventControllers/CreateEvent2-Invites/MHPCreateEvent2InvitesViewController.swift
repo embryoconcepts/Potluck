@@ -98,33 +98,27 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     fileprivate func mapInvitesToRsvps() {
-        for invite in invites {
-            var rsvp = MHPRsvp()
-            rsvp.eventID = event?.eventID
-            rsvp.itemID = MHPItem().itemID
-            rsvp.isGuest = true
-            rsvp.isHost = false
-            rsvp.response = "none"
-            rsvp.notificationsOn = false
-            rsvp.numOfGuest = 0
-            
-            if let userID = invite.userID {
-                rsvp.userID = userID
-            }
-            
-            rsvps.append(rsvp)
+        rsvps = invites.map { (invite) -> MHPRsvp in
+            return MHPRsvp(userID: invite.userID,
+                           eventID: event?.eventID,
+                           itemID: MHPItem().itemID,
+                           isGuest: true,
+                           isHost: false,
+                           response: nil,
+                           notificationsOn: false,
+                           numOfGuest: 0)
         }
         
-        var hostRsvp = MHPRsvp()
-        hostRsvp.userID = mhpUser?.userID
-        hostRsvp.eventID = event?.eventID
-        hostRsvp.itemID = MHPItem().itemID
-        hostRsvp.isGuest = false
-        hostRsvp.isHost = true
-        hostRsvp.response = "yes"
-        hostRsvp.notificationsOn = false
-        hostRsvp.numOfGuest = 0
+        let hostRsvp = MHPRsvp(userID: mhpUser?.userID,
+                               eventID: event?.eventID,
+                               itemID: MHPItem().itemID,
+                               isGuest: false,
+                               isHost: true,
+                               response: "yes",
+                               notificationsOn: false,
+                               numOfGuest: 0)
         rsvps.append(hostRsvp)
+        
     }
     
     fileprivate func updateEventRsvpList() {
@@ -147,6 +141,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
                 createEvent3.inject(user)
                 createEvent3.inject(event)
                 createEvent3.inject(eventRsvpList)
+                createEvent3.inject(invites)
                 navigationController?.pushViewController(createEvent3, animated: true)
             }
         }
@@ -166,24 +161,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     fileprivate func cancel() {
-        let alert = UIAlertController(title: "Cancel Event",
-                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.resetView()
-            
-            // return to Home
-            self.tabBarController?.tabBar.isHidden = false
-            if let tabs = self.tabBarController?.viewControllers {
-                if tabs.count > 0 {
-                    self.tabBarController?.selectedIndex = 0
-                }
-            }
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true)
+        self.presentCancelAlert(view: self)
     }
     
     @objc fileprivate func back(sender: UIBarButtonItem) {

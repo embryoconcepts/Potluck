@@ -54,6 +54,9 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         }
     }
 
+    fileprivate func cancel() {
+        self.presentCancelAlert(view: self)
+    }
 }
 
 

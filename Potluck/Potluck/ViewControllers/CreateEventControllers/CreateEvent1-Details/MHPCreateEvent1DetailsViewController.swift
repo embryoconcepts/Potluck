@@ -143,23 +143,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func cancel() {
-        let alert = UIAlertController(title: "Cancel Event",
-                                      message: "Are you sure you want to cancel creating a Potluck? All event data will be lost.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.resetView()
-            
-            // return to Home
-            self.tabBarController?.tabBar.isHidden = false
-            if let tabs = self.tabBarController?.viewControllers {
-                if tabs.count > 0 {
-                    self.tabBarController?.selectedIndex = 0
-                }
-            }
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true)
+        self.presentCancelAlert(view: self)
     }
     
     fileprivate func next() {
