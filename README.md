@@ -7,6 +7,10 @@
 Potluck is an iOS app built for collaborative potlucks and community meal organization. 
 
 
+### Support
+
+[![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=12048576)
+
 
 ### Features
 
