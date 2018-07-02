@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 protocol ContactsSelectedDelegate {
     func submitFromContacts(pendingInvites: [MHPInvite])
@@ -17,18 +18,19 @@ class MHPInviteContactsViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+    var contacts = [CNContact]()
     var pendingInvites = [MHPInvite]()
     var contactInvitesDelegate: ContactsSelectedDelegate?
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()
     
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        getContacts()
         // Do any additional setup after loading the view.
     }
 
@@ -58,6 +60,36 @@ class MHPInviteContactsViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
+    
+    // MARK: - Contacts Methods
+    
+    func getContacts() {
+        let store = CNContactStore()
+        
+        if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
+            store.requestAccess(for: .contacts, completionHandler: { (authorized: Bool, error: Error?) -> Void in
+                if authorized {
+                    self.retrieveContacts(with: store)
+                }
+            })
+        } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
+            self.retrieveContacts(with: store)
+        }
+    }
+    
+    func retrieveContacts(with store: CNContactStore) {
+        let keys = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactEmailAddressesKey as CNKeyDescriptor]
+        let request = CNContactFetchRequest(keysToFetch: keys)
+        
+        do {
+            try store.enumerateContacts(with: request) { (contact, stop) in
+                self.contacts.append(contact)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
 }
 
 
@@ -69,12 +101,12 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pendingInvites.count
+        return contacts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let invite = pendingInvites[indexPath.row]
-        return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+        let contact = contacts[indexPath.row]
+        return contact.cellForTableView(tableView: tblView, atIndexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -100,4 +132,17 @@ extension MHPInviteContactsViewController: UISearchBarDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+}
+
+extension CNContact: TableViewCompatible {
+    var reuseIdentifier: String {
+        return "MHPContactsCell"
+    }
+        
+    func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
+        tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! MHPContactsCell
+        cell.configureWithModel(self)
+        return cell
+    }
 }

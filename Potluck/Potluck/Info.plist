@@ -81,5 +81,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your current location will be used only when the app is in use, and only to help find addresses when creating events.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Access to your contacts will only be used to allow you to easily invite guests to your events.</string>
 </dict>
 </plist>
