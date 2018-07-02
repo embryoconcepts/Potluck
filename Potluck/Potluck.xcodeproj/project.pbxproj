@@ -10,6 +10,7 @@
 		760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */; };
 		760E7EAD2060658B0025C825 /* MHPItemListNeededCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */; };
 		760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */; };
+		761583D320EAA254003825AD /* MHPInviteContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */; };
 		764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D420D6EF6D00C554A1 /* MHPDataManager.swift */; };
 		764638D720D6EFB700C554A1 /* NetworkingEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D620D6EFB700C554A1 /* NetworkingEnums.swift */; };
 		764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */; };
@@ -96,6 +97,7 @@
 		760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListCell.swift; sourceTree = "<group>"; };
 		760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListNeededCell.swift; sourceTree = "<group>"; };
 		760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListPledgedCell.swift; sourceTree = "<group>"; };
+		761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteContactsViewController.swift; sourceTree = "<group>"; };
 		764638D420D6EF6D00C554A1 /* MHPDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPDataManager.swift; sourceTree = "<group>"; };
 		764638D620D6EFB700C554A1 /* NetworkingEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEnums.swift; sourceTree = "<group>"; };
 		764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPServiceRouter.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */,
 				764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */,
 				76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */,
+				761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */,
 			);
 			path = "CreateEvent2-Invites";
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 				765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */,
 				765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */,
 				7657F43620D2F18D00C742C0 /* MHPRequestHandler.swift in Sources */,
+				761583D320EAA254003825AD /* MHPInviteContactsViewController.swift in Sources */,
 				765123F0205745DF00E78488 /* MHPHomeCarouselViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

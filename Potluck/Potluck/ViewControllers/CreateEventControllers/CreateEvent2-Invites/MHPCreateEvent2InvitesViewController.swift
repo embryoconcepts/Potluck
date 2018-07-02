@@ -52,7 +52,10 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func contactsTapped(_ sender: Any) {
-    
+        if let contactsInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteContactsViewController") as? MHPInviteContactsViewController {
+            contactsInvite.contactInvitesDelegate = self
+            present(contactsInvite, animated: true, completion: nil)
+        }
     }
     
     @IBAction func emailTapped(_ sender: Any) {
@@ -229,6 +232,15 @@ extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
     func submit(pendingInvites: [MHPInvite]) {
         invites.append(contentsOf: pendingInvites)
         
+    }
+}
+
+
+// MARK: - ContactsSelectedDelegate
+
+extension MHPCreateEvent2InvitesViewController: ContactsSelectedDelegate {
+    func submitFromContacts(pendingInvites: [MHPInvite]) {
+        invites.append(contentsOf: pendingInvites)
     }
 }
 
