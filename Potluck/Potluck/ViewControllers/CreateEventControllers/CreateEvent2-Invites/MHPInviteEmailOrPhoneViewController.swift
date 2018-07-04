@@ -21,7 +21,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var btnAddToList: UIButton!
     
     var event: MHPEvent?
-    var tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+    var tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
     var pendingInvites = [MHPInvite]()
     var enteredInvitesDelegate: EnteredInvitesDelegate?
     lazy var request: MHPRequestHandler = {
@@ -59,9 +59,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                         self.tempInvite.userID = user.userID
                         self.tempInvite.userFirstName = user.userFirstName
                         self.tempInvite.userLastName = user.userLastName
+                        self.tempInvite.userEmail = user.userEmail
                         self.tempInvite.userProfileURL = user.userProfileURL
                     case .failure(_):
-                        break
+                        self.tempInvite.userFirstName = self.txtFirst.text
+                        self.tempInvite.userLastName = self.txtLast.text
+                        self.tempInvite.userEmail = self.txtEmailOrPhone.text
                     }
                     self.pendingInvites.append(self.tempInvite)
                     self.resetTextFields()
@@ -145,7 +148,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         txtFirst.text = ""
         txtLast.text = ""
         txtEmailOrPhone.text = ""
-        tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+        tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
         txtFirst.becomeFirstResponder()
     }
 
@@ -168,7 +171,7 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 35
+        return 55
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

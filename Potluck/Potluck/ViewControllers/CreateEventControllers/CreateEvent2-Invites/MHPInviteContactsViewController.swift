@@ -18,7 +18,8 @@ class MHPInviteContactsViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var contacts = [CNContact]()
+    var allContacts = [CNContact]()
+    var contactsSearchResult = [CNContact]()
     var pendingInvites = [MHPInvite]()
     var contactInvitesDelegate: ContactsSelectedDelegate?
     lazy var request: MHPRequestHandler = {
@@ -43,17 +44,33 @@ class MHPInviteContactsViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func saveTapped(_ sender: Any) {
+        var selectedItems: [CNContact] {
+            return allContacts.filter { return $0.isSelected }
+        }
+        
+        pendingInvites = selectedItems.map { (contact) -> MHPInvite in
+            return MHPInvite(userFirstName: contact.givenName,
+                             userLastName: contact.familyName,
+                             userEmail: (contact.emailAddresses.first?.value.description ?? ""))
+        }
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites)
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
+        cancel()
+    }
+    
+    func cancel() {
         let alert = UIAlertController(title: "Cancel Invites",
                                       message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+            self.searchBar.text = nil
+            self.searchBar.setShowsCancelButton(false, animated: true)
+            self.searchBar.endEditing(true)
             self.dismiss(animated: true, completion: nil)
         }))
         
@@ -83,13 +100,13 @@ class MHPInviteContactsViewController: UIViewController {
         
         do {
             try store.enumerateContacts(with: request) { (contact, stop) in
-                self.contacts.append(contact)
+                self.allContacts.append(contact)
             }
         } catch {
             print(error.localizedDescription)
         }
     }
-    
+
 }
 
 
@@ -101,18 +118,27 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        if searchBar.text != "" {
+           return contactsSearchResult.count
+        } else {
+            return allContacts.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let contact = contacts[indexPath.row]
+        var contact = CNContact()
+        if searchBar.text != "" {
+            contact = contactsSearchResult[indexPath.row]
+        } else {
+            contact = allContacts[indexPath.row]
+        }
         return contact.cellForTableView(tableView: tblView, atIndexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 35
+        return 55
     }
-    
+
 }
 
 
@@ -121,28 +147,27 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
 extension MHPInviteContactsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text != "" {
-//            searchCompleter.queryFragment = searchText
+            contactsSearchResult = searchContacts(for: searchText)
+        } else {
+            contactsSearchResult = allContacts
         }
+        tblView.reloadData()
+    }
+    
+    func searchContacts(for substring: String) -> [CNContact] {
+        var resultArray: [CNContact] = [CNContact]()
+        
+        for contact in allContacts {
+            if contact.familyName.lowercased().contains(substring.lowercased()) ||
+                contact.givenName.lowercased().contains(substring.lowercased()) {
+                resultArray.append(contact)
+            }
+        }
+        return [CNContact](Set(resultArray))
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = nil
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.endEditing(true)
-        self.dismiss(animated: true, completion: nil)
+        cancel()
     }
     
-}
-
-extension CNContact: TableViewCompatible {
-    var reuseIdentifier: String {
-        return "MHPContactsCell"
-    }
-        
-    func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! MHPContactsCell
-        cell.configureWithModel(self)
-        return cell
-    }
 }

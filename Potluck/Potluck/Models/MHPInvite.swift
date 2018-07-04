@@ -23,10 +23,12 @@ class MHPInvite: Codable, TableViewCompatible {
     }
     
     init(userFirstName: String,
-         userLastName: String) {
+         userLastName: String,
+         userEmail: String) {
         
         self.userFirstName = userFirstName
         self.userLastName = userLastName
+        self.userEmail = userEmail
     }
     
     init(userID: String?,

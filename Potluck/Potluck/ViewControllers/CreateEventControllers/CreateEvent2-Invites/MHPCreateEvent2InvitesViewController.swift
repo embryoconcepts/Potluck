@@ -206,7 +206,7 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if invites.count > 0 {
-            return 35
+            return 55
         } else {
             return tblView.frame.height
         }
