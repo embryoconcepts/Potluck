@@ -19,7 +19,7 @@ class MHPInviteContactsViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     var allContacts = [CNContact]()
-    var contactsSearchResult = [CNContact]()
+    var filteredContacts: [CNContact]?
     var pendingInvites = [MHPInvite]()
     var contactInvitesDelegate: ContactsSelectedDelegate?
     lazy var request: MHPRequestHandler = {
@@ -33,6 +33,7 @@ class MHPInviteContactsViewController: UIViewController {
         super.viewDidLoad()
         getContacts()
         // Do any additional setup after loading the view.
+        filteredContacts = allContacts
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,19 +119,14 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchBar.text != "" {
-           return contactsSearchResult.count
-        } else {
-            return allContacts.count
-        }
+        guard let contacts = filteredContacts else { return 0 }
+        return contacts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var contact = CNContact()
-        if searchBar.text != "" {
-            contact = contactsSearchResult[indexPath.row]
-        } else {
-            contact = allContacts[indexPath.row]
+        if let contacts = filteredContacts {
+            contact = contacts[indexPath.row]
         }
         return contact.cellForTableView(tableView: tblView, atIndexPath: indexPath)
     }
@@ -139,6 +135,19 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
         return 55
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
+            cell.accessoryType = .checkmark
+            contacts[indexPath.row].isSelected = true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
+            cell.accessoryType = .none
+            contacts[indexPath.row].isSelected = false
+        }
+    }
 }
 
 
@@ -146,10 +155,10 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
 
 extension MHPInviteContactsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text != "" {
-            contactsSearchResult = searchContacts(for: searchText)
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            filteredContacts = searchContacts(for: searchText)
         } else {
-            contactsSearchResult = allContacts
+            filteredContacts = allContacts
         }
         tblView.reloadData()
     }

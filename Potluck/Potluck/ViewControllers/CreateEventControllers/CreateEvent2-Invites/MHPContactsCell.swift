@@ -14,7 +14,6 @@ class MHPContactsCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!
     @IBOutlet weak var lblEmailOrPhone: UILabel!
     @IBOutlet weak var imgGuest: UIImageView!
-    @IBOutlet weak var btnAddContact: UIButton!
     
     typealias T = CNContact
     var model: CNContact?
@@ -40,15 +39,6 @@ class MHPContactsCell: UITableViewCell, Configurable {
 //        } else {
             self.imgGuest.image = UIImage(named: "userPlaceholder")
 //        }
-    }
-    
-    @IBAction func contactTapped(_ sender: Any) {
-        btnAddContact.isSelected = !btnAddContact.isSelected
-        if btnAddContact.isSelected {
-            model!.isSelected = true
-        } else {
-            model!.isSelected = false
-        }        
     }
 
 }
