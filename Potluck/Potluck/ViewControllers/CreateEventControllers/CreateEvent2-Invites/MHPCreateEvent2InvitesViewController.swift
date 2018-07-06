@@ -54,6 +54,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     @IBAction func contactsTapped(_ sender: Any) {
         if let contactsInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteContactsViewController") as? MHPInviteContactsViewController {
             contactsInvite.contactInvitesDelegate = self
+            contactsInvite.existingInvites = invites
             present(contactsInvite, animated: true, completion: nil)
         }
     }
@@ -237,7 +238,6 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
 extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
     func submit(pendingInvites: [MHPInvite]) {
         invites.append(contentsOf: pendingInvites)
-        
     }
 }
 

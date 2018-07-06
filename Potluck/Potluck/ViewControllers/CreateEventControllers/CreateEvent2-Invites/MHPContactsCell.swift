@@ -38,6 +38,12 @@ class MHPContactsCell: UITableViewCell, Configurable {
             self.lblEmailHeight.constant = 0
         }
         
+        if model.isSelected {
+            self.accessoryType = .checkmark
+        } else {
+            self.accessoryType = .none
+        }
+        
         // TODO: add user image from contacts
 //        if let url = self.model?.imageData {
 //            self.imgGuest.image = UIImage(url)

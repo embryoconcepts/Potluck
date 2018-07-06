@@ -20,7 +20,7 @@ class MHPInviteContactsViewController: UIViewController {
     
     var allContacts = [CNContact]()
     var filteredContacts: [CNContact]?
-    var pendingInvites = [MHPInvite]()
+    var existingInvites: [MHPInvite]?
     var contactInvitesDelegate: ContactsSelectedDelegate?
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
@@ -49,7 +49,7 @@ class MHPInviteContactsViewController: UIViewController {
             return allContacts.filter { return $0.isSelected }
         }
         
-        pendingInvites = selectedItems.map { (contact) -> MHPInvite in
+        let pendingInvites = selectedItems.map { (contact) -> MHPInvite in
             let invite = MHPInvite(userFirstName: contact.givenName,
                              userLastName: contact.familyName,
                              userEmail: (contact.contactPreference!))
@@ -111,6 +111,20 @@ class MHPInviteContactsViewController: UIViewController {
             }
         } catch {
             print(error.localizedDescription)
+        }
+        
+        updateContactsWithPreviouslySelected()
+    }
+    
+    func updateContactsWithPreviouslySelected() {
+        // if invite contactID == contact.identifier, set contact.isSelected = true, set contactPreference = email
+        for invite in existingInvites! {
+            for contact in allContacts {
+                if invite.contactID == contact.identifier {
+                    contact.isSelected = true
+                    contact.contactPreference = invite.userEmail
+                }
+            }
         }
     }
     
