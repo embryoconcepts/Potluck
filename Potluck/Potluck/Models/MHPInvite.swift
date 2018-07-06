@@ -17,16 +17,19 @@ class MHPInvite: Codable, TableViewCompatible {
     var userProfileURL: String?
     var userFacebookID: String?
     var eventID: String?
+    var contactID: String?
     
     var reuseIdentifier: String {
         return "MHPCreateEventInvitesCell"
     }
     
     init(userFirstName: String,
-         userLastName: String) {
+         userLastName: String,
+         userEmail: String) {
         
         self.userFirstName = userFirstName
         self.userLastName = userLastName
+        self.userEmail = userEmail
     }
     
     init(userID: String?,

@@ -52,7 +52,11 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func contactsTapped(_ sender: Any) {
-    
+        if let contactsInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteContactsViewController") as? MHPInviteContactsViewController {
+            contactsInvite.contactInvitesDelegate = self
+            contactsInvite.existingInvites = invites
+            present(contactsInvite, animated: true, completion: nil)
+        }
     }
     
     @IBAction func emailTapped(_ sender: Any) {
@@ -88,7 +92,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         
         lblGuestList.text = "Guest List (\(invites.count))"
-        tblView.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            self.tblView.reloadData()
+        }
     }
     
     fileprivate func resetView() {
@@ -149,12 +155,14 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     fileprivate func validate() -> Bool {
         if rsvps.count < 1 {
-            let alertController = UIAlertController(title: "No Guests",
-                                                    message: "What's a Potluck without guests? Please add some guests to continue.",
-                                                    preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "No Guests",
+                                                        message: "What's a Potluck without guests? Please add some guests to continue.",
+                                                        preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return false
         }
         return true
@@ -203,7 +211,7 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if invites.count > 0 {
-            return 35
+            return 55
         } else {
             return tblView.frame.height
         }
@@ -216,7 +224,9 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             invites.remove(at: indexPath.row)
-            tblView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tblView.reloadData()
+            }
         }
     }
 
@@ -228,7 +238,15 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
 extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
     func submit(pendingInvites: [MHPInvite]) {
         invites.append(contentsOf: pendingInvites)
-        
+    }
+}
+
+
+// MARK: - ContactsSelectedDelegate
+
+extension MHPCreateEvent2InvitesViewController: ContactsSelectedDelegate {
+    func submitFromContacts(pendingInvites: [MHPInvite]) {
+        invites.append(contentsOf: pendingInvites)
     }
 }
 

@@ -49,15 +49,19 @@ class MHPPersonalInfoViewController: UIViewController {
     @IBAction func nextTapped(_ sender: Any) {
         if txtFirstName.text == "" || txtLastName.text == "" {
             if txtFirstName.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your first name.", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Error", message: "Please enter your first name.", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             } else if txtLastName.text == "" {
-                let alertController = UIAlertController(title: "Error", message: "Please enter your last name.", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Error", message: "Please enter your last name.", preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
         } else {
             if let first = txtFirstName.text, let last = txtLastName.text, var user = mhpUser {
@@ -75,17 +79,21 @@ class MHPPersonalInfoViewController: UIViewController {
                                     self.present(congratsVC, animated: true, completion: nil)
                                 }
                             case .failure(let error):
-                                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                                alertController.addAction(defaultAction)
-                                self.present(alertController, animated: true, completion: nil)
+                                DispatchQueue.main.async { [unowned self] in
+                                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                    alertController.addAction(defaultAction)
+                                    self.present(alertController, animated: true, completion: nil)
+                                }
                             }
                         }
                     case .failure(let error):
-                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
+                        DispatchQueue.main.async { [unowned self] in
+                            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertController.addAction(defaultAction)
+                            self.present(alertController, animated: true, completion: nil)
+                        }
                     }
                     SVProgressHUD.dismiss()
                 }

@@ -21,7 +21,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var btnAddToList: UIButton!
     
     var event: MHPEvent?
-    var tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+    var tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
     var pendingInvites = [MHPInvite]()
     var enteredInvitesDelegate: EnteredInvitesDelegate?
     lazy var request: MHPRequestHandler = {
@@ -59,13 +59,18 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                         self.tempInvite.userID = user.userID
                         self.tempInvite.userFirstName = user.userFirstName
                         self.tempInvite.userLastName = user.userLastName
+                        self.tempInvite.userEmail = user.userEmail
                         self.tempInvite.userProfileURL = user.userProfileURL
                     case .failure(_):
-                        break
+                        self.tempInvite.userFirstName = self.txtFirst.text
+                        self.tempInvite.userLastName = self.txtLast.text
+                        self.tempInvite.userEmail = self.txtEmailOrPhone.text
                     }
                     self.pendingInvites.append(self.tempInvite)
                     self.resetTextFields()
-                    self.tblView.reloadData()
+                    DispatchQueue.main.async { [unowned self] in
+                        self.tblView.reloadData()
+                    }
                 }
             }
         }
@@ -77,16 +82,18 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        let alert = UIAlertController(title: "Cancel Invites",
-                                      message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true)
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Cancel Invites",
+                                          message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
+                                          preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            
+            self.present(alert, animated: true)
+        }
     }
     
     
@@ -112,10 +119,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         }
         
         if !isValid {
-            let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         return isValid
     }
@@ -133,10 +142,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
             return trimmedText
         } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return nil
         }
     }
@@ -145,10 +156,10 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         txtFirst.text = ""
         txtLast.text = ""
         txtEmailOrPhone.text = ""
-        tempInvite = MHPInvite(userFirstName: "", userLastName: "")
+        tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
         txtFirst.becomeFirstResponder()
     }
-
+    
 }
 
 // MARK: - UITableViewControllerDelegate and Datasource
@@ -168,7 +179,7 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 35
+        return 55
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -178,7 +189,9 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             pendingInvites.remove(at: indexPath.row)
-            tblView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tblView.reloadData()
+            }
         }
     }
     
@@ -213,7 +226,6 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
                 tempInvite.userLastName = textEntry
             case txtEmailOrPhone:
                 tempInvite.userEmail = textEntry
-            // TODO: or invite.userPhone = txtEmailOrPhone.text
             default:
                 return
             }

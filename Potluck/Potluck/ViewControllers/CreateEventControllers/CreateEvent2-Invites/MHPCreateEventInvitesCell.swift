@@ -10,6 +10,7 @@ import UIKit
 
 class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!
+    @IBOutlet weak var lblEmailOrPhone: UILabel!
     @IBOutlet weak var imgGuest: UIImageView!
     
     typealias T = MHPInvite
@@ -20,6 +21,8 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
         if let first = model.userFirstName, let last = model.userLastName {
             self.lblGuestName.text = "\(first) \(last)"
         }
+        self.lblEmailOrPhone.text = model.userEmail
+        
         if let url = self.model?.userProfileURL {
             // TODO: self.imgGuest.image = UIImage(url)
         } else {

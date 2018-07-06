@@ -10,6 +10,10 @@
 		760E7EAB205FCC950025C825 /* MHPGuestListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */; };
 		760E7EAD2060658B0025C825 /* MHPItemListNeededCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */; };
 		760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */; };
+		761583D320EAA254003825AD /* MHPInviteContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */; };
+		761583D520EAADF0003825AD /* MHPContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761583D420EAADF0003825AD /* MHPContactsCell.swift */; };
+		761583D720EAAE04003825AD /* MHPContactsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761583D620EAAE04003825AD /* MHPContactsCell.xib */; };
+		761583D920ED2E11003825AD /* CNContact+TableViewCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761583D820ED2E11003825AD /* CNContact+TableViewCompatible.swift */; };
 		764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D420D6EF6D00C554A1 /* MHPDataManager.swift */; };
 		764638D720D6EFB700C554A1 /* NetworkingEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D620D6EFB700C554A1 /* NetworkingEnums.swift */; };
 		764638D920D88B1B00C554A1 /* MHPServiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */; };
@@ -96,6 +100,10 @@
 		760E7EAA205FCC950025C825 /* MHPGuestListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListCell.swift; sourceTree = "<group>"; };
 		760E7EAC2060658B0025C825 /* MHPItemListNeededCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListNeededCell.swift; sourceTree = "<group>"; };
 		760E7EAE2060659E0025C825 /* MHPItemListPledgedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListPledgedCell.swift; sourceTree = "<group>"; };
+		761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteContactsViewController.swift; sourceTree = "<group>"; };
+		761583D420EAADF0003825AD /* MHPContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPContactsCell.swift; sourceTree = "<group>"; };
+		761583D620EAAE04003825AD /* MHPContactsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MHPContactsCell.xib; sourceTree = "<group>"; };
+		761583D820ED2E11003825AD /* CNContact+TableViewCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CNContact+TableViewCompatible.swift"; sourceTree = "<group>"; };
 		764638D420D6EF6D00C554A1 /* MHPDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPDataManager.swift; sourceTree = "<group>"; };
 		764638D620D6EFB700C554A1 /* NetworkingEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEnums.swift; sourceTree = "<group>"; };
 		764638D820D88B1B00C554A1 /* MHPServiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPServiceRouter.swift; sourceTree = "<group>"; };
@@ -219,6 +227,9 @@
 				76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */,
 				764D1A5320E4CEF50032D982 /* MHPInviteEmptyStateCell.swift */,
 				76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */,
+				761583D220EAA254003825AD /* MHPInviteContactsViewController.swift */,
+				761583D420EAADF0003825AD /* MHPContactsCell.swift */,
+				761583D620EAAE04003825AD /* MHPContactsCell.xib */,
 			);
 			path = "CreateEvent2-Invites";
 			sourceTree = "<group>";
@@ -351,6 +362,7 @@
 		765123F720588DBB00E78488 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				761583D820ED2E11003825AD /* CNContact+TableViewCompatible.swift */,
 				765123FE20588F8800E78488 /* MHPUser.swift */,
 				765123F820588DF200E78488 /* MHPEvent.swift */,
 				765123FA20588E1300E78488 /* MHPItem.swift */,
@@ -588,6 +600,7 @@
 				76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */,
 				76DF6B69205A29C300028B3B /* Roboto-BlackItalic.ttf in Resources */,
 				765123C42053538900E78488 /* Assets.xcassets in Resources */,
+				761583D720EAAE04003825AD /* MHPContactsCell.xib in Resources */,
 				7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */,
 				76DF6B62205A29C300028B3B /* Roboto-Bold.ttf in Resources */,
 				7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */,
@@ -842,10 +855,12 @@
 				765124012058902000E78488 /* MHPEventItemList.swift in Sources */,
 				7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
+				761583D520EAADF0003825AD /* MHPContactsCell.swift in Sources */,
 				764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */,
 				764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */,
 				765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */,
 				764D1A6420E4F95C0032D982 /* MHPCreateEvent4RestrictionsViewController.swift in Sources */,
+				761583D920ED2E11003825AD /* CNContact+TableViewCompatible.swift in Sources */,
 				76DF6B79205B35BD00028B3B /* MHPPersonalInfoViewController.swift in Sources */,
 				764D1A6220E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift in Sources */,
 				764D1A5820E4D5820032D982 /* MHPInvite.swift in Sources */,
@@ -858,6 +873,7 @@
 				765123E42055DDA400E78488 /* MHPHomeViewController.swift in Sources */,
 				765123E82055DDC100E78488 /* MHPSettingsViewController.swift in Sources */,
 				7657F43620D2F18D00C742C0 /* MHPRequestHandler.swift in Sources */,
+				761583D320EAA254003825AD /* MHPInviteContactsViewController.swift in Sources */,
 				765123F0205745DF00E78488 /* MHPHomeCarouselViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

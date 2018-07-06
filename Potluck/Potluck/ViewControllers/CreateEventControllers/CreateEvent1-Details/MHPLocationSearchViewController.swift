@@ -126,8 +126,10 @@ extension MHPLocationSearchViewController: UISearchBarDelegate {
 
 extension MHPLocationSearchViewController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        searchResults = completer.results
-        tblSearchResults.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            self.searchResults = completer.results
+            self.tblSearchResults.reloadData()
+        }
     }
     
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {

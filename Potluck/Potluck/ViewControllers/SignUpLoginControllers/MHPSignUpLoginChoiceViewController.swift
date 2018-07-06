@@ -83,10 +83,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
                     self.mhpUser = user
                     self.updateForUserState()
                 case .failure(let error):
-                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    DispatchQueue.main.async { [unowned self] in
+                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
                 SVProgressHUD.dismiss()
             }
@@ -102,10 +104,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
                     self.mhpUser = user
                     self.updateForUserState()
                 case .failure(let error):
-                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    DispatchQueue.main.async { [unowned self] in
+                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                        alertController.addAction(defaultAction)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
                 SVProgressHUD.dismiss()
             }
@@ -113,33 +117,37 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
     }
     
     @IBAction func forgotPasswordTapped(_ sender: Any) {
-        let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addTextField { textField in
-            textField.placeholder = "Input your email here..."
-        }
-        
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            // handle error
-            if let email = alert.textFields?.first?.text {
-                SVProgressHUD.show()
-                self.request.resetPassword(forEmail: email) { (result) in
-                    switch result {
-                    case .success:
-                        print("password reset email sent")
-                    case .failure (let error):
-                        print("password reset email error")
-                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(defaultAction)
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                    SVProgressHUD.dismiss()
-                }
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addTextField { textField in
+                textField.placeholder = "Input your email here..."
             }
-        }))
-        
-        self.present(alert, animated: true)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                // handle error
+                if let email = alert.textFields?.first?.text {
+                    SVProgressHUD.show()
+                    self.request.resetPassword(forEmail: email) { (result) in
+                        switch result {
+                        case .success:
+                            print("password reset email sent")
+                        case .failure (let error):
+                            print("password reset email error")
+                            DispatchQueue.main.async { [unowned self] in
+                                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                alertController.addAction(defaultAction)
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        }
+                        SVProgressHUD.dismiss()
+                    }
+                }
+            }))
+            
+            self.present(alert, animated: true)
+        }
     }
     
     @IBAction func alertTapped(_ sender: Any) {
@@ -147,19 +155,23 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
         request.verifyEmail { (result) in
             switch result {
             case .success:
-                let alertController = UIAlertController(title: "Verification email sent!",
-                                                        message: "Please check your email and use the enclosed link to verify your account.",
-                                                        preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Verification email sent!",
+                                                            message: "Please check your email and use the enclosed link to verify your account.",
+                                                            preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             case .failure (let error):
-                let alertController = UIAlertController(title: "Error sending verification email:",
-                                                        message: error.localizedDescription,
-                                                        preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Error sending verification email:",
+                                                            message: error.localizedDescription,
+                                                            preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
             SVProgressHUD.dismiss()
         }
@@ -272,10 +284,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
             return trimmedText
         } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return nil
         }
     }
@@ -301,10 +315,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
         if isPasswordValid {
             return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         } else {
-            let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Password Error", message: errorMsg, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return nil
         }
     }
@@ -389,10 +405,12 @@ extension MHPSignUpLoginChoiceViewController: UserHandler {
                 self.assertDependencies()
                 self.updateForUserState()
             case .failure(let error):
-                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                self.present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
             SVProgressHUD.dismiss()
         }
