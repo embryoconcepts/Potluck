@@ -26,11 +26,13 @@ class MHPContactsCell: UITableViewCell, Configurable {
     func configureWithModel(_ model: CNContact) {
         self.model = model
             self.lblGuestName.text = "\(model.givenName) \(model.familyName)"
-        // FIXME: add popup if more than one address
-        if let email = model.emailAddresses.first?.value.description {
-            self.lblEmailOrPhone.text = email
+        
+        // FIXME: fix spacing to center name if email not present
+        if let contact = model.contactPreference {
+            self.lblEmailOrPhone.text = contact
+            self.lblEmailOrPhone.isHidden = false
         } else {
-            self.lblEmailOrPhone.text = ""
+            self.lblEmailOrPhone.isHidden = true
         }
         
         // TODO: add user image from contacts

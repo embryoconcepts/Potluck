@@ -250,7 +250,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchResultCell" id="cCU-rw-aS5">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchResultCell" id="cCU-rw-aS5">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cCU-rw-aS5" id="1ck-Y3-wuK">
@@ -339,7 +339,7 @@
                                 <rect key="frame" x="0.0" y="291" width="375" height="284.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="emptyStateCell" rowHeight="205" id="UHa-DH-Re9" customClass="MHPInviteEmptyStateCell" customModule="Potluck" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="emptyStateCell" rowHeight="205" id="UHa-DH-Re9" customClass="MHPInviteEmptyStateCell" customModule="Potluck" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="205"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UHa-DH-Re9" id="hry-5x-1k8">
@@ -386,20 +386,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lF1-6f-BJi" userLabel="btnEmailOrSMS">
-                                        <rect key="frame" x="162" y="51.5" width="50" height="50"/>
+                                        <rect key="frame" x="225" y="51.5" width="50" height="50"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="6"/>
                                         <state key="normal" image="btnPencil">
                                             <color key="titleColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="emailTapped:" destination="wGx-gJ-Qul" eventType="touchUpInside" id="7Pz-lK-yo7"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQx-IG-MvY" userLabel="btnFacebook">
-                                        <rect key="frame" x="265" y="51.5" width="50" height="50"/>
-                                        <state key="normal" image="btnFacebook"/>
-                                        <connections>
-                                            <action selector="facebookTapped:" destination="wGx-gJ-Qul" eventType="touchUpInside" id="t3X-A6-JQs"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guest List ()" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNU-mi-n1s">
@@ -410,7 +403,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4P-gw-Jkj" userLabel="btnContacts">
-                                        <rect key="frame" x="60" y="51.5" width="50" height="50"/>
+                                        <rect key="frame" x="100" y="51.5" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="53x-ri-jIS"/>
                                             <constraint firstAttribute="height" constant="50" id="xpX-aL-YLZ"/>
@@ -427,23 +420,19 @@
                                     <constraint firstItem="lF1-6f-BJi" firstAttribute="width" secondItem="L4P-gw-Jkj" secondAttribute="width" id="4eu-BL-5Lf"/>
                                     <constraint firstItem="L4P-gw-Jkj" firstAttribute="top" secondItem="kOl-ZM-cUw" secondAttribute="bottom" constant="15" id="59w-NG-Xv5"/>
                                     <constraint firstItem="kOl-ZM-cUw" firstAttribute="leading" secondItem="7id-PC-AlN" secondAttribute="leading" constant="15" id="ADI-A5-TBh"/>
-                                    <constraint firstItem="L4P-gw-Jkj" firstAttribute="leading" secondItem="7id-PC-AlN" secondAttribute="leading" constant="60" id="C1G-yS-MKL"/>
-                                    <constraint firstAttribute="trailing" secondItem="mQx-IG-MvY" secondAttribute="trailing" constant="60" id="DYa-2F-4wj"/>
                                     <constraint firstItem="eLX-1O-539" firstAttribute="top" secondItem="L4P-gw-Jkj" secondAttribute="bottom" constant="8" id="ESR-va-VIa"/>
                                     <constraint firstAttribute="trailing" secondItem="aNU-mi-n1s" secondAttribute="trailing" id="FaH-z6-wzm"/>
+                                    <constraint firstItem="L4P-gw-Jkj" firstAttribute="leading" secondItem="7id-PC-AlN" secondAttribute="leading" constant="100" id="GdX-vP-Sla"/>
                                     <constraint firstItem="aNU-mi-n1s" firstAttribute="top" secondItem="eLX-1O-539" secondAttribute="bottom" constant="8" id="LkG-tS-txh"/>
                                     <constraint firstAttribute="bottom" secondItem="eLX-1O-539" secondAttribute="bottom" constant="30" id="N73-9y-1EM"/>
                                     <constraint firstAttribute="bottom" secondItem="aNU-mi-n1s" secondAttribute="bottom" id="RsS-2k-kuk"/>
                                     <constraint firstItem="aNU-mi-n1s" firstAttribute="leading" secondItem="7id-PC-AlN" secondAttribute="leading" id="UL8-Bj-504"/>
                                     <constraint firstItem="kOl-ZM-cUw" firstAttribute="top" secondItem="7id-PC-AlN" secondAttribute="top" constant="15" id="YY6-hB-7PS"/>
                                     <constraint firstAttribute="height" constant="180" id="aoO-RN-QTz"/>
+                                    <constraint firstAttribute="trailing" secondItem="lF1-6f-BJi" secondAttribute="trailing" constant="100" id="cmd-ve-nod"/>
                                     <constraint firstAttribute="trailing" secondItem="eLX-1O-539" secondAttribute="trailing" constant="15" id="dfL-Nt-3r1"/>
-                                    <constraint firstItem="lF1-6f-BJi" firstAttribute="centerX" secondItem="7id-PC-AlN" secondAttribute="centerX" id="j8J-an-e7t"/>
                                     <constraint firstItem="eLX-1O-539" firstAttribute="leading" secondItem="7id-PC-AlN" secondAttribute="leading" constant="15" id="jDl-6D-Cnu"/>
                                     <constraint firstItem="lF1-6f-BJi" firstAttribute="height" secondItem="L4P-gw-Jkj" secondAttribute="height" id="kQi-qk-BJU"/>
-                                    <constraint firstItem="lF1-6f-BJi" firstAttribute="top" secondItem="mQx-IG-MvY" secondAttribute="top" id="sN1-PM-LWz"/>
-                                    <constraint firstItem="mQx-IG-MvY" firstAttribute="height" secondItem="lF1-6f-BJi" secondAttribute="height" id="v6R-vX-7wp"/>
-                                    <constraint firstItem="mQx-IG-MvY" firstAttribute="width" secondItem="lF1-6f-BJi" secondAttribute="width" id="wtd-lc-2wJ"/>
                                     <constraint firstItem="L4P-gw-Jkj" firstAttribute="top" secondItem="lF1-6f-BJi" secondAttribute="top" id="z2D-fp-dyi"/>
                                 </constraints>
                             </view>
@@ -801,7 +790,6 @@
     </scenes>
     <resources>
         <image name="btnContacts" width="34" height="38"/>
-        <image name="btnFacebook" width="34" height="34"/>
         <image name="btnPencil" width="32" height="32"/>
         <image name="imgProgressFlow1" width="320" height="30"/>
         <image name="imgProgressFlow2" width="320" height="29"/>

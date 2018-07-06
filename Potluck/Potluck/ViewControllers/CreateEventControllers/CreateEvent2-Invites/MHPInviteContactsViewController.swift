@@ -50,9 +50,10 @@ class MHPInviteContactsViewController: UIViewController {
         }
         
         pendingInvites = selectedItems.map { (contact) -> MHPInvite in
+            // TODO: add contact ID here, so it can be used when moving between screens
             return MHPInvite(userFirstName: contact.givenName,
                              userLastName: contact.familyName,
-                             userEmail: (contact.emailAddresses.first?.value.description ?? ""))
+                             userEmail: (contact.contactPreference!))
         }
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites)
         dismiss(animated: true, completion: nil)
@@ -101,7 +102,9 @@ class MHPInviteContactsViewController: UIViewController {
         
         do {
             try store.enumerateContacts(with: request) { (contact, stop) in
-                self.allContacts.append(contact)
+                if !contact.emailAddresses.isEmpty {
+                    self.allContacts.append(contact)
+                }
             }
         } catch {
             print(error.localizedDescription)
@@ -138,7 +141,34 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
             cell.accessoryType = .checkmark
-            contacts[indexPath.row].isSelected = true
+            let contact = contacts[indexPath.row]
+            contact.isSelected = true
+            
+            // FIXME: fix spacing to center name if email not present
+            if contact.emails.count == 1 {
+                 contact.contactPreference = contact.emails.first
+            } else if contact.emails.count > 1 {
+                // FIXME: timing is off
+                let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
+                
+                for email in contact.emails {
+                    let button = UIAlertAction(title: email, style: .default) { (action) in
+                        contact.contactPreference = email
+                    }
+                    alertController.addAction(button)
+                }
+                let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alertController.addAction(cancelButton)
+                
+                present(alertController, animated: true) {
+                    cell.lblEmailOrPhone.text = contact.contactPreference
+                }
+            } else {
+                cell.lblEmailOrPhone.isHidden = true
+            }
+            
+            // FIXME: only show checkmark if there is a contact preference
+            cell.lblEmailOrPhone.text = contact.contactPreference
         }
     }
     
@@ -146,6 +176,8 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
         if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
             cell.accessoryType = .none
             contacts[indexPath.row].isSelected = false
+            contacts[indexPath.row].contactPreference = ""
+            cell.lblEmailOrPhone.text = ""
         }
     }
 }
