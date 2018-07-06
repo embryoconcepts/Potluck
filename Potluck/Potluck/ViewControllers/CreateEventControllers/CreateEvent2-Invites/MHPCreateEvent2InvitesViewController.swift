@@ -91,7 +91,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         
         lblGuestList.text = "Guest List (\(invites.count))"
-        tblView.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            self.tblView.reloadData()
+        }
     }
     
     fileprivate func resetView() {
@@ -152,12 +154,14 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     fileprivate func validate() -> Bool {
         if rsvps.count < 1 {
-            let alertController = UIAlertController(title: "No Guests",
-                                                    message: "What's a Potluck without guests? Please add some guests to continue.",
-                                                    preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "No Guests",
+                                                        message: "What's a Potluck without guests? Please add some guests to continue.",
+                                                        preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return false
         }
         return true
@@ -219,7 +223,9 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             invites.remove(at: indexPath.row)
-            tblView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tblView.reloadData()
+            }
         }
     }
 

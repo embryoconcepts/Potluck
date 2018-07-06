@@ -68,10 +68,12 @@ class MHPSettingsViewController: UIViewController {
                 }
             }
         } catch let signOutError as NSError {
-            let alertController = UIAlertController(title: "Error", message: signOutError.localizedDescription, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Error", message: signOutError.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
     }
 }

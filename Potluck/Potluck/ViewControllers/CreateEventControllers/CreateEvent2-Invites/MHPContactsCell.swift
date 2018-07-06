@@ -29,7 +29,6 @@ class MHPContactsCell: UITableViewCell, Configurable {
         self.model = model
             self.lblGuestName.text = "\(model.givenName) \(model.familyName)"
         
-        // FIXME: fix spacing to center name if email not present
         if model.contactPreference != "" {
             self.lblEmailOrPhone.text = model.contactPreference
             self.lblNameTop.constant = 8

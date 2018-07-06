@@ -50,10 +50,11 @@ class MHPInviteContactsViewController: UIViewController {
         }
         
         pendingInvites = selectedItems.map { (contact) -> MHPInvite in
-            // TODO: add contact ID here, so it can be used when moving between screens
-            return MHPInvite(userFirstName: contact.givenName,
+            let invite = MHPInvite(userFirstName: contact.givenName,
                              userLastName: contact.familyName,
                              userEmail: (contact.contactPreference!))
+            invite.contactID = contact.identifier
+            return invite
         }
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites)
         dismiss(animated: true, completion: nil)
@@ -64,19 +65,21 @@ class MHPInviteContactsViewController: UIViewController {
     }
     
     func cancel() {
-        let alert = UIAlertController(title: "Cancel Invites",
-                                      message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.searchBar.text = nil
-            self.searchBar.setShowsCancelButton(false, animated: true)
-            self.searchBar.endEditing(true)
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true)
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Cancel Invites",
+                                          message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
+                                          preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+                self.searchBar.text = nil
+                self.searchBar.setShowsCancelButton(false, animated: true)
+                self.searchBar.endEditing(true)
+                self.dismiss(animated: true, completion: nil)
+            }))
+            
+            self.present(alert, animated: true)
+        }
     }
     
     

@@ -188,10 +188,12 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         }
         
         if !isValid {
-            let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         return isValid
     }

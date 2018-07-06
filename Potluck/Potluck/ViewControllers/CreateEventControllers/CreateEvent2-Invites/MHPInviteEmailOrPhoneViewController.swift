@@ -82,16 +82,18 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        let alert = UIAlertController(title: "Cancel Invites",
-                                      message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true)
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Cancel Invites",
+                                          message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
+                                          preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            
+            self.present(alert, animated: true)
+        }
     }
     
     
@@ -117,10 +119,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         }
         
         if !isValid {
-            let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         return isValid
     }
@@ -138,10 +142,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
             return trimmedText
         } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return nil
         }
     }
@@ -153,7 +159,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
         txtFirst.becomeFirstResponder()
     }
-
+    
 }
 
 // MARK: - UITableViewControllerDelegate and Datasource
@@ -220,7 +226,6 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
                 tempInvite.userLastName = textEntry
             case txtEmailOrPhone:
                 tempInvite.userEmail = textEntry
-            // TODO: or invite.userPhone = txtEmailOrPhone.text
             default:
                 return
             }
