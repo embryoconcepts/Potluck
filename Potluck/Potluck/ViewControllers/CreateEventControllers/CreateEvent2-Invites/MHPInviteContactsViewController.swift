@@ -14,7 +14,7 @@ protocol ContactsSelectedDelegate {
 }
 
 class MHPInviteContactsViewController: UIViewController {
-
+    
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -35,12 +35,12 @@ class MHPInviteContactsViewController: UIViewController {
         // Do any additional setup after loading the view.
         filteredContacts = allContacts
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     // MARK: - Action Handlers
     
@@ -110,7 +110,7 @@ class MHPInviteContactsViewController: UIViewController {
             print(error.localizedDescription)
         }
     }
-
+    
 }
 
 
@@ -137,38 +137,42 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
             cell.accessoryType = .checkmark
             let contact = contacts[indexPath.row]
             contact.isSelected = true
             
-            // FIXME: fix spacing to center name if email not present
-            if contact.emails.count == 1 {
-                 contact.contactPreference = contact.emails.first
-            } else if contact.emails.count > 1 {
-                // FIXME: timing is off
-                let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
-                
-                for email in contact.emails {
-                    let button = UIAlertAction(title: email, style: .default) { (action) in
-                        contact.contactPreference = email
-                    }
-                    alertController.addAction(button)
-                }
-                let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                alertController.addAction(cancelButton)
-                
-                present(alertController, animated: true) {
+            DispatchQueue.main.async { [unowned self] in
+                if contact.emails.count == 1 {
+                    contact.contactPreference = contact.emails.first!
                     cell.lblEmailOrPhone.text = contact.contactPreference
+                    cell.lblNameTop.constant = 8
+                    cell.lblEmailHeight.constant = 14
+                } else if contact.emails.count > 1 {
+                    let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
+                    
+                    for email in contact.emails {
+                        let button = UIAlertAction(title: email, style: .default) { (action) in
+                            contact.contactPreference = email
+                            cell.lblEmailOrPhone.text = contact.contactPreference
+                            cell.lblNameTop.constant = 8
+                            cell.lblEmailHeight.constant = 14
+                        }
+                        alertController.addAction(button)
+                    }
+                    let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alertController.addAction(cancelButton)
+                    
+                    self.present(alertController, animated: true) {
+                        cell.lblEmailOrPhone.text = contact.contactPreference
+                    }
+                } else {
+                    cell.lblNameTop.constant = 18
+                    cell.lblEmailHeight.constant = 0
                 }
-            } else {
-                cell.lblEmailOrPhone.isHidden = true
             }
-            
-            // FIXME: only show checkmark if there is a contact preference
-            cell.lblEmailOrPhone.text = contact.contactPreference
         }
     }
     
@@ -178,6 +182,8 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
             contacts[indexPath.row].isSelected = false
             contacts[indexPath.row].contactPreference = ""
             cell.lblEmailOrPhone.text = ""
+            cell.lblNameTop.constant = 18
+            cell.lblEmailHeight.constant = 0
         }
     }
 }
@@ -192,7 +198,9 @@ extension MHPInviteContactsViewController: UISearchBarDelegate {
         } else {
             filteredContacts = allContacts
         }
-        tblView.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            self.tblView.reloadData()
+        }
     }
     
     func searchContacts(for substring: String) -> [CNContact] {

@@ -68,7 +68,9 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                     }
                     self.pendingInvites.append(self.tempInvite)
                     self.resetTextFields()
-                    self.tblView.reloadData()
+                    DispatchQueue.main.async { [unowned self] in
+                        self.tblView.reloadData()
+                    }
                 }
             }
         }
@@ -181,7 +183,9 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             pendingInvites.remove(at: indexPath.row)
-            tblView.reloadData()
+            DispatchQueue.main.async { [unowned self] in
+                self.tblView.reloadData()
+            }
         }
     }
     

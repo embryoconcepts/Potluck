@@ -14,6 +14,8 @@ class MHPContactsCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!
     @IBOutlet weak var lblEmailOrPhone: UILabel!
     @IBOutlet weak var imgGuest: UIImageView!
+    @IBOutlet weak var lblNameTop: NSLayoutConstraint!
+    @IBOutlet weak var lblEmailHeight: NSLayoutConstraint!
     
     typealias T = CNContact
     var model: CNContact?
@@ -28,11 +30,13 @@ class MHPContactsCell: UITableViewCell, Configurable {
             self.lblGuestName.text = "\(model.givenName) \(model.familyName)"
         
         // FIXME: fix spacing to center name if email not present
-        if let contact = model.contactPreference {
-            self.lblEmailOrPhone.text = contact
-            self.lblEmailOrPhone.isHidden = false
+        if model.contactPreference != "" {
+            self.lblEmailOrPhone.text = model.contactPreference
+            self.lblNameTop.constant = 8
+            self.lblEmailHeight.constant = 14
         } else {
-            self.lblEmailOrPhone.isHidden = true
+            self.lblNameTop.constant = 18
+            self.lblEmailHeight.constant = 0
         }
         
         // TODO: add user image from contacts
