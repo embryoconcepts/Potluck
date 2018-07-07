@@ -8,6 +8,7 @@
 
 import UIKit
 import ScalingCarousel
+import Kingfisher
 
 class MHPHomeCarouselViewCell: ScalingCarouselCell {
     
@@ -30,9 +31,12 @@ class MHPHomeCarouselViewCell: ScalingCarouselCell {
 //        self.lblHostName.text = "Hosted by: \(event.eventHost?.userFirstName ?? "")"
         self.lblDateTime.text = event.eventDate ?? ""
         
-        // TODO: set up proper image handling
-        if let url = event.eventImageURL, let tempImage = UIImage(named: url) {
-            self.imgEvent.image = tempImage
+        if let eventPlaceholder = UIImage(named: "eventPlaceholder") {
+            if let urlString = event.eventImageURL, let url = URL(string: urlString) {
+                self.imgEvent.kf.setImage(with: url, placeholder: eventPlaceholder)
+            } else {
+                self.imgEvent.image = eventPlaceholder
+            }
         }
     }
    

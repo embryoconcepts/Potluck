@@ -19,6 +19,7 @@ target 'Potluck' do
   pod 'Firebase/Firestore'
   pod 'ScalingCarousel'
   pod 'SVProgressHUD'
+  pod 'Kingfisher'
   
   target 'PotluckTests' do
     inherit! :search_paths
@@ -33,6 +34,7 @@ target 'Potluck' do
     pod 'Firebase/Firestore'
     pod 'ScalingCarousel'
     pod 'SVProgressHUD'
+    pod 'Kingfisher'
   end
 
 end
