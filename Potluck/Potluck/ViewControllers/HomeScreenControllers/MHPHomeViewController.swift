@@ -133,7 +133,7 @@
                               eventLocation: "Somewhere",
                               eventAddress: "123 Elm Grove",
                               eventDescription:  "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!",
-                              eventImageURL: "url for event image",
+                              eventImageURL: "potluckPlaceholder",
                               eventRestrictions: ["vegetarian"],
                               eventHostID: "event2eventHostID",
                               eventItemListID: "event2eventItemListID",

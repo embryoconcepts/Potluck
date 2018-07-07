@@ -18,15 +18,22 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
     
     func configureWithModel(_ model: MHPInvite) {
         self.model = model
+        
         if let first = model.userFirstName, let last = model.userLastName {
             self.lblGuestName.text = "\(first) \(last)"
         }
+        
         self.lblEmailOrPhone.text = model.userEmail
         
-        if let url = self.model?.userProfileURL {
-            // TODO: self.imgGuest.image = UIImage(url)
-        } else {
-            self.imgGuest.image = UIImage(named: "userPlaceholder")
+        if let userPlaceholder = UIImage(named: "userPlaceholder") {
+            if let urlString = self.model?.userProfileURL, let url = URL(string: urlString) {
+                self.imgGuest.kf.setImage(with: url, placeholder: userPlaceholder)
+            } else if let imageData = self.model?.contactImage {
+                self.imgGuest.image = UIImage(data: imageData)
+            } else {
+                self.imgGuest.image = userPlaceholder
+            }
         }
+    
     }
 }

@@ -18,6 +18,7 @@ class MHPInvite: Codable, TableViewCompatible {
     var userFacebookID: String?
     var eventID: String?
     var contactID: String?
+    var contactImage: Data?
     
     var reuseIdentifier: String {
         return "MHPCreateEventInvitesCell"

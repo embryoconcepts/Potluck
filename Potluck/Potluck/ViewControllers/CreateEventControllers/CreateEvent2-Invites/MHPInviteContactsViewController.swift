@@ -54,6 +54,7 @@ class MHPInviteContactsViewController: UIViewController {
                              userLastName: contact.familyName,
                              userEmail: (contact.contactPreference!))
             invite.contactID = contact.identifier
+            invite.contactImage = contact.imageData
             return invite
         }
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites)
@@ -100,7 +101,9 @@ class MHPInviteContactsViewController: UIViewController {
     }
     
     func retrieveContacts(with store: CNContactStore) {
-        let keys = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactEmailAddressesKey as CNKeyDescriptor]
+        let keys = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+                    CNContactEmailAddressesKey as CNKeyDescriptor,
+                    CNContactImageDataKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         
         do {

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Contacts
+import Kingfisher
 
 class MHPContactsCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!
@@ -44,12 +45,13 @@ class MHPContactsCell: UITableViewCell, Configurable {
             self.accessoryType = .none
         }
         
-        // TODO: add user image from contacts
-//        if let url = self.model?.imageData {
-//            self.imgGuest.image = UIImage(url)
-//        } else {
-            self.imgGuest.image = UIImage(named: "userPlaceholder")
-//        }
+        if let userPlaceholder = UIImage(named: "userPlaceholder") {
+            if let imageData = self.model?.imageData {
+                self.imgGuest.image = UIImage(data: imageData)
+            } else {
+                self.imgGuest.image = userPlaceholder
+            }
+        }
     }
 
 }

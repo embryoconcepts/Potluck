@@ -23,11 +23,8 @@ class MHPCreateEventCell: ScalingCarouselCell {
     }
     
     func setupCreateEventCell() {
-        
-        // TODO: set up proper image handling
         if let tempImage = UIImage(named: "image") {
             self.imgEvent.image = tempImage
         }
     }
-    
 }
