@@ -53,14 +53,15 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     @IBAction func contactsTapped(_ sender: Any) {
         if let contactsInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteContactsViewController") as? MHPInviteContactsViewController {
+            contactsInvite.pendingInvites = invites
             contactsInvite.contactInvitesDelegate = self
-            contactsInvite.existingInvites = invites
             present(contactsInvite, animated: true, completion: nil)
         }
     }
     
     @IBAction func emailTapped(_ sender: Any) {
         if let emailInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteEmailOrPhoneViewController") as? MHPInviteEmailOrPhoneViewController {
+            emailInvite.pendingInvites = invites
             emailInvite.enteredInvitesDelegate = self
             present(emailInvite, animated: true, completion: nil)
         }
@@ -106,6 +107,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     fileprivate func mapInvitesToRsvps() {
         rsvps = invites.map { (invite) -> MHPRsvp in
             return MHPRsvp(userID: invite.userID,
+                           userEmail: invite.userEmail,
                            eventID: event?.eventID,
                            itemID: MHPItem().itemID,
                            isGuest: true,
@@ -116,6 +118,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         }
         
         let hostRsvp = MHPRsvp(userID: mhpUser?.userID,
+                               userEmail: mhpUser?.userEmail,
                                eventID: event?.eventID,
                                itemID: MHPItem().itemID,
                                isGuest: false,
@@ -237,7 +240,7 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
 
 extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
     func submit(pendingInvites: [MHPInvite]) {
-        invites.append(contentsOf: pendingInvites)
+        invites = pendingInvites
     }
 }
 
@@ -246,7 +249,7 @@ extension MHPCreateEvent2InvitesViewController: EnteredInvitesDelegate {
 
 extension MHPCreateEvent2InvitesViewController: ContactsSelectedDelegate {
     func submitFromContacts(pendingInvites: [MHPInvite]) {
-        invites.append(contentsOf: pendingInvites)
+        invites = pendingInvites
     }
 }
 

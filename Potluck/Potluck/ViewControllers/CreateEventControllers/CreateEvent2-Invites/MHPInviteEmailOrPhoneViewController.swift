@@ -20,9 +20,9 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var txtEmailOrPhone: UITextField!
     @IBOutlet weak var btnAddToList: UIButton!
     
-    var event: MHPEvent?
+    var mhpUser: MHPUser?
     var tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
-    var pendingInvites = [MHPInvite]()
+    var pendingInvites: [MHPInvite]?
     var enteredInvitesDelegate: EnteredInvitesDelegate?
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
@@ -34,6 +34,11 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        assertDependencies()
     }
     
     override func didReceiveMemoryWarning() {
@@ -66,7 +71,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                         self.tempInvite.userLastName = self.txtLast.text
                         self.tempInvite.userEmail = self.txtEmailOrPhone.text
                     }
-                    self.pendingInvites.append(self.tempInvite)
+                    self.pendingInvites!.append(self.tempInvite)
                     self.resetTextFields()
                     DispatchQueue.main.async { [unowned self] in
                         self.tblView.reloadData()
@@ -77,7 +82,9 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     }
     
     @IBAction func saveTapped(_ sender: Any) {
-        enteredInvitesDelegate?.submit(pendingInvites: pendingInvites)
+        if let invites = pendingInvites {
+            enteredInvitesDelegate?.submit(pendingInvites: invites)
+        }
         dismiss(animated: true, completion: nil)
     }
     
@@ -138,8 +145,8 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                                               options: [],
                                               range: range)
         
-        if allMatches.count == 1,
-            allMatches.first?.url?.absoluteString.contains("mailto:") == true {
+        if allMatches.count == 1, allMatches.first?.url?.absoluteString.contains("mailto:") == true &&
+                trimmedText != mhpUser?.userEmail {
             return trimmedText
         } else {
             DispatchQueue.main.async { [unowned self] in
@@ -170,12 +177,16 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pendingInvites.count
+        guard let rows = pendingInvites?.count else { return 0 }
+        return rows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let invite = pendingInvites[indexPath.row]
-        return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+        var inv = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
+        if let invite = pendingInvites?[indexPath.row] {
+            inv = invite
+        }
+        return inv.cellForTableView(tableView: tblView, atIndexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -188,7 +199,7 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            pendingInvites.remove(at: indexPath.row)
+            pendingInvites!.remove(at: indexPath.row)
             DispatchQueue.main.async { [unowned self] in
                 self.tblView.reloadData()
             }
@@ -237,13 +248,19 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
 // MARK: - UserInjectable Protocol
 
 extension MHPInviteEmailOrPhoneViewController: Injectable {
-    typealias T = MHPEvent
+    typealias T = [MHPInvite]
+    typealias U = MHPUser
     
-    func inject(_ event: T) {
-        self.event = event
+    func inject(_ invites: T) {
+        self.pendingInvites = invites
+    }
+    
+    func inject(_ user: U) {
+        self.mhpUser = user
     }
     
     func assertDependencies() {
-        assert(self.event != nil)
+        assert(self.pendingInvites != nil)
+        assert(self.mhpUser != nil)
     }
 }

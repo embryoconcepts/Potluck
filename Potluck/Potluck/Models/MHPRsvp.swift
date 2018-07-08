@@ -11,6 +11,7 @@ import UIKit
 struct MHPRsvp: Codable {
     var rsvpID: String?
     var userID: String?
+    var userEmail: String?
     var eventID: String?
     var itemID: String?
     var isGuest: Bool?
@@ -25,6 +26,7 @@ struct MHPRsvp: Codable {
     
     init(rsvpID: String = UUID().uuidString,
          userID: String?,
+         userEmail: String?,
          eventID: String?,
          itemID: String?,
          isGuest: Bool?,
@@ -35,6 +37,7 @@ struct MHPRsvp: Codable {
         
         self.rsvpID = rsvpID
         self.userID = userID
+        self.userEmail = userEmail
         self.eventID = eventID
         self.itemID = itemID
         self.isGuest = isGuest

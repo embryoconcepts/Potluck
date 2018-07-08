@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Contacts
-import Kingfisher
 
 class MHPContactsCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!

@@ -20,7 +20,7 @@ class MHPInviteContactsViewController: UIViewController {
     
     var allContacts = [CNContact]()
     var filteredContacts: [CNContact]?
-    var existingInvites: [MHPInvite]?
+    var pendingInvites: [MHPInvite]?
     var contactInvitesDelegate: ContactsSelectedDelegate?
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
@@ -36,6 +36,11 @@ class MHPInviteContactsViewController: UIViewController {
         filteredContacts = allContacts
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        assertDependencies()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -45,20 +50,45 @@ class MHPInviteContactsViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func saveTapped(_ sender: Any) {
-        var selectedItems: [CNContact] {
-            return allContacts.filter { return $0.isSelected }
+        let tempInvites = allContacts
+            .filter { $0.isSelected }
+            .map { (contact) -> MHPInvite in
+                let invite = MHPInvite(userFirstName: contact.givenName,
+                                       userLastName: contact.familyName,
+                                       userEmail: contact.contactPreference!)
+                invite.contactID = contact.identifier
+                invite.contactImage = contact.imageData
+                return invite
+            }
+        
+        // FIXME: fix timing
+//        for temp in tempInvites {
+//            self.request.retrieveUserByEmail(email: temp.userEmail!) { (result) in
+//                switch result {
+//                case .success(let user):
+//                    temp.userID = user.userID
+//                    temp.userProfileURL = user.userProfileURL
+//                case .failure(_):
+//                    print()
+//                }
+//            }
+//        }
+        
+        if pendingInvites!.count < 1 {
+            pendingInvites?.append(contentsOf: tempInvites)
+        } else {
+            for invite in pendingInvites! {
+                for temp in tempInvites {
+                    if invite.contactID != temp.contactID {
+                        pendingInvites?.append(temp)
+                    }
+                }
+            }
         }
         
-        let pendingInvites = selectedItems.map { (contact) -> MHPInvite in
-            let invite = MHPInvite(userFirstName: contact.givenName,
-                             userLastName: contact.familyName,
-                             userEmail: (contact.contactPreference!))
-            invite.contactID = contact.identifier
-            invite.contactImage = contact.imageData
-            return invite
-        }
-        contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites)
+        contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites!)
         dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -120,8 +150,7 @@ class MHPInviteContactsViewController: UIViewController {
     }
     
     func updateContactsWithPreviouslySelected() {
-        // if invite contactID == contact.identifier, set contact.isSelected = true, set contactPreference = email
-        for invite in existingInvites! {
+        for invite in self.pendingInvites! {
             for contact in allContacts {
                 if invite.contactID == contact.identifier {
                     contact.isSelected = true
@@ -160,52 +189,68 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
-            cell.accessoryType = .checkmark
             let contact = contacts[indexPath.row]
-            contact.isSelected = true
+            contact.isSelected = !contact.isSelected
             
-            DispatchQueue.main.async { [unowned self] in
-                if contact.emails.count == 1 {
-                    contact.contactPreference = contact.emails.first!
-                    cell.lblEmailOrPhone.text = contact.contactPreference
-                    cell.lblNameTop.constant = 8
-                    cell.lblEmailHeight.constant = 14
-                } else if contact.emails.count > 1 {
-                    let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
-                    
-                    for email in contact.emails {
-                        let button = UIAlertAction(title: email, style: .default) { (action) in
-                            contact.contactPreference = email
-                            cell.lblEmailOrPhone.text = contact.contactPreference
-                            cell.lblNameTop.constant = 8
-                            cell.lblEmailHeight.constant = 14
-                        }
-                        alertController.addAction(button)
-                    }
-                    let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    alertController.addAction(cancelButton)
-                    
-                    self.present(alertController, animated: true) {
+            if contact.isSelected {
+                contactSelected(cell: cell, contact: contact)
+            } else {
+                contactDeselected(cell: cell, contacts: contacts, indexPath: indexPath)
+            }
+        }
+        tblView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    fileprivate func contactSelected(cell: MHPContactsCell, contact: CNContact) {
+        cell.accessoryType = .checkmark
+        
+        DispatchQueue.main.async { [unowned self] in
+            if contact.emails.count == 1 {
+                contact.contactPreference = contact.emails.first!
+                cell.lblEmailOrPhone.text = contact.contactPreference
+                cell.lblNameTop.constant = 8
+                cell.lblEmailHeight.constant = 14
+            } else if contact.emails.count > 1 {
+                let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
+                
+                for email in contact.emails {
+                    let button = UIAlertAction(title: email, style: .default) { (action) in
+                        contact.contactPreference = email
                         cell.lblEmailOrPhone.text = contact.contactPreference
+                        cell.lblNameTop.constant = 8
+                        cell.lblEmailHeight.constant = 14
                     }
-                } else {
-                    cell.lblNameTop.constant = 18
-                    cell.lblEmailHeight.constant = 0
+                    alertController.addAction(button)
                 }
+                let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alertController.addAction(cancelButton)
+                
+                self.present(alertController, animated: true) {
+                    cell.lblEmailOrPhone.text = contact.contactPreference
+                }
+            } else {
+                cell.lblNameTop.constant = 18
+                cell.lblEmailHeight.constant = 0
             }
         }
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? MHPContactsCell, let contacts = filteredContacts {
-            cell.accessoryType = .none
-            contacts[indexPath.row].isSelected = false
-            contacts[indexPath.row].contactPreference = ""
-            cell.lblEmailOrPhone.text = ""
-            cell.lblNameTop.constant = 18
-            cell.lblEmailHeight.constant = 0
+    fileprivate func contactDeselected(cell: MHPContactsCell, contacts: [CNContact], indexPath: IndexPath) {
+        cell.accessoryType = .none
+        contacts[indexPath.row].isSelected = false
+        contacts[indexPath.row].contactPreference = ""
+        cell.lblEmailOrPhone.text = ""
+        cell.lblNameTop.constant = 18
+        cell.lblEmailHeight.constant = 0
+        
+        for (i, invite) in self.pendingInvites!.enumerated().reversed() {
+            if invite.contactID == contacts[indexPath.row].identifier {
+                self.pendingInvites?.remove(at: i)
+            }
         }
     }
+    
+    
 }
 
 
@@ -239,4 +284,18 @@ extension MHPInviteContactsViewController: UISearchBarDelegate {
         cancel()
     }
     
+}
+
+// MARK: - UserInjectable Protocol
+
+extension MHPInviteContactsViewController: Injectable {
+    typealias T = [MHPInvite]
+    
+    func inject(_ invites: T) {
+        self.pendingInvites = invites
+    }
+    
+    func assertDependencies() {
+        assert(self.pendingInvites != nil)
+    }
 }
