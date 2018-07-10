@@ -8,25 +8,21 @@
 
 import UIKit
 
-struct MHPRequestedItem: Codable, TableViewCompatible {
+struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
+    var itemID: String
     var itemName: String?
     var itemPortions: Int?
-    var itemPlaceholderName: String?
-    var itemSuggestedPortions: Int?
     
-    init() {
-
+    init(itemID: String = UUID().uuidString) {
+        self.itemID = itemID
     }
     
-    init(itemName: String?,
-         itemPortions: Int?,
-         itemPlaceholderName: String?,
-         itemSuggestedPortions: Int?) {
-        
+    init(itemID: String = UUID().uuidString,
+         itemName: String?,
+         itemPortions: Int?) {
+        self.itemID = itemID
         self.itemName = itemName
         self.itemPortions = itemPortions
-        self.itemPlaceholderName = itemPlaceholderName
-        self.itemSuggestedPortions = itemSuggestedPortions
     }
     
     var reuseIdentifier: String {

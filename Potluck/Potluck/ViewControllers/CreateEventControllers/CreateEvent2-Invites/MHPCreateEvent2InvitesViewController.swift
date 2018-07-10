@@ -263,7 +263,7 @@ extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
         inject(event)
         inject(invites)
         inject(rsvpList)
-        // TODO: inject(requestedItems)
+        inject(requestedItems)
     }
 }
 

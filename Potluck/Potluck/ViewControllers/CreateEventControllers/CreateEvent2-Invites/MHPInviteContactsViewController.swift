@@ -79,6 +79,7 @@ class MHPInviteContactsViewController: UIViewController {
         } else {
             for invite in pendingInvites! {
                 for temp in tempInvites {
+                    // FIXME: not filtering out already added users
                     if invite.contactID != temp.contactID {
                         pendingInvites?.append(temp)
                     }

@@ -16,8 +16,6 @@ struct MHPItem: Codable {
     var itemName: String?
     var itemPortions: Int?
     var itemDescription: String?
-    var itemPlaceholderName: String?
-    var itemSuggestedPortions: Int?
     
     init(itemID: String = UUID().uuidString) {
         self.itemID = itemID
@@ -29,9 +27,7 @@ struct MHPItem: Codable {
          itemTags: [String]?,
          itemName: String?,
          itemPortions: Int?,
-         itemDescription: String?,
-         itemPlaceholderName: String?,
-         itemSuggestedPortions: Int?) {
+         itemDescription: String?) {
         
         self.itemID = itemID
         self.userID = userID
@@ -40,7 +36,5 @@ struct MHPItem: Codable {
         self.itemName = itemName
         self.itemPortions = itemPortions
         self.itemDescription = itemDescription
-        self.itemPlaceholderName = itemPlaceholderName
-        self.itemSuggestedPortions = itemSuggestedPortions
     }
 }

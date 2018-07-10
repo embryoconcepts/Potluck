@@ -6,6 +6,7 @@
 //  Copyright © 2018 Many Hands Apps. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 protocol CreateEvent3DataDelegate {
@@ -23,7 +24,11 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     var eventRsvpList: MHPEventRsvpList?
     var invites: [MHPInvite]?
     var suggestedItems = [MHPRequestedItem]()
-    var requestedItems: [MHPRequestedItem]?
+    var requestedItems: [MHPRequestedItem]? {
+        didSet {
+            tblView.reloadData()
+        }
+    }
     var eventItemList: MHPEventItemList?
     
     var dataDelegate: CreateEvent3DataDelegate?
@@ -31,7 +36,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +58,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func nextTapped(_ sender: Any) {
+        createEventItemList()
         if validate() {
             if  let user = mhpUser,
                 let event = event,
@@ -60,6 +66,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                 let invites = invites,
                 let items = requestedItems,
                 let eventItemList = eventItemList,
+                // FIXME: issue with instantiation
                 let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
                 createEvent4.inject(user)
                 createEvent4.inject(event)
@@ -70,10 +77,6 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                 navigationController?.pushViewController(createEvent4, animated: true)
             }
         }
-    }
-    
-    fileprivate func validate() -> Bool {
-        return true
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -91,16 +94,74 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    
     fileprivate func styleView() {
-        if let count = invites?.count {
-            lblSuggestionText.text = "You’ve invited \(count) guests. Suggested quantities and dishes are listed below. Feel free to edit to best fit your needs! "
+        let btnAddItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        navigationItem.rightBarButtonItem = btnAddItem
+        
+        if let guests = invites?.count {
+            lblSuggestionText.text = "You’ve invited \(guests) guests. Suggested quantities and dishes are listed below. Feel free to edit to best fit your needs! "
         }
     }
     
     fileprivate func setupSuggestedItems() {
-        // TODO: calculate and populate suggested items
+        if let guests = invites?.count {
+            let categories = [
+                "Appetizers": 2.5,
+                "Salad": 1,
+                "Mains": 1.25,
+                "Side Dishes": 2.5,
+                "Bread": 1.25,
+                "Drinks": 2,
+                "Desserts": 1.25,
+                "Utensils": 1.25
+            ]
+            for (name, multiplier) in categories {
+                suggestedItems.append(MHPRequestedItem(itemName: name,
+                                                       itemPortions: Int((Double(guests) * multiplier).rounded(FloatingPointRoundingRule.awayFromZero))))
+            }
+        }
         requestedItems = suggestedItems
+    }
+    
+    @objc fileprivate func addItem() {
+        var newItem = MHPRequestedItem()
+        
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Add Item", message: "What would you like to add?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addTextField { textField in
+                textField.placeholder = "Item Name"
+            }
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                // handle error
+                self.tblView.beginUpdates()
+                if let name = alert.textFields?.first?.text {
+                    newItem.itemName = name
+                    self.tblView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                    self.requestedItems?.insert(newItem, at: 0)
+                }
+                self.tblView.endUpdates()
+            }))
+            
+            self.present(alert, animated: true)
+        }
+
+    }
+    
+    fileprivate func createEventItemList() {
+        if let eventID = event?.eventID,
+            let items = requestedItems {
+            eventItemList = MHPEventItemList(eventID: eventID,
+                                             eventItemListDescription: nil,
+                                             eventItemListTags: nil,
+                                             eventItems: items)
+        }
+    }
+    
+    fileprivate func validate() -> Bool {
+        // TODO: complete validation
+        return true
     }
     
     fileprivate func back() {
@@ -122,6 +183,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
 // MARK: - UITableViewControllerDelegate and Datasource
 
 extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDataSource {
+    // TODO: add header that allows user to edit and add items, reduce copy height, scroll all when keyboard is shown
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -136,7 +198,9 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
         if let item = requestedItems?[indexPath.row] {
             cellItem = item
         }
-        return cellItem.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+        let cell = cellItem.cellForTableView(tableView: tblView, atIndexPath: indexPath) as! MHPRequestedItemsCell
+        cell.portionDelegate = self
+        return cell
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -152,6 +216,23 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
         }
     }
     
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+}
+
+
+// MARK: - PortionCellTextUpdateDelegate
+
+extension MHPCreateEvent3ItemsViewController: PortionCellValueUpdateDelegate {
+    func portionValueDidUpdate(with value: Int, for id: String) {
+        for item in requestedItems! where item.itemID == id {
+            if let index = requestedItems?.index(of: item) {
+                requestedItems![index].itemPortions = value
+            }
+        }
+    }
 }
 
 
