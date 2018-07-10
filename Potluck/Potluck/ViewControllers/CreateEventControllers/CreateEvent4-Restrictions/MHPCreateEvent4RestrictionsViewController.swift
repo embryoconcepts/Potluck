@@ -9,6 +9,13 @@
 import UIKit
 
 class MHPCreateEvent4RestrictionsViewController: UIViewController {
+    
+    var mhpUser: MHPUser?
+    var event: MHPEvent?
+    var eventRsvpList: MHPEventRsvpList?
+    var invites: [MHPInvite]?
+    var requestedItems: [MHPRequestedItem]?
+    var eventItemList: MHPEventItemList?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,5 +30,51 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
     
     fileprivate func cancel() {
         self.presentCancelAlert(view: self)
+    }
+}
+
+
+// MARK: - UserInjectable Protocol
+
+extension MHPCreateEvent4RestrictionsViewController: Injectable {
+    typealias T = MHPUser
+    typealias E = MHPEvent
+    typealias R = MHPEventRsvpList
+    typealias I = [MHPInvite]
+    typealias S = [MHPRequestedItem]
+    typealias L = MHPEventItemList
+    // TODO: add restrictions
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func inject(_ event: E) {
+        self.event = event
+    }
+    
+    func inject(_ rsvpList: R) {
+        self.eventRsvpList = rsvpList
+    }
+    
+    func inject(_ invites: I) {
+        self.invites = invites
+    }
+    
+    func inject(_ requestedItems: S) {
+        self.requestedItems = requestedItems
+    }
+    
+    func inject(_ eventItemList: L) {
+        self.eventItemList = eventItemList
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+        assert(self.event != nil)
+        assert(self.eventRsvpList != nil)
+        assert(self.invites != nil)
+        assert(self.requestedItems != nil)
+        assert(self.eventItemList != nil)
     }
 }

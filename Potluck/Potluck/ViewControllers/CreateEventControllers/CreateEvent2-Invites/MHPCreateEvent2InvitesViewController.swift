@@ -23,6 +23,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     var invites = [MHPInvite]()
     var rsvps = [MHPRsvp]()
     var eventRsvpList: MHPEventRsvpList?
+    var requestedItems: [MHPRequestedItem]?
     
     var dataDelegate: CreateEvent2DataDelegate?
     
@@ -257,11 +258,12 @@ extension MHPCreateEvent2InvitesViewController: ContactsSelectedDelegate {
 // MARK: - CreateEvent2DataDelegate
 
 extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList) {
+    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList, requestedItems: [MHPRequestedItem]) {
         inject(user)
         inject(event)
         inject(invites)
         inject(rsvpList)
+        // TODO: inject(requestedItems)
     }
 }
 
@@ -269,24 +271,29 @@ extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
 
 extension MHPCreateEvent2InvitesViewController: Injectable {
     typealias T = MHPUser
-    typealias U = MHPEvent
-    typealias I = [MHPInvite]
+    typealias E = MHPEvent
     typealias R = MHPEventRsvpList
+    typealias I = [MHPInvite]
+    typealias S = [MHPRequestedItem]
     
     func inject(_ user: T) {
         self.mhpUser = user
     }
     
-    func inject(_ event: U) {
+    func inject(_ event: E) {
         self.event = event
+    }
+    
+    func inject(_ rsvpList: R) {
+        self.eventRsvpList = rsvpList
     }
     
     func inject(_ invites: I) {
         self.invites = invites
     }
     
-    func inject(_ rsvpList: R) {
-        self.eventRsvpList = rsvpList
+    func inject(_ requestedItems: S) {
+        self.requestedItems = requestedItems
     }
     
     func assertDependencies() {

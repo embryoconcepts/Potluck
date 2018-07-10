@@ -23,6 +23,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     var mhpUser: MHPUser?
     var event: MHPEvent?
     var invites: [MHPInvite]?
+    var requestedItems: [MHPRequestedItem]?
     
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
@@ -278,19 +279,25 @@ extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
 
 extension MHPCreateEvent1DetailsViewController: Injectable {
     typealias T = MHPUser
-    typealias U = MHPEvent
+    typealias E = MHPEvent
+    typealias R = MHPEventRsvpList
     typealias I = [MHPInvite]
+    typealias S = [MHPRequestedItem]
     
     func inject(_ user: T) {
         self.mhpUser = user
     }
     
-    func inject(_ event: U) {
+    func inject(_ event: E) {
         self.event = event
     }
     
     func inject(_ invites: I) {
         self.invites = invites
+    }
+    
+    func inject(_ requestedItems: S) {
+        self.requestedItems = requestedItems
     }
     
     func assertDependencies() {

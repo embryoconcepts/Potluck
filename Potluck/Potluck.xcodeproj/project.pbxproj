@@ -61,6 +61,8 @@
 		76723D38205FB246004940DE /* MHPItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D37205FB246004940DE /* MHPItemListViewController.swift */; };
 		767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767F637420B6F638007F3D10 /* UIColorExtensions.swift */; };
 		7691723420C061BA0092F6FE /* MHPFirestoreParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */; };
+		76AD65D720F50C7000F349CF /* MHPRequestedItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AD65D620F50C7000F349CF /* MHPRequestedItemsCell.swift */; };
+		76AD65D920F50D4900F349CF /* MHPRequestedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AD65D820F50D4900F349CF /* MHPRequestedItem.swift */; };
 		76D54A3120E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */; };
 		76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */; };
 		76D54A3720E8FD5500349763 /* DataTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D54A3620E8FD5500349763 /* DataTypeExtensions.swift */; };
@@ -156,6 +158,8 @@
 		76723D37205FB246004940DE /* MHPItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemListViewController.swift; sourceTree = "<group>"; };
 		767F637420B6F638007F3D10 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		7691723320C061BA0092F6FE /* MHPFirestoreParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MHPFirestoreParserTests.swift; path = PotluckTests/NetworkingTests/MHPFirestoreParserTests.swift; sourceTree = SOURCE_ROOT; };
+		76AD65D620F50C7000F349CF /* MHPRequestedItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRequestedItemsCell.swift; sourceTree = "<group>"; };
+		76AD65D820F50D4900F349CF /* MHPRequestedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MHPRequestedItem.swift; sourceTree = "<group>"; };
 		76D54A3020E51E2200349763 /* MHPInviteEmailOrPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPInviteEmailOrPhoneViewController.swift; sourceTree = "<group>"; };
 		76D54A3420E6980C00349763 /* MHPCreateEventInvitesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MHPCreateEventInvitesCell.xib; sourceTree = "<group>"; };
 		76D54A3620E8FD5500349763 /* DataTypeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeExtensions.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				764D1A6120E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift */,
+				76AD65D620F50C7000F349CF /* MHPRequestedItemsCell.swift */,
 			);
 			path = "CreateEvent3-Items";
 			sourceTree = "<group>";
@@ -366,6 +371,7 @@
 				765123FE20588F8800E78488 /* MHPUser.swift */,
 				765123F820588DF200E78488 /* MHPEvent.swift */,
 				765123FA20588E1300E78488 /* MHPItem.swift */,
+				76AD65D820F50D4900F349CF /* MHPRequestedItem.swift */,
 				764D1A5720E4D5820032D982 /* MHPInvite.swift */,
 				765123FC20588E2400E78488 /* MHPRsvp.swift */,
 				765124042058932200E78488 /* MHPUserEventList.swift */,
@@ -716,9 +722,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-PotluckTests/Pods-PotluckTests-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -797,9 +803,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Potluck/Pods-Potluck-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -834,6 +840,7 @@
 				765123FF20588F8800E78488 /* MHPUser.swift in Sources */,
 				765123C22053538900E78488 /* Potluck.xcdatamodeld in Sources */,
 				764D1A4E20E0D6E60032D982 /* MHPLocationSearchViewController.swift in Sources */,
+				76AD65D720F50C7000F349CF /* MHPRequestedItemsCell.swift in Sources */,
 				764D1A6620E4F96F0032D982 /* MHPCreateEvent5SaveAndSendViewController.swift in Sources */,
 				767F637520B6F638007F3D10 /* UIColorExtensions.swift in Sources */,
 				764638DB20D9C25C00C554A1 /* MHPParser.swift in Sources */,
@@ -842,6 +849,7 @@
 				764D1A5020E38D5F0032D982 /* MHPCreateEvent2InvitesViewController.swift in Sources */,
 				760E7EAF2060659E0025C825 /* MHPItemListPledgedCell.swift in Sources */,
 				765123BA2053538900E78488 /* AppDelegate.swift in Sources */,
+				76AD65D920F50D4900F349CF /* MHPRequestedItem.swift in Sources */,
 				76D54A3720E8FD5500349763 /* DataTypeExtensions.swift in Sources */,
 				764D1A5620E4D0270032D982 /* UITableViewProtocols.swift in Sources */,
 				764D1A5420E4CEF50032D982 /* MHPInviteEmptyStateCell.swift in Sources */,

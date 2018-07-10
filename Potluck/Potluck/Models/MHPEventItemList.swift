@@ -13,7 +13,7 @@ struct MHPEventItemList: Codable  {
     var eventID: String?
     var eventItemListDescription: String?
     var eventItemListTags: [String]?
-    var eventItems: [MHPItem]?
+    var eventItems: [MHPRequestedItem]?
 
     init(itemListID: String = UUID().uuidString) {
         self.eventItemListID = itemListID
@@ -23,7 +23,7 @@ struct MHPEventItemList: Codable  {
          eventID: String?,
          eventItemListDescription: String?,
          eventItemListTags: [String]?,
-         eventItems: [MHPItem]?) {
+         eventItems: [MHPRequestedItem]?) {
         
     self.eventItemListID = eventItemListID
     self.eventID = eventID
