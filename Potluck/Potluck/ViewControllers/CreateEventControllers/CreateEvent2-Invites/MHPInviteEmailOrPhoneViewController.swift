@@ -261,6 +261,5 @@ extension MHPInviteEmailOrPhoneViewController: Injectable {
     
     func assertDependencies() {
         assert(self.pendingInvites != nil)
-        assert(self.mhpUser != nil)
     }
 }

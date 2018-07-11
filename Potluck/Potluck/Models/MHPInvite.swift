@@ -8,7 +8,14 @@
 
 import UIKit
 
-class MHPInvite: Codable, TableViewCompatible {
+class MHPInvite: Codable, Equatable, TableViewCompatible {
+    static func ==(lhs: MHPInvite, rhs: MHPInvite) -> Bool {
+        return
+            lhs.userEmail == rhs.userEmail ||
+            lhs.contactID == rhs.contactID ||
+            lhs.userEmail == rhs.userEmail
+    }
+    
     var userID: String?
     var userFirstName: String?
     var userLastName: String?
@@ -40,7 +47,9 @@ class MHPInvite: Codable, TableViewCompatible {
          userPhone: String?,
          userProfileURL: String?,
          userFacebookID: String?,
-         eventID: String?) {
+         eventID: String?,
+         contactID: String?,
+         contactImage: Data?) {
     
         self.userID = userID
         self.userFirstName = userFirstName
@@ -50,6 +59,8 @@ class MHPInvite: Codable, TableViewCompatible {
         self.userProfileURL = userProfileURL
         self.userFacebookID = userFacebookID
         self.eventID = eventID
+        self.contactID = contactID
+        self.contactImage = contactImage
     }
     
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {

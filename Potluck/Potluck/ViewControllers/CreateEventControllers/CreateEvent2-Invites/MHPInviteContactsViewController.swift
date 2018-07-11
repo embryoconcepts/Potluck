@@ -60,36 +60,33 @@ class MHPInviteContactsViewController: UIViewController {
                 invite.contactImage = contact.imageData
                 return invite
             }
-        
-        // FIXME: fix timing
-//        for temp in tempInvites {
-//            self.request.retrieveUserByEmail(email: temp.userEmail!) { (result) in
-//                switch result {
-//                case .success(let user):
-//                    temp.userID = user.userID
-//                    temp.userProfileURL = user.userProfileURL
-//                case .failure(_):
-//                    print()
-//                }
-//            }
-//        }
-        
-        if pendingInvites!.count < 1 {
-            pendingInvites?.append(contentsOf: tempInvites)
-        } else {
-            for invite in pendingInvites! {
-                for temp in tempInvites {
-                    // FIXME: not filtering out already added users
-                    if invite.contactID != temp.contactID {
-                        pendingInvites?.append(temp)
+            .filter({ (invite) -> Bool in
+                if pendingInvites!.count > 0 {
+                    if pendingInvites!.contains(invite) {
+                        return false
+                    } else {
+                        return true
                     }
+                } else {
+                    return true
                 }
-            }
+            })
+            .filter { (invite) -> Bool in
+                // FIXME: fix timing
+//                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
+//                    switch result {
+//                    case .success(let user):
+//                        invite.userID = user.userID
+//                        invite.userProfileURL = user.userProfileURL
+//                    case .failure(_):
+//                        print()
+//                    }
+//                }
+                return true
         }
-        
+        pendingInvites?.append(contentsOf: tempInvites)
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites!)
         dismiss(animated: true, completion: nil)
-        
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
