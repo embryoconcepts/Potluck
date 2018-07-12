@@ -55,51 +55,45 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     }
     
     
-    // MARK: - Action Handlers
-    
-    @IBAction func nextTapped(_ sender: Any) {
-        createEventItemList()
-        if validate() {
-            if  let user = mhpUser,
-                let event = event,
-                let eventRsvpList = eventRsvpList,
-                let invites = invites,
-                let items = requestedItems,
-                let eventItemList = eventItemList,
-                // FIXME: issue with instantiation
-                let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
-                createEvent4.inject(user)
-                createEvent4.inject(event)
-                createEvent4.inject(eventRsvpList)
-                createEvent4.inject(invites)
-                createEvent4.inject(items)
-                createEvent4.inject(eventItemList)
-                navigationController?.pushViewController(createEvent4, animated: true)
-            }
-        }
-    }
-    
-    @IBAction func cancelTapped(_ sender: Any) {
-        self.presentCancelAlert(view: self)
-    }
-    
-    
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
     
     
+    // MARK: - Action Handlers
+    
+    @IBAction func editTapped(_ sender: Any) {
+        editItems()
+    }
+    
+    @IBAction func addTapped(_ sender: Any) {
+        addItem()
+    }
+    
+    @IBAction func infoTapped(_ sender: Any) {
+        showInfoPopup()
+    }
+    
+    @IBAction func nextTapped(_ sender: Any) {
+        next()
+    }
+    
+    @IBAction func cancelTapped(_ sender: Any) {
+        cancel()
+    }
+    
+    
     // MARK: - Private Methods
     
     fileprivate func styleView() {
-        let btnAddItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        let btnAddItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(editTapped(_: )))
         navigationItem.rightBarButtonItem = btnAddItem
         
         if let guests = invites?.count {
-            lblSuggestionText.text = "You’ve invited \(guests) guests. Suggested quantities and dishes are listed below. Feel free to edit to best fit your needs! "
+            lblSuggestionText.text = "For \(guests) xx guests we suggest the following. Edit to fit your needs!"
         }
     }
     
@@ -117,13 +111,18 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
             ]
             for (name, multiplier) in categories {
                 suggestedItems.append(MHPRequestedItem(itemName: name,
-                                                       itemPortions: Int((Double(guests) * multiplier).rounded(FloatingPointRoundingRule.awayFromZero))))
+                                                       itemQuantity: Int((Double(guests) * multiplier).rounded(FloatingPointRoundingRule.awayFromZero)),
+                                                       itemQuantityType: ""))
             }
         }
         requestedItems = suggestedItems
     }
     
-    @objc fileprivate func addItem() {
+    func editItems() {
+        // TODO: allow user to delete and drag/drop
+    }
+    
+    fileprivate func addItem() {
         var newItem = MHPRequestedItem()
         
         DispatchQueue.main.async { [unowned self] in
@@ -147,6 +146,32 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
             self.present(alert, animated: true)
         }
 
+    }
+    
+    func showInfoPopup() {
+        // TODO: show popup with info on suggested portions and stuff
+    }
+    
+    fileprivate func next() {
+        createEventItemList()
+        if validate() {
+            if  let user = mhpUser,
+                let event = event,
+                let eventRsvpList = eventRsvpList,
+                let invites = invites,
+                let items = requestedItems,
+                let eventItemList = eventItemList,
+                // FIXME: issue with instantiation
+                let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
+                createEvent4.inject(user)
+                createEvent4.inject(event)
+                createEvent4.inject(eventRsvpList)
+                createEvent4.inject(invites)
+                createEvent4.inject(items)
+                createEvent4.inject(eventItemList)
+                navigationController?.pushViewController(createEvent4, animated: true)
+            }
+        }
     }
     
     fileprivate func createEventItemList() {
@@ -223,18 +248,30 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
 }
 
 
-// MARK: - PortionCellTextUpdateDelegate
+// MARK: - QuantityValueDidUpdateDelegate
 
-extension MHPCreateEvent3ItemsViewController: PortionCellValueUpdateDelegate {
-    func portionValueDidUpdate(with value: Int, for id: String) {
+extension MHPCreateEvent3ItemsViewController: QuantityValueDidUpdateDelegate {
+    func quantityValueDidUpdate(with value: Int, for id: String) {
         for item in requestedItems! where item.itemID == id {
             if let index = requestedItems?.index(of: item) {
-                requestedItems![index].itemPortions = value
+                requestedItems![index].itemQuantity = value
             }
         }
     }
 }
 
+
+// MARK: - QuantityTypeDidUpdateDelegate
+
+extension MHPCreateEvent3ItemsViewController: QuantityTypeDidUpdateDelegate {
+    func quantityTypeDidUpdate(with type: String, for id: String) {
+        for item in requestedItems! where item.itemID == id {
+            if let index = requestedItems?.index(of: item) {
+                requestedItems![index].itemQuantityType = type
+            }
+        }
+    }
+}
 
 // MARK: - UserInjectable Protocol
 

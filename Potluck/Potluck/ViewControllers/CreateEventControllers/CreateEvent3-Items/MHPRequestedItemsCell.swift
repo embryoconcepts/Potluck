@@ -8,17 +8,23 @@
 
 import UIKit
 
-protocol PortionCellValueUpdateDelegate {
-    func portionValueDidUpdate(with: Int, for: String)
+protocol QuantityValueDidUpdateDelegate {
+    func quantityValueDidUpdate(with: Int, for: String)
+}
+
+protocol QuantityTypeDidUpdateDelegate {
+    func quantityTypeDidUpdate(with: String, for: String)
 }
 
 class MHPRequestedItemsCell: UITableViewCell, Configurable {
     
     @IBOutlet weak var lblItemName: UILabel!
     @IBOutlet weak var textPortions: UITextField!
-    var cellID: String?
+    @IBOutlet weak var btnQuantityType: UIButton!
     
-    var portionDelegate: PortionCellValueUpdateDelegate?
+    var cellID: String?
+    var portionDelegate: QuantityValueDidUpdateDelegate?
+    var typeDelegate: QuantityTypeDidUpdateDelegate?
     
     typealias T = MHPRequestedItem
     var model: MHPRequestedItem?
@@ -37,8 +43,14 @@ class MHPRequestedItemsCell: UITableViewCell, Configurable {
             lblItemName.text = ""
         }
         
-        if let portions = model.itemPortions {
-            textPortions.text = "\(portions)"
+        if let quantity = model.itemQuantity {
+            textPortions.text = "\(quantity)"
+        } else {
+            textPortions.text = ""
+        }
+        
+        if let type = model.itemQuantityType {
+            textPortions.text = "\(type)"
         } else {
             textPortions.text = ""
         }
@@ -47,12 +59,29 @@ class MHPRequestedItemsCell: UITableViewCell, Configurable {
 }
 
 
+// MARK: - QuantityType Popup Delgate
+
+extension MHPRequestedItemsCell {
+    // TODO: add popup to select other types, maybe add enum for those types
+    
+    
+    @IBAction func quantityTypeTapped(_ sender: Any) {
+        guard let type =  btnQuantityType.titleLabel?.text else { return }
+        quantityTypeValueDidChange(to: type)
+    }
+    
+    func quantityTypeValueDidChange(to newType: String) {
+        typeDelegate?.quantityTypeDidUpdate(with: cellID!, for: newType)
+    }
+}
+
+
 // MARK: - UITextFieldDelegate
 
 extension MHPRequestedItemsCell: UITextFieldDelegate {    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let portion = textField.text, let id = cellID {
-            portionDelegate?.portionValueDidUpdate(with: Int(portion)!, for: id)
+            portionDelegate?.quantityValueDidUpdate(with: Int(portion)!, for: id)
         }
     }
     
@@ -61,7 +90,7 @@ extension MHPRequestedItemsCell: UITextFieldDelegate {
         return true
     }
     
-    // TODO: move textView up when keyboard is present
+    // TODO: move tblView up when keyboard is present, focus on cell being edited
     
     // TODO: update keyboard to be number pad with "Next" or "Done"
 }

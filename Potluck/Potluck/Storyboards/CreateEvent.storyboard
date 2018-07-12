@@ -15,9 +15,6 @@
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
-        <array key="Roboto-LightItalic.ttf">
-            <string>Roboto-LightItalic</string>
-        </array>
         <array key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
         </array>
@@ -765,8 +762,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You’ve invited 30 guests. Suggested quantities and dishes are listed below. Feel free to edit to best fit your needs! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnY-SR-Uwi">
-                                <rect key="frame" x="15" y="164" width="345" height="56.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For xx guests we suggest the following. Edit to fit your needs!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnY-SR-Uwi">
+                                <rect key="frame" x="15" y="164" width="345" height="37.5"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -805,16 +802,41 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPy-VG-n2L">
-                                <rect key="frame" x="15" y="235.5" width="345" height="61"/>
-                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <string key="text">Quanitity refers to TOTAL number of portions. For example: if you request 30 portions of appetizers, 1 person could bring a dish that serves 10, and another person could bring a dish that serves 20.</string>
-                                <fontDescription key="fontDescription" name="Roboto-LightItalic" family="Roboto" pointSize="13"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOM-oq-bjQ">
+                                <rect key="frame" x="0.0" y="210" width="375" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcV-ND-Sf4">
+                                        <rect key="frame" x="15" y="5" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="dAh-eg-wOS"/>
+                                            <constraint firstAttribute="height" constant="20" id="vzr-gA-tQX"/>
+                                        </constraints>
+                                        <state key="normal" image="info.png"/>
+                                        <connections>
+                                            <action selector="infoTapped:" destination="Orv-Ds-qbQ" eventType="touchUpInside" id="O8Q-EJ-YoD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAm-UD-G5m">
+                                        <rect key="frame" x="330" y="0.0" width="30" height="30"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Add"/>
+                                        <connections>
+                                            <action selector="addTapped:" destination="Orv-Ds-qbQ" eventType="touchUpInside" id="qhu-KS-P9B"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.77906976744186052" green="0.9093746161825581" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="zAm-UD-G5m" secondAttribute="bottom" id="SVJ-LZ-y5z"/>
+                                    <constraint firstAttribute="trailing" secondItem="zAm-UD-G5m" secondAttribute="trailing" constant="15" id="TOx-Iw-pDa"/>
+                                    <constraint firstItem="bcV-ND-Sf4" firstAttribute="leading" secondItem="dOM-oq-bjQ" secondAttribute="leading" constant="15" id="WYi-i4-K2n"/>
+                                    <constraint firstItem="zAm-UD-G5m" firstAttribute="top" secondItem="dOM-oq-bjQ" secondAttribute="top" id="cwr-2o-IUk"/>
+                                    <constraint firstAttribute="height" constant="30" id="f4L-39-bUh"/>
+                                    <constraint firstItem="bcV-ND-Sf4" firstAttribute="centerY" secondItem="dOM-oq-bjQ" secondAttribute="centerY" id="uqM-HR-Jrz"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aq6-Ov-7HN">
-                                <rect key="frame" x="0.0" y="305" width="375" height="271"/>
+                                <rect key="frame" x="0.0" y="240" width="375" height="336"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Orv-Ds-qbQ" id="zvX-SV-cF5"/>
@@ -828,7 +850,6 @@
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="wnY-SR-Uwi" secondAttribute="trailing" constant="15" id="8sN-ck-jg7"/>
                             <constraint firstItem="cOQ-1z-PN3" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="CYF-yj-KKG"/>
                             <constraint firstItem="JMc-2U-jjk" firstAttribute="top" secondItem="cOQ-1z-PN3" secondAttribute="bottom" constant="8" id="Dhg-gv-F9x"/>
-                            <constraint firstItem="QPy-VG-n2L" firstAttribute="top" secondItem="wnY-SR-Uwi" secondAttribute="bottom" constant="15" id="Eh2-TD-nqW"/>
                             <constraint firstItem="5eR-wx-k4d" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="FXu-Ih-HNn"/>
                             <constraint firstItem="JMc-2U-jjk" firstAttribute="leading" secondItem="MjG-e8-IwX" secondAttribute="trailing" constant="8" id="G1U-S2-tCS"/>
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="height" secondItem="JMc-2U-jjk" secondAttribute="height" id="Hfc-d8-UN0"/>
@@ -839,7 +860,10 @@
                             <constraint firstItem="aq6-Ov-7HN" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" id="UCl-dz-Jjy"/>
                             <constraint firstItem="5eR-wx-k4d" firstAttribute="top" secondItem="p8H-6L-j0C" secondAttribute="top" constant="20" id="VAI-eu-qvM"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="5eR-wx-k4d" secondAttribute="trailing" constant="15" id="YNe-Jc-e2t"/>
+                            <constraint firstItem="dOM-oq-bjQ" firstAttribute="top" secondItem="wnY-SR-Uwi" secondAttribute="bottom" constant="8" id="af3-ow-Tqk"/>
+                            <constraint firstItem="dOM-oq-bjQ" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" id="cns-Ve-uIN"/>
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="fQG-Jy-uBF"/>
+                            <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="dOM-oq-bjQ" secondAttribute="trailing" id="gKn-Ep-p9N"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="bottom" secondItem="MjG-e8-IwX" secondAttribute="bottom" constant="15" id="gWb-se-cgk"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="8Bt-zQ-EBs" secondAttribute="trailing" constant="5" id="jXo-nB-R8j"/>
                             <constraint firstItem="JMc-2U-jjk" firstAttribute="top" secondItem="cOQ-1z-PN3" secondAttribute="bottom" constant="8" id="jsm-rh-5L3"/>
@@ -847,12 +871,10 @@
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="width" secondItem="JMc-2U-jjk" secondAttribute="width" id="prY-Oi-7u7"/>
                             <constraint firstItem="wnY-SR-Uwi" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="q7V-Gw-FNP"/>
                             <constraint firstItem="aq6-Ov-7HN" firstAttribute="trailing" secondItem="p8H-6L-j0C" secondAttribute="trailing" id="rMi-lK-e66"/>
-                            <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="QPy-VG-n2L" secondAttribute="trailing" constant="15" id="sLo-kn-uQx"/>
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="top" secondItem="cOQ-1z-PN3" secondAttribute="bottom" constant="8" id="uPx-Ra-QVx"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="bottom" secondItem="JMc-2U-jjk" secondAttribute="bottom" constant="15" id="uXC-gJ-brG"/>
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="bottom" secondItem="JMc-2U-jjk" secondAttribute="bottom" id="v7F-5d-b0l"/>
-                            <constraint firstItem="aq6-Ov-7HN" firstAttribute="top" secondItem="QPy-VG-n2L" secondAttribute="bottom" constant="8" id="vWe-cK-4Wn"/>
-                            <constraint firstItem="QPy-VG-n2L" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="wnE-o2-iFs"/>
+                            <constraint firstItem="aq6-Ov-7HN" firstAttribute="top" secondItem="dOM-oq-bjQ" secondAttribute="bottom" id="vee-hK-Ujb"/>
                             <constraint firstItem="8Bt-zQ-EBs" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="yOM-0n-TpG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="p8H-6L-j0C"/>
@@ -906,6 +928,7 @@
         <image name="imgProgressFlow1" width="320" height="30"/>
         <image name="imgProgressFlow2" width="320" height="29"/>
         <image name="imgProgressFlow3" width="320" height="30"/>
+        <image name="info.png" width="28" height="28"/>
         <image name="mapMarkerIcon" width="16" height="20"/>
     </resources>
 </document>

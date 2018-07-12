@@ -11,7 +11,8 @@ import UIKit
 struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
     var itemID: String
     var itemName: String?
-    var itemPortions: Int?
+    var itemQuantity: Int?
+    var itemQuantityType: String?
     
     init(itemID: String = UUID().uuidString) {
         self.itemID = itemID
@@ -19,10 +20,12 @@ struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
     
     init(itemID: String = UUID().uuidString,
          itemName: String?,
-         itemPortions: Int?) {
+         itemQuantity: Int?,
+         itemQuantityType: String?) {
         self.itemID = itemID
         self.itemName = itemName
-        self.itemPortions = itemPortions
+        self.itemQuantity = itemQuantity
+        self.itemQuantityType = itemQuantityType
     }
     
     var reuseIdentifier: String {
