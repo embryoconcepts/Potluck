@@ -54,6 +54,8 @@
 		7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */; };
 		7657AC40205D053B00FE7833 /* MHPRSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */; };
 		7657F43620D2F18D00C742C0 /* MHPRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657F43520D2F18D00C742C0 /* MHPRequestHandler.swift */; };
+		765986F420F929F000F6A7B1 /* MHPModifyItemPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 765986F320F929F000F6A7B1 /* MHPModifyItemPopover.xib */; };
+		765986F620F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765986F520F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift */; };
 		76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76723D2F205E5609004940DE /* SwiftStyleSettings.plist */; };
 		76723D32205FB219004940DE /* MHPItemCardPledgingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */; };
 		76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */; };
@@ -152,6 +154,8 @@
 		7657AC3D205CFF3200FE7833 /* ViewEvent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ViewEvent.storyboard; sourceTree = "<group>"; };
 		7657AC3F205D053B00FE7833 /* MHPRSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRSVPViewController.swift; sourceTree = "<group>"; };
 		7657F43520D2F18D00C742C0 /* MHPRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRequestHandler.swift; sourceTree = "<group>"; };
+		765986F320F929F000F6A7B1 /* MHPModifyItemPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MHPModifyItemPopover.xib; sourceTree = "<group>"; };
+		765986F520F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPSuggestedItemInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		76723D2F205E5609004940DE /* SwiftStyleSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SwiftStyleSettings.plist; sourceTree = "<group>"; };
 		76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardPledgingViewController.swift; sourceTree = "<group>"; };
 		76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardViewingViewController.swift; sourceTree = "<group>"; };
@@ -272,6 +276,8 @@
 			isa = PBXGroup;
 			children = (
 				764D1A6120E4F9430032D982 /* MHPCreateEvent3ItemsViewController.swift */,
+				765986F520F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift */,
+				765986F320F929F000F6A7B1 /* MHPModifyItemPopover.xib */,
 				76AD65D620F50C7000F349CF /* MHPRequestedItemsCell.swift */,
 				76AD65DA20F54EC400F349CF /* MHPRequestedItemsCell.xib */,
 			);
@@ -609,6 +615,7 @@
 				76DF6B5F205A29C300028B3B /* Roboto-Regular.ttf in Resources */,
 				76DF6B69205A29C300028B3B /* Roboto-BlackItalic.ttf in Resources */,
 				765123C42053538900E78488 /* Assets.xcassets in Resources */,
+				765986F420F929F000F6A7B1 /* MHPModifyItemPopover.xib in Resources */,
 				761583D720EAAE04003825AD /* MHPContactsCell.xib in Resources */,
 				7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */,
 				76DF6B62205A29C300028B3B /* Roboto-Bold.ttf in Resources */,
@@ -872,6 +879,7 @@
 				7657AC2E205CC52800FE7833 /* UIViewControllerExtensions.swift in Sources */,
 				76DF6B71205B33E700028B3B /* MHPSignUpLoginChoiceViewController.swift in Sources */,
 				761583D520EAADF0003825AD /* MHPContactsCell.swift in Sources */,
+				765986F620F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift in Sources */,
 				764638D520D6EF6D00C554A1 /* MHPDataManager.swift in Sources */,
 				764D1A4C20DFCED20032D982 /* MHPCreateEventCell.swift in Sources */,
 				765124032058903000E78488 /* MHPEventRsvpList.swift in Sources */,

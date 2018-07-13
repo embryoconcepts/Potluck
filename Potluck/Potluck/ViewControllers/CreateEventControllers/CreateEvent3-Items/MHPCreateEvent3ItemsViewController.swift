@@ -17,8 +17,9 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var lblSuggestionText: UILabel!
+    @IBOutlet weak var btnEdit: UIButton!
     
-    var btnEditTable = UIBarButtonItem()
+    var btnInfo = UIBarButtonItem()
     var mhpUser: MHPUser?
     var event: MHPEvent?
     var eventRsvpList: MHPEventRsvpList?
@@ -31,6 +32,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
             tblView.reloadData()
         }
     }
+    
     
     // MARK: - Lifecycle
     
@@ -63,12 +65,12 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     // MARK: - Action Handlers
     
-    @objc func editTapped(_ sender: Any) {
+    @IBAction func editTapped(_ sender: Any) {
         tblView.isEditing = !tblView.isEditing
         if tblView.isEditing {
-            btnEditTable.title = "Done"
+            btnEdit.titleLabel?.text = "Done"
         } else {
-            btnEditTable.title = "Edit"
+            btnEdit.titleLabel?.text = "Edit"
         }
     }
     
@@ -92,11 +94,11 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func styleView() {
-        btnEditTable = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(editTapped(_: )))
-        navigationItem.rightBarButtonItem = btnEditTable
+        btnInfo = UIBarButtonItem(image: UIImage(named: "btnInfo.png"), style: .plain, target: self, action: #selector(infoTapped(_: )))
+        navigationItem.rightBarButtonItem = btnInfo
         
         if let guests = invites?.count {
-            lblSuggestionText.text = "For \(guests) guests we suggest the following items and amounts. Tap to edit, or add a new item."
+            lblSuggestionText.text = "For \(guests) guests, may we suggest the following items and amounts."
         }
     }
     
@@ -105,7 +107,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         if let guests = invites?.count {
             
             let categories = [
-                "Appetizers": 2.5,
+                "Appetizers": 2,
                 "Salad": 1,
                 "Mains": 1.25,
                 "Side Dishes": 2.5,
@@ -124,34 +126,12 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     }
     
     fileprivate func addItem() {
-        // TODO: change all of this
-        var newItem = MHPRequestedItem()
+        self.tblView.beginUpdates()
+        self.tblView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        self.requestedItems?.insert(MHPRequestedItem(), at: 0)
+        self.tblView.endUpdates()
         
-        DispatchQueue.main.async { [unowned self] in
-            let alert = UIAlertController(title: "Add Item", message: "What would you like to add?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addTextField { textField in
-                textField.placeholder = "Item Name"
-            }
-            
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                // handle error
-                self.tblView.beginUpdates()
-                if let name = alert.textFields?.first?.text {
-                    newItem.itemName = name
-                    self.tblView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                    self.requestedItems?.insert(newItem, at: 0)
-                }
-                self.tblView.endUpdates()
-            }))
-            
-            self.present(alert, animated: true)
-        }
-        
-    }
-    
-    fileprivate func showInfoPopup() {
-        // TODO: show popup with info on suggested portions and stuff
+        addModifyItemPopover(at: IndexPath(row: 0, section: 0))
     }
     
     fileprivate func next() {
@@ -163,7 +143,6 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                 let invites = invites,
                 let items = requestedItems,
                 let eventItemList = eventItemList,
-                // FIXME: issue with instantiation
                 let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
                 createEvent4.inject(user)
                 createEvent4.inject(event)
@@ -220,6 +199,10 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
         return rows
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 36
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cellItem = MHPRequestedItem()
         if let item = requestedItems?[indexPath.row] {
@@ -248,17 +231,45 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        addPopover(at: indexPath)
+        addModifyItemPopover(at: indexPath)
     }
     
+}
+
+// Mark: - Info Popover + UIPopoverPresentationControllerDelegate
+
+extension MHPCreateEvent3ItemsViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
+    fileprivate func showInfoPopup() {
+        let infoPopover = storyboard?.instantiateViewController(withIdentifier: "MHPSuggestedItemInfoPopoverViewController") as! MHPSuggestedItemInfoPopoverViewController
+        
+        // set the presentation style
+        infoPopover.modalPresentationStyle = UIModalPresentationStyle.popover
+        
+        // set up the popover presentation controller
+        infoPopover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        infoPopover.popoverPresentationController?.delegate = self
+        infoPopover.popoverPresentationController?.barButtonItem = btnInfo
+        
+        // present the popover
+        self.present(infoPopover, animated: true, completion: nil)
+    }
 }
 
 
 // MARK: - Item Modification Popover
 
-extension MHPCreateEvent3ItemsViewController: UIPopoverControllerDelegate {
-    func addPopover(at indexPath: IndexPath) {
+extension MHPCreateEvent3ItemsViewController {
+    func addModifyItemPopover(at indexPath: IndexPath) {
         // TODO: add a popover with 2 text fields and a button for the type, Save, and Cancel
+        //        infoPopover.popoverPresentationController?.sourceView = btnInfo // button
+        //        infoPopover.popoverPresentationController?.sourceRect = btnInfo.bounds
+        
+        
+        
         modifyItem(at: indexPath)
     }
     
@@ -291,6 +302,8 @@ extension MHPCreateEvent3ItemsViewController: UIPopoverControllerDelegate {
         }
         
         // TODO: if user taps save, save temp values to requestedItems, else don't save anything, and delete row if it was a new add, reload table or cell
+        
+        
         // TODO: Save is only enabled when all fields are complete (new items), or as soon as one item is changed (modifying item)
         requestedItem.itemQuantityType = modifiedItem.itemQuantityType
     }

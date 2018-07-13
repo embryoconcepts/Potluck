@@ -572,6 +572,80 @@
             </objects>
             <point key="canvasLocation" x="860" y="-967"/>
         </scene>
+        <!--Info-->
+        <scene sceneID="DQ9-jf-YZh">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="geH-j4-Xs7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="MHPSuggestedItemInfoPopoverViewController" title="Info" modalPresentationStyle="overCurrentContext" id="Mle-VP-CpY" customClass="MHPSuggestedItemInfoPopoverViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cgD-ew-YP9">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrP-fb-5pT">
+                                <rect key="frame" x="157" y="378" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="7g0-4V-aPq">
+                                <rect key="frame" x="15" y="56" width="170" height="196"/>
+                                <string key="text">Appetizers: 2 servings
+Salad: 1 serving
+Mains: 1-1.5 servings
+Sides: 2-3 servings
+Bread: 1-1.5 servings
+Drinks: 1-2 per hour
+Desserts: 1-1.5 servings
+
+Don't forget essentials like condiments, paper goods, flatware and utensils!</string>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IqN-Bm-bB5">
+                                <rect key="frame" x="15" y="260" width="170" height="25"/>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="MsM-rS-pEZ"/>
+                                </constraints>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeTapped:" destination="Mle-VP-CpY" eventType="touchUpInside" id="BgG-et-YFP"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested items per person:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVT-kI-gBm">
+                                <rect key="frame" x="8" y="8" width="184" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="qgt-Cu-uAA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Oiv-t4-W85" firstAttribute="trailing" secondItem="IqN-Bm-bB5" secondAttribute="trailing" constant="15" id="1Fq-cK-g1g"/>
+                            <constraint firstItem="7g0-4V-aPq" firstAttribute="top" secondItem="wVT-kI-gBm" secondAttribute="bottom" constant="3" id="6Vr-RR-q64"/>
+                            <constraint firstItem="wVT-kI-gBm" firstAttribute="leading" secondItem="Oiv-t4-W85" secondAttribute="leading" constant="8" id="CC3-nX-Rem"/>
+                            <constraint firstItem="IqN-Bm-bB5" firstAttribute="leading" secondItem="Oiv-t4-W85" secondAttribute="leading" constant="15" id="MOb-wI-49O"/>
+                            <constraint firstItem="7g0-4V-aPq" firstAttribute="leading" secondItem="Oiv-t4-W85" secondAttribute="leading" constant="15" id="SVf-fT-Jil"/>
+                            <constraint firstItem="IqN-Bm-bB5" firstAttribute="top" secondItem="7g0-4V-aPq" secondAttribute="bottom" constant="8" id="Vkr-v9-P4d"/>
+                            <constraint firstItem="Oiv-t4-W85" firstAttribute="trailing" secondItem="wVT-kI-gBm" secondAttribute="trailing" constant="8" id="Zo2-66-GQe"/>
+                            <constraint firstItem="wVT-kI-gBm" firstAttribute="top" secondItem="Oiv-t4-W85" secondAttribute="top" constant="8" id="byK-jZ-Uea"/>
+                            <constraint firstItem="Oiv-t4-W85" firstAttribute="trailing" secondItem="7g0-4V-aPq" secondAttribute="trailing" constant="15" id="gHL-XI-DUm"/>
+                            <constraint firstItem="Oiv-t4-W85" firstAttribute="bottom" secondItem="IqN-Bm-bB5" secondAttribute="bottom" constant="15" id="lw6-91-DIh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Oiv-t4-W85"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="200" height="300"/>
+                    <size key="freeformSize" width="200" height="300"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1772.8" y="-737.63118440779613"/>
+        </scene>
         <!--Invite Friends-->
         <scene sceneID="9cl-8u-Y6n">
             <objects>
@@ -763,8 +837,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For xx guests we suggest the following items and amounts. Tap to edit, or add a new item." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnY-SR-Uwi">
-                                <rect key="frame" x="15" y="157" width="345" height="37.5"/>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                <rect key="frame" x="15" y="157" width="345" height="33"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -803,7 +877,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOM-oq-bjQ">
-                                <rect key="frame" x="0.0" y="203" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="198.5" width="375" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcV-ND-Sf4">
                                         <rect key="frame" x="15" y="4" width="22" height="22"/>
@@ -811,14 +885,13 @@
                                             <action selector="addTapped:" destination="Orv-Ds-qbQ" eventType="touchUpInside" id="68b-gG-B4m"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAm-UD-G5m">
-                                        <rect key="frame" x="340" y="5.5" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="3Ss-6j-Zjk"/>
-                                            <constraint firstAttribute="width" constant="20" id="vsL-to-Fad"/>
-                                        </constraints>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAm-UD-G5m">
+                                        <rect key="frame" x="328" y="-1.5" width="32" height="34"/>
+                                        <state key="normal" title="Edit">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
-                                            <action selector="infoTapped:" destination="Orv-Ds-qbQ" eventType="touchUpInside" id="7sO-UZ-Asl"/>
+                                            <action selector="editTapped:" destination="Orv-Ds-qbQ" eventType="touchUpInside" id="WGb-QM-NDT"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -832,7 +905,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aq6-Ov-7HN">
-                                <rect key="frame" x="0.0" y="233" width="375" height="343"/>
+                                <rect key="frame" x="0.0" y="228.5" width="375" height="347.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Orv-Ds-qbQ" id="zvX-SV-cF5"/>
@@ -877,6 +950,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="btnEdit" destination="zAm-UD-G5m" id="ZW3-jF-Hp2"/>
                         <outlet property="lblSuggestionText" destination="wnY-SR-Uwi" id="rgU-UU-UuL"/>
                         <outlet property="tblView" destination="aq6-Ov-7HN" id="j2S-kt-EPC"/>
                     </connections>
