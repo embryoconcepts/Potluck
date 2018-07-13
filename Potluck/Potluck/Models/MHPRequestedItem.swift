@@ -9,20 +9,15 @@
 import UIKit
 
 struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
-    var itemID: String
     var itemName: String?
     var itemQuantity: Int?
     var itemQuantityType: String?
     
-    init(itemID: String = UUID().uuidString) {
-        self.itemID = itemID
-    }
+    init() { }
     
-    init(itemID: String = UUID().uuidString,
-         itemName: String?,
+    init(itemName: String?,
          itemQuantity: Int?,
          itemQuantityType: String?) {
-        self.itemID = itemID
         self.itemName = itemName
         self.itemQuantity = itemQuantity
         self.itemQuantityType = itemQuantityType
