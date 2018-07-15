@@ -126,6 +126,11 @@ class MHPInviteContactsViewController: UIViewController {
         } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
             self.retrieveContacts(with: store)
         }
+        
+        DispatchQueue.main.async {
+            self.tblView.reloadData()
+        }
+        
     }
     
     func retrieveContacts(with store: CNContactStore) {

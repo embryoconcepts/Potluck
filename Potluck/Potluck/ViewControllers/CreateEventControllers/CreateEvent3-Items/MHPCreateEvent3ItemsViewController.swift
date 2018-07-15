@@ -199,10 +199,6 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
         return rows
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 36
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cellItem = MHPRequestedItem()
         if let item = requestedItems?[indexPath.row] {
@@ -262,50 +258,42 @@ extension MHPCreateEvent3ItemsViewController: UIPopoverPresentationControllerDel
 
 // MARK: - Item Modification Popover
 
-extension MHPCreateEvent3ItemsViewController {
+extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelAddingNewItemDelegate {
     func addModifyItemPopover(at indexPath: IndexPath) {
-        // TODO: add a popover with 2 text fields and a button for the type, Save, and Cancel
-        //        infoPopover.popoverPresentationController?.sourceView = btnInfo // button
-        //        infoPopover.popoverPresentationController?.sourceRect = btnInfo.bounds
+        let modifyItemPopover = storyboard?.instantiateViewController(withIdentifier: "MHPModifyItemPopoverViewController") as! MHPModifyItemPopoverViewController
         
+        // set up the popover presentation controller
+        modifyItemPopover.modalPresentationStyle = UIModalPresentationStyle.popover
+        modifyItemPopover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        modifyItemPopover.popoverPresentationController?.delegate = self
+        modifyItemPopover.popoverPresentationController?.sourceView = tblView
+        modifyItemPopover.popoverPresentationController?.sourceRect = tblView.rectForRow(at: indexPath)
         
+        // present the popover
+        self.present(modifyItemPopover, animated: true, completion: nil)
         
-        modifyItem(at: indexPath)
+        // populate the popover with original item
+        guard let originalItem = requestedItems?[indexPath.row] else { return }
+        modifyItemPopover.modifyItemDelegate = self
+        modifyItemPopover.cancelItemDelegate = self
+        modifyItemPopover.setupPopover(with: originalItem, at: indexPath)
     }
     
-    func modifyItem(at indexPath: IndexPath) {
-        guard var requestedItem = requestedItems?[indexPath.row] else { return }
-        var modifiedItem = MHPRequestedItem()
+    func saveModifiedItem(with modifiedItem: MHPRequestedItem, at indexPath: IndexPath) {       
+        requestedItems?[indexPath.row].itemName = modifiedItem.itemName
+        requestedItems?[indexPath.row].itemQuantity = modifiedItem.itemQuantity
+        requestedItems?[indexPath.row].itemQuantityType = modifiedItem.itemQuantityType
         
-        // TODO: Item Name
-        
-        
-        // TODO: Item Quantity
-        
-        
-        // Quantity Type Selection
-        var selectedType = ""
-        let types = ["servings", "pieces", "each"]
-        let alertController = UIAlertController(title: "Quantity Type", message: "", preferredStyle: .actionSheet)
-        
-        for type in types {
-            let button = UIAlertAction(title: type, style: .default) { (action) in
-                selectedType = type
-            }
-            alertController.addAction(button)
+        DispatchQueue.main.async { [unowned self] in
+            self.tblView.reloadData()
         }
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(cancelButton)
-        
-        self.present(alertController, animated: true) {
-            modifiedItem.itemQuantityType = selectedType
+    }
+    
+    func cancelAddingNewItem(at indexPath: IndexPath) {
+        requestedItems!.remove(at: indexPath.row)
+        DispatchQueue.main.async { [unowned self] in
+            self.tblView.reloadData()
         }
-        
-        // TODO: if user taps save, save temp values to requestedItems, else don't save anything, and delete row if it was a new add, reload table or cell
-        
-        
-        // TODO: Save is only enabled when all fields are complete (new items), or as soon as one item is changed (modifying item)
-        requestedItem.itemQuantityType = modifiedItem.itemQuantityType
     }
     
 }

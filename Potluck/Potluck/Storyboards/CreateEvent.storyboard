@@ -15,6 +15,9 @@
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
+        <array key="Roboto-LightItalic.ttf">
+            <string>Roboto-LightItalic</string>
+        </array>
         <array key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
         </array>
@@ -401,7 +404,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guest List ()" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNU-mi-n1s">
                                         <rect key="frame" x="0.0" y="158" width="375" height="21.5"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -599,7 +602,7 @@ Drinks: 1-2 per hour
 Desserts: 1-1.5 servings
 
 Don't forget essentials like condiments, paper goods, flatware and utensils!</string>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -877,7 +880,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOM-oq-bjQ">
-                                <rect key="frame" x="0.0" y="198.5" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="205" width="375" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcV-ND-Sf4">
                                         <rect key="frame" x="15" y="4" width="22" height="22"/>
@@ -895,7 +898,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.77906976744186052" green="0.9093746161825581" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="1" green="0.89710665081275764" blue="0.67669423649302329" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="zAm-UD-G5m" firstAttribute="centerY" secondItem="dOM-oq-bjQ" secondAttribute="centerY" id="NhZ-Gw-vnU"/>
                                     <constraint firstAttribute="trailing" secondItem="zAm-UD-G5m" secondAttribute="trailing" constant="15" id="TOx-Iw-pDa"/>
@@ -905,7 +908,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aq6-Ov-7HN">
-                                <rect key="frame" x="0.0" y="228.5" width="375" height="347.5"/>
+                                <rect key="frame" x="0.0" y="235" width="375" height="341"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Orv-Ds-qbQ" id="zvX-SV-cF5"/>
@@ -929,7 +932,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                             <constraint firstItem="aq6-Ov-7HN" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" id="UCl-dz-Jjy"/>
                             <constraint firstItem="5eR-wx-k4d" firstAttribute="top" secondItem="p8H-6L-j0C" secondAttribute="top" constant="20" id="VAI-eu-qvM"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="5eR-wx-k4d" secondAttribute="trailing" constant="15" id="YNe-Jc-e2t"/>
-                            <constraint firstItem="dOM-oq-bjQ" firstAttribute="top" secondItem="wnY-SR-Uwi" secondAttribute="bottom" constant="8" id="af3-ow-Tqk"/>
+                            <constraint firstItem="dOM-oq-bjQ" firstAttribute="top" secondItem="wnY-SR-Uwi" secondAttribute="bottom" constant="15" id="af3-ow-Tqk"/>
                             <constraint firstItem="dOM-oq-bjQ" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" id="cns-Ve-uIN"/>
                             <constraint firstItem="MjG-e8-IwX" firstAttribute="leading" secondItem="p8H-6L-j0C" secondAttribute="leading" constant="15" id="fQG-Jy-uBF"/>
                             <constraint firstItem="p8H-6L-j0C" firstAttribute="trailing" secondItem="dOM-oq-bjQ" secondAttribute="trailing" id="gKn-Ep-p9N"/>
@@ -958,6 +961,96 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uH5-OB-ZDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1666.4000000000001" y="-189.3553223388306"/>
+        </scene>
+        <!--Modify Item-->
+        <scene sceneID="dJ6-0T-cfo">
+            <objects>
+                <viewController storyboardIdentifier="MHPModifyItemPopoverViewController" title="Modify Item" id="vlT-dc-3cg" customClass="MHPModifyItemPopoverViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="abJ-8x-KWw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Item Name" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Iq7-i1-4fz">
+                                <rect key="frame" x="16" y="15" width="217" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vlT-dc-3cg" id="6QJ-4C-8gV"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="###" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rAq-HK-cfi">
+                                <rect key="frame" x="238" y="15" width="47" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vlT-dc-3cg" id="rJj-9Y-NyG"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="portions" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUj-Zx-m0d">
+                                <rect key="frame" x="288" y="15" width="71" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Roboto-LightItalic" family="Roboto" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vlT-dc-3cg" id="OFb-8Z-rat"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNl-gp-5SW">
+                                <rect key="frame" x="15" y="53" width="168.5" height="30"/>
+                                <color key="backgroundColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTapped:" destination="vlT-dc-3cg" eventType="touchUpInside" id="dPF-o3-eaa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ouR-bU-UUV">
+                                <rect key="frame" x="191.5" y="53" width="168.5" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveTapped:" destination="vlT-dc-3cg" eventType="touchUpInside" id="aD1-MD-CSQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="eNl-gp-5SW" firstAttribute="leading" secondItem="heJ-g6-0sL" secondAttribute="leading" constant="15" id="7Ou-WC-jOf"/>
+                            <constraint firstItem="ouR-bU-UUV" firstAttribute="leading" secondItem="eNl-gp-5SW" secondAttribute="trailing" constant="8" id="BjR-w2-jsY"/>
+                            <constraint firstItem="xUj-Zx-m0d" firstAttribute="top" secondItem="rAq-HK-cfi" secondAttribute="top" id="C8f-Cw-WRQ"/>
+                            <constraint firstItem="xUj-Zx-m0d" firstAttribute="leading" secondItem="rAq-HK-cfi" secondAttribute="trailing" constant="3" id="DIA-xY-LYz"/>
+                            <constraint firstItem="ouR-bU-UUV" firstAttribute="top" secondItem="eNl-gp-5SW" secondAttribute="top" id="G2Q-Ff-RD5"/>
+                            <constraint firstItem="Iq7-i1-4fz" firstAttribute="top" secondItem="heJ-g6-0sL" secondAttribute="top" constant="15" id="HmB-LO-JBc"/>
+                            <constraint firstItem="heJ-g6-0sL" firstAttribute="trailing" secondItem="xUj-Zx-m0d" secondAttribute="trailing" constant="16" id="RFq-lg-zMQ"/>
+                            <constraint firstItem="ouR-bU-UUV" firstAttribute="width" secondItem="eNl-gp-5SW" secondAttribute="width" id="S49-Rj-AWz"/>
+                            <constraint firstItem="Iq7-i1-4fz" firstAttribute="leading" secondItem="heJ-g6-0sL" secondAttribute="leading" constant="16" id="VRd-ST-tRO"/>
+                            <constraint firstItem="rAq-HK-cfi" firstAttribute="leading" secondItem="Iq7-i1-4fz" secondAttribute="trailing" constant="5" id="aPw-8f-scG"/>
+                            <constraint firstItem="ouR-bU-UUV" firstAttribute="height" secondItem="eNl-gp-5SW" secondAttribute="height" id="dg3-fd-6F0"/>
+                            <constraint firstItem="rAq-HK-cfi" firstAttribute="top" secondItem="Iq7-i1-4fz" secondAttribute="top" id="uBC-9S-57p"/>
+                            <constraint firstItem="eNl-gp-5SW" firstAttribute="top" secondItem="Iq7-i1-4fz" secondAttribute="bottom" constant="8" id="wF8-CR-V1d"/>
+                            <constraint firstItem="heJ-g6-0sL" firstAttribute="trailing" secondItem="ouR-bU-UUV" secondAttribute="trailing" constant="15" id="yv4-yZ-D0M"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="heJ-g6-0sL"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="95"/>
+                    <size key="freeformSize" width="375" height="95"/>
+                    <connections>
+                        <outlet property="btnSave" destination="ouR-bU-UUV" id="2xR-Wy-H4i"/>
+                        <outlet property="txtName" destination="Iq7-i1-4fz" id="rfQ-9q-xK1"/>
+                        <outlet property="txtPortions" destination="xUj-Zx-m0d" id="iyG-UH-aK2"/>
+                        <outlet property="txtQuantity" destination="rAq-HK-cfi" id="jtf-kt-3oC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LqS-rM-D5y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1664.8" y="300.89955022488761"/>
         </scene>
         <!--Restrictions-->
         <scene sceneID="7VC-92-LFM">
