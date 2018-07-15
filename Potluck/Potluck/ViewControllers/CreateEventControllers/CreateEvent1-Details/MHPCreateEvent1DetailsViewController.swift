@@ -85,23 +85,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     
-    // MARK: - Keyboard Handlers
-    
-    @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollView.contentInset.bottom = keyboardSize.height
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: Notification) {
-        scrollView.contentInset.bottom = 0
-    }
-    
-    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
-    
-    
     // MARK: - Private methods
     
     fileprivate func setupView() {
@@ -118,9 +101,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tapGesture)
-        
         // style description text view
         txtDescription.text = txtViewPlaceholderText
         txtDescription.textColor = .lightGray
@@ -129,6 +109,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         txtDescription.layer.cornerRadius = 5
         
         datePicker.minimumDate = Date()
+        
+        setupKeyboardDoneButton()
+        setupKeyboardDismissOnTap()
+        scrollView.keyboardDismissMode = .interactive
     }
     
     fileprivate func resetView() {
@@ -231,12 +215,13 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
         switch textField {
         case txtName:
             txtName.resignFirstResponder()
+            txtDescription.becomeFirstResponder()
+            return false
+        case txtDescription:
+            txtDescription.resignFirstResponder()
             txtLocationName.becomeFirstResponder()
-        case txtLocationName:
-            txtLocationName.resignFirstResponder()
-            txtName.becomeFirstResponder()
         default:
-            return true
+            txtLocationName.resignFirstResponder()
         }
         return true
     }
@@ -250,6 +235,45 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
         default:
             return
         }
+    }
+    
+    // add done button to keyboard
+    func setupKeyboardDoneButton() {
+        //init toolbar
+        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
+        //create left side empty space so that done button set on right side
+        let flexSpace = UIBarButtonItem(barButtonSystemItem:    .flexibleSpace, target: nil, action: nil)
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        toolbar.setItems([flexSpace, doneBtn], animated: false)
+        toolbar.sizeToFit()
+        //setting toolbar as inputAccessoryView
+        self.txtName.inputAccessoryView = toolbar
+        self.txtDescription.inputAccessoryView = toolbar
+        self.txtLocationName.inputAccessoryView = toolbar
+    }
+    
+    func setupKeyboardDismissOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+        dismissKeyboard()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+        UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentInset.bottom = keyboardFrame.height + 70
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset.bottom = 0
     }
 }
 

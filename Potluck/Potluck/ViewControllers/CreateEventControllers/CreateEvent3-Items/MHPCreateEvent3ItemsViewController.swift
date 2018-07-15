@@ -14,7 +14,8 @@ protocol CreateEvent3DataDelegate {
 }
 
 class MHPCreateEvent3ItemsViewController: UIViewController {
-    
+
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var lblSuggestionText: UILabel!
     @IBOutlet weak var btnEdit: UIButton!
@@ -38,6 +39,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tblView.keyboardDismissMode = .interactive
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +102,20 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         if let guests = invites?.count {
             lblSuggestionText.text = "For \(guests) guests, may we suggest the following items and amounts."
         }
+        
+        // set up scrollview + keyboard
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentInset.bottom = keyboardFrame.height + 70
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset.bottom = 0
     }
     
     fileprivate func setupSuggestedItems() {
@@ -131,12 +147,11 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         self.requestedItems?.insert(MHPRequestedItem(), at: 0)
         self.tblView.endUpdates()
         
-        addModifyItemPopover(at: IndexPath(row: 0, section: 0))
+        addModifyItemPopover(at: IndexPath(row: 0, section: 0), for: true)
     }
     
     fileprivate func next() {
         createEventItemList()
-        if validate() {
             if  let user = mhpUser,
                 let event = event,
                 let eventRsvpList = eventRsvpList,
@@ -152,7 +167,6 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                 createEvent4.inject(eventItemList)
                 navigationController?.pushViewController(createEvent4, animated: true)
             }
-        }
     }
     
     fileprivate func createEventItemList() {
@@ -163,11 +177,6 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                                              eventItemListTags: nil,
                                              eventItems: items)
         }
-    }
-    
-    fileprivate func validate() -> Bool {
-        // TODO: complete validation
-        return true
     }
     
     fileprivate func back() {
@@ -189,7 +198,6 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
 // MARK: - UITableViewControllerDelegate and Datasource
 
 extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDataSource {
-    // TODO: scroll all when keyboard is shown
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -227,7 +235,7 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        addModifyItemPopover(at: indexPath)
+        addModifyItemPopover(at: indexPath, for: false)
     }
     
 }
@@ -259,12 +267,12 @@ extension MHPCreateEvent3ItemsViewController: UIPopoverPresentationControllerDel
 // MARK: - Item Modification Popover
 
 extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelAddingNewItemDelegate {
-    func addModifyItemPopover(at indexPath: IndexPath) {
+    func addModifyItemPopover(at indexPath: IndexPath, for isNewItem: Bool) {
         let modifyItemPopover = storyboard?.instantiateViewController(withIdentifier: "MHPModifyItemPopoverViewController") as! MHPModifyItemPopoverViewController
         
         // set up the popover presentation controller
         modifyItemPopover.modalPresentationStyle = UIModalPresentationStyle.popover
-        modifyItemPopover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        modifyItemPopover.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.any
         modifyItemPopover.popoverPresentationController?.delegate = self
         modifyItemPopover.popoverPresentationController?.sourceView = tblView
         modifyItemPopover.popoverPresentationController?.sourceRect = tblView.rectForRow(at: indexPath)
@@ -276,7 +284,7 @@ extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelA
         guard let originalItem = requestedItems?[indexPath.row] else { return }
         modifyItemPopover.modifyItemDelegate = self
         modifyItemPopover.cancelItemDelegate = self
-        modifyItemPopover.setupPopover(with: originalItem, at: indexPath)
+        modifyItemPopover.setupPopover(with: originalItem, at: indexPath, isNew: isNewItem)
     }
     
     func saveModifiedItem(with modifiedItem: MHPRequestedItem, at indexPath: IndexPath) {       
