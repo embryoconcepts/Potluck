@@ -9,20 +9,20 @@
 import UIKit
 
 struct MHPUserEventList: Codable  {
-    var userEventListID: String?
+    var listID: String?
     var userID: String?
-    var userEvents: [MHPEvent]?
+    var events: [MHPEvent]?
     
-    init(eventListID: String = UUID().uuidString) {
-        self.userEventListID = eventListID
+    init(listID: String = UUID().uuidString) {
+        self.listID = listID
     }
     
-    init(userEventListID: String = UUID().uuidString,
+    init(listID: String = UUID().uuidString,
          userID: String?,
-         userEvents: [MHPEvent]) {
-        
-    self.userEventListID = userEventListID
-    self.userID = userID
-    self.userEvents = userEvents
-    }
+         events: [MHPEvent]) {
+            
+            self.listID = listID
+            self.userID = userID
+            self.events = events
+        }
 }

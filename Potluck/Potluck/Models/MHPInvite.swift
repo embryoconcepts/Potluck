@@ -12,8 +12,7 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
     static func ==(lhs: MHPInvite, rhs: MHPInvite) -> Bool {
         return
             lhs.userEmail == rhs.userEmail ||
-            lhs.contactID == rhs.contactID ||
-            lhs.userEmail == rhs.userEmail
+            lhs.contactID == rhs.contactID 
     }
     
     var userID: String?

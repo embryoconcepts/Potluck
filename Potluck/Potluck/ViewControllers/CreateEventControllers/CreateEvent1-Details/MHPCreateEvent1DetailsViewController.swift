@@ -22,8 +22,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
-    var invites: [MHPInvite]?
-    var requestedItems: [MHPRequestedItem]?
     
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
@@ -65,7 +63,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-        event?.eventDate = formatter.string(from: selectedDate)
+        event?.date = formatter.string(from: selectedDate)
         
     }
     
@@ -133,15 +131,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     fileprivate func next() {
         if validate() {
-            if  let user = mhpUser,
-                let event = event,
+            if  let event = event,
                 let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
                 createEvent2.dataDelegate = self
-                createEvent2.inject(user)
                 createEvent2.inject(event)
-                if let invites = invites {
-                    createEvent2.inject(invites)
-                }
                 navigationController?.pushViewController(createEvent2, animated: true)
             }
         }
@@ -201,7 +194,7 @@ extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
             textView.text = txtViewPlaceholderText
             textView.textColor = UIColor.lightGray
         } else {
-            event?.eventDescription = textView.text
+            event?.description = textView.text
         }
     }
     
@@ -229,9 +222,9 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case txtName:
-            event?.eventName = textField.text
+            event?.title = textField.text
         case txtLocationName:
-            event?.eventLocation = textField.text
+            event?.location = textField.text
         default:
             return
         }
@@ -264,6 +257,9 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
+        event?.title = txtName.text
+        event?.description = txtDescription.text
+        event?.location = txtLocationName.text
     }
     
     @objc func keyboardWillShow(notification: Notification) {
@@ -284,7 +280,7 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
     func didSelectLocation(controller: MHPLocationSearchViewController, address: String) {
         btnLocationSearch.setTitle("", for: .normal)
         lblAddress.text = address
-        event?.eventAddress = address
+        event?.address = address
     }
 }
 
@@ -292,10 +288,8 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
 // MARK: - CreateEvent2DataDelegate
 
 extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite]) {
-        inject(user)
+    func back(event: MHPEvent) {
         inject(event)
-        inject(invites)
     }
 }
 
@@ -304,9 +298,6 @@ extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
 extension MHPCreateEvent1DetailsViewController: Injectable {
     typealias T = MHPUser
     typealias E = MHPEvent
-    typealias R = MHPEventRsvpList
-    typealias I = [MHPInvite]
-    typealias S = [MHPRequestedItem]
     
     func inject(_ user: T) {
         self.mhpUser = user
@@ -316,20 +307,12 @@ extension MHPCreateEvent1DetailsViewController: Injectable {
         self.event = event
     }
     
-    func inject(_ invites: I) {
-        self.invites = invites
-    }
-    
-    func inject(_ requestedItems: S) {
-        self.requestedItems = requestedItems
-    }
-    
     func assertDependencies() {
         assert(self.mhpUser != nil)
         
         if event == nil {
             event = MHPEvent()
-            event?.eventHostID = mhpUser?.userID
+            event?.host? = mhpUser!
         }
     }
 }

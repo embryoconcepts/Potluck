@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol CreateEvent2DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite])
+    func back(event: MHPEvent)
 }
 
 class MHPCreateEvent2InvitesViewController: UIViewController {
@@ -18,12 +18,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     @IBOutlet weak var lblGuestList: UILabel!
     @IBOutlet weak var viewHeader: UIView!
     
-    var mhpUser: MHPUser?
     var event: MHPEvent?
     var invites = [MHPInvite]()
     var rsvps = [MHPRsvp]()
-    var eventRsvpList: MHPEventRsvpList?
-    var requestedItems: [MHPRequestedItem]?
     
     var dataDelegate: CreateEvent2DataDelegate?
     
@@ -93,7 +90,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
         
-        lblGuestList.text = "Guest List (\(invites.count))"
+        lblGuestList.text = "Guest List (\(String(describing: invites.count)))"
         DispatchQueue.main.async { [unowned self] in
             self.tblView.reloadData()
         }
@@ -101,7 +98,6 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     
     fileprivate func resetView() {
         self.event = nil
-        self.mhpUser = nil
         self.invites = [MHPInvite]()
     }
     
@@ -110,7 +106,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             return MHPRsvp(userID: invite.userID,
                            userEmail: invite.userEmail,
                            eventID: event?.eventID,
-                           itemID: MHPItem().itemID,
+                           itemID: MHPPledgedItem().itemID,
                            isGuest: true,
                            isHost: false,
                            response: nil,
@@ -118,10 +114,10 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
                            numOfGuest: 0)
         }
         
-        let hostRsvp = MHPRsvp(userID: mhpUser?.userID,
-                               userEmail: mhpUser?.userEmail,
+        let hostRsvp = MHPRsvp(userID: event?.host?.userID,
+                               userEmail: event?.host?.email,
                                eventID: event?.eventID,
-                               itemID: MHPItem().itemID,
+                               itemID: MHPPledgedItem().itemID,
                                isGuest: false,
                                isHost: true,
                                response: "yes",
@@ -132,26 +128,20 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     fileprivate func updateEventRsvpList() {
-        // if there is an existing list id for the event, retrieve the list, modify only the elements that are different
+        event?.rsvpList = MHPEventRsvpList()
+        event?.rsvpList?.rsvps = rsvps
+        event?.invites = invites
         
-        // if there is not a list id for the event, create one with the rsvp array
-        eventRsvpList = MHPEventRsvpList()
-        eventRsvpList?.eventRsvps = rsvps
-        eventRsvpList?.eventHostID = mhpUser?.userID
-        
-        event?.eventRsvpListID = eventRsvpList?.eventRsvpListID
+        if let host = event?.host?.userID {
+            event?.rsvpList?.hostID = host
+        }
     }
     
     fileprivate func next() {
         if validate() {
-            if  let user = mhpUser,
-                let event = event,
-                let eventRsvpList = eventRsvpList,
+            if  let event = event,
                 let createEvent3 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent3ItemsViewController") as? MHPCreateEvent3ItemsViewController {
-                createEvent3.inject(user)
                 createEvent3.inject(event)
-                createEvent3.inject(eventRsvpList)
-                createEvent3.inject(invites)
                 navigationController?.pushViewController(createEvent3, animated: true)
             }
         }
@@ -177,9 +167,10 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     }
     
     @objc fileprivate func back(sender: UIBarButtonItem) {
-        if  let user = mhpUser,
-            let event = event {
-            dataDelegate?.back(user: user, event: event, invites: self.invites)
+        mapInvitesToRsvps()
+        updateEventRsvpList()
+        if let event = event {
+            dataDelegate?.back(event: event)
             navigationController?.popViewController(animated: true)
         }
     }
@@ -194,17 +185,14 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if invites.count > 0 {
-            return invites.count
-        } else {
-            return 1
-        }
+        return invites.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if invites.count > 0 {
-            let invite = invites[indexPath.row]
-            return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+            if invites.count > 0 {
+                let invite = invites[indexPath.row]
+                return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+            
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "emptyStateCell", for: indexPath) as! MHPInviteEmptyStateCell
             cell.isUserInteractionEnabled = false
@@ -214,10 +202,10 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if invites.count > 0 {
-            return 55
-        } else {
-            return tblView.frame.height
+            if invites.count > 0 {
+                return 55
+            } else {
+                return tblView.frame.height
         }
     }
     
@@ -258,46 +246,26 @@ extension MHPCreateEvent2InvitesViewController: ContactsSelectedDelegate {
 // MARK: - CreateEvent2DataDelegate
 
 extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList, requestedItems: [MHPRequestedItem]) {
-        inject(user)
+    func back(event: MHPEvent) {
+        mapInvitesToRsvps()
+        updateEventRsvpList()
         inject(event)
-        inject(invites)
-        inject(rsvpList)
-        inject(requestedItems)
     }
 }
 
 // MARK: - UserInjectable Protocol
 
 extension MHPCreateEvent2InvitesViewController: Injectable {
-    typealias T = MHPUser
-    typealias E = MHPEvent
-    typealias R = MHPEventRsvpList
-    typealias I = [MHPInvite]
-    typealias S = [MHPRequestedItem]
+    typealias T = MHPEvent
     
-    func inject(_ user: T) {
-        self.mhpUser = user
-    }
-    
-    func inject(_ event: E) {
+    func inject(_ event: T) {
         self.event = event
-    }
-    
-    func inject(_ rsvpList: R) {
-        self.eventRsvpList = rsvpList
-    }
-    
-    func inject(_ invites: I) {
-        self.invites = invites
-    }
-    
-    func inject(_ requestedItems: S) {
-        self.requestedItems = requestedItems
+        if let eventInvites = event.invites {
+            self.invites = eventInvites
+        }
     }
     
     func assertDependencies() {
-        assert(self.mhpUser != nil)
         assert(self.event != nil)
     }
 }

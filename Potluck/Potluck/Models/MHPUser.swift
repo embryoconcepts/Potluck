@@ -23,13 +23,13 @@ enum UserAuthorizationState: String, Codable {
 
 struct MHPUser: Codable {
     var userID: String?
-    var userFirstName: String?
-    var userLastName: String?
-    var userEmail: String?
-    var userPhone: String?
-    var userProfileURL: String?
-    var userFacebookID: String?
-    var userEventListID: String?
+    var firstName: String?
+    var lastName: String?
+    var email: String?
+    var phone: String?
+    var profileImageURL: String?
+    var facebookID: String?
+    var eventListID: String?
     var notificationPermissions: Bool?
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
@@ -41,13 +41,13 @@ struct MHPUser: Codable {
     }
     
     init(userID: String,
-         userFirstName: String,
-         userLastName: String,
-         userEmail: String,
-         userPhone: String,
-         userProfileURL: String,
-         userFacebookID: String,
-         userEventListID: String,
+         firstName: String,
+         lastName: String,
+         email: String,
+         phone: String,
+         profileImageURL: String,
+         facebookID: String,
+         eventListID: String,
          notificationPermissions: Bool,
          notificationPreferences: Bool,
          locationPermissions: Bool,
@@ -55,13 +55,13 @@ struct MHPUser: Codable {
          userState: UserAuthorizationState) {
         
         self.userID = userID
-        self.userFirstName = userFirstName
-        self.userLastName = userLastName
-        self.userEmail = userEmail
-        self.userPhone = userPhone
-        self.userProfileURL = userProfileURL
-        self.userFacebookID = userFacebookID
-        self.userEventListID = userEventListID
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.phone = phone
+        self.profileImageURL = profileImageURL
+        self.facebookID = facebookID
+        self.eventListID = eventListID
         self.notificationPermissions = notificationPermissions
         self.notificationPreferences = notificationPreferences
         self.locationPermissions = locationPermissions

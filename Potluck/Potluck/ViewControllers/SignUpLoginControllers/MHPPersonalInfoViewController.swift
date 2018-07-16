@@ -65,8 +65,8 @@ class MHPPersonalInfoViewController: UIViewController {
             }
         } else {
             if let first = txtFirstName.text, let last = txtLastName.text, var user = mhpUser {
-                user.userFirstName = first
-                user.userLastName = last
+                user.firstName = first
+                user.lastName = last
                 SVProgressHUD.show()
                 request.updateUserState(mhpUser: user, state: .registered) { (result ) in
                     switch result {

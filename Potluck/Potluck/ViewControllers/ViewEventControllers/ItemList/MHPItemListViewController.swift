@@ -20,7 +20,7 @@ class MHPItemListViewController: UIViewController {
     typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
     var user: MHPUser?
     var event: MHPEvent?
-    var items = [MHPItem]()
+    var items = [MHPPledgedItem]()
     
     
     // MARK: - Lifecycle

@@ -15,7 +15,7 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
     var eventRsvpList: MHPEventRsvpList?
     var invites: [MHPInvite]?
     var requestedItems: [MHPRequestedItem]?
-    var eventItemList: MHPEventItemList?
+    var eventItemList: MHPEventPledgedItemList?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,7 @@ extension MHPCreateEvent4RestrictionsViewController: Injectable {
     typealias R = MHPEventRsvpList
     typealias I = [MHPInvite]
     typealias S = [MHPRequestedItem]
-    typealias L = MHPEventItemList
+    typealias L = MHPEventPledgedItemList
     // TODO: add restrictions
     
     func inject(_ user: T) {

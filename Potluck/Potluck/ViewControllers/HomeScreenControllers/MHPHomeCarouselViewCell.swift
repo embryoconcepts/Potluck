@@ -26,13 +26,12 @@ class MHPHomeCarouselViewCell: ScalingCarouselCell {
     }
     
     func setupEventCell(for event: MHPEvent) {        
-        self.lblEventName.text = event.eventName ?? ""
-        // FIXME: look up event host to get name
-//        self.lblHostName.text = "Hosted by: \(event.eventHost?.userFirstName ?? "")"
-        self.lblDateTime.text = event.eventDate ?? ""
+        self.lblEventName.text = event.title ?? ""
+        self.lblHostName.text = "Hosted by: \(event.host?.firstName ?? "")"
+        self.lblDateTime.text = event.date ?? ""
         
         if let eventPlaceholder = UIImage(named: "eventPlaceholder") {
-            if let urlString = event.eventImageURL, let url = URL(string: urlString) {
+            if let urlString = event.imageURL, let url = URL(string: urlString) {
                 self.imgEvent.kf.setImage(with: url, placeholder: eventPlaceholder)
             } else {
                 self.imgEvent.image = eventPlaceholder

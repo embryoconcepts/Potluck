@@ -22,7 +22,7 @@ class MHPRequestedItemsCell: UITableViewCell, Configurable {
     
     func configureWithModel(_ model: MHPRequestedItem) {
         
-        if let name = model.itemName {
+        if let name = model.name {
             lblItemName.text = "\(name)"
         } else {
             lblItemName.attributedText = NSAttributedString(string: "Item Name",
@@ -30,7 +30,7 @@ class MHPRequestedItemsCell: UITableViewCell, Configurable {
                                                                          .font: UIFont.italicSystemFont(ofSize: 14)])
         }
         
-        if let quantity = model.itemQuantity {
+        if let quantity = model.quantity {
             lblQuantity.text = "\(quantity)"
         } else {
             lblQuantity.attributedText = NSAttributedString(string: "##",
@@ -38,7 +38,7 @@ class MHPRequestedItemsCell: UITableViewCell, Configurable {
                                                                          .font: UIFont.italicSystemFont(ofSize: 14)])
         }
         
-        if let type = model.itemQuantityType {
+        if let type = model.quantityType {
             lblQuantityType.text = "\(type)"
         } else {
             lblQuantityType.attributedText = NSAttributedString(string: "portions",

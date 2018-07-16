@@ -21,7 +21,7 @@ class MHPEventViewController: UIViewController {
     typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
     var user: MHPUser?
     var event: MHPEvent?
-    var items: [MHPItem]?
+    var items: [MHPPledgedItem]?
     var rsvps: [MHPRsvp]?
     var userDidRsvpForEvent: Bool?
     var userIsHost: Bool?
@@ -87,16 +87,15 @@ class MHPEventViewController: UIViewController {
         }
         
         navigationItem.rightBarButtonItem = rightBarButton
-        self.title = event?.eventName ?? ""
+        self.title = event?.title ?? ""
     }
     
     fileprivate func styleLabels() {
         // Event Details
-        // FIXME: look up event host to get name
-//        lblEventHost.text = event?.eventHost?.userFirstName ?? ""
-        lblEventDescription.text = event?.eventDescription ?? ""
-        lblEventDateTime.text = event?.eventDate ?? ""
-        lblEventLocation.text = event?.eventLocation ?? ""
+        lblEventHost.text = event?.host?.firstName ?? ""
+        lblEventDescription.text = event?.description ?? ""
+        lblEventDateTime.text = event?.date ?? ""
+        lblEventLocation.text = event?.location ?? ""
         
         // RSVP Button
         if userIsHost != nil || (userIsGuest != nil && userHasRsvp != nil) {

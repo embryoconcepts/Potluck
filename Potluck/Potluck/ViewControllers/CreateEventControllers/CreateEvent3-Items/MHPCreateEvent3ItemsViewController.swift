@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol CreateEvent3DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite], rsvpList: MHPEventRsvpList, requestedItems: [MHPRequestedItem])
+    func back(event: MHPEvent)
 }
 
 class MHPCreateEvent3ItemsViewController: UIViewController {
@@ -21,11 +21,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     @IBOutlet weak var btnEdit: UIButton!
     
     var btnInfo = UIBarButtonItem()
-    var mhpUser: MHPUser?
     var event: MHPEvent?
-    var eventRsvpList: MHPEventRsvpList?
-    var invites: [MHPInvite]?
-    var eventItemList: MHPEventItemList?
     var dataDelegate: CreateEvent3DataDelegate?
     
     var requestedItems: [MHPRequestedItem]? {
@@ -47,8 +43,10 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         assertDependencies()
         styleView()
         
-        if requestedItems == nil || requestedItems?.count == 0 {
+        if event?.requestedItems == nil || event?.requestedItems?.count == 0 {
             setupSuggestedItems()
+        } else {
+            requestedItems = event!.requestedItems
         }
     }
     
@@ -99,7 +97,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         btnInfo = UIBarButtonItem(image: UIImage(named: "btnInfo.png"), style: .plain, target: self, action: #selector(infoTapped(_: )))
         navigationItem.rightBarButtonItem = btnInfo
         
-        if let guests = invites?.count {
+        if let guests = event!.invites?.count {
             lblSuggestionText.text = "For \(guests) guests, may we suggest the following items and amounts."
         }
         
@@ -120,7 +118,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     fileprivate func setupSuggestedItems() {
         var suggestedItems = [MHPRequestedItem]()
-        if let guests = invites?.count {
+        if let guests = event!.rsvpList?.rsvps?.count {
             
             let categories = [
                 "Appetizers": 2,
@@ -133,9 +131,9 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
                 "Utensils": 1.25
             ]
             for (name, multiplier) in categories {
-                suggestedItems.append(MHPRequestedItem(itemName: name,
-                                                       itemQuantity: Int((Double(guests) * multiplier).rounded(FloatingPointRoundingRule.awayFromZero)),
-                                                       itemQuantityType: "servings"))
+                suggestedItems.append(MHPRequestedItem(name: name,
+                                                       quantity: Int((Double(guests) * multiplier).rounded(FloatingPointRoundingRule.awayFromZero)),
+                                                       quantityType: "servings"))
             }
         }
         requestedItems = suggestedItems
@@ -152,40 +150,23 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     
     fileprivate func next() {
         createEventItemList()
-            if  let user = mhpUser,
-                let event = event,
-                let eventRsvpList = eventRsvpList,
-                let invites = invites,
-                let items = requestedItems,
-                let eventItemList = eventItemList,
+            if  let event = event,
                 let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
-                createEvent4.inject(user)
                 createEvent4.inject(event)
-                createEvent4.inject(eventRsvpList)
-                createEvent4.inject(invites)
-                createEvent4.inject(items)
-                createEvent4.inject(eventItemList)
                 navigationController?.pushViewController(createEvent4, animated: true)
             }
     }
     
     fileprivate func createEventItemList() {
-        if let eventID = event?.eventID,
-            let items = requestedItems {
-            eventItemList = MHPEventItemList(eventID: eventID,
-                                             eventItemListDescription: nil,
-                                             eventItemListTags: nil,
-                                             eventItems: items)
+        if let items = requestedItems {
+            event?.requestedItems = items
         }
     }
     
     fileprivate func back() {
-        if let user = mhpUser,
-            let event = event,
-            let invites = invites,
-            let rsvpList = eventRsvpList,
-            let requestedItems = requestedItems {
-            dataDelegate?.back(user: user, event: event, invites: invites, rsvpList: rsvpList, requestedItems: requestedItems)
+        createEventItemList()
+        if let event = event {
+            dataDelegate?.back(event: event)
         }
     }
     
@@ -288,9 +269,9 @@ extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelA
     }
     
     func saveModifiedItem(with modifiedItem: MHPRequestedItem, at indexPath: IndexPath) {       
-        requestedItems?[indexPath.row].itemName = modifiedItem.itemName
-        requestedItems?[indexPath.row].itemQuantity = modifiedItem.itemQuantity
-        requestedItems?[indexPath.row].itemQuantityType = modifiedItem.itemQuantityType
+        requestedItems?[indexPath.row].name = modifiedItem.name
+        requestedItems?[indexPath.row].quantity = modifiedItem.quantity
+        requestedItems?[indexPath.row].quantityType = modifiedItem.quantityType
         
         DispatchQueue.main.async { [unowned self] in
             self.tblView.reloadData()
@@ -310,36 +291,13 @@ extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelA
 // MARK: - UserInjectable Protocol
 
 extension MHPCreateEvent3ItemsViewController: Injectable {
-    typealias T = MHPUser
-    typealias E = MHPEvent
-    typealias R = MHPEventRsvpList
-    typealias I = [MHPInvite]
-    typealias S = [MHPRequestedItem]
-    
-    func inject(_ user: T) {
-        self.mhpUser = user
-    }
-    
-    func inject(_ event: E) {
+    typealias T = MHPEvent
+
+    func inject(_ event: T) {
         self.event = event
     }
-    
-    func inject(_ rsvpList: R) {
-        self.eventRsvpList = rsvpList
-    }
-    
-    func inject(_ invites: I) {
-        self.invites = invites
-    }
-    
-    func inject(_ requestedItems: S) {
-        self.requestedItems = requestedItems
-    }
-    
+
     func assertDependencies() {
-        assert(self.mhpUser != nil)
         assert(self.event != nil)
-        assert(self.eventRsvpList != nil)
-        assert(self.invites != nil)
     }
 }

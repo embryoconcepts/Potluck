@@ -9,18 +9,18 @@
 import UIKit
 
 struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
-    var itemName: String?
-    var itemQuantity: Int?
-    var itemQuantityType: String?
+    var name: String?
+    var quantity: Int?
+    var quantityType: String?
     
     init() { }
     
-    init(itemName: String?,
-         itemQuantity: Int?,
-         itemQuantityType: String?) {
-        self.itemName = itemName
-        self.itemQuantity = itemQuantity
-        self.itemQuantityType = itemQuantityType
+    init(name: String?,
+         quantity: Int?,
+        quantityType: String?) {
+        self.name = name
+        self.quantity = quantity
+        self.quantityType = quantityType
     }
     
     var reuseIdentifier: String {

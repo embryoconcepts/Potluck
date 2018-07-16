@@ -89,7 +89,7 @@
         case .registered:
             self.viewAlert.isHidden = true
             self.lblAlertMessage.text = ""
-            if let firstName = self.mhpUser!.userFirstName, let lastName = self.mhpUser!.userLastName {
+            if let firstName = self.mhpUser!.firstName, let lastName = self.mhpUser!.lastName {
                 self.lblTitle.text = "Welcome, \(firstName) \(lastName)!"
             }
         case .verified:
@@ -108,38 +108,66 @@
     
     fileprivate func setupMockData() {
         mhpUser = MHPUser()
-        mhpUser!.userFirstName = "Tester the Bester"
+        mhpUser!.firstName = "Tester the Bester"
         var host1 = MHPUser()
-        host1.userFirstName = "Jill of AllTrades"
+        host1.firstName = "Jill of AllTrades"
         host1.userID = "host1userID"
+        
+        let requestedItems1 = [MHPRequestedItem(name: "Beans", quantity: 10, quantityType: "servings")]
+        
+        let pledgedItems1 = [MHPPledgedItem()]
+       
+        let pledgedItemsList1 = MHPEventPledgedItemList(eventID: "event1eventID",
+                                          description: "You could write about a theme, or ask people to bing kid-friendly stuff",
+                                          tags: ["shellfish"],
+                                          items: pledgedItems1)
+       
+        let invites1 = [MHPInvite(userFirstName: "Ada", userLastName: "Lovelace", userEmail: "ada@babbage.com"),
+                        MHPInvite(userFirstName: "Hedy", userLastName: "Lamarr", userEmail: "hedy@mail.com")]
+        
+        let rsvps1 = [MHPRsvp(userID: "host2userID",
+                              userEmail: "grace@hooper.com",
+                              eventID: "event1eventID",
+                              itemID: "hash string for item id",
+                              isGuest: true,
+                              isHost: false,
+                              response: "yes",
+                              notificationsOn: true,
+                              numOfGuest: 0)]
+        
+        let rsvpList1 = MHPEventRsvpList(hostID: host1.userID, rsvps: rsvps1)
+        
         let event1 = MHPEvent(eventID: "event1eventID",
-                             eventName: "Potluck Test 1",
-                             eventDate: "1/25/2025",
-                             eventLocation: "Nowhere",
-                             eventAddress: "123 Elm Grove",
-                             eventDescription: "Just testing out some things like this is a thing and that is a thing and wow, things.",
-                             eventImageURL: "url for event image",
-                             eventRestrictions: ["vegan", "kosher", "no nuts"],
-                             eventHostID: "host1userID",
-                             eventItemListID: "event1eventItemListID",
-                             eventRsvpListID: "event1eventRsvpListID")
+                              title: "Potluck Test 1",
+                              date: "1/25/2025",
+                              location: "Nowhere",
+                              address: "123 Elm Grove",
+                              description: "Just testing out some things like this is a thing and that is a thing and wow, things.",
+                              imageURL: "url for event image",
+                              restrictions: ["vegan", "kosher", "no nuts"],
+                              host: host1,
+                              requestedItems: requestedItems1,
+                              pledgedItemList: pledgedItemsList1,
+                              invites: invites1,
+                              rsvpList: rsvpList1)
+
         
         var host2 = MHPUser()
-        host2.userFirstName = "Mary Contrary"
+        host2.firstName = "Mary Contrary"
         host2.userID = "host2userID"
-        let event2 = MHPEvent(eventID: "event2eventID",
-                              eventName: "Potluck Test 2",
-                              eventDate: "10/28/2018",
-                              eventLocation: "Somewhere",
-                              eventAddress: "123 Elm Grove",
-                              eventDescription:  "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!",
-                              eventImageURL: "potluckPlaceholder",
-                              eventRestrictions: ["vegetarian"],
-                              eventHostID: "event2eventHostID",
-                              eventItemListID: "event2eventItemListID",
-                              eventRsvpListID: "event2eventRsvpListID")
+//        let event2 = MHPEvent(eventID: "event2eventID",
+//                              eventName: "Potluck Test 2",
+//                              eventDate: "10/28/2018",
+//                              eventLocation: "Somewhere",
+//                              eventAddress: "123 Elm Grove",
+//                              eventDescription:  "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!",
+//                              eventImageURL: "potluckPlaceholder",
+//                              eventRestrictions: ["vegetarian"],
+//                              eventHostID: "event2eventHostID",
+//                              eventItemListID: "event2eventItemListID",
+//                              eventRsvpListID: "event2eventRsvpListID")
         events.append(event1)
-        events.append(event2)
+//        events.append(event2)
     }
     
  }

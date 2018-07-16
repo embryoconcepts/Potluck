@@ -29,21 +29,20 @@ class MHPFirestoreParser: MHPParser {
         }
         
         if let mu = mhpUser {
-            userDict["userFirstName"] = mu.userFirstName
-            userDict["userFirstName"] = mu.userFirstName
-            userDict["userLastName"] = mu.userLastName
-            userDict["userEmail"] = mu.userEmail ?? firUserEmail
-            userDict["userPhone"] = mu.userPhone
-            userDict["userProfileURL"] = mu.userProfileURL
-            userDict["userFacebookID"] = mu.userFacebookID
-            userDict["userEventListID"] = mu.userEventListID
+            userDict["firstName"] = mu.firstName
+            userDict["lastName"] = mu.lastName
+            userDict["email"] = mu.email ?? firUserEmail
+            userDict["phone"] = mu.phone
+            userDict["profileImageURL"] = mu.profileImageURL
+            userDict["facebookID"] = mu.facebookID
+            userDict["eventListID"] = mu.eventListID
             userDict["notificationPermissions"] = mu.notificationPermissions
             userDict["notificationPreferences"] = mu.notificationPreferences
             userDict["locationPermissions"] = mu.locationPermissions
             userDict["facebookPermissions"] = mu.facebookPermissions
         } else if let fn = firstName, let ln = lastName {
-            userDict["userFirstName"] = fn
-            userDict["userLastName"] = ln
+            userDict["firstName"] = fn
+            userDict["lastName"] = ln
         }
         return userDict
     }

@@ -61,12 +61,8 @@ class MHPInviteContactsViewController: UIViewController {
                 return invite
             }
             .filter({ (invite) -> Bool in
-                if pendingInvites!.count > 0 {
-                    if pendingInvites!.contains(invite) {
+                if pendingInvites!.count > 0, pendingInvites!.contains(invite) {
                         return false
-                    } else {
-                        return true
-                    }
                 } else {
                     return true
                 }
@@ -84,6 +80,7 @@ class MHPInviteContactsViewController: UIViewController {
 //                }
                 return true
         }
+   
         pendingInvites?.append(contentsOf: tempInvites)
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites!)
         dismiss(animated: true, completion: nil)

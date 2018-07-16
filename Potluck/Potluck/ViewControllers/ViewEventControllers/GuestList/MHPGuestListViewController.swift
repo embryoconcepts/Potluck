@@ -27,7 +27,7 @@ class MHPGuestListViewController: UIViewController {
         countRsvps()
         assertDependencies()
         // Do any additional setup after loading the view.
-        self.title = event?.eventName ?? "Title"
+        self.title = event?.title ?? "Title"
         self.tableView.delegate = self
     }
     

@@ -59,11 +59,11 @@ class MHPModifyItemPopoverViewController: UIViewController {
         self.isNewItem = isNew
         
         if !isNew {
-            txtName.text = modifiedItem.itemName
-            if let quantity = modifiedItem.itemQuantity {
+            txtName.text = modifiedItem.name
+            if let quantity = modifiedItem.quantity {
                 txtQuantity.text = String(quantity)
             }
-            txtPortions.text = modifiedItem.itemQuantityType
+            txtPortions.text = modifiedItem.quantityType
             checkIfSaveEnabled()
         }
     }
@@ -107,11 +107,11 @@ extension MHPModifyItemPopoverViewController: UITextFieldDelegate {
         if let text = textField.text {
         switch textField {
         case txtName:
-            modifiedItem.itemName = text
+            modifiedItem.name = text
         case txtQuantity:
-            modifiedItem.itemQuantity = Int(text)
+            modifiedItem.quantity = Int(text)
         default:
-            modifiedItem.itemQuantityType = text
+            modifiedItem.quantityType = text
         }
         checkIfSaveEnabled()
         }
@@ -160,11 +160,11 @@ extension MHPModifyItemPopoverViewController: UITextFieldDelegate {
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
-        modifiedItem.itemName = txtName.text
+        modifiedItem.name = txtName.text
         if let quantity = txtQuantity.text {
-            modifiedItem.itemQuantity = Int(quantity)
+            modifiedItem.quantity = Int(quantity)
         }
-        modifiedItem.itemQuantityType = txtPortions.text
+        modifiedItem.quantityType = txtPortions.text
         checkIfSaveEnabled()
     }
 }
