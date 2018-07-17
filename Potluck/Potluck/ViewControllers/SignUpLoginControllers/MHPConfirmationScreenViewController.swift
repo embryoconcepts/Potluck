@@ -20,7 +20,7 @@ class MHPConfirmationScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         assertDependencies()
-        if let user = mhpUser, let name = user.userFirstName {
+        if let user = mhpUser, let name = user.firstName {
             lblMessage.text = "Welcome, \(name)! Your account is all set up and ready to go."
         }
         // Do any additional setup after loading the view.

@@ -9,20 +9,20 @@
 import UIKit
 
 struct MHPEventRsvpList: Codable  {
-    var eventRsvpListID: String?
-    var eventHostID: String?
-    var eventRsvps: [MHPRsvp]?
+    var listID: String?
+    var hostID: String?
+    var rsvps: [MHPRsvp]?
 
-    init(eventRsvpListID: String = UUID().uuidString) {
-        self.eventRsvpListID = eventRsvpListID
+    init(listID: String = UUID().uuidString) {
+        self.listID = listID
     }
     
-    init(eventRsvpListID: String = UUID().uuidString,
-         eventHostID: String?,
-         eventRsvps: [MHPRsvp]?) {
+    init(listID: String = UUID().uuidString,
+         hostID: String?,
+         rsvps: [MHPRsvp]?) {
         
-        self.eventRsvpListID = eventRsvpListID
-        self.eventHostID = eventRsvpListID
-        self.eventRsvps = eventRsvps
+        self.listID = listID
+        self.hostID = hostID
+        self.rsvps = rsvps
     }
 }

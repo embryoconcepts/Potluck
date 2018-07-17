@@ -22,7 +22,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
-    var invites: [MHPInvite]?
     
     let txtViewPlaceholderText = "Describe your event - let guests know if there is a theme, or a special occasion."
     var address: String?
@@ -64,7 +63,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-        event?.eventDate = formatter.string(from: selectedDate)
+        event?.date = formatter.string(from: selectedDate)
         
     }
     
@@ -84,23 +83,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     
-    // MARK: - Keyboard Handlers
-    
-    @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollView.contentInset.bottom = keyboardSize.height
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: Notification) {
-        scrollView.contentInset.bottom = 0
-    }
-    
-    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
-    
-    
     // MARK: - Private methods
     
     fileprivate func setupView() {
@@ -117,9 +99,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tapGesture)
-        
         // style description text view
         txtDescription.text = txtViewPlaceholderText
         txtDescription.textColor = .lightGray
@@ -128,6 +107,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         txtDescription.layer.cornerRadius = 5
         
         datePicker.minimumDate = Date()
+        
+        setupKeyboardDoneButton()
+        setupKeyboardDismissOnTap()
+        scrollView.keyboardDismissMode = .interactive
     }
     
     fileprivate func resetView() {
@@ -148,15 +131,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     fileprivate func next() {
         if validate() {
-            if  let user = mhpUser,
-                let event = event,
+            if  let event = event,
                 let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
                 createEvent2.dataDelegate = self
-                createEvent2.inject(user)
                 createEvent2.inject(event)
-                if let invites = invites {
-                    createEvent2.inject(invites)
-                }
                 navigationController?.pushViewController(createEvent2, animated: true)
             }
         }
@@ -216,7 +194,7 @@ extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
             textView.text = txtViewPlaceholderText
             textView.textColor = UIColor.lightGray
         } else {
-            event?.eventDescription = textView.text
+            event?.description = textView.text
         }
     }
     
@@ -230,12 +208,13 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
         switch textField {
         case txtName:
             txtName.resignFirstResponder()
+            txtDescription.becomeFirstResponder()
+            return false
+        case txtDescription:
+            txtDescription.resignFirstResponder()
             txtLocationName.becomeFirstResponder()
-        case txtLocationName:
-            txtLocationName.resignFirstResponder()
-            txtName.becomeFirstResponder()
         default:
-            return true
+            txtLocationName.resignFirstResponder()
         }
         return true
     }
@@ -243,12 +222,54 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case txtName:
-            event?.eventName = textField.text
+            event?.title = textField.text
         case txtLocationName:
-            event?.eventLocation = textField.text
+            event?.location = textField.text
         default:
             return
         }
+    }
+    
+    // add done button to keyboard
+    func setupKeyboardDoneButton() {
+        //init toolbar
+        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
+        //create left side empty space so that done button set on right side
+        let flexSpace = UIBarButtonItem(barButtonSystemItem:    .flexibleSpace, target: nil, action: nil)
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        toolbar.setItems([flexSpace, doneBtn], animated: false)
+        toolbar.sizeToFit()
+        //setting toolbar as inputAccessoryView
+        self.txtName.inputAccessoryView = toolbar
+        self.txtDescription.inputAccessoryView = toolbar
+        self.txtLocationName.inputAccessoryView = toolbar
+    }
+    
+    func setupKeyboardDismissOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+        dismissKeyboard()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+        UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
+        event?.title = txtName.text
+        event?.description = txtDescription.text
+        event?.location = txtLocationName.text
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentInset.bottom = keyboardFrame.height + 70
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset.bottom = 0
     }
 }
 
@@ -259,7 +280,7 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
     func didSelectLocation(controller: MHPLocationSearchViewController, address: String) {
         btnLocationSearch.setTitle("", for: .normal)
         lblAddress.text = address
-        event?.eventAddress = address
+        event?.address = address
     }
 }
 
@@ -267,10 +288,8 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
 // MARK: - CreateEvent2DataDelegate
 
 extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
-    func back(user: MHPUser, event: MHPEvent, invites: [MHPInvite]) {
-        inject(user)
+    func back(event: MHPEvent) {
         inject(event)
-        inject(invites)
     }
 }
 
@@ -278,19 +297,14 @@ extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
 
 extension MHPCreateEvent1DetailsViewController: Injectable {
     typealias T = MHPUser
-    typealias U = MHPEvent
-    typealias I = [MHPInvite]
+    typealias E = MHPEvent
     
     func inject(_ user: T) {
         self.mhpUser = user
     }
     
-    func inject(_ event: U) {
+    func inject(_ event: E) {
         self.event = event
-    }
-    
-    func inject(_ invites: I) {
-        self.invites = invites
     }
     
     func assertDependencies() {
@@ -298,7 +312,7 @@ extension MHPCreateEvent1DetailsViewController: Injectable {
         
         if event == nil {
             event = MHPEvent()
-            event?.eventHostID = mhpUser?.userID
+            event?.host? = mhpUser!
         }
     }
 }

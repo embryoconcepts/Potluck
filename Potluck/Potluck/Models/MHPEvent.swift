@@ -9,43 +9,50 @@
 import UIKit
 
 struct MHPEvent: Codable {
-    var eventID: String?
-    var eventName: String?
-    var eventDate: String?
-    var eventLocation: String?
-    var eventAddress: String?
-    var eventDescription: String?
-    var eventImageURL: String?
-    var eventRestrictions: [String]?
-    var eventHostID: String?
-    var eventItemListID: String?
-    var eventRsvpListID: String?
+    var eventID: String
+    var title: String?
+    var date: String?
+    var location: String?
+    var address: String?
+    var description: String?
+    var imageURL: String?
+    var restrictions: [String]?
+    var host: MHPUser?
+    var requestedItems: [MHPRequestedItem]?
+    var pledgedItemList: MHPEventPledgedItemList?
+    var invites: [MHPInvite]?
+    var rsvpList: MHPEventRsvpList?
     
     init(eventID: String = UUID().uuidString) {
         self.eventID = eventID
     }
     
     init(eventID: String = UUID().uuidString,
-         eventName: String?,
-         eventDate: String?,
-         eventLocation: String?,
-         eventAddress: String?,
-         eventDescription: String?,
-         eventImageURL: String?,
-         eventRestrictions: [String]?,
-         eventHostID: String?,
-         eventItemListID: String?,
-         eventRsvpListID: String?) {
+         title: String?,
+         date: String?,
+         location: String?,
+         address: String?,
+         description: String?,
+         imageURL: String?,
+         restrictions: [String]?,
+         host: MHPUser?,
+         requestedItems: [MHPRequestedItem]?,
+         pledgedItemList: MHPEventPledgedItemList?,
+         invites: [MHPInvite]?,
+         rsvpList: MHPEventRsvpList?) {
         
         self.eventID = eventID
-        self.eventName = eventName
-        self.eventDate = eventDate
-        self.eventLocation = eventLocation
-        self.eventAddress = eventAddress
-        self.eventDescription = eventDescription
-        self.eventImageURL = eventImageURL
-        self.eventHostID = eventHostID
-        self.eventItemListID = eventItemListID
-        self.eventRsvpListID = eventRsvpListID
+        self.title = title
+        self.date = date
+        self.location = location
+        self.address = address
+        self.description = description
+        self.imageURL = imageURL
+        self.restrictions = restrictions
+        self.host = host
+        self.requestedItems = requestedItems
+        self.pledgedItemList = pledgedItemList
+        self.invites = invites
+        self.rsvpList = rsvpList
     }
 }

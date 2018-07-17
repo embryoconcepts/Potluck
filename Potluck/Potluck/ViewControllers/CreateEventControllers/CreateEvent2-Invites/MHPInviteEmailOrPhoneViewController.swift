@@ -62,10 +62,10 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                     switch result {
                     case .success(let user):
                         self.tempInvite.userID = user.userID
-                        self.tempInvite.userFirstName = user.userFirstName
-                        self.tempInvite.userLastName = user.userLastName
-                        self.tempInvite.userEmail = user.userEmail
-                        self.tempInvite.userProfileURL = user.userProfileURL
+                        self.tempInvite.userFirstName = user.firstName
+                        self.tempInvite.userLastName = user.lastName
+                        self.tempInvite.userEmail = user.email
+                        self.tempInvite.userProfileURL = user.profileImageURL
                     case .failure(_):
                         self.tempInvite.userFirstName = self.txtFirst.text
                         self.tempInvite.userLastName = self.txtLast.text
@@ -146,7 +146,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                                               range: range)
         
         if allMatches.count == 1, allMatches.first?.url?.absoluteString.contains("mailto:") == true &&
-                trimmedText != mhpUser?.userEmail {
+                trimmedText != mhpUser?.email {
             return trimmedText
         } else {
             DispatchQueue.main.async { [unowned self] in
@@ -242,6 +242,8 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
             }
         }
     }
+    
+    // TODO: dismiss keyboard properly
 }
 
 
@@ -261,6 +263,5 @@ extension MHPInviteEmailOrPhoneViewController: Injectable {
     
     func assertDependencies() {
         assert(self.pendingInvites != nil)
-        assert(self.mhpUser != nil)
     }
 }
