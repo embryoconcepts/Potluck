@@ -33,7 +33,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupKeyboardDismissOnTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -222,6 +222,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
             txtEmailOrPhone.becomeFirstResponder()
         case txtEmailOrPhone:
             txtEmailOrPhone.resignFirstResponder()
+            addToListTapped(self)
         default:
             return true
         }
@@ -244,6 +245,23 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
     }
     
     // TODO: dismiss keyboard properly
+    
+    func setupKeyboardDismissOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+        dismissKeyboard()
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+        UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
+        tempInvite.userFirstName = txtFirst.text
+        tempInvite.userLastName = txtLast.text
+        tempInvite.userEmail = txtEmailOrPhone.text
+    }
 }
 
 

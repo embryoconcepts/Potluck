@@ -53,7 +53,7 @@
                                                 <rect key="frame" x="15" y="97" width="328" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqB-p6-C9q">
                                                 <rect key="frame" x="15" y="142" width="328" height="21"/>
@@ -80,7 +80,7 @@
                                                 <rect key="frame" x="15" y="459" width="300" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address if there is one" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLz-KA-kUT">
                                                 <rect key="frame" x="15" y="497" width="300" height="17"/>
@@ -252,7 +252,7 @@
                             <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3YP-ct-Xic">
                                 <rect key="frame" x="0.0" y="20" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits" textContentType="street-address"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search" textContentType="street-address"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
                                     <string>Title</string>
@@ -511,7 +511,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="dwj-hd-aMF"/>
                                 </constraints>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
                                     <string>Title</string>
@@ -735,7 +735,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                         <rect key="frame" x="15" y="62" width="345" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartInsertDeleteType="no" smartQuotesType="no"/>
                                         <connections>
                                             <outlet property="delegate" destination="Upo-hO-sAn" id="H4P-K8-JzP"/>
                                         </connections>
@@ -744,7 +744,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                         <rect key="frame" x="15" y="100" width="345" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartInsertDeleteType="no"/>
                                         <connections>
                                             <outlet property="delegate" destination="Upo-hO-sAn" id="qjs-bz-U1i"/>
                                         </connections>
@@ -753,7 +753,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                         <rect key="frame" x="15" y="138" width="345" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no"/>
                                         <connections>
                                             <outlet property="delegate" destination="Upo-hO-sAn" id="qwY-TI-x3u"/>
                                         </connections>
@@ -1006,7 +1006,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 <rect key="frame" x="16" y="15" width="217" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <connections>
                                     <outlet property="delegate" destination="vlT-dc-3cg" id="6QJ-4C-8gV"/>
                                 </connections>
@@ -1015,7 +1015,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 <rect key="frame" x="238" y="15" width="47" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
                                 <connections>
                                     <outlet property="delegate" destination="vlT-dc-3cg" id="rJj-9Y-NyG"/>
                                 </connections>
@@ -1024,7 +1024,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 <rect key="frame" x="288" y="15" width="71" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-LightItalic" family="Roboto" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <connections>
                                     <outlet property="delegate" destination="vlT-dc-3cg" id="OFb-8Z-rat"/>
                                 </connections>

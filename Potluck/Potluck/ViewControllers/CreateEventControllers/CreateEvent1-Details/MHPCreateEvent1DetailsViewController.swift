@@ -262,14 +262,22 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
         //init toolbar
         let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
         //create left side empty space so that done button set on right side
-        let flexSpace = UIBarButtonItem(barButtonSystemItem:    .flexibleSpace, target: nil, action: nil)
-        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Next",
+                                                       style: .done,
+                                                       target: self,
+                                                       action: #selector(moveToLocationTextField))
         toolbar.setItems([flexSpace, doneBtn], animated: false)
         toolbar.sizeToFit()
         //setting toolbar as inputAccessoryView
-        self.txtName.inputAccessoryView = toolbar
+//        self.txtName.inputAccessoryView = toolbar
         self.txtDescription.inputAccessoryView = toolbar
-        self.txtLocationName.inputAccessoryView = toolbar
+//        self.txtLocationName.inputAccessoryView = toolbar
+    }
+    
+    @objc func moveToLocationTextField() {
+        txtDescription.resignFirstResponder()
+        txtLocationName.becomeFirstResponder()
     }
     
     func setupKeyboardDismissOnTap() {
