@@ -19,6 +19,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var btnLocationSearch: UIButton!
     @IBOutlet weak var btnNext: UIButton!
+    @IBOutlet weak var btnClearAddress: UIButton!
     
     var mhpUser: MHPUser?
     var event: MHPEvent?
@@ -74,6 +75,13 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         }
     }
     
+    @IBAction func clearAddressTapped(_ sender: Any) {
+        lblAddress.text = ""
+        event?.address = nil
+        btnClearAddress.isEnabled = false
+        btnClearAddress.isHidden = true
+    }
+    
     @IBAction func cancelTappped(_ sender: UIButton) {
         cancel()
     }
@@ -99,14 +107,32 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         
+        // set values
+        txtName.text = event?.title ?? ""
+        if let desc = event?.description {
+            txtDescription.text = desc
+            txtDescription.textColor = .black
+        } else {
+            txtDescription.text = txtViewPlaceholderText
+            txtDescription.textColor = .lightGray
+        }
+        datePicker.minimumDate = Date()
+        txtLocationName.text = event?.location ?? ""
+        if let address = event?.address {
+            lblAddress.text = address
+            btnClearAddress.isEnabled = true
+            btnClearAddress.isHidden = false
+        } else {
+            lblAddress.text = ""
+            btnClearAddress.isEnabled = false
+            btnClearAddress.isHidden = true
+        }
+        
+        
         // style description text view
-        txtDescription.text = txtViewPlaceholderText
-        txtDescription.textColor = .lightGray
         txtDescription.layer.borderColor = UIColor(hexString: "ebebeb").cgColor
         txtDescription.layer.borderWidth = 1.0
         txtDescription.layer.cornerRadius = 5
-        
-        datePicker.minimumDate = Date()
         
         setupKeyboardDoneButton()
         setupKeyboardDismissOnTap()
@@ -160,8 +186,8 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
             isValid = false
         }
         
-        if txtLocationName.text == "" {
-            errorMsg += "\nlocation"
+        if txtLocationName.text == "" || lblAddress.text == "" {
+            errorMsg += "\nlocation or address"
             isValid = false
         }
         
@@ -281,6 +307,8 @@ extension MHPCreateEvent1DetailsViewController: LocationSearchSelectionDelegate 
         btnLocationSearch.setTitle("", for: .normal)
         lblAddress.text = address
         event?.address = address
+        btnClearAddress.isEnabled = true
+        btnClearAddress.isHidden = false
     }
 }
 
