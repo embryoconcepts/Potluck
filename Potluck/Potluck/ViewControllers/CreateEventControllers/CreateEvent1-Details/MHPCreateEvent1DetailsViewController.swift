@@ -186,7 +186,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
             isValid = false
         }
         
-        if txtLocationName.text == "" || lblAddress.text == "" {
+        if txtLocationName.text == "" && lblAddress.text == "" {
             errorMsg += "\nlocation or address"
             isValid = false
         }
@@ -209,6 +209,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
 
 extension MHPCreateEvent1DetailsViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.becomeFirstResponder()
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
             textView.textColor = UIColor.black

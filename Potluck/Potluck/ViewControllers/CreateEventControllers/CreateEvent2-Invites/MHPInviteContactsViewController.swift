@@ -118,16 +118,13 @@ class MHPInviteContactsViewController: UIViewController {
             store.requestAccess(for: .contacts, completionHandler: { (authorized: Bool, error: Error?) -> Void in
                 if authorized {
                     self.retrieveContacts(with: store)
+                } else {
+                    // TODO: handle if user does not give permission
                 }
             })
         } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
             self.retrieveContacts(with: store)
         }
-        
-        DispatchQueue.main.async {
-            self.tblView.reloadData()
-        }
-        
     }
     
     func retrieveContacts(with store: CNContactStore) {
@@ -135,18 +132,20 @@ class MHPInviteContactsViewController: UIViewController {
                     CNContactEmailAddressesKey as CNKeyDescriptor,
                     CNContactImageDataKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
+        request.sortOrder = .userDefault
         
         do {
             try store.enumerateContacts(with: request) { (contact, stop) in
-                if !contact.emailAddresses.isEmpty {
+                if  (!contact.givenName.isEmpty || !contact.familyName.isEmpty) &&
+                    !contact.emailAddresses.isEmpty {
                     self.allContacts.append(contact)
                 }
             }
+            updateContactsWithPreviouslySelected()
         } catch {
             print(error.localizedDescription)
         }
-        
-        updateContactsWithPreviouslySelected()
+
     }
     
     func updateContactsWithPreviouslySelected() {
@@ -157,6 +156,11 @@ class MHPInviteContactsViewController: UIViewController {
                     contact.contactPreference = invite.userEmail
                 }
             }
+        }
+        
+        self.filteredContacts = self.allContacts
+        DispatchQueue.main.async {
+            self.tblView.reloadData()
         }
     }
     
@@ -222,7 +226,10 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
                     }
                     alertController.addAction(button)
                 }
-                let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (cancel) in
+                    cell.accessoryType = .none
+                    contact.isSelected = false
+                })
                 alertController.addAction(cancelButton)
                 
                 self.present(alertController, animated: true) {
