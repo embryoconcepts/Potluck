@@ -48,11 +48,11 @@ class MHPFirestoreParserTests: XCTestCase {
     func testBuildDataSet_shouldSucceedForUnverifiedUserWithMHPEmail() {
         // Arrange
         var mhpUser = MHPUser()
-        mhpUser.userEmail = "hlamarr@electronicmail.com"
+        mhpUser.email = "hlamarr@electronicmail.com"
         
         let firUserEmail = "hlamarr@electronicmail.com"
         let expected: [String: Any] = [
-            "userEmail": "hlamarr@electronicmail.com",
+            "email": "hlamarr@electronicmail.com",
             "userState": "unverified"
         ]
         
@@ -64,7 +64,7 @@ class MHPFirestoreParserTests: XCTestCase {
                                                              state: .unverified)
         
         // Assert
-        XCTAssertEqual(expected["userEmail"] as! String, result["userEmail"] as! String)
+        XCTAssertEqual(expected["email"] as! String, result["email"] as! String)
         XCTAssertEqual(expected["userState"] as! String, result["userState"] as! String)
     }
     
@@ -74,7 +74,7 @@ class MHPFirestoreParserTests: XCTestCase {
         
         let firUserEmail = "hlamarr@electronicmail.com"
         let expected: [String: Any] = [
-            "userEmail": "hlamarr@electronicmail.com",
+            "email": "hlamarr@electronicmail.com",
             "userState": "unverified"
             ]
         
@@ -86,18 +86,18 @@ class MHPFirestoreParserTests: XCTestCase {
                                                               state: .unverified)
         
         // Assert
-        XCTAssertEqual(expected["userEmail"] as! String, result["userEmail"] as! String)
+        XCTAssertEqual(expected["email"] as! String, result["email"] as! String)
         XCTAssertEqual(expected["userState"] as! String, result["userState"] as! String)
     }
     
     func testBuildDataSet_shouldSucceedForUnverifiedUserWithDifferentEmails() {
         // Arrange
         var mhpUser = MHPUser()
-        mhpUser.userEmail = "hedy@electronicmail.com"
+        mhpUser.email = "hedy@electronicmail.com"
         
         let firUserEmail = "hlamarr@electronicmail.com"
         let expected: [String: Any] = [
-            "userEmail": "hedy@electronicmail.com",
+            "email": "hedy@electronicmail.com",
             "userState": "unverified"
         ]
         
@@ -109,18 +109,18 @@ class MHPFirestoreParserTests: XCTestCase {
                                                              state: .unverified)
         
         // Assert
-        XCTAssertEqual(expected["userEmail"] as! String, result["userEmail"] as! String)
+        XCTAssertEqual(expected["email"] as! String, result["email"] as! String)
         XCTAssertEqual(expected["userState"] as! String, result["userState"] as! String)
     }
     
     func testBuildDataSet_shouldSucceedForVerifiedUser() {
         // Arrange
         var mhpUser = MHPUser()
-        mhpUser.userEmail = "hlamarr@electronicmail.com"
+        mhpUser.email = "hlamarr@electronicmail.com"
         
         let firUserEmail = "hlamarr@electronicmail.com"
         let expected: [String: Any] = [
-            "userEmail": "hlamarr@electronicmail.com",
+            "email": "hlamarr@electronicmail.com",
             "userState": "verified"
         ]
         
@@ -132,22 +132,22 @@ class MHPFirestoreParserTests: XCTestCase {
                                                         state: .verified)
         
         // Assert
-        XCTAssertEqual(expected["userEmail"] as! String, result["userEmail"] as! String)
+        XCTAssertEqual(expected["email"] as! String, result["email"] as! String)
         XCTAssertEqual(expected["userState"] as! String, result["userState"] as! String)
     }
     
     func testBuildDataSet_shouldSucceedForRegisteredUser() {
         // Arrange
         var mhpUser = MHPUser()
-        mhpUser.userEmail = "hlamarr@electronicmail.com"
-        mhpUser.userFirstName = "Hedy"
-        mhpUser.userLastName = "Lamarr"
+        mhpUser.email = "hlamarr@electronicmail.com"
+        mhpUser.firstName = "Hedy"
+        mhpUser.lastName = "Lamarr"
         
         let firUserEmail = "hlamarr@electronicmail.com"
         let expected: [String: Any] = [
-            "userFirstName": "Hedy",
-            "userLastName": "Lamarr",
-            "userEmail": "hlamarr@electronicmail.com",
+            "firstName": "Hedy",
+            "lastName": "Lamarr",
+            "email": "hlamarr@electronicmail.com",
             "userState": "registered"
         ]
         
@@ -159,9 +159,9 @@ class MHPFirestoreParserTests: XCTestCase {
                                                         state: .registered)
         
         // Assert
-        XCTAssertEqual(expected["userFirstName"] as! String, result["userFirstName"] as! String)
-        XCTAssertEqual(expected["userLastName"] as! String, result["userLastName"] as! String)
-        XCTAssertEqual(expected["userEmail"] as! String, result["userEmail"] as! String)
+        XCTAssertEqual(expected["firstName"] as! String, result["firstName"] as! String)
+        XCTAssertEqual(expected["lastName"] as! String, result["lastName"] as! String)
+        XCTAssertEqual(expected["email"] as! String, result["email"] as! String)
         XCTAssertEqual(expected["userState"] as! String, result["userState"] as! String)
     }
         
