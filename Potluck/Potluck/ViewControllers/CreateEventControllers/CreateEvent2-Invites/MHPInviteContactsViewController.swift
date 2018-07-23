@@ -50,6 +50,8 @@ class MHPInviteContactsViewController: UIViewController {
     // MARK: - Action Handlers
     
     @IBAction func saveTapped(_ sender: Any) {
+        let dispatchGroup = DispatchGroup()
+        
         let tempInvites = allContacts
             .filter { $0.isSelected }
             .map { (contact) -> MHPInvite in
@@ -67,23 +69,26 @@ class MHPInviteContactsViewController: UIViewController {
                     return true
                 }
             }
-//            .filter { (invite) -> Bool in
-//                // FIXME: fix timing
-//                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
-//                    switch result {
-//                    case .success(let user):
-//                        invite.userID = user.userID
-//                        invite.userProfileURL = user.profileImageURL
-//                    case .failure(_):
-//                        print()
-//                    }
-//                }
-//                return true
-//        }
+            .filter { (invite) -> Bool in
+                dispatchGroup.enter()
+                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
+                    switch result {
+                    case .success(let user):
+                        invite.userID = user.userID
+                        invite.userProfileURL = user.profileImageURL
+                    case .failure(_):
+                        print()
+                    }
+                    dispatchGroup.leave()
+                }
+                return true
+        }
         
-        pendingInvites?.append(contentsOf: tempInvites)
-        contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites!)
-        dismiss(animated: true, completion: nil)
+        dispatchGroup.notify(queue: DispatchQueue.global()) {
+            self.pendingInvites?.append(contentsOf: tempInvites)
+            self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
