@@ -60,27 +60,27 @@ class MHPInviteContactsViewController: UIViewController {
                 invite.contactImage = contact.imageData
                 return invite
             }
-            .filter({ (invite) -> Bool in
+            .filter { (invite) -> Bool in
                 if pendingInvites!.count > 0, pendingInvites!.contains(invite) {
-                        return false
+                    return false
                 } else {
                     return true
                 }
-            })
-            .filter { (invite) -> Bool in
-                // FIXME: fix timing
+            }
+//            .filter { (invite) -> Bool in
+//                // FIXME: fix timing
 //                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
 //                    switch result {
 //                    case .success(let user):
 //                        invite.userID = user.userID
-//                        invite.userProfileURL = user.userProfileURL
+//                        invite.userProfileURL = user.profileImageURL
 //                    case .failure(_):
 //                        print()
 //                    }
 //                }
-                return true
-        }
-   
+//                return true
+//        }
+        
         pendingInvites?.append(contentsOf: tempInvites)
         contactInvitesDelegate?.submitFromContacts(pendingInvites: pendingInvites!)
         dismiss(animated: true, completion: nil)
@@ -197,28 +197,31 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
             contact.isSelected = !contact.isSelected
             
             if contact.isSelected {
-                contactSelected(cell: cell, contact: contact)
+                contactSelected(cell: cell, contact: contact, indexPath: indexPath)
             } else {
-                contactDeselected(cell: cell, contacts: contacts, indexPath: indexPath)
+                contactDeselected(cell: cell, contact: contact, indexPath: indexPath)
             }
         }
         tblView.deselectRow(at: indexPath, animated: true)
     }
     
-    fileprivate func contactSelected(cell: MHPContactsCell, contact: CNContact) {
-        cell.accessoryType = .checkmark
+    fileprivate func contactSelected(cell: MHPContactsCell, contact: CNContact, indexPath: IndexPath) {
         
         DispatchQueue.main.async { [unowned self] in
             if contact.emails.count == 1 {
+                cell.accessoryType = .checkmark
                 contact.contactPreference = contact.emails.first!
                 cell.lblEmailOrPhone.text = contact.contactPreference
                 cell.lblNameTop.constant = 8
                 cell.lblEmailHeight.constant = 14
             } else if contact.emails.count > 1 {
-                let alertController = UIAlertController(title: "Multiple Emails", message: "Which email would you like to use?", preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: "Multiple Emails",
+                                                        message: "Which email would you like to use?",
+                                                        preferredStyle: .actionSheet)
                 
                 for email in contact.emails {
                     let button = UIAlertAction(title: email, style: .default) { (action) in
+                        cell.accessoryType = .checkmark
                         contact.contactPreference = email
                         cell.lblEmailOrPhone.text = contact.contactPreference
                         cell.lblNameTop.constant = 8
@@ -226,6 +229,7 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
                     }
                     alertController.addAction(button)
                 }
+                
                 let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (cancel) in
                     cell.accessoryType = .none
                     contact.isSelected = false
@@ -239,24 +243,40 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
                 cell.lblNameTop.constant = 18
                 cell.lblEmailHeight.constant = 0
             }
+            
+            self.validateSelection(for: contact, at: cell, indexPath: indexPath)
         }
     }
     
-    fileprivate func contactDeselected(cell: MHPContactsCell, contacts: [CNContact], indexPath: IndexPath) {
+    fileprivate func validateSelection(for contact: CNContact, at cell: MHPContactsCell, indexPath: IndexPath) {
+        if self.pendingInvites!.contains(where: { $0.userEmail == contact.contactPreference }) {
+            DispatchQueue.main.async { [unowned self] in
+                let alertController = UIAlertController(title: "Existing Invite",
+                                                        message: "This user has already been invited.",
+                                                        preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(defaultAction)
+                self.present(alertController, animated: true, completion: {
+                    self.contactDeselected(cell: cell, contact: contact, indexPath: indexPath)
+                })
+            }
+        }
+    }
+    
+    fileprivate func contactDeselected(cell: MHPContactsCell, contact: CNContact, indexPath: IndexPath) {
         cell.accessoryType = .none
-        contacts[indexPath.row].isSelected = false
-        contacts[indexPath.row].contactPreference = ""
+        contact.isSelected = false
+        contact.contactPreference = ""
         cell.lblEmailOrPhone.text = ""
         cell.lblNameTop.constant = 18
         cell.lblEmailHeight.constant = 0
         
         for (i, invite) in self.pendingInvites!.enumerated().reversed() {
-            if invite.contactID == contacts[indexPath.row].identifier {
+            if invite.contactID == contact.identifier {
                 self.pendingInvites?.remove(at: i)
             }
         }
     }
-    
     
 }
 

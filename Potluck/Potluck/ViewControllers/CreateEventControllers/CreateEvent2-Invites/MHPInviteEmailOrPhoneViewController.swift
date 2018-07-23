@@ -147,7 +147,21 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         
         if allMatches.count == 1, allMatches.first?.url?.absoluteString.contains("mailto:") == true &&
                 trimmedText != mhpUser?.email {
-            return trimmedText
+            
+            if self.pendingInvites!.contains(where: { $0.userEmail == email }) {
+                DispatchQueue.main.async { [unowned self] in
+                    let alertController = UIAlertController(title: "Existing Invite",
+                                                            message: "This user has already been invited.",
+                                                            preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                return nil
+            } else {
+                return trimmedText
+            }
+            
         } else {
             DispatchQueue.main.async { [unowned self] in
                 let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
