@@ -124,7 +124,21 @@ class MHPInviteContactsViewController: UIViewController {
                 if authorized {
                     self.retrieveContacts(with: store)
                 } else {
-                    // TODO: handle if user does not give permission
+                    DispatchQueue.main.async { [unowned self] in
+                        let alertController = UIAlertController(title: "Access Denied",
+                                                                message: "Permission to access your Contacts has been previously denied.If you would like to access your contacts, please update your Contacts permission in Settings.",
+                                                                preferredStyle: .alert)
+                        let settingsAction = UIAlertAction(title: "Open Settings", style: .default, handler: { (action) in
+                            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+                        })
+                        alertController.addAction(settingsAction)
+                        
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        alertController.addAction(cancelAction)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             })
         } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {

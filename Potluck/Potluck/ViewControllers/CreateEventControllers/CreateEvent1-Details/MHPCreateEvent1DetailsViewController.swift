@@ -45,6 +45,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        resetView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -140,7 +141,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     }
     
     fileprivate func resetView() {
-        // TODO: improve clearing event handling
         self.event = nil
         self.mhpUser = nil
         self.txtName.text = ""
@@ -148,7 +148,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         self.txtDescription.textColor = .lightGray
         self.datePicker.date = Date()
         self.txtLocationName.text = ""
-        self.btnLocationSearch.titleLabel?.text = "Tap for Address Search"
     }
     
     fileprivate func cancel() {

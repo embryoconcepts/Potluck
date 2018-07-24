@@ -257,9 +257,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
             }
         }
     }
-    
-    // TODO: dismiss keyboard properly
-    
+        
     func setupKeyboardDismissOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tap)
