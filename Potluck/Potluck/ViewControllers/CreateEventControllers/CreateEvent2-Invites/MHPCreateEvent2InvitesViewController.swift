@@ -83,9 +83,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Private methods
     
     fileprivate func setupView() {
-        self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(back(sender: )))
-        self.navigationItem.leftBarButtonItem = newBackButton
+//        self.navigationItem.hidesBackButton = true
+//        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(back(sender: )))
+//        self.navigationItem.leftBarButtonItem = newBackButton
        
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true

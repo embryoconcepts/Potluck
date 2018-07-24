@@ -260,7 +260,8 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     func setupKeyboardDoneButton() {
         //init toolbar
         let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
-        //create left side empty space so that done button set on right side
+        
+        // create left side empty space so that done button set on right side
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Next",
                                                        style: .done,
@@ -268,10 +269,9 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
                                                        action: #selector(moveToLocationTextField))
         toolbar.setItems([flexSpace, doneBtn], animated: false)
         toolbar.sizeToFit()
-        //setting toolbar as inputAccessoryView
-//        self.txtName.inputAccessoryView = toolbar
+    
+        // setting toolbar as inputAccessoryView
         self.txtDescription.inputAccessoryView = toolbar
-//        self.txtLocationName.inputAccessoryView = toolbar
     }
     
     @objc func moveToLocationTextField() {
@@ -332,23 +332,15 @@ extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
 // MARK: - UserInjectable Protocol
 
 extension MHPCreateEvent1DetailsViewController: Injectable {
-    typealias T = MHPUser
-    typealias E = MHPEvent
-    
-    func inject(_ user: T) {
-        self.mhpUser = user
-    }
-    
-    func inject(_ event: E) {
+    typealias T = MHPEvent
+
+    func inject(_ event: T) {
         self.event = event
     }
     
     func assertDependencies() {
-        assert(self.mhpUser != nil)
-        
         if event == nil {
             event = MHPEvent()
-            event?.host? = mhpUser!
         }
     }
 }

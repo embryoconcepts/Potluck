@@ -10,10 +10,11 @@ import UIKit
 
 class MHPCreateEvent5SaveAndSendViewController: UIViewController {
 
+    var event: MHPEvent?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        assertDependencies()
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,4 +26,19 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
         self.presentCancelAlert(view: self)
     }
 
+}
+
+
+// MARK: - UserInjectable Protocol
+
+extension MHPCreateEvent5SaveAndSendViewController: Injectable {
+    typealias T = MHPEvent
+    
+    func inject(_ event: T) {
+        self.event = event
+    }
+    
+    func assertDependencies() {
+        assert(self.event != nil)
+    }
 }

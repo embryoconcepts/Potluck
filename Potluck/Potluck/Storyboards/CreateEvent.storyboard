@@ -625,7 +625,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="closeTapped:" destination="Mle-VP-CpY" eventType="touchUpInside" id="BgG-et-YFP"/>
+                                    <action selector="closeTapped:" destination="Mle-VP-CpY" eventType="touchUpInside" id="YKp-o3-R7y"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested items per person:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVT-kI-gBm">
@@ -1094,19 +1094,126 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                     <view key="view" contentMode="scaleToFill" id="OcX-lv-iBB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cDB-8U-C0P">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0v-68-BTl" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDg-ay-7Ld">
+                                                <rect key="frame" x="15" y="548" width="169" height="40"/>
+                                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="Dzt-Jq-TX1"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelTapped:" destination="ddo-vg-sdj" eventType="touchUpInside" id="HEt-jy-GO7"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHH-6V-iRX">
+                                                <rect key="frame" x="191.5" y="548" width="168.5" height="40"/>
+                                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="nextTapped:" destination="ddo-vg-sdj" eventType="touchUpInside" id="zFU-x8-pkR"/>
+                                                </connections>
+                                            </button>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgProgressFlow4" translatesAutoresizingMaskIntoConstraints="NO" id="Vkg-Er-SgC">
+                                                <rect key="frame" x="15" y="20" width="345" height="28"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="28" id="Fbr-gv-2or"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note to Guests: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OQ-Qn-e9G">
+                                                <rect key="frame" x="15" y="63" width="345" height="21.5"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PDf-dM-3fU">
+                                                <rect key="frame" x="40" y="99.5" width="295" height="128"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="128" id="4cX-Jc-pXf"/>
+                                                </constraints>
+                                                <string key="text">Do any of your guests have dietary restirctions? For example, an allergy, special diet, or religious restriction? Please leave a note for your guests letting them know if some items will need to be free of certain ingredients.</string>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Glf-bK-iO9">
+                                                <rect key="frame" x="40" y="242.5" width="295" height="128"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="128" id="fgK-Fm-vww"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="PDf-dM-3fU" firstAttribute="top" secondItem="0OQ-Qn-e9G" secondAttribute="bottom" constant="15" id="3aE-Vy-4ha"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="height" secondItem="yHH-6V-iRX" secondAttribute="height" id="5Pd-vW-t88"/>
+                                            <constraint firstAttribute="trailing" secondItem="Vkg-Er-SgC" secondAttribute="trailing" constant="15" id="92R-0H-a5q"/>
+                                            <constraint firstAttribute="trailing" secondItem="yHH-6V-iRX" secondAttribute="trailing" constant="15" id="CCJ-p3-GgH"/>
+                                            <constraint firstItem="yHH-6V-iRX" firstAttribute="leading" secondItem="EDg-ay-7Ld" secondAttribute="trailing" constant="8" id="EcY-Zz-KAC"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="top" secondItem="yHH-6V-iRX" secondAttribute="top" id="EeW-Ur-2pg"/>
+                                            <constraint firstItem="Vkg-Er-SgC" firstAttribute="leading" secondItem="C0v-68-BTl" secondAttribute="leading" constant="15" id="FMu-Dy-b7a"/>
+                                            <constraint firstAttribute="bottom" secondItem="EDg-ay-7Ld" secondAttribute="bottom" constant="15" id="O6z-pD-p7z"/>
+                                            <constraint firstItem="0OQ-Qn-e9G" firstAttribute="trailing" secondItem="Vkg-Er-SgC" secondAttribute="trailing" id="Rgk-uG-82U"/>
+                                            <constraint firstItem="Vkg-Er-SgC" firstAttribute="top" secondItem="C0v-68-BTl" secondAttribute="top" constant="20" id="RlC-kv-XFZ"/>
+                                            <constraint firstItem="PDf-dM-3fU" firstAttribute="leading" secondItem="C0v-68-BTl" secondAttribute="leading" constant="40" id="SEE-E2-dxw"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="leading" secondItem="C0v-68-BTl" secondAttribute="leading" constant="15" id="YYo-Qo-Ooe"/>
+                                            <constraint firstItem="0OQ-Qn-e9G" firstAttribute="top" secondItem="Vkg-Er-SgC" secondAttribute="bottom" constant="15" id="eAb-2W-0uN"/>
+                                            <constraint firstItem="Glf-bK-iO9" firstAttribute="top" secondItem="PDf-dM-3fU" secondAttribute="bottom" constant="15" id="eNt-ej-pt4"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="bottom" secondItem="yHH-6V-iRX" secondAttribute="bottom" id="efn-F1-KNe"/>
+                                            <constraint firstItem="0OQ-Qn-e9G" firstAttribute="leading" secondItem="Vkg-Er-SgC" secondAttribute="leading" id="hj7-zk-33O"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Glf-bK-iO9" secondAttribute="bottom" constant="15" id="kHW-5L-f3i"/>
+                                            <constraint firstAttribute="trailing" secondItem="PDf-dM-3fU" secondAttribute="trailing" constant="40" id="kZM-6t-2pz"/>
+                                            <constraint firstItem="EDg-ay-7Ld" firstAttribute="width" secondItem="yHH-6V-iRX" secondAttribute="width" id="pQg-Mc-CcN"/>
+                                            <constraint firstItem="Glf-bK-iO9" firstAttribute="leading" secondItem="PDf-dM-3fU" secondAttribute="leading" id="q7g-El-g2W"/>
+                                            <constraint firstItem="Glf-bK-iO9" firstAttribute="trailing" secondItem="PDf-dM-3fU" secondAttribute="trailing" id="yzQ-6k-8ae"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="C0v-68-BTl" secondAttribute="trailing" id="7eA-0h-XHv"/>
+                                    <constraint firstItem="C0v-68-BTl" firstAttribute="top" secondItem="cDB-8U-C0P" secondAttribute="top" id="BzA-Ck-Sgd"/>
+                                    <constraint firstItem="C0v-68-BTl" firstAttribute="centerY" secondItem="cDB-8U-C0P" secondAttribute="centerY" priority="250" id="Vxh-cn-et9"/>
+                                    <constraint firstItem="C0v-68-BTl" firstAttribute="centerX" secondItem="cDB-8U-C0P" secondAttribute="centerX" id="gbm-E6-3hL"/>
+                                    <constraint firstAttribute="bottom" secondItem="C0v-68-BTl" secondAttribute="bottom" priority="250" id="wlx-WU-cYO"/>
+                                    <constraint firstItem="C0v-68-BTl" firstAttribute="leading" secondItem="cDB-8U-C0P" secondAttribute="leading" id="xKz-cK-VHS"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bnF-5F-aS6" firstAttribute="trailing" secondItem="cDB-8U-C0P" secondAttribute="trailing" id="cc4-vr-gIE"/>
+                            <constraint firstItem="cDB-8U-C0P" firstAttribute="top" secondItem="bnF-5F-aS6" secondAttribute="top" id="knl-bt-BZp"/>
+                            <constraint firstItem="bnF-5F-aS6" firstAttribute="bottom" secondItem="cDB-8U-C0P" secondAttribute="bottom" id="lcL-Rl-q00"/>
+                            <constraint firstItem="cDB-8U-C0P" firstAttribute="leading" secondItem="bnF-5F-aS6" secondAttribute="leading" id="tGA-mZ-CYk"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="bnF-5F-aS6"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="scrollView" destination="cDB-8U-C0P" id="z2u-eK-z0n"/>
+                        <outlet property="txtDescription" destination="PDf-dM-3fU" id="7UC-cT-JaU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wwW-ha-YeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2529" y="-189"/>
+            <point key="canvasLocation" x="2528.8000000000002" y="-189.3553223388306"/>
         </scene>
         <!--Save & Send-->
         <scene sceneID="5Ak-du-rtM">
             <objects>
-                <viewController storyboardIdentifier="MHPCreateEvent5SaveAndSendViewController" title="Save &amp; Send" id="0sj-DU-nGR" customClass="MHPCreateEvent5SaveAndSendViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MHPCreateEvent5SaveAndSendViewController" title="Save &amp; Send" id="0sj-DU-nGR" customClass="MHPCreateEvent5SaveAndSendViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tlk-mD-9Ic">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1119,6 +1226,72 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
             </objects>
             <point key="canvasLocation" x="3377" y="-189"/>
         </scene>
+        <!--Info-->
+        <scene sceneID="wYf-uN-DXU">
+            <objects>
+                <viewController storyboardIdentifier="MHPRestrictionsDefinitionsPopoverViewController" title="Info" modalPresentationStyle="overCurrentContext" id="wON-lN-LFl" customClass="MHPRestrictionsDefinitionsPopoverViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="12Q-N5-4qd">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="350"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="90k-A3-UQM">
+                                <rect key="frame" x="157" y="378" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="M4y-Cf-cEn">
+                                <rect key="frame" x="15" y="56" width="320" height="246"/>
+                                <mutableString key="text">* Vegan: no meat, seafood, dairy, eggs, honey * Vegetarian: no meat or seafood * Gluten-Free: no wheat products * Halal: Pork, alcohol, non-halal meat * Kosher: Non-kosher meat, shellfish, gelatin * No dairy, eggs, nuts, shellfish, soy, fish, meat, etc: used for specific allergies</mutableString>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7W2-XK-Xgv">
+                                <rect key="frame" x="15" y="310" width="320" height="25"/>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="QiW-5d-J5S"/>
+                                </constraints>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeTapped:" destination="wON-lN-LFl" eventType="touchUpInside" id="7Mk-as-t9m"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What the what? Common dietary restrictions:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8QB-E4-nm0">
+                                <rect key="frame" x="8" y="8" width="334" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="45Z-FD-xc9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="VWa-PL-NW5" firstAttribute="trailing" secondItem="7W2-XK-Xgv" secondAttribute="trailing" constant="15" id="0MU-wU-ORt"/>
+                            <constraint firstItem="VWa-PL-NW5" firstAttribute="trailing" secondItem="M4y-Cf-cEn" secondAttribute="trailing" constant="15" id="6zj-AS-A9B"/>
+                            <constraint firstItem="8QB-E4-nm0" firstAttribute="leading" secondItem="VWa-PL-NW5" secondAttribute="leading" constant="8" id="9Bh-Q1-cg1"/>
+                            <constraint firstItem="7W2-XK-Xgv" firstAttribute="leading" secondItem="VWa-PL-NW5" secondAttribute="leading" constant="15" id="E8Q-Wj-bYq"/>
+                            <constraint firstItem="8QB-E4-nm0" firstAttribute="top" secondItem="VWa-PL-NW5" secondAttribute="top" constant="8" id="Qpt-mC-qy0"/>
+                            <constraint firstItem="VWa-PL-NW5" firstAttribute="trailing" secondItem="8QB-E4-nm0" secondAttribute="trailing" constant="8" id="el9-cz-Qui"/>
+                            <constraint firstItem="7W2-XK-Xgv" firstAttribute="top" secondItem="M4y-Cf-cEn" secondAttribute="bottom" constant="8" id="f1h-Nm-l2J"/>
+                            <constraint firstItem="M4y-Cf-cEn" firstAttribute="top" secondItem="8QB-E4-nm0" secondAttribute="bottom" constant="3" id="h9W-YG-t6D"/>
+                            <constraint firstItem="VWa-PL-NW5" firstAttribute="bottom" secondItem="7W2-XK-Xgv" secondAttribute="bottom" constant="15" id="hxV-1f-8BW"/>
+                            <constraint firstItem="M4y-Cf-cEn" firstAttribute="leading" secondItem="VWa-PL-NW5" secondAttribute="leading" constant="15" id="r1x-HI-QD3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="VWa-PL-NW5"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="350" height="350"/>
+                    <size key="freeformSize" width="350" height="350"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ksj-RY-huL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2669" y="-725"/>
+        </scene>
     </scenes>
     <resources>
         <image name="btnContacts" width="34" height="38"/>
@@ -1126,6 +1299,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
         <image name="imgProgressFlow1" width="320" height="30"/>
         <image name="imgProgressFlow2" width="320" height="29"/>
         <image name="imgProgressFlow3" width="320" height="30"/>
+        <image name="imgProgressFlow4" width="320" height="30"/>
         <image name="searchIcon" width="20" height="20"/>
     </resources>
 </document>

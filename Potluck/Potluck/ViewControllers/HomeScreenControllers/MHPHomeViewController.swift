@@ -144,6 +144,7 @@
                               address: "123 Elm Grove",
                               description: "Just testing out some things like this is a thing and that is a thing and wow, things.",
                               imageURL: "url for event image",
+                              restrictionDescription: "Some people are allergic to nuts, so please try to keep them out of your dishes. We also have some vegan and kosher guests.",
                               restrictions: ["vegan", "kosher", "no nuts"],
                               host: host1,
                               requestedItems: requestedItems1,

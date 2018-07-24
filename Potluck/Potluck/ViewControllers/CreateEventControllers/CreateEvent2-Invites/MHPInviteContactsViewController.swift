@@ -51,43 +51,45 @@ class MHPInviteContactsViewController: UIViewController {
     
     @IBAction func saveTapped(_ sender: Any) {
         let dispatchGroup = DispatchGroup()
-        
-        let tempInvites = allContacts
-            .filter { $0.isSelected }
-            .map { (contact) -> MHPInvite in
-                let invite = MHPInvite(userFirstName: contact.givenName,
-                                       userLastName: contact.familyName,
-                                       userEmail: contact.contactPreference!)
-                invite.contactID = contact.identifier
-                invite.contactImage = contact.imageData
-                return invite
-            }
-            .filter { (invite) -> Bool in
-                if pendingInvites!.count > 0, pendingInvites!.contains(invite) {
-                    return false
-                } else {
-                    return true
+        var tempInvites = [MHPInvite]()
+        DispatchQueue.main.async {
+            tempInvites = self.allContacts
+                .filter { $0.isSelected }
+                .map { (contact) -> MHPInvite in
+                    let invite = MHPInvite(userFirstName: contact.givenName,
+                                           userLastName: contact.familyName,
+                                           userEmail: contact.contactPreference!)
+                    invite.contactID = contact.identifier
+                    invite.contactImage = contact.imageData
+                    return invite
                 }
-            }
-            .filter { (invite) -> Bool in
-                dispatchGroup.enter()
-                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
-                    switch result {
-                    case .success(let user):
-                        invite.userID = user.userID
-                        invite.userProfileURL = user.profileImageURL
-                    case .failure(_):
-                        print()
+                .filter { (invite) -> Bool in
+                    if self.pendingInvites!.count > 0, self.pendingInvites!.contains(invite) {
+                        return false
+                    } else {
+                        return true
                     }
-                    dispatchGroup.leave()
                 }
-                return true
-        }
-        
-        dispatchGroup.notify(queue: DispatchQueue.global()) {
-            self.pendingInvites?.append(contentsOf: tempInvites)
-            self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
-            self.dismiss(animated: true, completion: nil)
+                .filter { (invite) -> Bool in
+                    dispatchGroup.enter()
+                    self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
+                        switch result {
+                        case .success(let user):
+                            invite.userID = user.userID
+                            invite.userProfileURL = user.profileImageURL
+                        case .failure(_):
+                            print()
+                        }
+                        dispatchGroup.leave()
+                    }
+                    return true
+            }
+            
+            dispatchGroup.notify(queue: DispatchQueue.global()) {
+                self.pendingInvites?.append(contentsOf: tempInvites)
+                self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
     
@@ -164,7 +166,7 @@ class MHPInviteContactsViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
-
+        
     }
     
     func updateContactsWithPreviouslySelected() {

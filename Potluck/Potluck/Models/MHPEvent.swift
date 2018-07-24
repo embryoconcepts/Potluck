@@ -16,6 +16,7 @@ struct MHPEvent: Codable {
     var address: String?
     var description: String?
     var imageURL: String?
+    var restrictionDescription: String?
     var restrictions: [String]?
     var host: MHPUser?
     var requestedItems: [MHPRequestedItem]?
@@ -34,6 +35,7 @@ struct MHPEvent: Codable {
          address: String?,
          description: String?,
          imageURL: String?,
+         restrictionDescription: String?,
          restrictions: [String]?,
          host: MHPUser?,
          requestedItems: [MHPRequestedItem]?,
@@ -48,6 +50,7 @@ struct MHPEvent: Codable {
         self.address = address
         self.description = description
         self.imageURL = imageURL
+        self.restrictionDescription = restrictionDescription
         self.restrictions = restrictions
         self.host = host
         self.requestedItems = requestedItems
