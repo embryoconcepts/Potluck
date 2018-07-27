@@ -54,21 +54,20 @@ class MHPGuestListViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func countRsvps() {
-        // FIXME: look up eventRsvpList by id
-//        if let tempRsvps = event?.eventRsvpListID?.eventRsvps {
-//            for rsvp in tempRsvps {
-//                if let response = rsvp.response {
-//                    switch response {
-//                    case true:
-//                        guestsYes.append(rsvp)
-//                    case false:
-//                        guestsNo.append(rsvp)
-//                    default:
-//                        guestsInvited.append(rsvp)
-//                    }
-//                }
-//            }
-//        }
+        if let tempRsvps = event?.rsvpList?.rsvps {
+            for rsvp in tempRsvps {
+                if let response = rsvp.response {
+                    switch response {
+                    case "yes":
+                        guestsYes.append(rsvp)
+                    case "no":
+                        guestsNo.append(rsvp)
+                    default:
+                        guestsInvited.append(rsvp)
+                    }
+                }
+            }
+        }
     }
 }
 

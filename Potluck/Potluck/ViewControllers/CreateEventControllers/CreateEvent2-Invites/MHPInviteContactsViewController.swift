@@ -51,43 +51,46 @@ class MHPInviteContactsViewController: UIViewController {
     
     @IBAction func saveTapped(_ sender: Any) {
         let dispatchGroup = DispatchGroup()
-        
-        let tempInvites = allContacts
-            .filter { $0.isSelected }
-            .map { (contact) -> MHPInvite in
-                let invite = MHPInvite(userFirstName: contact.givenName,
-                                       userLastName: contact.familyName,
-                                       userEmail: contact.contactPreference!)
-                invite.contactID = contact.identifier
-                invite.contactImage = contact.imageData
-                return invite
-            }
-            .filter { (invite) -> Bool in
-                if pendingInvites!.count > 0, pendingInvites!.contains(invite) {
-                    return false
-                } else {
-                    return true
+        var tempInvites = [MHPInvite]()
+        DispatchQueue.main.async {
+            tempInvites = self.allContacts
+                .filter { $0.isSelected }
+                .map { (contact) -> MHPInvite in
+                    let invite = MHPInvite(userFirstName: contact.givenName,
+                                           userLastName: contact.familyName,
+                                           userEmail: contact.contactPreference!)
+                    invite.contactID = contact.identifier
+                    invite.contactImage = contact.imageData
+                    return invite
                 }
-            }
-            .filter { (invite) -> Bool in
-                dispatchGroup.enter()
-                self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
-                    switch result {
-                    case .success(let user):
-                        invite.userID = user.userID
-                        invite.userProfileURL = user.profileImageURL
-                    case .failure(_):
-                        print()
+                .filter { (invite) -> Bool in
+                    if self.pendingInvites!.count > 0, self.pendingInvites!.contains(invite) {
+                        return false
+                    } else {
+                        return true
                     }
-                    dispatchGroup.leave()
                 }
-                return true
-        }
-        
-        dispatchGroup.notify(queue: DispatchQueue.global()) {
-            self.pendingInvites?.append(contentsOf: tempInvites)
-            self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
-            self.dismiss(animated: true, completion: nil)
+                .filter { (invite) -> Bool in
+                    // FIXME: this is taking way too long
+                    dispatchGroup.enter()
+                    self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
+                        switch result {
+                        case .success(let user):
+                            invite.userID = user.userID
+                            invite.userProfileURL = user.profileImageURL
+                        case .failure(_):
+                            print()
+                        }
+                        dispatchGroup.leave()
+                    }
+                    return true
+            }
+            
+            dispatchGroup.notify(queue: DispatchQueue.global()) {
+                self.pendingInvites?.append(contentsOf: tempInvites)
+                self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
     
@@ -124,7 +127,21 @@ class MHPInviteContactsViewController: UIViewController {
                 if authorized {
                     self.retrieveContacts(with: store)
                 } else {
-                    // TODO: handle if user does not give permission
+                    DispatchQueue.main.async { [unowned self] in
+                        let alertController = UIAlertController(title: "Access Denied",
+                                                                message: "Permission to access your Contacts has been previously denied.If you would like to access your contacts, please update your Contacts permission in Settings.",
+                                                                preferredStyle: .alert)
+                        let settingsAction = UIAlertAction(title: "Open Settings", style: .default, handler: { (action) in
+                            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+                        })
+                        alertController.addAction(settingsAction)
+                        
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        alertController.addAction(cancelAction)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             })
         } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
@@ -150,7 +167,7 @@ class MHPInviteContactsViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
-
+        
     }
     
     func updateContactsWithPreviouslySelected() {

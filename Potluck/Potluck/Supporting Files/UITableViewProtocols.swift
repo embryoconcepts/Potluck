@@ -17,6 +17,14 @@ protocol TableViewCompatible {
     
 }
 
+protocol CollectionViewCompatible {
+    
+    var reuseIdentifier: String { get }
+    
+    func cellForCollectionView(collectionView: UICollectionView, atIndexPath indexPath: IndexPath) -> UICollectionViewCell
+    
+}
+
 protocol Configurable {
     
     associatedtype T

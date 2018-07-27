@@ -48,6 +48,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         } else {
             requestedItems = event!.requestedItems
         }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -94,6 +95,11 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func styleView() {
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named: "backArrow"), style: .plain, target: self, action: #selector(back(sender: )))
+        self.navigationItem.leftBarButtonItem = newBackButton
+
+        
         btnInfo = UIBarButtonItem(image: UIImage(named: "btnInfo.png"), style: .plain, target: self, action: #selector(infoTapped(_: )))
         navigationItem.rightBarButtonItem = btnInfo
         
@@ -152,6 +158,7 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         createEventItemList()
             if  let event = event,
                 let createEvent4 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent4RestrictionsViewController") as? MHPCreateEvent4RestrictionsViewController {
+                createEvent4.dataDelegate = self
                 createEvent4.inject(event)
                 navigationController?.pushViewController(createEvent4, animated: true)
             }
@@ -163,11 +170,12 @@ class MHPCreateEvent3ItemsViewController: UIViewController {
         }
     }
     
-    fileprivate func back() {
+    @objc fileprivate func back(sender: UIBarButtonItem) {
         createEventItemList()
         if let event = event {
             dataDelegate?.back(event: event)
         }
+        navigationController?.popViewController(animated: true)
     }
     
     fileprivate func cancel() {
@@ -220,6 +228,7 @@ extension MHPCreateEvent3ItemsViewController: UITableViewDelegate, UITableViewDa
     }
     
 }
+
 
 // Mark: - Info Popover + UIPopoverPresentationControllerDelegate
 
@@ -285,6 +294,15 @@ extension MHPCreateEvent3ItemsViewController: ModifyItemPopoverDelegate, CancelA
         }
     }
     
+}
+
+
+// MARK: - CreateEvent4DataDelegate
+
+extension MHPCreateEvent3ItemsViewController: CreateEvent4DataDelegate {
+    func back(event: MHPEvent) {
+        inject(event)
+    }
 }
 
 
