@@ -333,9 +333,14 @@ extension MHPCreateEvent1DetailsViewController: CreateEvent2DataDelegate {
 
 extension MHPCreateEvent1DetailsViewController: Injectable {
     typealias T = MHPEvent
+    typealias U = MHPUser
 
     func inject(_ event: T) {
         self.event = event
+    }
+    
+    func inject(_ user: U) {
+        self.mhpUser = user
     }
     
     func assertDependencies() {

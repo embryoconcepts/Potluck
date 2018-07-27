@@ -71,6 +71,7 @@ class MHPInviteContactsViewController: UIViewController {
                     }
                 }
                 .filter { (invite) -> Bool in
+                    // FIXME: this is taking way too long
                     dispatchGroup.enter()
                     self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
                         switch result {

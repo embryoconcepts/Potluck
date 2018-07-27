@@ -83,9 +83,9 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     // MARK: - Private methods
     
     fileprivate func setupView() {
-//        self.navigationItem.hidesBackButton = true
-//        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(back(sender: )))
-//        self.navigationItem.leftBarButtonItem = newBackButton
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named: "backArrow"), style: .plain, target: self, action: #selector(back(sender: )))
+        self.navigationItem.leftBarButtonItem = newBackButton
        
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
@@ -142,6 +142,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             if  let event = event,
                 let createEvent3 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent3ItemsViewController") as? MHPCreateEvent3ItemsViewController {
                 createEvent3.inject(event)
+                createEvent3.dataDelegate = self
                 navigationController?.pushViewController(createEvent3, animated: true)
             }
         }

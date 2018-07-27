@@ -39,7 +39,7 @@
         super.viewWillAppear(animated)
         
         handleUser()
-//        setupMockData() // TODO: remove for production
+        setupMockData() // TODO: remove for production
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -113,6 +113,20 @@
         host1.firstName = "Jill of AllTrades"
         host1.userID = "host1userID"
         
+        let restrictions1 = [MHPEventRestriction(name: "vegan", isSelected: true),
+                             MHPEventRestriction(name: "vegetarian"),
+                             MHPEventRestriction(name: "kosher"),
+                             MHPEventRestriction(name: "halal", isSelected: true),
+                             MHPEventRestriction(name: "gluten-free"),
+                             MHPEventRestriction(name: "no nuts"),
+                             MHPEventRestriction(name: "no dairy"),
+                             MHPEventRestriction(name: "no eggs"),
+                             MHPEventRestriction(name: "no meat"),
+                             MHPEventRestriction(name: "no fish", isSelected: true),
+                             MHPEventRestriction(name: "no shellfish", isSelected: true),
+                             MHPEventRestriction(name: "no pork"),
+                             MHPEventRestriction(name: "no soy")]
+        
         let requestedItems1 = [MHPRequestedItem(name: "Beans", quantity: 10, quantityType: "servings")]
         
         let pledgedItems1 = [MHPPledgedItem()]
@@ -145,7 +159,7 @@
                               description: "Just testing out some things like this is a thing and that is a thing and wow, things.",
                               imageURL: "url for event image",
                               restrictionDescription: "Some people are allergic to nuts, so please try to keep them out of your dishes. We also have some vegan and kosher guests.",
-                              restrictions: ["vegan", "kosher", "no nuts"],
+                              restrictions: restrictions1,
                               host: host1,
                               requestedItems: requestedItems1,
                               pledgedItemList: pledgedItemsList1,

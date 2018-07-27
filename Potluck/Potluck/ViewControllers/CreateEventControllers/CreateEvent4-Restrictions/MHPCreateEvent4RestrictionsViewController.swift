@@ -16,30 +16,37 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var txtDescription: UITextView!
+    @IBOutlet weak var tagCollectionView: UICollectionView!    
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var btnInfo = UIBarButtonItem()
     var event: MHPEvent?
     var dataDelegate: CreateEvent4DataDelegate?
     let txtViewPlaceholderText = "Do any of your guests have dietary restirctions? For example, an allergy, special diet, or religious restriction? Please leave a note for your guests letting them know if some items will need to be free of certain ingredients."
-
+    var restrictionTags: [MHPEventRestriction]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         assertDependencies()
         styleView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     fileprivate func styleView() {
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named: "backArrow"), style: .plain, target: self, action: #selector(back(sender: )))
+        self.navigationItem.leftBarButtonItem = newBackButton
+
         btnInfo = UIBarButtonItem(image: UIImage(named: "btnInfo.png"), style: .plain, target: self, action: #selector(infoTapped(_: )))
         navigationItem.rightBarButtonItem = btnInfo
         
         // set up scrollview + keyboard
         setupKeyboardDoneButton()
-        setupKeyboardDismissOnTap()
+        //        setupKeyboardDismissOnTap()
         scrollView.keyboardDismissMode = .interactive
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
@@ -58,6 +65,34 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
         txtDescription.layer.borderColor = UIColor(hexString: "ebebeb").cgColor
         txtDescription.layer.borderWidth = 1.0
         txtDescription.layer.cornerRadius = 5
+        
+        // collection tag cloud view
+        tagCollectionView.layer.cornerRadius = 4
+        tagCollectionView.allowsSelection = true
+        tagCollectionView.allowsMultipleSelection = true
+        
+        flowLayout.sectionInset = UIEdgeInsetsMake(8, 8, 8, 8)
+        flowLayout.estimatedItemSize = CGSize(width: 90, height: 30)
+        flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+        
+        // setup tags
+        if let tags = event?.restrictions {
+            restrictionTags = tags
+        } else {
+            restrictionTags = [MHPEventRestriction(name: "vegan"),
+                               MHPEventRestriction(name: "vegetarian"),
+                               MHPEventRestriction(name: "kosher"),
+                               MHPEventRestriction(name: "halal"),
+                               MHPEventRestriction(name: "gluten-free"),
+                               MHPEventRestriction(name: "no nuts"),
+                               MHPEventRestriction(name: "no dairy"),
+                               MHPEventRestriction(name: "no eggs"),
+                               MHPEventRestriction(name: "no meat"),
+                               MHPEventRestriction(name: "no fish"),
+                               MHPEventRestriction(name: "no shellfish"),
+                               MHPEventRestriction(name: "no pork"),
+                               MHPEventRestriction(name: "no soy")]
+        }
     }
     
     
@@ -75,25 +110,81 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
         cancel()
     }
     
+    @IBAction func addTapped(_ sender: Any) {
+        DispatchQueue.main.async { [unowned self] in
+            let alert = UIAlertController(title: "Add Tag", message: "What dietary restriction tag would you like to add?", preferredStyle: .alert)
+            alert.addTextField { textField in
+                textField.placeholder = "tag name..."
+            }
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action ) in
+                if let tag = alert.textFields?.first?.text {
+                    self.restrictionTags!.append(MHPEventRestriction(name: tag, isSelected: true))
+                    self.tagCollectionView.reloadData()
+                }
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            self.present(alert, animated: true)
+        }
+    }
+    
     
     // MARK: - Private Methods
     
     fileprivate func next() {
+        saveEvent()
         if  let event = event,
             let createEvent5 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent5SaveAndSendViewController") as? MHPCreateEvent5SaveAndSendViewController {
+            createEvent5.dataDelegate = self
             createEvent5.inject(event)
             navigationController?.pushViewController(createEvent5, animated: true)
         }
     }
     
-    fileprivate func back() {
+    @objc fileprivate func back(sender: UIBarButtonItem) {
+        saveEvent()
         if let event = event {
             dataDelegate?.back(event: event)
         }
+        navigationController?.popViewController(animated: true)
     }
     
     fileprivate func cancel() {
         self.presentCancelAlert(view: self)
+    }
+    
+    fileprivate func saveEvent() {
+        if txtDescription.text != txtViewPlaceholderText {
+            event?.restrictionDescription = txtDescription.text
+        }
+        
+        event?.restrictions = restrictionTags
+        
+    }
+
+}
+
+
+// MARK: - CollectionView Delegate and Datasource
+
+extension MHPCreateEvent4RestrictionsViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return restrictionTags!.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = restrictionTags![indexPath.row].cellForCollectionView(collectionView: collectionView, atIndexPath: indexPath) as! MHPRestrictionTagCell
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        restrictionTags![indexPath.row].isSelected = !restrictionTags![indexPath.row].isSelected
+        if !restrictionTags![indexPath.row].isSelected {
+            collectionView.deselectItem(at: indexPath, animated: false)
+        }
+        self.tagCollectionView.reloadData()
     }
 }
 
@@ -161,20 +252,19 @@ extension MHPCreateEvent4RestrictionsViewController: UITextViewDelegate {
         self.txtDescription.inputAccessoryView = toolbar
     }
     
-    func setupKeyboardDismissOnTap() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
-        dismissKeyboard()
-    }
+    //    func setupKeyboardDismissOnTap() {
+    //        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    //        self.view.addGestureRecognizer(tap)
+    //    }
+    //
+    //    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+    //        dismissKeyboard()
+    //    }
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
         event?.restrictionDescription = txtDescription.text
-        // TODO: event?.restrictions =
     }
     
     @objc func keyboardWillShow(notification: Notification) {
@@ -185,6 +275,15 @@ extension MHPCreateEvent4RestrictionsViewController: UITextViewDelegate {
     
     @objc func keyboardWillHide(notification: Notification) {
         scrollView.contentInset.bottom = 0
+    }
+}
+
+
+// MARK: - CreateEvent5DataDelegate
+
+extension MHPCreateEvent4RestrictionsViewController: CreateEvent5DataDelegate {
+    func back(event: MHPEvent) {
+        inject(event)
     }
 }
 
