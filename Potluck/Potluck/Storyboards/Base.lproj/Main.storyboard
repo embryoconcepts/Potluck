@@ -318,7 +318,7 @@
         <scene sceneID="lmB-CO-uh3">
             <objects>
                 <navigationController storyboardIdentifier="homeNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ly9-JH-Yzh" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="dRF-Nr-1xY" userLabel="Home"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="tabHomeInactive" selectedImage="tabHomeActive" id="dRF-Nr-1xY" userLabel="Home"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qIe-bF-2Mp">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -337,7 +337,7 @@
         <scene sceneID="70a-Pg-TtW">
             <objects>
                 <navigationController storyboardIdentifier="settingsNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Wjb-ZW-nMv" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" id="AQw-xM-aKs" userLabel="Settings"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="tabSettingsInactive" selectedImage="tabSettingsActive" id="AQw-xM-aKs" userLabel="Settings"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ojH-9Y-Qn1">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -356,7 +356,7 @@
         <scene sceneID="7bV-gN-0al">
             <objects>
                 <navigationController storyboardIdentifier="profileNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bV8-uw-KU8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="2zY-ox-cLP" userLabel="Profile"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="tabProfileInactive" selectedImage="tabProfileActive" id="2zY-ox-cLP" userLabel="Profile"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8df-dI-N1Q">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -372,4 +372,12 @@
             <point key="canvasLocation" x="-99" y="-196"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tabHomeActive" width="33" height="26"/>
+        <image name="tabHomeInactive" width="33" height="26"/>
+        <image name="tabProfileActive" width="32" height="31"/>
+        <image name="tabProfileInactive" width="32" height="31"/>
+        <image name="tabSettingsActive" width="31" height="34"/>
+        <image name="tabSettingsInactive" width="32" height="33"/>
+    </resources>
 </document>

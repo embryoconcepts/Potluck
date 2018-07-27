@@ -76,6 +76,8 @@ class MHPInviteContactsViewController: UIViewController {
                     self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
                         switch result {
                         case .success(let user):
+                            invite.userFirstName = user.firstName
+                            invite.userLastName = user.lastName
                             invite.userID = user.userID
                             invite.userProfileURL = user.profileImageURL
                         case .failure(_):

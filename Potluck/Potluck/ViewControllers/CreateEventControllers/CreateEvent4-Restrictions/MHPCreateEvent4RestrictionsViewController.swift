@@ -230,7 +230,7 @@ extension MHPCreateEvent4RestrictionsViewController: UITextViewDelegate {
             textView.text = txtViewPlaceholderText
             textView.textColor = UIColor.lightGray
         } else {
-            event?.description = textView.text
+            event?.restrictionDescription = textView.text
         }
     }
     

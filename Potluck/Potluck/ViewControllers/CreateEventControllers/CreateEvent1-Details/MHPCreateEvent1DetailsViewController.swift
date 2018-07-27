@@ -45,7 +45,6 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        resetView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -156,6 +155,10 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
     
     fileprivate func next() {
         if validate() {
+            event?.title = txtName.text
+            event?.description = txtDescription.text
+            event?.location = txtLocationName.text
+            event?.address = lblAddress.text
             if  let event = event,
                 let createEvent2 = storyboard?.instantiateViewController(withIdentifier: "MHPCreateEvent2InvitesViewController") as? MHPCreateEvent2InvitesViewController {
                 createEvent2.dataDelegate = self
