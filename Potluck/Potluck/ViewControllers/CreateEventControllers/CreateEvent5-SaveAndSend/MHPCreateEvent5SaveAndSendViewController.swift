@@ -24,7 +24,9 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
     
     var event: MHPEvent?
     var dataDelegate: CreateEvent5DataDelegate?
-
+    lazy var request: MHPRequestHandler = {
+        return MHPRequestHandler()
+    }()
     
     // MARK: - Lifecycle
     
@@ -91,7 +93,20 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
     }
     
     fileprivate func saveAndSend() {
-        
+        if event?.host != nil {
+            // TODO: send event to the server and do a bunch of stuff
+            request.saveEvent(event: event!) { (result) in
+                switch result {
+                case .success:
+                    self.dismiss(animated: true, completion: nil)
+                case .failure(let error):
+                    print(error)
+                    return
+                }
+            }
+        } else {
+            // TODO: save event locally, send user to signup flow
+        }
     }
     
     @objc fileprivate func back(sender: UIBarButtonItem) {

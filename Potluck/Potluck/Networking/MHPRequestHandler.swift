@@ -128,4 +128,26 @@ struct MHPRequestHandler {
             }
         }
     }
+    
+    func getEvent(eventID: String, completion: @escaping (Result<MHPEvent, Error> ) -> ()) {
+        service.router.getEvent(eventID: eventID) { (result) in
+            switch result {
+            case .success (let event):
+                completion(.success(event))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        service.router.saveEvent(event: event) { (result) in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

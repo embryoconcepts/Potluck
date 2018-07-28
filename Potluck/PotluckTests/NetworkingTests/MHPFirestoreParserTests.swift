@@ -39,7 +39,7 @@ class MHPFirestoreParserTests: XCTestCase {
         let expected = ["userState": "anonymous"]
         
         // Act
-        let result = parser.buildDataSet(firUserEmail: nil, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous) as! [String: String]
+        let result = parser.buildUserDataSet(firUserEmail: nil, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous) as! [String: String]
         
         // Assert
         XCTAssertEqual(expected, result, "Building a data set for an anonymous user should succeed.")
@@ -57,7 +57,7 @@ class MHPFirestoreParserTests: XCTestCase {
         ]
         
         // Act
-        let result: [String: Any] = parser.buildDataSet(firUserEmail: firUserEmail,
+        let result: [String: Any] = parser.buildUserDataSet(firUserEmail: firUserEmail,
                                                              mhpUser: mhpUser,
                                                              firstName: nil,
                                                              lastName: nil,
@@ -79,7 +79,7 @@ class MHPFirestoreParserTests: XCTestCase {
             ]
         
         // Act
-        let result: [String: Any] = parser.buildDataSet(firUserEmail: firUserEmail,
+        let result: [String: Any] = parser.buildUserDataSet(firUserEmail: firUserEmail,
                                                               mhpUser: mhpUser,
                                                               firstName: nil,
                                                               lastName: nil,
@@ -102,7 +102,7 @@ class MHPFirestoreParserTests: XCTestCase {
         ]
         
         // Act
-        let result: [String: Any] = parser.buildDataSet(firUserEmail: firUserEmail,
+        let result: [String: Any] = parser.buildUserDataSet(firUserEmail: firUserEmail,
                                                              mhpUser: mhpUser,
                                                              firstName: nil,
                                                              lastName: nil,
@@ -125,7 +125,7 @@ class MHPFirestoreParserTests: XCTestCase {
         ]
         
         // Act
-        let result: [String: Any] = parser.buildDataSet(firUserEmail: firUserEmail,
+        let result: [String: Any] = parser.buildUserDataSet(firUserEmail: firUserEmail,
                                                         mhpUser: mhpUser,
                                                         firstName: nil,
                                                         lastName: nil,
@@ -152,7 +152,7 @@ class MHPFirestoreParserTests: XCTestCase {
         ]
         
         // Act
-        let result: [String: Any] = parser.buildDataSet(firUserEmail: firUserEmail,
+        let result: [String: Any] = parser.buildUserDataSet(firUserEmail: firUserEmail,
                                                         mhpUser: mhpUser,
                                                         firstName: nil,
                                                         lastName: nil,

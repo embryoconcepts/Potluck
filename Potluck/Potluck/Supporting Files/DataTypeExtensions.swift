@@ -19,7 +19,6 @@ extension String {
     }
 }
 
-
 extension Date {
     func toString(format: String) -> String? {
         
@@ -30,6 +29,27 @@ extension Date {
     
     func add(component: Calendar.Component, value: Int) -> Date? {
         return Calendar.current.date(byAdding: component, value: value, to: self)
+    }
+}
+
+extension Decodable {
+    func dictToModel(dict: [String:Any]) throws -> Self {
+        let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+        let decoder = JSONDecoder()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sszzz"
+        decoder.dateDecodingStrategy = .formatted(dateFormatter)
+        return try decoder.decode(Self.self, from: data)
+    }
+}
+
+extension Encodable {
+    func modelToDict() throws -> [String: Any] {
+        let data = try JSONEncoder().encode(self)
+        guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+            throw NSError()
+        }
+        return dictionary
     }
 }
 

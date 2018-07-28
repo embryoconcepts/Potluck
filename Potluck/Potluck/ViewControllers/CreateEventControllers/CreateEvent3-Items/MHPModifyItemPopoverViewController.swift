@@ -61,7 +61,7 @@ class MHPModifyItemPopoverViewController: UIViewController {
         if !isNew {
             txtName.text = modifiedItem.name
             if let quantity = modifiedItem.quantity {
-                txtQuantity.text = String(quantity)
+                txtQuantity.text = String(describing: quantity)
             }
             txtPortions.text = modifiedItem.quantityType
             checkIfSaveEnabled()

@@ -19,10 +19,18 @@ struct MHPDataManager {
     }
     
     func encodeUser(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
-        return service.parser.buildDataSet(firUserEmail: firUserEmail, mhpUser: mhpUser, firstName: firstName, lastName: lastName, state: state)
+        return service.parser.buildUserDataSet(firUserEmail: firUserEmail, mhpUser: mhpUser, firstName: firstName, lastName: lastName, state: state)
     }
     
     func decodeUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {
         return service.parser.parseResponseToUser(document: document, data: data)
+    }
+    
+    func encodeEvent(event: MHPEvent) -> [String: Any] {
+        return service.parser.buildEventDataSet(event: event)
+    }
+    
+    func decodeEvent(document: DocumentSnapshot, data: [String: Any]) -> MHPEvent? {
+        return service.parser.parseResponseToEvent(document: document, data: data)
     }
 }

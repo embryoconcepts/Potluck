@@ -21,6 +21,9 @@ class MHPServiceRouter: Routeable {
     func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendVerificationEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {}
     func sendResetPasswordEmail(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {}
+    
+    func getEvent(eventID: String, completion: @escaping (Result<MHPEvent, Error> ) -> ()) {}
+    func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> ()) {}
 }
 
 protocol Routeable {
@@ -40,6 +43,9 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
     }
+    
+    
+    // MARK: - User Methods
     
     override func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
         if Auth.auth().currentUser != nil {
@@ -284,6 +290,37 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
             } else {
                 completion(.failure(error!))
                 print("Reset password error: \(String(describing: error))")
+            }
+        }
+    }
+    
+    
+    // MARK: - Event Methods
+    
+    override func getEvent(eventID: String, completion: @escaping (Result<MHPEvent, Error> ) -> ()) {
+        let ref: DocumentReference = self.db.collection("events").document(eventID)
+        ref.getDocument { (document, error) in
+            if  let document = document,
+                let data = document.data(),
+                let event = self.dataManager.decodeEvent(document: document, data: data) {
+                completion(.success(event))
+            } else {
+                completion(.failure(error!))
+            }
+        }
+       
+    }
+    
+    override func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> ()) {
+        let ref: DocumentReference = self.db.collection("events").document(event.eventID)
+        let dataSet = self.dataManager.encodeEvent(event: event)
+        ref.setData(dataSet, options: SetOptions.merge()) { (error) in
+            if error == nil {
+                print("Event saved with document ID: \(ref.documentID)")
+                completion(.success(true))
+            } else {
+                print("Error adding document: \(String(describing: error))")
+                completion(.failure(error!))
             }
         }
     }

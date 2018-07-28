@@ -350,5 +350,8 @@ extension MHPCreateEvent1DetailsViewController: Injectable {
         if event == nil {
             event = MHPEvent()
         }
+        if let host = mhpUser {
+            event?.host = host
+        }
     }
 }

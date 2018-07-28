@@ -224,8 +224,10 @@
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
-            if let user = self.mhpUser, let createEventVC = tabBarController?.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
-                createEventVC.inject(user)
+            if let createEventVC = tabBarController?.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+                if let user = self.mhpUser {
+                    createEventVC.inject(user)
+                }
                 if let tabBarCon = tabBarController {
                     tabBarCon.selectedIndex = 1
                 }
