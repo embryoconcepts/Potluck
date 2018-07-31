@@ -18,8 +18,8 @@ struct MHPDataManager {
         self.service = service
     }
     
-    func encodeUser(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
-        return service.parser.buildUserDataSet(firUserEmail: firUserEmail, mhpUser: mhpUser, firstName: firstName, lastName: lastName, state: state)
+    func encodeUser(firemail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
+        return service.parser.buildUserDataSet(firemail: firemail, mhpUser: mhpUser, firstName: firstName, lastName: lastName, state: state)
     }
     
     func decodeUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {

@@ -11,14 +11,14 @@ import UIKit
 class MHPInvite: Codable, Equatable, TableViewCompatible {
     static func ==(lhs: MHPInvite, rhs: MHPInvite) -> Bool {
         return
-            lhs.userEmail == rhs.userEmail ||
+            lhs.email == rhs.email ||
             lhs.contactID == rhs.contactID 
     }
     
     var userID: String?
     var userFirstName: String?
     var userLastName: String?
-    var userEmail: String?
+    var email: String?
     var userPhone: String?
     var userProfileURL: String?
     var userFacebookID: String?
@@ -32,17 +32,17 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
     
     init(userFirstName: String,
          userLastName: String,
-         userEmail: String) {
+         email: String) {
         
         self.userFirstName = userFirstName
         self.userLastName = userLastName
-        self.userEmail = userEmail
+        self.email = email
     }
     
     init(userID: String?,
          userFirstName: String?,
          userLastName: String?,
-         userEmail: String?,
+         email: String?,
          userPhone: String?,
          userProfileURL: String?,
          userFacebookID: String?,
@@ -53,7 +53,7 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
         self.userID = userID
         self.userFirstName = userFirstName
         self.userLastName = userLastName
-        self.userEmail = userEmail
+        self.email = email
         self.userPhone = userPhone
         self.userProfileURL = userProfileURL
         self.userFacebookID = userFacebookID

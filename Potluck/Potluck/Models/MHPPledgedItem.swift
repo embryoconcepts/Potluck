@@ -18,8 +18,8 @@ struct MHPPledgedItem: Codable {
     var quantityType: String?
     var description: String?
     
-    init(itemID: String = UUID().uuidString) {
-        self.itemID = itemID
+    init() {
+        
     }
     
     init(itemID: String = UUID().uuidString,

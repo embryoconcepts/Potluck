@@ -58,7 +58,7 @@ class MHPInviteContactsViewController: UIViewController {
                 .map { (contact) -> MHPInvite in
                     let invite = MHPInvite(userFirstName: contact.givenName,
                                            userLastName: contact.familyName,
-                                           userEmail: contact.contactPreference!)
+                                           email: contact.contactPreference!)
                     invite.contactID = contact.identifier
                     invite.contactImage = contact.imageData
                     return invite
@@ -73,7 +73,7 @@ class MHPInviteContactsViewController: UIViewController {
                 .filter { (invite) -> Bool in
                     // FIXME: this is taking way too long
                     dispatchGroup.enter()
-                    self.request.retrieveUserByEmail(email: invite.userEmail!) { (result) in
+                    self.request.retrieveUserByEmail(email: invite.email!) { (result) in
                         switch result {
                         case .success(let user):
                             invite.userFirstName = user.firstName
@@ -177,7 +177,7 @@ class MHPInviteContactsViewController: UIViewController {
             for contact in allContacts {
                 if invite.contactID == contact.identifier {
                     contact.isSelected = true
-                    contact.contactPreference = invite.userEmail
+                    contact.contactPreference = invite.email
                 }
             }
         }
@@ -273,7 +273,7 @@ extension MHPInviteContactsViewController: UITableViewDelegate, UITableViewDataS
     }
     
     fileprivate func validateSelection(for contact: CNContact, at cell: MHPContactsCell, indexPath: IndexPath) {
-        if self.pendingInvites!.contains(where: { $0.userEmail == contact.contactPreference }) {
+        if self.pendingInvites!.contains(where: { $0.email == contact.contactPreference }) {
             DispatchQueue.main.async { [unowned self] in
                 let alertController = UIAlertController(title: "Existing Invite",
                                                         message: "This user has already been invited.",

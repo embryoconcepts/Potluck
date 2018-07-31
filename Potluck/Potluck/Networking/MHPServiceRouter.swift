@@ -90,7 +90,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
             if error == nil {
                 if let returnedUser = user {
                     let ref: DocumentReference = self.db.collection("users").document(returnedUser.uid)
-                    let dataSet = self.dataManager.encodeUser(firUserEmail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+                    let dataSet = self.dataManager.encodeUser(firemail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if error == nil {
                             print("Anon user added with ID: \(ref.documentID)")
@@ -220,7 +220,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     }
     
     override func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        let userQuery = db.collection("users").whereField("userEmail", isEqualTo: email)
+        let userQuery = db.collection("users").whereField("email", isEqualTo: email)
         userQuery.getDocuments { (snap, error) in
             if error == nil {
                 if let documents = snap?.documents {
@@ -249,7 +249,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
             firUser.reload { (error) in
                 if error == nil {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
-                    let dataSet = self.dataManager.encodeUser(firUserEmail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
+                    let dataSet = self.dataManager.encodeUser(firemail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
                     ref.setData(dataSet, options: SetOptions.merge()) { (error) in
                         if error == nil {
                             print("User updated with document ID: \(ref.documentID)")

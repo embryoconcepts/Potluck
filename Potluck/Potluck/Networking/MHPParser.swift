@@ -11,7 +11,7 @@ import Firebase
 
 /// Parse the response as needed for the service specified (future refactor to use generics so there's only one parser)
 class MHPParser: Parseable {
-    func buildUserDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] { return [String: Any]() }
+    func buildUserDataSet(firemail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] { return [String: Any]() }
     func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? { return nil }
     
     func buildEventDataSet(event: MHPEvent) -> [String: Any] { return [String: Any]() }
@@ -27,22 +27,22 @@ class MHPFirestoreParser: MHPParser {
     
     // MARK: - User Parsing
     
-    override func buildUserDataSet(firUserEmail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
+    override func buildUserDataSet(firemail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
         
-        if let email = firUserEmail {
-            userDict["userEmail"] = email
+        if let email = firemail {
+            userDict["email"] = email
         }
         
         if let mu = mhpUser {
             userDict["firstName"] = mu.firstName
             userDict["lastName"] = mu.lastName
-            userDict["email"] = mu.email ?? firUserEmail
+            userDict["email"] = mu.email ?? firemail
             userDict["phone"] = mu.phone
             userDict["profileImageURL"] = mu.profileImageURL
             userDict["facebookID"] = mu.facebookID
-            userDict["eventListID"] = mu.eventListID
+            userDict["events"] = mu.events
             userDict["notificationPermissions"] = mu.notificationPermissions
             userDict["notificationPreferences"] = mu.notificationPreferences
             userDict["locationPermissions"] = mu.locationPermissions
@@ -58,6 +58,7 @@ class MHPFirestoreParser: MHPParser {
         var user = MHPUser()
         do {
             user = try user.dictToModel(dict: data)
+            user.userID = document.documentID
         } catch let err {
             print("parseResponseToUser error:\(err)")
         }
@@ -81,6 +82,7 @@ class MHPFirestoreParser: MHPParser {
         var event = MHPEvent()
         do {
             event = try event.dictToModel(dict: data)
+            event.eventID = document.documentID
         } catch let err {
             print("parseResponseToUser error:\(err)")
         }

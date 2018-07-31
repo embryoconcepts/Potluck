@@ -17,7 +17,7 @@ struct MHPRequestedItem: Codable, Equatable, TableViewCompatible {
     
     init(name: String?,
          quantity: Int?,
-        quantityType: String?) {
+         quantityType: String?) {
         self.name = name
         self.quantity = quantity
         self.quantityType = quantityType

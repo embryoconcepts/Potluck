@@ -23,7 +23,7 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
             self.lblGuestName.text = "\(first) \(last)"
         }
         
-        self.lblEmailOrPhone.text = model.userEmail
+        self.lblEmailOrPhone.text = model.email
         
         if let userPlaceholder = UIImage(named: "userPlaceholder") {
             if let urlString = self.model?.userProfileURL, let url = URL(string: urlString) {

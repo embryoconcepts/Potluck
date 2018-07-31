@@ -104,7 +104,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     fileprivate func mapInvitesToRsvps() {
         rsvps = invites.map { (invite) -> MHPRsvp in
             return MHPRsvp(userID: invite.userID,
-                           userEmail: invite.userEmail,
+                           email: invite.email,
                            eventID: event?.eventID,
                            itemID: MHPPledgedItem().itemID,
                            isGuest: true,
@@ -115,7 +115,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         }
         
         let hostRsvp = MHPRsvp(userID: event?.host?.userID,
-                               userEmail: event?.host?.email,
+                               email: event?.host?.email,
                                eventID: event?.eventID,
                                itemID: MHPPledgedItem().itemID,
                                isGuest: false,

@@ -136,11 +136,11 @@
                                           tags: ["shellfish"],
                                           items: pledgedItems1)
        
-        let invites1 = [MHPInvite(userFirstName: "Ada", userLastName: "Lovelace", userEmail: "ada@babbage.com"),
-                        MHPInvite(userFirstName: "Hedy", userLastName: "Lamarr", userEmail: "hedy@mail.com")]
+        let invites1 = [MHPInvite(userFirstName: "Ada", userLastName: "Lovelace", email: "ada@babbage.com"),
+                        MHPInvite(userFirstName: "Hedy", userLastName: "Lamarr", email: "hedy@mail.com")]
         
         let rsvps1 = [MHPRsvp(userID: "host2userID",
-                              userEmail: "grace@hooper.com",
+                              email: "grace@hooper.com",
                               eventID: "event1eventID",
                               itemID: "hash string for item id",
                               isGuest: true,
@@ -295,6 +295,13 @@
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
+                    if let events = self.mhpUser?.events {
+                        for event in events {
+                            MHPServiceRouter().getEvent(eventID: event, completion: { (result) in
+                                print(result)
+                            })
+                        }
+                    }
                     self.assertDependencies()
                     self.styleView()
                 case .failure(let error):

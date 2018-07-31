@@ -98,7 +98,14 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
             request.saveEvent(event: event!) { (result) in
                 switch result {
                 case .success:
-                    self.dismiss(animated: true, completion: nil)
+                    self.tabBarController?.tabBar.isHidden = false
+                    if let tabs = self.tabBarController?.viewControllers {
+                        if tabs.count > 0 {
+                            self.tabBarController?.selectedIndex = 0
+                        }
+                    }
+                    // FIXME: needs to clear out the event/drop the stack completely
+                    self.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):
                     print(error)
                     return
@@ -117,6 +124,7 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
     }
     
     fileprivate func cancel() {
+        // FIXME: needs to clear out the event/drop the stack completely
         self.presentCancelAlert(view: self)
     }
 

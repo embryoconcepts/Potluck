@@ -21,7 +21,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var btnAddToList: UIButton!
     
     var mhpUser: MHPUser?
-    var tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
+    var tempInvite = MHPInvite(userFirstName: "", userLastName: "", email: "")
     var pendingInvites: [MHPInvite]?
     var enteredInvitesDelegate: EnteredInvitesDelegate?
     lazy var request: MHPRequestHandler = {
@@ -64,12 +64,12 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                         self.tempInvite.userID = user.userID
                         self.tempInvite.userFirstName = user.firstName
                         self.tempInvite.userLastName = user.lastName
-                        self.tempInvite.userEmail = user.email
+                        self.tempInvite.email = user.email
                         self.tempInvite.userProfileURL = user.profileImageURL
                     case .failure(_):
                         self.tempInvite.userFirstName = self.txtFirst.text
                         self.tempInvite.userLastName = self.txtLast.text
-                        self.tempInvite.userEmail = self.txtEmailOrPhone.text
+                        self.tempInvite.email = self.txtEmailOrPhone.text
                     }
                     self.pendingInvites!.append(self.tempInvite)
                     self.resetTextFields()
@@ -148,7 +148,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         if allMatches.count == 1, allMatches.first?.url?.absoluteString.contains("mailto:") == true &&
                 trimmedText != mhpUser?.email {
             
-            if self.pendingInvites!.contains(where: { $0.userEmail == email }) {
+            if self.pendingInvites!.contains(where: { $0.email == email }) {
                 DispatchQueue.main.async { [unowned self] in
                     let alertController = UIAlertController(title: "Existing Invite",
                                                             message: "This user has already been invited.",
@@ -177,7 +177,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         txtFirst.text = ""
         txtLast.text = ""
         txtEmailOrPhone.text = ""
-        tempInvite = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
+        tempInvite = MHPInvite(userFirstName: "", userLastName: "", email: "")
         txtFirst.becomeFirstResponder()
     }
     
@@ -196,7 +196,7 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var inv = MHPInvite(userFirstName: "", userLastName: "", userEmail: "")
+        var inv = MHPInvite(userFirstName: "", userLastName: "", email: "")
         if let invite = pendingInvites?[indexPath.row] {
             inv = invite
         }
@@ -251,7 +251,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
             case txtLast:
                 tempInvite.userLastName = textEntry
             case txtEmailOrPhone:
-                tempInvite.userEmail = textEntry
+                tempInvite.email = textEntry
             default:
                 return
             }
@@ -272,7 +272,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
         tempInvite.userFirstName = txtFirst.text
         tempInvite.userLastName = txtLast.text
-        tempInvite.userEmail = txtEmailOrPhone.text
+        tempInvite.email = txtEmailOrPhone.text
     }
 }
 

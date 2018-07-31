@@ -28,7 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Firebase
         FirebaseApp.configure()
-        
+        let firestore = Firestore.firestore()
+        let settings = FirestoreSettings()
+        settings.areTimestampsInSnapshotsEnabled = true
+        firestore.settings = settings
+
         // Facebook
 //        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         

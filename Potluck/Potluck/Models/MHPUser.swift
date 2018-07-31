@@ -29,7 +29,7 @@ struct MHPUser: Codable {
     var phone: String?
     var profileImageURL: String?
     var facebookID: String?
-    var eventListID: String?
+    var events: [String]?
     var notificationPermissions: Bool?
     var notificationPreferences: Bool?
     var locationPermissions: Bool?
@@ -47,7 +47,7 @@ struct MHPUser: Codable {
          phone: String,
          profileImageURL: String,
          facebookID: String,
-         eventListID: String,
+         events: [String],
          notificationPermissions: Bool,
          notificationPreferences: Bool,
          locationPermissions: Bool,
@@ -61,7 +61,7 @@ struct MHPUser: Codable {
         self.phone = phone
         self.profileImageURL = profileImageURL
         self.facebookID = facebookID
-        self.eventListID = eventListID
+        self.events = events
         self.notificationPermissions = notificationPermissions
         self.notificationPreferences = notificationPreferences
         self.locationPermissions = locationPermissions

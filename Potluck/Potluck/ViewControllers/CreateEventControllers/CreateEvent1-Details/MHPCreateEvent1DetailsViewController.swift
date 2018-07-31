@@ -182,8 +182,8 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
             isValid = false
         }
         
-        let nextHour = Date().add(component: .hour, value: 1)
-        if datePicker.date < nextHour! {
+        let nextMin = Date().add(component: .minute, value: 1)
+        if datePicker.date < nextMin! {
             errorMsg += "\nvalid date"
             isValid = false
         }
