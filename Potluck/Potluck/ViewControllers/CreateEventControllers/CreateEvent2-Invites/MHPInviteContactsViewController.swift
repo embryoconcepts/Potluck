@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import SVProgressHUD
 
 protocol ContactsSelectedDelegate {
     func submitFromContacts(pendingInvites: [MHPInvite])
@@ -71,8 +72,9 @@ class MHPInviteContactsViewController: UIViewController {
                     }
                 }
                 .filter { (invite) -> Bool in
-                    // FIXME: this is taking way too long
+                    SVProgressHUD.show()
                     dispatchGroup.enter()
+                    
                     self.request.retrieveUserByEmail(email: invite.email!) { (result) in
                         switch result {
                         case .success(let user):
@@ -83,7 +85,9 @@ class MHPInviteContactsViewController: UIViewController {
                         case .failure(_):
                             print()
                         }
+                        
                         dispatchGroup.leave()
+                        SVProgressHUD.dismiss()
                     }
                     return true
             }
@@ -93,6 +97,7 @@ class MHPInviteContactsViewController: UIViewController {
                 self.contactInvitesDelegate?.submitFromContacts(pendingInvites: self.pendingInvites!)
                 self.dismiss(animated: true, completion: nil)
             }
+            
         }
     }
     

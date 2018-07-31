@@ -31,7 +31,7 @@
         <!--Event-->
         <scene sceneID="MEw-NO-3JF">
             <objects>
-                <viewController storyboardIdentifier="viewEventVC" id="tax-il-kPs" customClass="MHPEventViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MHPEventViewController" id="tax-il-kPs" customClass="MHPEventViewController" customModule="Potluck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GpH-fF-O6I">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -55,15 +55,6 @@
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        if segue.identifier == "HomeToEventSegue" {
-            if  let user = mhpUser,
-                let indexPath = self.carousel.indexPath(for: sender as! MHPHomeCarouselViewCell),
-                let eventDetailVC = segue.destination as? MHPEventViewController {
-                eventDetailVC.inject((injectedUser: user, injectedEvent: events[indexPath.row]))
-            }
-        } else {
-            // error handling
-        }
     }
     
     
@@ -104,6 +95,8 @@
         default:
             return
         }
+        
+        carousel.allowsSelection = true
     }
     
     fileprivate func setupMockData() {
@@ -170,19 +163,8 @@
         var host2 = MHPUser()
         host2.firstName = "Mary Contrary"
         host2.userID = "host2userID"
-//        let event2 = MHPEvent(eventID: "event2eventID",
-//                              eventName: "Potluck Test 2",
-//                              eventDate: "10/28/2018",
-//                              eventLocation: "Somewhere",
-//                              eventAddress: "123 Elm Grove",
-//                              eventDescription:  "Happy Holidays, everyone! Please join us for our friends and family potluck this year. The theme is “we are all family”, so please bring something that is traditional to you!",
-//                              eventImageURL: "potluckPlaceholder",
-//                              eventRestrictions: ["vegetarian"],
-//                              eventHostID: "event2eventHostID",
-//                              eventItemListID: "event2eventItemListID",
-//                              eventRsvpListID: "event2eventRsvpListID")
+
         events.append(event1)
-//        events.append(event2)
     }
     
  }
@@ -225,6 +207,8 @@
         switch indexPath.section {
         case 1:
             if let createEventVC = tabBarController?.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+                let event = MHPEvent()
+                createEventVC.inject(event)
                 if let user = self.mhpUser {
                     createEventVC.inject(user)
                 }
@@ -233,7 +217,11 @@
                 }
             }
         default:
-            return
+            if  let user = mhpUser,
+                let eventDetailVC =  UIStoryboard(name: "ViewEvent", bundle: nil).instantiateViewController(withIdentifier: "MHPEventViewController") as? MHPEventViewController {
+                eventDetailVC.inject((injectedUser: user, injectedEvent: events[indexPath.row]))
+                navigationController?.pushViewController(eventDetailVC, animated: true)
+            }
         }
     }
  }
@@ -244,6 +232,8 @@
  extension MHPHomeViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            let event = MHPEvent()
+            createEventVC.inject(event)
             createEventVC.inject(user)
         } 
         if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
@@ -297,8 +287,19 @@
                     self.mhpUser = user
                     if let events = self.mhpUser?.events {
                         for event in events {
-                            MHPServiceRouter().getEvent(eventID: event, completion: { (result) in
-                                print(result)
+                            self.request.getEvent(eventID: event, completion: { (result) in
+                                switch result {
+                                case .success(let event):
+                                    self.events.append(event)
+                                case .failure(let error):
+                                    DispatchQueue.main.async { [unowned self] in
+                                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                                        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                                        alertController.addAction(defaultAction)
+                                        self.present(alertController, animated: true, completion: nil)
+                                    }
+                                }
+                                self.carousel.reloadData()
                             })
                         }
                     }
@@ -312,7 +313,6 @@
                         self.present(alertController, animated: true, completion: nil)
                     }
                 }
-                
                 SVProgressHUD.dismiss()
                 // enable tabs after completion
                 for t in tabItems {

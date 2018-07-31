@@ -28,14 +28,19 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
         return MHPRequestHandler()
     }()
     
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         assertDependencies()
         setupView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -94,7 +99,6 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
     
     fileprivate func saveAndSend() {
         if event?.host != nil {
-            // TODO: send event to the server and do a bunch of stuff
             request.saveEvent(event: event!) { (result) in
                 switch result {
                 case .success:
@@ -104,7 +108,6 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
                             self.tabBarController?.selectedIndex = 0
                         }
                     }
-                    // FIXME: needs to clear out the event/drop the stack completely
                     self.navigationController?.popToRootViewController(animated: true)
                 case .failure(let error):
                     print(error)
@@ -124,7 +127,6 @@ class MHPCreateEvent5SaveAndSendViewController: UIViewController {
     }
     
     fileprivate func cancel() {
-        // FIXME: needs to clear out the event/drop the stack completely
         self.presentCancelAlert(view: self)
     }
 

@@ -100,7 +100,6 @@
                                             <outlet property="lblEventName" destination="JJO-jT-imd" id="tbO-Wf-OKL"/>
                                             <outlet property="lblHostName" destination="17G-ty-r3F" id="ARa-Am-MeC"/>
                                             <outlet property="mainView" destination="pDA-Z2-Bf9" id="RZw-hQ-qvh"/>
-                                            <segue destination="hls-Wi-d70" kind="show" identifier="HomeToEventSegue" id="4CO-ei-c93"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="createCell" id="2vw-y7-jVv" customClass="MHPCreateEventCell" customModule="Potluck" customModuleProvider="target">
@@ -224,14 +223,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-z2-RIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="678.75" y="-1126.056338028169"/>
-        </scene>
-        <!--ViewEvent-->
-        <scene sceneID="vUk-xD-ymq">
-            <objects>
-                <viewControllerPlaceholder storyboardName="ViewEvent" id="hls-Wi-d70" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KKt-2K-jxs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1592" y="-1124"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="rfR-TS-040">
