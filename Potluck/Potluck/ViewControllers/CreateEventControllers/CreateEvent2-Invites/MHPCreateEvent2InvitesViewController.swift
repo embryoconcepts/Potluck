@@ -190,9 +190,9 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            if invites.count > 0 {
-                let invite = invites[indexPath.row]
-                return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
+        if invites.count > 0 {
+            let invite = invites[indexPath.row]
+            return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
             
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "emptyStateCell", for: indexPath) as! MHPInviteEmptyStateCell
