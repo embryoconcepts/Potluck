@@ -8,56 +8,56 @@
 
 import UIKit
 
-protocol ModifyItemPopoverDelegate {
+protocol ModifyItemPopoverDelegate: AnyObject {
     func saveModifiedItem(with modifiedItem: MHPRequestedItem, at indexPath: IndexPath)
 }
 
-protocol CancelAddingNewItemDelegate {
+protocol CancelAddingNewItemDelegate: AnyObject {
     func cancelAddingNewItem(at indexPath: IndexPath)
 }
 
 class MHPModifyItemPopoverViewController: UIViewController {
-    
+
     @IBOutlet weak var txtName: UITextField!
     @IBOutlet weak var txtQuantity: UITextField!
     @IBOutlet weak var txtPortions: UITextField!
     @IBOutlet weak var btnSave: UIButton!
-    
+
     var isNewItem: Bool?
     var modifiedItem = MHPRequestedItem()
     var indexPath: IndexPath?
     var modifyItemDelegate: ModifyItemPopoverDelegate?
     var cancelItemDelegate: CancelAddingNewItemDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupKeyboardDoneButton()
         setupKeyboardDismissOnTap()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func cancelTapped(_ sender: Any) {
         cancel()
     }
-    
+
     @IBAction func saveTapped(_ sender: Any) {
         saveModifiedItem()
     }
-    
-    
+
+
     // MARK: - Style Popover
-    
+
     func setupPopover(with itemToEdit: MHPRequestedItem, at indexPath: IndexPath, isNew: Bool) {
         self.indexPath = indexPath
         self.modifiedItem = itemToEdit
         self.isNewItem = isNew
-        
+
         if !isNew {
             txtName.text = modifiedItem.name
             if let quantity = modifiedItem.quantity {
@@ -67,28 +67,28 @@ class MHPModifyItemPopoverViewController: UIViewController {
             checkIfSaveEnabled()
         }
     }
-    
-    
+
+
     // MARK: - Private Methods
-    
+
     fileprivate func checkIfSaveEnabled() {
-        if txtName.text != nil, txtName.text != "",
-            txtQuantity.text != nil, txtQuantity.text != "",
-            txtPortions.text != nil, txtPortions.text != "" {
+        if txtName.text != nil, !txtName.text!.isEmpty,
+            txtQuantity.text != nil, !txtQuantity.text!.isEmpty,
+            txtPortions.text != nil, !txtPortions.text!.isEmpty {
             btnSave.isEnabled = true
         } else {
             btnSave.isEnabled = false
         }
     }
-    
+
     fileprivate func cancel() {
         self.dismiss(animated: true) {
-            if let _ = self.isNewItem {
+            if self.isNewItem != nil {
                 self.cancelItemDelegate?.cancelAddingNewItem(at: self.indexPath!)
             }
         }
     }
-    
+
     fileprivate func saveModifiedItem() {
         if let indexPath = indexPath {
             dismiss(animated: true) {
@@ -96,7 +96,7 @@ class MHPModifyItemPopoverViewController: UIViewController {
             }
         }
     }
-    
+
 }
 
 
@@ -116,7 +116,7 @@ extension MHPModifyItemPopoverViewController: UITextFieldDelegate {
         checkIfSaveEnabled()
         }
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case txtName:
@@ -131,32 +131,32 @@ extension MHPModifyItemPopoverViewController: UITextFieldDelegate {
         }
         return true
     }
-    
+
     func setupKeyboardDoneButton() {
         //init toolbar
-        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
-      
+        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
+
         //create left side empty space so that done button set on right side
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
         toolbar.setItems([flexSpace, doneBtn], animated: false)
         toolbar.sizeToFit()
-      
+
         //setting toolbar as inputAccessoryView
         self.txtName.inputAccessoryView = toolbar
         self.txtQuantity.inputAccessoryView = toolbar
         self.txtPortions.inputAccessoryView = toolbar
     }
-    
+
     func setupKeyboardDismissOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tap)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         dismissKeyboard()
     }
-    
+
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)

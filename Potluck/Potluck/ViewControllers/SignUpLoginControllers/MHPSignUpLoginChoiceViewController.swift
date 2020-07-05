@@ -10,27 +10,27 @@ import UIKit
 import Firebase
 import SVProgressHUD
 
-protocol HomeUserDelegate: class {
+protocol HomeUserDelegate: AnyObject {
     func updateUser(mhpUser: MHPUser)
 }
 
-protocol ProfileUserDelegate: class {
+protocol ProfileUserDelegate: AnyObject {
     func updateUser(mhpUser: MHPUser)
 }
 
-protocol SettingsUserDelegate: class {
+protocol SettingsUserDelegate: AnyObject {
     func updateUser(mhpUser: MHPUser)
 }
 
 class MHPSignUpLoginChoiceViewController: UIViewController {
-    
+
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var txtAlert: UILabel!
     @IBOutlet weak var btnAlert: UIButton!
     @IBOutlet weak var lblPasswordValidation: UILabel!
-    
+
     var mhpUser: MHPUser?
     var firUser: User?
     lazy var request: MHPRequestHandler = {
@@ -39,12 +39,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
     weak var settingsDelegate: SettingsUserDelegate?
     weak var profileDelegate: ProfileUserDelegate?
     weak var homeUserDelegate: HomeUserDelegate?
-    
+
     var isPasswordValid = true
-    
-    
+
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
@@ -52,32 +52,32 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
         self.txtEmail.delegate = self
         self.txtPassword.delegate = self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         handleUser()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func cancelTappped(_ sender: UIBarButtonItem) {
         close()
     }
-    
+
     @IBAction func loginTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text) {
             SVProgressHUD.show()
-            request.loginUser(email: email, password: pass) { (result) in
+            request.loginUser(email: email, password: pass) { result in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -94,11 +94,11 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             }
         }
     }
-    
+
     @IBAction func signupTapped(_ sender: Any) {
         if let email = validateEmail(email: txtEmail.text), let pass = validatePassword(password: txtPassword.text), let mhpUser = self.mhpUser {
             SVProgressHUD.show()
-            request.registerUser(email: email, password: pass, mhpUser: mhpUser) { (result) in
+            request.registerUser(email: email, password: pass, mhpUser: mhpUser) { result in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
@@ -115,7 +115,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             }
         }
     }
-    
+
     @IBAction func forgotPasswordTapped(_ sender: Any) {
         DispatchQueue.main.async { [unowned self] in
             let alert = UIAlertController(title: "Password Reset", message: "Please enter your email address:", preferredStyle: .alert)
@@ -123,12 +123,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             alert.addTextField { textField in
                 textField.placeholder = "Input your email here..."
             }
-            
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                 // handle error
                 if let email = alert.textFields?.first?.text {
                     SVProgressHUD.show()
-                    self.request.resetPassword(forEmail: email) { (result) in
+                    self.request.resetPassword(forEmail: email) { result in
                         switch result {
                         case .success:
                             print("password reset email sent")
@@ -145,14 +145,14 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
                     }
                 }
             }))
-            
+
             self.present(alert, animated: true)
         }
     }
-    
+
     @IBAction func alertTapped(_ sender: Any) {
         SVProgressHUD.show()
-        request.verifyEmail { (result) in
+        request.verifyEmail { result in
             switch result {
             case .success:
                 DispatchQueue.main.async { [unowned self] in
@@ -176,19 +176,19 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             SVProgressHUD.dismiss()
         }
     }
-    
+
     @IBAction func facebookTapped(_ sender: Any) {
         // set up facebook login
     }
-    
+
     @IBAction func googleTapped(_ sender: Any) {
         // set up google login
     }
-    
-    
+
+
     // MARK: - Private methods
-    
-    fileprivate func updateForUserState()  {
+
+    fileprivate func updateForUserState() {
         if let state = mhpUser?.userState {
             switch state {
             case .registered:
@@ -203,7 +203,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
                     navigationController?.present(personalVC, animated: true, completion: nil)
                 }
             case .unverified:
-                viewAlert.isHidden = false;
+                viewAlert.isHidden = false
                 txtAlert.text = "Verification email has been sent. Please use the link in the email to verify. Tap here to resend."
                 btnAlert.isEnabled = true
             case .anonymous:
@@ -212,16 +212,16 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             }
         }
     }
-    
+
     fileprivate func close() {
         // double check after Event flows built
         guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
         if let homeVC = tabBarCon.children[0].children[0] as? MHPHomeViewController {
             homeVC.inject(self.mhpUser!)
         }
-        
+
         if self.mhpUser?.userState == .registered {
-            let tabBarIndex = (self.presentingViewController as! UITabBarController).selectedIndex
+            guard let tabBarIndex = (self.presentingViewController as? UITabBarController)?.selectedIndex else { return }
             switch tabBarIndex {
             case 0:
                 homeUserDelegate?.updateUser(mhpUser: self.mhpUser!)
@@ -236,18 +236,18 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             }
         } else {
             if let tabs = tabBarCon.viewControllers {
-                if tabs.count > 0 {
+                if tabs.count >= 1 {
                     tabBarCon.selectedIndex = 0
                 }
             }
         }
-        
+
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
+
+
     // MARK: - In-Place Validation Helpers
-    
+
     fileprivate func setupAttributeColor(if isValid: Bool) -> [NSAttributedString.Key: Any] {
         if isValid {
             return [NSAttributedString.Key.foregroundColor: UIColor.blue]
@@ -256,30 +256,30 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             return [NSAttributedString.Key.foregroundColor: UIColor(hexString: "6A6A6A")]
         }
     }
-    
+
     fileprivate func findRange(in baseString: String, for substring: String) -> NSRange {
         if let range = baseString.localizedStandardRange(of: substring) {
             let startIndex = baseString.distance(from: baseString.startIndex, to: range.lowerBound)
             let length = substring.count
-            return NSMakeRange(startIndex, length)
+            return NSRange(location: startIndex, length: length)
         } else {
             print("Range does not exist in the base string.")
-            return NSMakeRange(0, 0)
+            return NSRange(location: 0, length: 0)
         }
     }
-    
-    
+
+
     // MARK: - Validation Methods
-    
+
     fileprivate func validateEmail(email: String?) -> String? {
         guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
         guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
-        
-        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+
+        let range = NSRange(location: 0, length: NSString(string: trimmedText).length)
         let allMatches = dataDetector.matches(in: trimmedText,
                                               options: [],
                                               range: range)
-        
+
         if allMatches.count == 1,
             allMatches.first?.url?.absoluteString.contains("mailto:") == true {
             return trimmedText
@@ -293,25 +293,25 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             return nil
         }
     }
-    
+
     fileprivate func validatePassword(password: String?) -> String? {
         var errorMsg = "Password requires at least:"
-        
+
         if let txt = txtPassword.text {
-            if (txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
+            if txt.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil {
                 errorMsg += "\none upper case letter"
             }
-            if (txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
+            if txt.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil {
                 errorMsg += "\none lower case letter"
             }
-            if (txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
+            if txt.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil {
                 errorMsg += "\none number"
             }
             if txt.count < 8 {
                 errorMsg += "\neight characters"
             }
         }
-        
+
         if isPasswordValid {
             return password!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         } else {
@@ -324,7 +324,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             return nil
         }
     }
-    
+
 }
 
 
@@ -340,26 +340,26 @@ extension MHPSignUpLoginChoiceViewController: UITextFieldDelegate {
         }
         return true
     }
-    
+
     func textField(_ textFieldToChange: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange = true
         if textFieldToChange == txtEmail {
-            let characterSetNotAllowed = CharacterSet.init(charactersIn: "#!$%&^* ")
-            if let _ = string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) {
+            let characterSetNotAllowed = CharacterSet(charactersIn: "#!$%&^* ")
+            if string.rangeOfCharacter(from: characterSetNotAllowed, options: .caseInsensitive) != nil {
                 shouldChange = false
             }
         }
         return shouldChange
     }
-    
+
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let attrStr = NSMutableAttributedString (
+        let attrStr = NSMutableAttributedString(
             string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, and one number.",
             attributes: [
-                .font: UIFont.init(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
+                .font: UIFont(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
                 .foregroundColor: UIColor(hexString: "6A6A6A")
             ])
-        
+
         if let txt = txtPassword.text {
             isPasswordValid = true
             attrStr.addAttributes(setupAttributeColor(if: (txt.count >= 8)),
@@ -373,10 +373,10 @@ extension MHPSignUpLoginChoiceViewController: UITextFieldDelegate {
         } else {
             isPasswordValid = false
         }
-        
+
         lblPasswordValidation.attributedText = attrStr
     }
-    
+
 }
 
 
@@ -384,11 +384,11 @@ extension MHPSignUpLoginChoiceViewController: UITextFieldDelegate {
 
 extension MHPSignUpLoginChoiceViewController: Injectable {
     typealias T = MHPUser
-    
+
     func inject(_ user: T) {
         self.mhpUser = user
     }
-    
+
     func assertDependencies() {
         assert(self.mhpUser != nil)
     }
@@ -399,7 +399,7 @@ extension MHPSignUpLoginChoiceViewController: Injectable {
 extension MHPSignUpLoginChoiceViewController: UserHandler {
     func handleUser() {
         SVProgressHUD.show()
-        request.getUser { (result) in
+        request.getUser { result in
             switch result {
             case .success(let user):
                 self.mhpUser = user

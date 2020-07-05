@@ -17,11 +17,11 @@ struct MHPPledgedItem: Codable {
     var quantity: Int?
     var quantityType: String?
     var description: String?
-    
+
     init() {
-        
+
     }
-    
+
     init(itemID: String = UUID().uuidString,
          userID: String?,
          eventID: String?,
@@ -30,7 +30,7 @@ struct MHPPledgedItem: Codable {
          quantity: Int?,
          quantityType: String?,
          description: String?) {
-        
+
         self.itemID = itemID
         self.userID = userID
         self.eventID = eventID

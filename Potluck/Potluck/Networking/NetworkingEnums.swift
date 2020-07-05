@@ -25,23 +25,23 @@ enum Result<T, Error> {
 }
 
 enum ServiceOption {
-    case FirebaseFirestore
-    case FirebaseRealtimeDatabase
-    
+    case firebaseFirestore
+    case firebaseRealtimeDatabase
+
     var router: MHPServiceRouter {
         switch self {
-        case .FirebaseFirestore:
+        case .firebaseFirestore:
             return MHPFirebaseFirestoreServiceRouter()
-        case .FirebaseRealtimeDatabase:
+        case .firebaseRealtimeDatabase:
             return MHPFirebaseRealtimeDBServiceRouter()
         }
     }
-    
+
     var parser: MHPParser {
         switch self {
-        case .FirebaseFirestore:
+        case .firebaseFirestore:
             return MHPFirestoreParser()
-        case .FirebaseRealtimeDatabase:
+        case .firebaseRealtimeDatabase:
             return MHPRealtimeDBParser()
         }
     }

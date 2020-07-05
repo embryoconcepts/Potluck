@@ -13,14 +13,15 @@ import UIKit
 /// ServiceOption should be set in AppDelegate, default value can be overridden for testing
 struct MHPRequestHandler {
     private let service: ServiceOption
+    // swiftlint:disable force_cast
     static let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
+
     init(service: ServiceOption = appDelegate.serviceOption) {
         self.service = service
     }
-    
-    func getUser(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.getUser { (result) in
+
+    func getUser(completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.getUser { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -29,9 +30,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.loginUser(email: email, password: password) { (result) in
+
+    func loginUser(email: String, password: String, completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.loginUser(email: email, password: password) { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -40,9 +41,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.signInAnon { (result) in
+
+    func signInAnon(completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.signInAnon { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -51,9 +52,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { (result) in
+
+    func registerUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -62,9 +63,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { (result) in
+
+    func linkUser(email: String, password: String, mhpUser: MHPUser, completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.registerUser(email: email, password: password, mhpUser: mhpUser) { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -73,9 +74,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func retrieveUserByID(completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.retrieveUserByID { (result) in
+
+    func retrieveUserByID(completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.retrieveUserByID { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -84,9 +85,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> ()) {
-        service.router.retrieveUserByEmail(email: email) { (result) in
+
+    func retrieveUserByEmail(email: String, completion: @escaping (Result<MHPUser, Error> ) -> Void) {
+        service.router.retrieveUserByEmail(email: email) { result in
             switch result {
             case .success (let mhpUser):
                 completion(.success(mhpUser))
@@ -95,9 +96,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router.updateUserState(mhpUser: mhpUser, state: state) { (result) in
+
+    func updateUserState(mhpUser: MHPUser, state: UserAuthorizationState, completion: @escaping (Result<Bool, Error> ) -> Void) {
+        service.router.updateUserState(mhpUser: mhpUser, state: state) { result in
             switch result {
             case .success:
                 completion(.success(true))
@@ -106,9 +107,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func verifyEmail(completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router.sendVerificationEmail { (result) in
+
+    func verifyEmail(completion: @escaping (Result<Bool, Error> ) -> Void) {
+        service.router.sendVerificationEmail { result in
             switch result {
             case .success:
                 completion(.success(true))
@@ -117,9 +118,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func resetPassword(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router.sendResetPasswordEmail(forEmail: email) { (result) in
+
+    func resetPassword(forEmail email: String, completion: @escaping (Result<Bool, Error> ) -> Void) {
+        service.router.sendResetPasswordEmail(forEmail: email) { result in
             switch result {
             case .success:
                 completion(.success(true))
@@ -128,9 +129,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func getEvent(eventID: String, completion: @escaping (Result<MHPEvent, Error> ) -> ()) {
-        service.router.getEvent(eventID: eventID) { (result) in
+
+    func getEvent(eventID: String, completion: @escaping (Result<MHPEvent, Error> ) -> Void) {
+        service.router.getEvent(eventID: eventID) { result in
             switch result {
             case .success (let event):
                 completion(.success(event))
@@ -139,9 +140,9 @@ struct MHPRequestHandler {
             }
         }
     }
-    
-    func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> ()) {
-        service.router.saveEvent(event: event) { (result) in
+
+    func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> Void) {
+        service.router.saveEvent(event: event) { result in
             switch result {
             case .success:
                 completion(.success(true))

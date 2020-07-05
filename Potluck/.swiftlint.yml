@@ -1,0 +1,90 @@
+# Reference:
+# https://github.com/realm/SwiftLint/blob/master/Rules.md
+
+disabled_rules:
+  # Disable rules that are in the default set
+  # - cyclomatic_complexity  # Disabled because we've got methods with lots of if nil checks
+  - file_name
+  - function_body_length
+  - function_parameter_count 
+  - line_length  
+  - no_fallthrough_only
+  - notification_center_detachment
+  - private_over_fileprivate
+  - todo
+  - type_body_length
+  - unused_setter_value
+  - weak_delegate 
+opt_in_rules:
+  # Enable rules not in the default set
+  - anyobject_protocol
+  - array_init
+  - closure_spacing
+  - conditional_returns_on_newline
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - empty_xctest_method
+  - explicit_init
+  - fatal_error_message
+  - file_name 
+  - first_where
+  - joined_default_parameter
+  - overridden_super_call
+  - prohibited_super_call
+  - redundant_nil_coalescing
+  - required_enum_case 
+  - sorted_first_last
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+included:
+  - Potluck
+excluded:
+  - Pods
+  - Products
+  - Frameworks
+  - PotluckTests
+
+
+
+colon:
+  apply_to_dictionaries: true
+
+conditional_returns_on_newline:
+  # applies only to if-statements
+  if_only: true
+
+cyclomatic_complexity:
+  warning: 12
+
+file_length: 1200
+
+identifier_name:
+  allowed_symbols: "_"
+  min_length: 1
+  max_length: 
+    warning: 50
+    error: 100
+  excluded:
+    - i
+
+large_tuple:
+  warning: 4
+  error: 5
+
+nesting:
+  type_level:
+    warning: 3
+    error: 6
+
+type_name:
+  min_length: 3
+  max_length: 
+    warning: 50
+    error: 100
+  excluded:
+    - T
+
+vertical_whitespace:
+  max_empty_lines: 2

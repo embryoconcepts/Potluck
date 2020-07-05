@@ -21,7 +21,7 @@ class DesignableLabel: UILabel {
 }
 
 extension UIView {
-    
+
     @IBInspectable
     var cornerRadius: CGFloat {
         get {
@@ -31,7 +31,7 @@ extension UIView {
             layer.cornerRadius = newValue
         }
     }
-    
+
     @IBInspectable
     var borderWidth: CGFloat {
         get {
@@ -41,7 +41,7 @@ extension UIView {
             layer.borderWidth = newValue
         }
     }
-    
+
     @IBInspectable
     var borderColor: UIColor? {
         get {
@@ -58,7 +58,7 @@ extension UIView {
             }
         }
     }
-    
+
     @IBInspectable
     var shadowRadius: CGFloat {
         get {
@@ -68,7 +68,7 @@ extension UIView {
             layer.shadowRadius = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowOpacity: Float {
         get {
@@ -78,7 +78,7 @@ extension UIView {
             layer.shadowOpacity = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowOffset: CGSize {
         get {
@@ -88,7 +88,7 @@ extension UIView {
             layer.shadowOffset = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowColor: UIColor? {
         get {
@@ -106,4 +106,3 @@ extension UIView {
         }
     }
 }
-

@@ -23,11 +23,11 @@ struct MHPEvent: Codable {
     var pledgedItemList: MHPEventPledgedItemList?
     var invites: [MHPInvite]?
     var rsvpList: MHPEventRsvpList?
-    
+
     init(eventID: String = UUID().uuidString) {
         self.eventID = eventID
     }
-    
+
     init(eventID: String = UUID().uuidString,
          title: String?,
          date: String?,
@@ -42,7 +42,7 @@ struct MHPEvent: Codable {
          pledgedItemList: MHPEventPledgedItemList?,
          invites: [MHPInvite]?,
          rsvpList: MHPEventRsvpList?) {
-        
+
         self.eventID = eventID
         self.title = title
         self.date = date

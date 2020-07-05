@@ -12,7 +12,7 @@ import Contacts
 extension CNContact: TableViewCompatible {
     private static var _isSelected = [String: Bool]()
     private static var _contactPreference = [String: String]()
-    
+
     var isSelected: Bool {
         get {
             let tmpAddress = String(format: "%p", unsafeBitCast(self, to: Int.self))
@@ -23,7 +23,7 @@ extension CNContact: TableViewCompatible {
             CNContact._isSelected[tmpAddress] = newValue
         }
     }
-    
+
     var contactPreference: String? {
         get {
             let tmpAddress = String(format: "%p", unsafeBitCast(self, to: Int.self))
@@ -34,11 +34,11 @@ extension CNContact: TableViewCompatible {
             CNContact._contactPreference[tmpAddress] = newValue
         }
     }
-    
+
     var reuseIdentifier: String {
         return "MHPContactsCell"
     }
-    
+
     var emails: [String] {
         var tempEmails = [String]()
         for email in self.emailAddresses {
@@ -46,11 +46,11 @@ extension CNContact: TableViewCompatible {
         }
         return tempEmails
     }
-    
+
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
         tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
         tableView.allowsMultipleSelection = true
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! MHPContactsCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as? MHPContactsCell else { return UITableViewCell() }
         cell.configureWithModel(self)
         return cell
     }

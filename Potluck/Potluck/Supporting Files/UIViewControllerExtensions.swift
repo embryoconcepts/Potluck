@@ -24,18 +24,18 @@ extension UIViewController {
                                           message: "Are you sure you want to cancel? All changes will be lost.",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
-                
+            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { _ in
+
                 // return to Home
                 self.tabBarController?.tabBar.isHidden = false
                 if let tabs = self.tabBarController?.viewControllers {
-                    if tabs.count > 0 {
+                    if tabs.count >= 1 {
                         self.tabBarController?.selectedIndex = 0
                     }
                 }
                 view.dismiss(animated: true, completion: nil)
             }))
-            
+
             view.present(alert, animated: true)
         }
     }

@@ -11,7 +11,7 @@ import MapKit
 
 extension String {
     func toDate(format: String) -> Date? {
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.locale = Locale.current
@@ -21,19 +21,19 @@ extension String {
 
 extension Date {
     func toString(format: String) -> String? {
-        
+
         let df = DateFormatter()
         df.dateFormat = format
         return df.string(from: self)
     }
-    
+
     func add(component: Calendar.Component, value: Int) -> Date? {
         return Calendar.current.date(byAdding: component, value: value, to: self)
     }
 }
 
 extension Decodable {
-    func dictToModel(dict: [String:Any]) throws -> Self {
+    func dictToModel(dict: [String: Any]) throws -> Self {
         let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
         let decoder = JSONDecoder()
         let dateFormatter = DateFormatter()
@@ -59,26 +59,26 @@ extension CLPlacemark {
         if let name = name {
             result += "\(name)"
         }
-        
+
         if let street = thoroughfare, let number = subThoroughfare {
             let streetAddress = "\(number) \(street)"
             if result != streetAddress {
                 result += ", \(streetAddress)"
             }
         }
-        
+
         if let city = locality {
             result += ", \(city)"
         }
-        
+
         if let state = administrativeArea {
             result += ", \(state)"
         }
-        
+
         if let zip = postalCode {
             result += ", \(zip)"
         }
         return result
     }
-    
+
 }

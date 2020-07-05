@@ -13,7 +13,7 @@ class MHPGuestListCell: UITableViewCell {
     @IBOutlet weak var lblGuestName: UILabel!
     @IBOutlet weak var lblItem: UILabel!
     @IBOutlet weak var imgUser: UIImageView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

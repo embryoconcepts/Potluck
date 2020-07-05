@@ -14,18 +14,18 @@ import FBSDKCoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
     var mhpUser = MHPUser()
-    
+
     /// Set the backend service option
-    let serviceOption = ServiceOption.FirebaseFirestore
-    
+    let serviceOption = ServiceOption.firebaseFirestore
+
     // MARK: - Lifecycle
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+
         // Firebase
         FirebaseApp.configure()
         let firestore = Firestore.firestore()
@@ -35,44 +35,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Facebook
 //        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
+
         return true
     }
-    
+
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
-    
+
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
-    
+
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
-    
-    
+
+
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 //        FBSDKAppEvents.activateApp()
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
-    
-    
+
+
     // MARK: - Dynamic Link methods
-    
+
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
             return false
         }
-        let handled = dynamicLinks.handleUniversalLink(userActivity.referrerURL!) { (dynamiclink, error) in
+        let handled = dynamicLinks.handleUniversalLink(userActivity.referrerURL!) { dynamiclink, _ in
             if let path = dynamiclink?.url?.path {
                 if path == "/emailVerification" {
                     self.routeUserToPersonalInfo()
@@ -85,23 +85,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // handle error
             }
         }
-        
+
         return handled
     }
-    
+
     @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         return application(app, open: url,
                            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
                            annotation: "")
     }
-    
+
     @available(iOS 8.0, *)
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         if let dynamicLink = DynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url) {
             if let path = dynamicLink.url?.path {
                 if path == "/emailVerification" {
-                    if let _ = Auth.auth().currentUser?.isEmailVerified {
+                    if Auth.auth().currentUser?.isEmailVerified != nil {
                         self.routeUserToPersonalInfo()
                     } else {
                         self.routeToVerification()
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return false
     }
-    
+
     func handleOpenUrl(_ url: URL, sourceApplication: String?) -> Bool {
         if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
             return true
@@ -124,22 +124,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // other URL handling goes here.
         return false
     }
-    
-    
+
+
     // MARK: - Routing Methods
-    
-    
+
+
     fileprivate func routeUserToHome() {
         if let tabBarController = window?.rootViewController as? UITabBarController,
             let rootVCArray = tabBarController.viewControllers {
-            let navCon = rootVCArray[0] as! UINavigationController
+            guard let navCon = rootVCArray[0] as? UINavigationController else { return }
             if let homeVC = navCon.topViewController as? MHPHomeViewController {
                 homeVC.inject(self.mhpUser)
                 navCon.present(homeVC, animated: true, completion: nil)
             }
         }
     }
-    
+
     fileprivate func routeToSignupLogin() {
         if let loginVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
             if let window = self.window, let rootViewController = window.rootViewController {
@@ -151,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     fileprivate func routeToVerification() {
         if let verifyVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
             if let window = self.window, let rootViewController = window.rootViewController {
@@ -163,7 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     fileprivate func routeUserToPersonalInfo() {
         if let personalInfoVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "PersonalInfoVC") as? MHPPersonalInfoViewController {
             if let window = self.window, let rootViewController = window.rootViewController {
@@ -175,10 +175,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-    
+
+
     // MARK: - Core Data stack
-    
+
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -187,11 +187,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          error conditions that could cause the creation of the store to fail.
          */
         let container = NSPersistentContainer(name: "Potluck")
-        container.loadPersistentStores { (storeDescription, error) in
+        container.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                
+
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
@@ -205,9 +205,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return container
     }()
-    
+
     // MARK: - Core Data Saving support
-    
+
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -221,6 +221,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-}
 
+}

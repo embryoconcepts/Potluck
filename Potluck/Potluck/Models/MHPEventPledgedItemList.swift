@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MHPEventPledgedItemList: Codable  {
+struct MHPEventPledgedItemList: Codable {
     var listID: String?
     var eventID: String?
     var description: String?
@@ -18,13 +18,13 @@ struct MHPEventPledgedItemList: Codable  {
     init(itemListID: String = UUID().uuidString) {
         self.listID = itemListID
     }
-    
+
     init(listID: String = UUID().uuidString,
          eventID: String?,
          description: String?,
          tags: [String]?,
          items: [MHPPledgedItem]?) {
-        
+
     self.listID = listID
     self.eventID = eventID
     self.description = description

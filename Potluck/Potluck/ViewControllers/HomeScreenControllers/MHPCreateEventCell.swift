@@ -12,16 +12,16 @@ import ScalingCarousel
 class MHPCreateEventCell: ScalingCarouselCell {
     @IBOutlet weak var lblCreateEvent: UILabel!
     @IBOutlet weak var imgEvent: UIImageView!
-    
+
     func scale(withCarouselInset carouselInset: CGFloat, scaleMinimum: CGFloat) {
         mainView.layer.cornerRadius = 5
-        
+
         mainView.layer.shadowColor = UIColor.black.cgColor
         mainView.layer.shadowOpacity = 0.25
         mainView.layer.shadowOffset = CGSize(width: 3, height: 3)
         mainView.layer.shadowRadius = 3
     }
-    
+
     func setupCreateEventCell() {
         if let tempImage = UIImage(named: "image") {
             self.imgEvent.image = tempImage

@@ -35,11 +35,11 @@ struct MHPUser: Codable {
     var locationPermissions: Bool?
     var facebookPermissions: Bool?
     var userState: UserAuthorizationState!
-    
+
     init(userState: UserAuthorizationState = .anonymous) {
         self.userState = userState
     }
-    
+
     init(userID: String,
          firstName: String,
          lastName: String,
@@ -53,7 +53,7 @@ struct MHPUser: Codable {
          locationPermissions: Bool,
          facebookPermissions: Bool,
          userState: UserAuthorizationState) {
-        
+
         self.userID = userID
         self.firstName = firstName
         self.lastName = lastName

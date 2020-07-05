@@ -10,9 +10,9 @@ import UIKit
 
 class MHPItemCardPledgingViewController: UIViewController {
 
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,15 +23,15 @@ class MHPItemCardPledgingViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func cancelTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func saveTapped(_ sender: Any) {
-        
+
     }
 }

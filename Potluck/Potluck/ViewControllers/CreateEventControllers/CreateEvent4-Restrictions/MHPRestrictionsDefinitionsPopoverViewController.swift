@@ -17,7 +17,7 @@ class MHPRestrictionsDefinitionsPopoverViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     @IBAction func closeTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
