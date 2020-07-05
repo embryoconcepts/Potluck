@@ -48,7 +48,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(cancelTappped(_:)))
-        txtPassword.addTarget(self, action: #selector(textFieldDidChange(_: )), for: UIControlEvents.editingChanged)
+        txtPassword.addTarget(self, action: #selector(textFieldDidChange(_: )), for: UIControl.Event.editingChanged)
         self.txtEmail.delegate = self
         self.txtPassword.delegate = self
     }
@@ -216,7 +216,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
     fileprivate func close() {
         // double check after Event flows built
         guard let tabBarCon = self.presentingViewController as? UITabBarController else { return }
-        if let homeVC = tabBarCon.childViewControllers[0].childViewControllers[0] as? MHPHomeViewController {
+        if let homeVC = tabBarCon.children[0].children[0] as? MHPHomeViewController {
             homeVC.inject(self.mhpUser!)
         }
         
@@ -248,12 +248,12 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
     
     // MARK: - In-Place Validation Helpers
     
-    fileprivate func setupAttributeColor(if isValid: Bool) -> [NSAttributedStringKey: Any] {
+    fileprivate func setupAttributeColor(if isValid: Bool) -> [NSAttributedString.Key: Any] {
         if isValid {
-            return [NSAttributedStringKey.foregroundColor: UIColor.blue]
+            return [NSAttributedString.Key.foregroundColor: UIColor.blue]
         } else {
             isPasswordValid = false
-            return [NSAttributedStringKey.foregroundColor: UIColor(hexString: "6A6A6A")]
+            return [NSAttributedString.Key.foregroundColor: UIColor(hexString: "6A6A6A")]
         }
     }
     

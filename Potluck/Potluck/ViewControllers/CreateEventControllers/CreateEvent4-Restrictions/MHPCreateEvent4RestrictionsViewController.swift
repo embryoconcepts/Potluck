@@ -52,8 +52,8 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
         setupKeyboardDoneButton()
         //        setupKeyboardDismissOnTap()
         scrollView.keyboardDismissMode = .interactive
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         // set values
         txtDescription.delegate = self
@@ -75,9 +75,9 @@ class MHPCreateEvent4RestrictionsViewController: UIViewController {
         tagCollectionView.allowsSelection = true
         tagCollectionView.allowsMultipleSelection = true
         
-        flowLayout.sectionInset = UIEdgeInsetsMake(8, 8, 8, 8)
+        flowLayout.sectionInset = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
         flowLayout.estimatedItemSize = CGSize(width: 90, height: 30)
-        flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize
+        flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
         
         // setup tags
         if let tags = event?.restrictions {
@@ -272,7 +272,7 @@ extension MHPCreateEvent4RestrictionsViewController: UITextViewDelegate {
     }
     
     @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardFrame.height + 70
         }
     }

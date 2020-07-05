@@ -139,7 +139,7 @@ class MHPInviteContactsViewController: UIViewController {
                                                                 message: "Permission to access your Contacts has been previously denied.If you would like to access your contacts, please update your Contacts permission in Settings.",
                                                                 preferredStyle: .alert)
                         let settingsAction = UIAlertAction(title: "Open Settings", style: .default, handler: { (action) in
-                            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+                            UIApplication.shared.openconvertToUIApplicationOpenExternalURLOptionsKeyDictionary(()URL(string: UIApplication.openSettingsURLString)!)
                         })
                         alertController.addAction(settingsAction)
                         
@@ -354,4 +354,9 @@ extension MHPInviteContactsViewController: Injectable {
     func assertDependencies() {
         assert(self.pendingInvites != nil)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

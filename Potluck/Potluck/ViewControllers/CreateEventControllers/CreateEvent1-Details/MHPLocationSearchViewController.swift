@@ -63,7 +63,7 @@ extension MHPLocationSearchViewController: UITableViewDelegate, UITableViewDataS
         
         let selectedLocation = searchResults[indexPath.row]
         
-        let searchRequest = MKLocalSearchRequest(completion: selectedLocation)
+        let searchRequest = MKLocalSearch.Request(completion: selectedLocation)
         let search = MKLocalSearch(request: searchRequest)
         search.start { (response, error) in
             let coordinates = response?.mapItems[0].placemark.coordinate
@@ -127,7 +127,7 @@ extension MHPLocationSearchViewController: UISearchBarDelegate {
 extension MHPLocationSearchViewController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async { [unowned self] in
-            completer.filterType = MKSearchCompletionFilterType.locationsOnly
+            completer.filterType = MKLocalSearchCompleter.FilterType.locationsOnly
             self.searchResults = completer.results
             self.tblSearchResults.reloadData()
         }

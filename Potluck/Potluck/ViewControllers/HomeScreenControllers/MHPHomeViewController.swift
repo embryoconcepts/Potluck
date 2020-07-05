@@ -206,7 +206,7 @@
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
-            if let createEventVC = tabBarController?.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+            if let createEventVC = tabBarController?.children[1].children[0] as? MHPCreateEvent1DetailsViewController {
                 let event = MHPEvent()
                 createEventVC.inject(event)
                 if let user = self.mhpUser {
@@ -231,15 +231,15 @@
  
  extension MHPHomeViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let user = self.mhpUser, let createEventVC = tabBarController.childViewControllers[1].childViewControllers[0] as? MHPCreateEvent1DetailsViewController {
+        if let user = self.mhpUser, let createEventVC = tabBarController.children[1].children[0] as? MHPCreateEvent1DetailsViewController {
             let event = MHPEvent()
             createEventVC.inject(event)
             createEventVC.inject(user)
         } 
-        if let user = self.mhpUser, let profileVC = tabBarController.childViewControllers[2].childViewControllers[0] as? MHPProfileViewController {
+        if let user = self.mhpUser, let profileVC = tabBarController.children[2].children[0] as? MHPProfileViewController {
             profileVC.inject(user)
         }
-        if let user = self.mhpUser, let settingsVC = tabBarController.childViewControllers[3].childViewControllers[0] as? MHPSettingsViewController {
+        if let user = self.mhpUser, let settingsVC = tabBarController.children[3].children[0] as? MHPSettingsViewController {
             settingsVC.inject(user)
         }
         return true

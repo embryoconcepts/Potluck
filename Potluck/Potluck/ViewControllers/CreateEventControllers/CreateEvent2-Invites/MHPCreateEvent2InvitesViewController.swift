@@ -214,8 +214,8 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCell.EditingStyle.delete) {
             invites.remove(at: indexPath.row)
             DispatchQueue.main.async { [unowned self] in
                 self.tblView.reloadData()

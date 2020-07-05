@@ -104,8 +104,8 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         
         // set up scrollview + keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         // set values
         txtName.text = event?.title ?? ""
@@ -300,7 +300,7 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
     }
     
     @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = keyboardFrame.height + 70
         }
     }

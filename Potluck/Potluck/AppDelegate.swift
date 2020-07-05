@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Lifecycle
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         // Firebase
@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Dynamic Link methods
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
             return false
         }
@@ -90,9 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return application(app, open: url,
-                           sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                           sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
                            annotation: "")
     }
     
