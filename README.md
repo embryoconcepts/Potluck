@@ -1,30 +1,42 @@
-# Potluck by ManyHands
+## Potluck by ManyHands
+
 
 
 ### About
 
-This is a (very slow) work-in-progress that serves a few purposes: 
+Potluck is an iOS app built for collaborative potlucks and community meal organization. 
 
-- refresher for building an app from scratch
-- update my knowledge for Swift 4
-- learning more about Swift best practices: optional handling, error handling, memory management, better networking, POP, dependency injection, testing, accessiblity, architecture, design patterns, localization, universal apps, online and offline data sync and management
-- learning more about all the pieces that are required to build a non-trivial app: UX (user stories, wireframing, prototyping, graphic design), multiple servers, databases, CI, analytics, deployment, etc.
+
+### Support
+
+[![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=12048576)
+
+
+### Features
+
+- Authentication via email, phone, Facebook or Google
+- Event creation and management
+- Invite and RSVP handling
+- Requested and pledged dish/item management
+- Notifications and reminders of upcoming events
+- (future premium) Copy and add recurring events
+- (future premium) Invite over 30 attendees
+- (future premium) Messaging and bulletin boards
+- (future premium) Multiple hosts or admins
+- (future premium) Other corporate or large group needs
+
+
+### Stack
+
+- Swift 4
+- Google Firebase with Authentication, Firestore, Realtime Database (future), and Dynamic Links
 
 ### Reference:
 
-[Sketch files and Prototype](https://sketch.cloud/s/Oeonw)
-
-[Trello board](https://trello.com/b/Ao3BEM1N/potluck-by-manyhandsapp)
-
-[User Stories](https://docs.google.com/document/d/1Kigk5SXNbVuejAzxnCzFjFdnWgBcqZFEQQwkGNQDprw/edit)
-
-[MVP Design Document](https://docs.google.com/document/d/1F5GlxtKkticPHnaLD3ct78HSxmm1FFyFbaVzdK345a4/edit)
-
-[DB Schema (draft)](https://docs.google.com/spreadsheets/d/1N4WWc0Cu9z_nrGkWCaPBlcBzAy0h3xovd7wqk_60eoY/edit#gid=2016124231)
-
-
-
-
+- [Sketch files and Prototype](https://sketch.cloud/s/Oeonw)
+- [Current Sprint & Backlog](https://trello.com/invite/b/Ao3BEM1N/fa0bf8af6b96bbce6ad3e1c87a8e79ef/potluck)
+- [Feature Request board](https://trello.com/invite/b/N5ilvxA2/f5c9e121d3d01d98a8a8147ca396d9e0/potluck-feature-requests)
+- [MVP Design Document](https://docs.google.com/document/d/1F5GlxtKkticPHnaLD3ct78HSxmm1FFyFbaVzdK345a4/edit)
 
 
 ---

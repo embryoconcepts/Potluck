@@ -25,7 +25,7 @@
 	<key>kRequireOpenBraceForSwitchStatement</key>
 	<true/>
 	<key>kRequireEmptyLineAboveReturnStatement</key>
-	<true/>
+	<false/>
 	<key>kMathOperatorSpacingRule</key>
 	<integer>1</integer>
 	<key>kRequireSpaceBeforeOpeningBrace</key>
@@ -51,9 +51,9 @@
 	<key>kViolationsShouldBeErrors</key>
 	<false/>
 	<key>kColonSpacingRuleInDictionary</key>
-	<integer>3</integer>
+	<integer>0</integer>
 	<key>kColonSpacingRuleInFunctionCall</key>
-	<integer>3</integer>
+	<integer>0</integer>
 	<key>kNumberOfEmptyLinesAtEndOfFile</key>
 	<integer>1</integer>
 	<key>kShouldClassNameStartWithCapitalLetter</key>

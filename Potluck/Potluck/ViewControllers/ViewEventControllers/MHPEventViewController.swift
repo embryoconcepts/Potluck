@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MHPEventViewController: MHPBaseViewController, Injectable {
+class MHPEventViewController: UIViewController {
     
     @IBOutlet weak var lblEventHost: UILabel!
     @IBOutlet weak var lblEventDescription: UILabel!
@@ -21,12 +21,15 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     typealias T = (injectedUser: MHPUser, injectedEvent: MHPEvent)
     var user: MHPUser?
     var event: MHPEvent?
-    var items: [MHPItem]?
+    var items: [MHPPledgedItem]?
     var rsvps: [MHPRsvp]?
     var userDidRsvpForEvent: Bool?
     var userIsHost: Bool?
     var userIsGuest: Bool?
     var userHasRsvp: Bool?
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,10 +40,9 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        // TODO: retrieve rsvps and items for event (user and event data should have been passed in segue)
+        // retrieve rsvps and items for event (user and event data should have been passed in segue)
         userIsHost = false // TODO: remove for production
         
-        // TODO: put the below in a completion block 
         styleNavigation()
         styleLabels()
     }
@@ -51,31 +53,31 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     }
     
     
-     // MARK: - Navigation
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
-        // TODO: handle moving to rsvp
-
+        // handle moving to rsvp
+        
         if segue.identifier == "EventToGuestList" {
             let guestListVC = segue.destination as? MHPGuestListViewController
             if let tempEvent = event, let tempUser = user {
-                guestListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
+                guestListVC?.inject((injectedUser: tempUser, injectedEvent: tempEvent))
             }
         }
         
         if segue.identifier == "EventToItemList" {
             let itemListVC = segue.destination as? MHPItemListViewController
             if let tempEvent = event, let tempUser = user {
-                itemListVC?.inject((injectedUser: tempUser, injectedEvent:tempEvent))
+                itemListVC?.inject((injectedUser: tempUser, injectedEvent: tempEvent))
             }
         }
     }
     
-
+    
     // MARK: Styling the View
     
-    func styleNavigation() {
+    fileprivate func styleNavigation() {
         // Navigation Bar
         var rightBarButton: UIBarButtonItem?
         if userIsHost != nil {
@@ -85,15 +87,15 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
         }
         
         navigationItem.rightBarButtonItem = rightBarButton
-        self.title = event?.eventName ?? ""
+        self.title = event?.title ?? ""
     }
     
-    func styleLabels() {
+    fileprivate func styleLabels() {
         // Event Details
-        lblEventHost.text = event?.eventHost?.userName ?? ""
-        lblEventDescription.text = event?.eventDescription ?? ""
-        lblEventDateTime.text = event?.eventDate ?? ""
-        lblEventLocation.text = event?.eventLocation ?? ""
+        lblEventHost.text = event?.host?.firstName ?? ""
+        lblEventDescription.text = event?.description ?? ""
+        lblEventDateTime.text = event?.date ?? ""
+        lblEventLocation.text = event?.location ?? ""
         
         // RSVP Button
         if userIsHost != nil || (userIsGuest != nil && userHasRsvp != nil) {
@@ -104,11 +106,15 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
         
         // Guest List Summary
         var guestsConfirmed = 0
+        var guestsNotAttending = 0
+        
         if let safeRsvps = rsvps {
             for rsvp in safeRsvps {
-                if rsvp.response == "YES" {
+                if rsvp.response == "yes" {
                     guestsConfirmed += 1
-                }
+                } else if rsvp.response == "no" {
+                    guestsNotAttending += 1
+                } 
             }
         }
         lblGuestListTotals.text = "\(rsvps?.count ?? 0) invited, \(guestsConfirmed) confirmed"
@@ -117,7 +123,7 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
         var pledged = 0
         if let safeItems = items {
             for item in safeItems {
-                if (item.user != nil) {
+                if (item.userID != nil) {
                     pledged += 1
                 }
             }
@@ -129,16 +135,28 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
     // MARK: - Action Handlers
     
     @IBAction func rsvpTapped(_ sender: Any) {
-        goToRsvp()
+        if let rsvpVC = self.storyboard?.instantiateViewController(withIdentifier: "rsvpVC") {
+            present(rsvpVC, animated: true, completion: nil)
+        }
     }
     
     @IBAction func manageEvent(_ sender: Any) {
-        // TODO: move to manage event flow
+        // move to manage event flow
     }
     
     
-    // MARK: - Injectable Protocol
+    // MARK: - Helper Methods
     
+    fileprivate func sendToSignUpLogin() {
+        // move to sign up flow
+    }
+    
+}
+
+
+// MARK: - Injectable Protocol
+
+extension MHPEventViewController: Injectable {
     func inject(_ data: (injectedUser: MHPUser, injectedEvent: MHPEvent)) {
         user = data.injectedUser
         event = data.injectedEvent
@@ -148,11 +166,4 @@ class MHPEventViewController: MHPBaseViewController, Injectable {
         assert(user != nil)
         assert(event != nil)
     }
-    
-    // MARK: - Helper Methods
-    
-    func sendToSignUpLogin() {
-        // TODO: move to sign up flow
-    }
-    
 }

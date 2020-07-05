@@ -32,6 +32,16 @@
 				<string>com.googleusercontent.apps.679267217310-gsu9pgg3bmp8lh7ok62kqrl1p479p2it</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.manyhandsapp.Potluck</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -69,5 +79,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your current location will be used only when the app is in use, and only to help find addresses when creating events.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Access to your contacts will only be used to allow you to easily invite guests to your events.</string>
 </dict>
 </plist>

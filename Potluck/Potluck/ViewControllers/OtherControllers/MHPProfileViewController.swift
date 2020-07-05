@@ -10,40 +10,71 @@ import UIKit
 import Firebase
 
 class MHPProfileViewController: UIViewController {
-
-    var handle: AuthStateDidChangeListenerHandle?
-
+    
+    var mhpUser: MHPUser?
+    
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        assertDependencies()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            // FIXME: self.setTitleDisplay(user)
+        if let user = mhpUser {
+            if user.userState != .registered {
+                if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController {
+                    let navController = UINavigationController(rootViewController: signinVC)
+                    signinVC.inject(user)
+                    signinVC.profileDelegate = self
+                    present(navController, animated: true, completion: nil)
+                }
+            } else {
+                setupView()
+            }
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
+    
+    fileprivate func setupView() {
+        // populate view with user data
+    }
+}
 
+
+// MARK: - ProfileUserDelegate
+
+extension MHPProfileViewController: ProfileUserDelegate {
+    func updateUser(mhpUser: MHPUser) {
+        self.mhpUser = mhpUser
+    }
+    
+}
+
+
+// MARK: - InjectableProtocol
+
+extension MHPProfileViewController: Injectable {
+    typealias T = MHPUser
+    
+    func inject(_ user: T) {
+        self.mhpUser = user
+    }
+    
+    func assertDependencies() {
+        assert(self.mhpUser != nil)
+    }
 }

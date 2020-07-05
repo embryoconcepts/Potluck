@@ -10,13 +10,40 @@ import UIKit
 
 struct MHPRsvp: Codable {
     var rsvpID: String?
-    var user: MHPUser?
-    var event: MHPEvent?
-    var item: MHPItem?
+    var userID: String?
+    var email: String?
+    var eventID: String?
+    var itemID: String?
     var isGuest: Bool?
     var isHost: Bool?
     var response: String?
     var notificationsOn: Bool?
     var numOfGuest: Int?
-
+    
+    init(rsvpID: String = UUID().uuidString) {
+        self.rsvpID = rsvpID
+    }
+    
+    init(rsvpID: String = UUID().uuidString,
+         userID: String?,
+         email: String?,
+         eventID: String?,
+         itemID: String?,
+         isGuest: Bool?,
+         isHost: Bool?,
+         response: String?,
+         notificationsOn: Bool?,
+         numOfGuest: Int?) {
+        
+        self.rsvpID = rsvpID
+        self.userID = userID
+        self.email = email
+        self.eventID = eventID
+        self.itemID = itemID
+        self.isGuest = isGuest
+        self.isHost = isHost
+        self.response = response
+        self.notificationsOn = notificationsOn
+        self.numOfGuest = numOfGuest
+    }
 }
