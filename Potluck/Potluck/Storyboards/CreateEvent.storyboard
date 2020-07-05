@@ -369,7 +369,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Needs More Guests! Use the buttons above to invite guests to your Potluck." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="tEA-Tf-wVn">
-                                                    <rect key="frame" x="30" y="67" width="315" height="70.5"/>
+                                                    <rect key="frame" x="30" y="67.5" width="315" height="70"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -856,19 +856,19 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Menu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Bt-zQ-EBs">
-                                                <rect key="frame" x="15" y="63" width="329" height="22"/>
+                                                <rect key="frame" x="15" y="63" width="329" height="21"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For xx guests we suggest the following items and amounts. Tap to edit, or add a new item." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnY-SR-Uwi">
-                                                <rect key="frame" x="15" y="85" width="329" height="33"/>
+                                                <rect key="frame" x="15" y="84" width="329" height="33"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOM-oq-bjQ" userLabel="Table Header Container">
-                                                <rect key="frame" x="0.0" y="133" width="359" height="30"/>
+                                                <rect key="frame" x="0.0" y="132" width="359" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcV-ND-Sf4">
                                                         <rect key="frame" x="15" y="4" width="22" height="22"/>
@@ -896,7 +896,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </constraints>
                                             </view>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aq6-Ov-7HN">
-                                                <rect key="frame" x="0.0" y="163" width="359" height="333"/>
+                                                <rect key="frame" x="0.0" y="162" width="359" height="334"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="Orv-Ds-qbQ" id="zvX-SV-cF5"/>
@@ -1009,7 +1009,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Item Name" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Iq7-i1-4fz">
-                                <rect key="frame" x="16" y="15" width="217" height="30"/>
+                                <rect key="frame" x="16" y="15" width="218" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -1018,7 +1018,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="###" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rAq-HK-cfi">
-                                <rect key="frame" x="238" y="15" width="47" height="30"/>
+                                <rect key="frame" x="239" y="15" width="44.5" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
@@ -1027,7 +1027,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="portions" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUj-Zx-m0d">
-                                <rect key="frame" x="288" y="15" width="71" height="30"/>
+                                <rect key="frame" x="286.5" y="15" width="72.5" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Roboto-LightItalic" family="Roboto" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -1139,13 +1139,13 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note to Guests: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OQ-Qn-e9G">
-                                                <rect key="frame" x="15" y="63" width="345" height="21.5"/>
+                                                <rect key="frame" x="15" y="63" width="345" height="21"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PDf-dM-3fU">
-                                                <rect key="frame" x="15" y="100" width="345" height="128"/>
+                                                <rect key="frame" x="15" y="99.5" width="345" height="128"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="128" id="4cX-Jc-pXf"/>
@@ -1155,7 +1155,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BOD-RL-s9e">
-                                                <rect key="frame" x="15" y="243" width="345" height="245"/>
+                                                <rect key="frame" x="15" y="242.5" width="345" height="245.5"/>
                                                 <color key="backgroundColor" white="0.95348837209302328" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kgC-aU-0KQ">
                                                     <size key="itemSize" width="50" height="50"/>
@@ -1255,10 +1255,10 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UyY-em-Qhy" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="591.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOK-dJ-iyu" customClass="DesignableButton" customModule="Potluck" customModuleProvider="target">
-                                                <rect key="frame" x="15" y="536.5" width="168.5" height="40"/>
+                                                <rect key="frame" x="15" y="536" width="168.5" height="40"/>
                                                 <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="bZx-nE-L1t"/>
@@ -1286,7 +1286,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgG-gq-5Gi" customClass="DesignableButton" customModule="Potluck" customModuleProvider="target">
-                                                <rect key="frame" x="191.5" y="536.5" width="168" height="40"/>
+                                                <rect key="frame" x="191.5" y="536" width="168" height="40"/>
                                                 <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
                                                 <state key="normal" title="Save &amp; Send Invites">
@@ -1317,13 +1317,13 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Review Your Potluck:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egv-jD-fiY">
-                                                <rect key="frame" x="15" y="63" width="345" height="21.5"/>
+                                                <rect key="frame" x="15" y="63" width="345" height="21"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Would you like to recieve notifications for this event?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ikZ-Qr-KqS">
-                                                <rect key="frame" x="15" y="464.5" width="281" height="52"/>
+                                                <rect key="frame" x="15" y="464" width="281" height="52"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="52" id="w4T-N6-Tgo"/>
                                                 </constraints>
@@ -1332,7 +1332,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AZ6-2A-heN">
-                                                <rect key="frame" x="311" y="475.5" width="51" height="31"/>
+                                                <rect key="frame" x="311" y="475" width="51" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="O3k-rn-gxx"/>
                                                     <constraint firstAttribute="width" constant="49" id="PMo-Aa-KNf"/>
@@ -1342,7 +1342,7 @@ Don't forget essentials like condiments, paper goods, flatware and utensils!</st
                                                 </connections>
                                             </switch>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hpx-dg-qfl" userLabel="Event Container View" customClass="DesignableView" customModule="Potluck" customModuleProvider="target">
-                                                <rect key="frame" x="15" y="99.5" width="345" height="357"/>
+                                                <rect key="frame" x="15" y="99" width="345" height="357"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From your host, HostName: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5o-1N-izQ">
                                                         <rect key="frame" x="15" y="15" width="315" height="19"/>
