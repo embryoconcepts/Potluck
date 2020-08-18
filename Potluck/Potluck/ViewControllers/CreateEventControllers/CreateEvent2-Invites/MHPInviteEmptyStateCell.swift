@@ -11,7 +11,7 @@ import UIKit
 class MHPInviteEmptyStateCell: UITableViewCell {
 
     func setupCell() {
-        
+
     }
 
 }

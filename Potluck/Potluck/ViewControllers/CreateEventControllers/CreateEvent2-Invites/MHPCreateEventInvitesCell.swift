@@ -12,19 +12,19 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
     @IBOutlet weak var lblGuestName: UILabel!
     @IBOutlet weak var lblEmailOrPhone: UILabel!
     @IBOutlet weak var imgGuest: UIImageView!
-    
+
     typealias T = MHPInvite
     var model: MHPInvite?
-    
+
     func configureWithModel(_ model: MHPInvite) {
         self.model = model
-        
+
         if let first = model.userFirstName, let last = model.userLastName {
             self.lblGuestName.text = "\(first) \(last)"
         }
-        
+
         self.lblEmailOrPhone.text = model.email
-        
+
         if let userPlaceholder = UIImage(named: "userPlaceholder") {
             if let urlString = self.model?.userProfileURL, let url = URL(string: urlString) {
                 self.imgGuest.kf.setImage(with: url, placeholder: userPlaceholder)
@@ -34,6 +34,6 @@ class MHPCreateEventInvitesCell: UITableViewCell, Configurable {
                 self.imgGuest.image = userPlaceholder
             }
         }
-    
+
     }
 }

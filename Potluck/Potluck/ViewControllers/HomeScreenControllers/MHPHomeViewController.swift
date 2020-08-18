@@ -1,65 +1,66 @@
- //
+//
  //  MHPHomeViewController.swift
  //  Potluck
  //
  //  Created by Jennifer Hamilton on 3/11/18.
  //  Copyright © 2018 Many Hands Apps. All rights reserved.
  //
- 
+
  import UIKit
  import ScalingCarousel
  import Firebase
  import FirebaseFirestore
  import SVProgressHUD
- 
+
  class MHPHomeViewController: UIViewController {
-    
+
     @IBOutlet weak var carousel: ScalingCarouselView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var lblAlertMessage: UILabel!
-    
+
     var mhpUser: MHPUser?
     var events = [MHPEvent]()
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()
-    
-    
+
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
         self.carousel.delegate = self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         handleUser()
-        setupMockData() // TODO: remove for production
+        #warning("// TODO: remove for production")
+        setupMockData()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
+
+
     // MARK: - Navigation
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         setupBackButton()
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func alertTapped(_ sender: Any) {
         if let signinVC = UIStoryboard(name: "SignUpLogin", bundle: nil).instantiateViewController(withIdentifier: "SignUpLoginChoiceVC") as? MHPSignUpLoginChoiceViewController, let user = mhpUser {
             let navController = UINavigationController(rootViewController: signinVC)
@@ -68,14 +69,14 @@
             present(navController, animated: true, completion: nil)
         }
     }
-    
-    
+
+
     // MARK: - Private Methods
-    
+
     fileprivate func styleView() {
         self.tabBarController?.tabBar.isHidden = false
         self.lblTitle.text = "Welcome to Potluck!"
-        
+
         switch self.mhpUser!.userState {
         case .registered:
             self.viewAlert.isHidden = true
@@ -95,17 +96,17 @@
         default:
             return
         }
-        
+
         carousel.allowsSelection = true
     }
-    
+
     fileprivate func setupMockData() {
         mhpUser = MHPUser()
         mhpUser!.firstName = "Tester the Bester"
         var host1 = MHPUser()
         host1.firstName = "Jill of AllTrades"
         host1.userID = "host1userID"
-        
+
         let restrictions1 = [MHPEventRestriction(name: "vegan", isSelected: true),
                              MHPEventRestriction(name: "vegetarian"),
                              MHPEventRestriction(name: "kosher"),
@@ -119,19 +120,19 @@
                              MHPEventRestriction(name: "no shellfish", isSelected: true),
                              MHPEventRestriction(name: "no pork"),
                              MHPEventRestriction(name: "no soy")]
-        
+
         let requestedItems1 = [MHPRequestedItem(name: "Beans", quantity: 10, quantityType: "servings")]
-        
+
         let pledgedItems1 = [MHPPledgedItem()]
-       
+
         let pledgedItemsList1 = MHPEventPledgedItemList(eventID: "event1eventID",
-                                          description: "You could write about a theme, or ask people to bing kid-friendly stuff",
-                                          tags: ["shellfish"],
-                                          items: pledgedItems1)
-       
+                                                        description: "You could write about a theme, or ask people to bing kid-friendly stuff",
+                                                        tags: ["shellfish"],
+                                                        items: pledgedItems1)
+
         let invites1 = [MHPInvite(userFirstName: "Ada", userLastName: "Lovelace", email: "ada@babbage.com"),
                         MHPInvite(userFirstName: "Hedy", userLastName: "Lamarr", email: "hedy@mail.com")]
-        
+
         let rsvps1 = [MHPRsvp(userID: "host2userID",
                               email: "grace@hooper.com",
                               eventID: "event1eventID",
@@ -141,9 +142,9 @@
                               response: "yes",
                               notificationsOn: true,
                               numOfGuest: 0)]
-        
+
         let rsvpList1 = MHPEventRsvpList(hostID: host1.userID, rsvps: rsvps1)
-        
+
         let event1 = MHPEvent(eventID: "event1eventID",
                               title: "Potluck Test 1",
                               date: "1/25/2025",
@@ -159,24 +160,24 @@
                               invites: invites1,
                               rsvpList: rsvpList1)
 
-        
+
         var host2 = MHPUser()
         host2.firstName = "Mary Contrary"
         host2.userID = "host2userID"
 
         events.append(event1)
     }
-    
+
  }
- 
- 
+
+
  // MARK: UICollectionViewDataSource
- 
- extension MHPHomeViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+
+ extension MHPHomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -185,24 +186,24 @@
             return 1
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
-            let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as! MHPHomeCarouselViewCell
+            guard let eventCell = collectionView.dequeueReusableCell(withReuseIdentifier: "eventCell", for: indexPath) as? MHPHomeCarouselViewCell else { return UICollectionViewCell() }
             eventCell.setupEventCell(for: events[indexPath.row])
             eventCell.setNeedsLayout()
             eventCell.layoutIfNeeded()
             return eventCell
         default:
-            let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as! MHPCreateEventCell
+            guard let createCell = collectionView.dequeueReusableCell(withReuseIdentifier: "createCell", for: indexPath) as? MHPCreateEventCell else { return UICollectionViewCell() }
             createCell.setupCreateEventCell()
             createCell.setNeedsLayout()
             createCell.layoutIfNeeded()
             return createCell
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
@@ -225,17 +226,17 @@
         }
     }
  }
- 
- 
+
+
  // MARK: - UITabBarControllerDelegate
- 
+
  extension MHPHomeViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let user = self.mhpUser, let createEventVC = tabBarController.children[1].children[0] as? MHPCreateEvent1DetailsViewController {
             let event = MHPEvent()
             createEventVC.inject(event)
             createEventVC.inject(user)
-        } 
+        }
         if let user = self.mhpUser, let profileVC = tabBarController.children[2].children[0] as? MHPProfileViewController {
             profileVC.inject(user)
         }
@@ -245,34 +246,34 @@
         return true
     }
  }
- 
- 
+
+
  // MARK: - HomeUserDelegate
- 
+
  extension MHPHomeViewController: HomeUserDelegate {
     func updateUser(mhpUser: MHPUser) {
         self.mhpUser = mhpUser
     }
  }
- 
- 
+
+
  // MARK: - Injectable Protocol
- 
+
  extension MHPHomeViewController: Injectable {
     typealias T = MHPUser
-    
+
     func inject(_ user: T) {
         self.mhpUser = user
     }
-    
+
     func assertDependencies() {
         assert(self.mhpUser != nil)
     }
  }
- 
- 
+
+
  // MARK: - UserHandler Protocol
- 
+
  extension MHPHomeViewController: UserHandler {
     func handleUser() {
         if let tabCon = tabBarController, let tabItems = tabCon.tabBar.items {
@@ -281,13 +282,13 @@
             for t in tabItems {
                 t.isEnabled = false
             }
-            request.getUser { (result) in
+            request.getUser { result in
                 switch result {
                 case .success(let user):
                     self.mhpUser = user
                     if let events = self.mhpUser?.events {
                         for event in events {
-                            self.request.getEvent(eventID: event, completion: { (result) in
+                            self.request.getEvent(eventID: event, completion: { result in
                                 switch result {
                                 case .success(let event):
                                     self.events.append(event)

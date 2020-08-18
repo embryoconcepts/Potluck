@@ -19,11 +19,11 @@ struct MHPRsvp: Codable {
     var response: String?
     var notificationsOn: Bool?
     var numOfGuest: Int?
-    
+
     init(rsvpID: String = UUID().uuidString) {
         self.rsvpID = rsvpID
     }
-    
+
     init(rsvpID: String = UUID().uuidString,
          userID: String?,
          email: String?,
@@ -34,7 +34,7 @@ struct MHPRsvp: Codable {
          response: String?,
          notificationsOn: Bool?,
          numOfGuest: Int?) {
-        
+
         self.rsvpID = rsvpID
         self.userID = userID
         self.email = email

@@ -16,20 +16,20 @@ class MHPContactsCell: UITableViewCell, Configurable {
     @IBOutlet weak var imgGuest: UIImageView!
     @IBOutlet weak var lblNameTop: NSLayoutConstraint!
     @IBOutlet weak var lblEmailHeight: NSLayoutConstraint!
-    
+
     typealias T = CNContact
     var model: CNContact?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
-    
+
     func configureWithModel(_ model: CNContact) {
         self.model = model
             self.lblGuestName.text = "\(model.givenName) \(model.familyName)"
-        
-        if model.contactPreference != "" {
+
+        if !(model.contactPreference?.isEmpty ?? true) {
             self.lblEmailOrPhone.text = model.contactPreference
             self.lblNameTop.constant = 8
             self.lblEmailHeight.constant = 14
@@ -37,13 +37,13 @@ class MHPContactsCell: UITableViewCell, Configurable {
             self.lblNameTop.constant = 18
             self.lblEmailHeight.constant = 0
         }
-        
+
         if model.isSelected {
             self.accessoryType = .checkmark
         } else {
             self.accessoryType = .none
         }
-        
+
         if let userPlaceholder = UIImage(named: "userPlaceholder") {
             if let imageData = self.model?.imageData {
                 self.imgGuest.image = UIImage(data: imageData)

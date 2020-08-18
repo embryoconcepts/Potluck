@@ -13,28 +13,28 @@ import Firebase
 class MHPParser: Parseable {
     func buildUserDataSet(firemail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] { return [String: Any]() }
     func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? { return nil }
-    
+
     func buildEventDataSet(event: MHPEvent) -> [String: Any] { return [String: Any]() }
     func parseResponseToEvent(document: DocumentSnapshot, data: [String: Any]) -> MHPEvent? { return nil }
 }
 
 protocol Parseable {
-    
+
 }
 
 class MHPFirestoreParser: MHPParser {
-    
-    
+
+
     // MARK: - User Parsing
-    
+
     override func buildUserDataSet(firemail: String?, mhpUser: MHPUser?, firstName: String?, lastName: String?, state: UserAuthorizationState) -> [String: Any] {
         var userDict = [String: Any]()
         userDict["userState"] = state.rawValue
-        
+
         if let email = firemail {
             userDict["email"] = email
         }
-        
+
         if let mu = mhpUser {
             userDict["firstName"] = mu.firstName
             userDict["lastName"] = mu.lastName
@@ -53,8 +53,8 @@ class MHPFirestoreParser: MHPParser {
         }
         return userDict
     }
-    
-    override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {        
+
+    override func parseResponseToUser(document: DocumentSnapshot, data: [String: Any]) -> MHPUser? {
         var user = MHPUser()
         do {
             user = try user.dictToModel(dict: data)
@@ -64,10 +64,10 @@ class MHPFirestoreParser: MHPParser {
         }
         return user
     }
-    
-    
+
+
     // MARK: - Event Parsing
-    
+
     override func buildEventDataSet(event: MHPEvent) -> [String: Any] {
         var eventDict = [String: Any]()
         do {
@@ -77,7 +77,7 @@ class MHPFirestoreParser: MHPParser {
         }
         return eventDict
     }
-    
+
     override func parseResponseToEvent(document: DocumentSnapshot, data: [String: Any]) -> MHPEvent? {
         var event = MHPEvent()
         do {
@@ -88,11 +88,10 @@ class MHPFirestoreParser: MHPParser {
         }
         return event
     }
-    
+
 }
 
 
-
 class MHPRealtimeDBParser: MHPParser {
-    
+
 }

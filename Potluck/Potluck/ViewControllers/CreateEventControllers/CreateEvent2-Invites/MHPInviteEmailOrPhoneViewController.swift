@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-protocol EnteredInvitesDelegate {
+protocol EnteredInvitesDelegate: AnyObject {
     func submit(pendingInvites: [MHPInvite])
 }
 
@@ -19,7 +19,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var txtLast: UITextField!
     @IBOutlet weak var txtEmailOrPhone: UITextField!
     @IBOutlet weak var btnAddToList: UIButton!
-    
+
     var mhpUser: MHPUser?
     var tempInvite = MHPInvite(userFirstName: "", userLastName: "", email: "")
     var pendingInvites: [MHPInvite]?
@@ -27,38 +27,38 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
     lazy var request: MHPRequestHandler = {
         return MHPRequestHandler()
     }()
-    
-    
+
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupKeyboardDismissOnTap()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         assertDependencies()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
+
+
     // MARK: - Navigation
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func addToListTapped(_ sender: Any) {
         if validTextFields() {
             if let email = validateEmail(email: txtEmailOrPhone.text) {
-                request.retrieveUserByEmail(email: email) { (result) in
+                request.retrieveUserByEmail(email: email) { result in
                     switch result {
                     case .success(let user):
                         self.tempInvite.userID = user.userID
@@ -66,7 +66,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
                         self.tempInvite.userLastName = user.lastName
                         self.tempInvite.email = user.email
                         self.tempInvite.userProfileURL = user.profileImageURL
-                    case .failure(_):
+                    case .failure:
                         self.tempInvite.userFirstName = self.txtFirst.text
                         self.tempInvite.userLastName = self.txtLast.text
                         self.tempInvite.email = self.txtEmailOrPhone.text
@@ -80,51 +80,51 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
             }
         }
     }
-    
+
     @IBAction func saveTapped(_ sender: Any) {
         if let invites = pendingInvites {
             enteredInvitesDelegate?.submit(pendingInvites: invites)
         }
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func cancelTapped(_ sender: Any) {
         DispatchQueue.main.async { [unowned self] in
             let alert = UIAlertController(title: "Cancel Invites",
                                           message: "Are you sure you want to cancel inviting guests? All invites on this screen will be lost.",
                                           preferredStyle: .alert)
-            
+
             alert.addAction(UIAlertAction(title: "Stay", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { action in
+            alert.addAction(UIAlertAction(title: "Leave", style: .default, handler: { _ in
                 self.dismiss(animated: true, completion: nil)
             }))
-            
+
             self.present(alert, animated: true)
         }
     }
-    
-    
+
+
     // MARK: - Private Methods
-    
+
     fileprivate func validTextFields() -> Bool {
         var errorMsg = "Required fields:"
         var isValid = true
-        
-        if txtFirst.text == "" {
+
+        if txtFirst.text?.isEmpty ?? true {
             errorMsg += "\nfirst name"
             isValid = false
         }
-        
-        if txtLast.text == "" {
+
+        if txtLast.text?.isEmpty ?? true {
             errorMsg += "\nlast name"
             isValid = false
         }
-        
-        if txtEmailOrPhone.text == "" {
+
+        if txtEmailOrPhone.text?.isEmpty ?? true {
             errorMsg += "\nemail"
             isValid = false
         }
-        
+
         if !isValid {
             DispatchQueue.main.async { [unowned self] in
                 let alertController = UIAlertController(title: "Missing Details", message: errorMsg, preferredStyle: .alert)
@@ -135,19 +135,19 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         }
         return isValid
     }
-    
+
     fileprivate func validateEmail(email: String?) -> String? {
         guard let trimmedText = email?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
         guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return nil }
-        
-        let range = NSMakeRange(0, NSString(string: trimmedText).length)
+
+        let range = NSRange(location: 0, length: NSString(string: trimmedText).length)
         let allMatches = dataDetector.matches(in: trimmedText,
                                               options: [],
                                               range: range)
-        
+
         if allMatches.count == 1, allMatches.first?.url?.absoluteString.contains("mailto:") == true &&
                 trimmedText != mhpUser?.email {
-            
+
             if self.pendingInvites!.contains(where: { $0.email == email }) {
                 DispatchQueue.main.async { [unowned self] in
                     let alertController = UIAlertController(title: "Existing Invite",
@@ -161,7 +161,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
             } else {
                 return trimmedText
             }
-            
+
         } else {
             DispatchQueue.main.async { [unowned self] in
                 let alertController = UIAlertController(title: "Error", message: "Please enter a valid email address.", preferredStyle: .alert)
@@ -172,7 +172,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
             return nil
         }
     }
-    
+
     fileprivate func resetTextFields() {
         txtFirst.text = ""
         txtLast.text = ""
@@ -180,7 +180,7 @@ class MHPInviteEmailOrPhoneViewController: UIViewController {
         tempInvite = MHPInvite(userFirstName: "", userLastName: "", email: "")
         txtFirst.becomeFirstResponder()
     }
-    
+
 }
 
 // MARK: - UITableViewControllerDelegate and Datasource
@@ -189,12 +189,12 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let rows = pendingInvites?.count else { return 0 }
         return rows
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var inv = MHPInvite(userFirstName: "", userLastName: "", email: "")
         if let invite = pendingInvites?[indexPath.row] {
@@ -202,24 +202,24 @@ extension MHPInviteEmailOrPhoneViewController: UITableViewDelegate, UITableViewD
         }
         return inv.cellForTableView(tableView: tblView, atIndexPath: indexPath)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCell.EditingStyle.delete) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             pendingInvites!.remove(at: indexPath.row)
             DispatchQueue.main.async { [unowned self] in
                 self.tblView.reloadData()
             }
         }
     }
-    
+
 }
 
 
@@ -242,7 +242,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
         }
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let textEntry = textField.text {
             switch textField {
@@ -257,16 +257,16 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
             }
         }
     }
-        
+
     func setupKeyboardDismissOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tap)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch> , with event: UIEvent?) {
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         dismissKeyboard()
     }
-    
+
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -280,17 +280,18 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
 // MARK: - UserInjectable Protocol
 
 extension MHPInviteEmailOrPhoneViewController: Injectable {
+    //swiftlint:disable type_name
     typealias T = [MHPInvite]
     typealias U = MHPUser
-    
+
     func inject(_ invites: T) {
         self.pendingInvites = invites
     }
-    
+
     func inject(_ user: U) {
         self.mhpUser = user
     }
-    
+
     func assertDependencies() {
         assert(self.pendingInvites != nil)
     }

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol CreateEvent2DataDelegate {
+protocol CreateEvent2DataDelegate: AnyObject {
     func back(event: MHPEvent)
 }
 
@@ -17,38 +17,38 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var lblGuestList: UILabel!
     @IBOutlet weak var viewHeader: UIView!
-    
+
     var event: MHPEvent?
     var invites = [MHPInvite]()
     var rsvps = [MHPRsvp]()
-    
+
     var dataDelegate: CreateEvent2DataDelegate?
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         setupView()
         assertDependencies()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
+
+
     // MARK: - Action Handlers
-    
+
     @IBAction func contactsTapped(_ sender: Any) {
         if let contactsInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteContactsViewController") as? MHPInviteContactsViewController {
             contactsInvite.pendingInvites = invites
@@ -56,7 +56,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             present(contactsInvite, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func emailTapped(_ sender: Any) {
         if let emailInvite = storyboard?.instantiateViewController(withIdentifier: "MHPInviteEmailOrPhoneViewController") as? MHPInviteEmailOrPhoneViewController {
             emailInvite.pendingInvites = invites
@@ -64,45 +64,45 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             present(emailInvite, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func facebookTapped(_ sender: Any) {
-    
+
     }
-    
+
     @IBAction func cancelTappped(_ sender: UIButton) {
         cancel()
     }
-    
+
     @IBAction func nextTapped(_ sender: Any) {
         mapInvitesToRsvps()
         updateEventRsvpList()
         next()
     }
-    
-    
+
+
     // MARK: - Private methods
-    
+
     fileprivate func setupView() {
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(image: UIImage(named: "backArrow"), style: .plain, target: self, action: #selector(back(sender: )))
         self.navigationItem.leftBarButtonItem = newBackButton
-       
+
         // hide tab bar
         self.tabBarController?.tabBar.isHidden = true
-        
+
         lblGuestList.text = "Guest List (\(String(describing: invites.count)))"
         DispatchQueue.main.async { [unowned self] in
             self.tblView.reloadData()
         }
     }
-    
+
     fileprivate func resetView() {
         self.event = nil
         self.invites = [MHPInvite]()
     }
-    
+
     fileprivate func mapInvitesToRsvps() {
-        rsvps = invites.map { (invite) -> MHPRsvp in
+        rsvps = invites.map { invite -> MHPRsvp in
             return MHPRsvp(userID: invite.userID,
                            email: invite.email,
                            eventID: event?.eventID,
@@ -113,7 +113,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
                            notificationsOn: false,
                            numOfGuest: 0)
         }
-        
+
         let hostRsvp = MHPRsvp(userID: event?.host?.userID,
                                email: event?.host?.email,
                                eventID: event?.eventID,
@@ -124,19 +124,19 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
                                notificationsOn: false,
                                numOfGuest: 0)
         rsvps.append(hostRsvp)
-        
+
     }
-    
+
     fileprivate func updateEventRsvpList() {
         event?.rsvpList = MHPEventRsvpList()
         event?.rsvpList?.rsvps = rsvps
         event?.invites = invites
-        
+
         if let host = event?.host?.userID {
             event?.rsvpList?.hostID = host
         }
     }
-    
+
     fileprivate func next() {
         if validate() {
             if  let event = event,
@@ -147,7 +147,7 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
             }
         }
     }
-    
+
     fileprivate func validate() -> Bool {
         if rsvps.count < 1 {
             DispatchQueue.main.async { [unowned self] in
@@ -162,11 +162,11 @@ class MHPCreateEvent2InvitesViewController: UIViewController {
         }
         return true
     }
-    
+
     fileprivate func cancel() {
         self.presentCancelAlert(view: self)
     }
-    
+
     @objc fileprivate func back(sender: UIBarButtonItem) {
         mapInvitesToRsvps()
         updateEventRsvpList()
@@ -184,38 +184,38 @@ extension MHPCreateEvent2InvitesViewController: UITableViewDelegate, UITableView
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return invites.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if invites.count > 0 {
+        if invites.count >= 1 {
             let invite = invites[indexPath.row]
             return invite.cellForTableView(tableView: tblView, atIndexPath: indexPath)
-            
+
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyStateCell", for: indexPath) as! MHPInviteEmptyStateCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "emptyStateCell", for: indexPath) as? MHPInviteEmptyStateCell else { return UITableViewCell() }
             cell.isUserInteractionEnabled = false
             cell.isHighlighted = false
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            if invites.count > 0 {
+            if invites.count >= 1 {
                 return 55
             } else {
                 return tblView.frame.height
         }
     }
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCell.EditingStyle.delete) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             invites.remove(at: indexPath.row)
             DispatchQueue.main.async { [unowned self] in
                 self.tblView.reloadData()
@@ -258,14 +258,14 @@ extension MHPCreateEvent2InvitesViewController: CreateEvent3DataDelegate {
 
 extension MHPCreateEvent2InvitesViewController: Injectable {
     typealias T = MHPEvent
-    
+
     func inject(_ event: T) {
         self.event = event
         if let eventInvites = event.invites {
             self.invites = eventInvites
         }
     }
-    
+
     func assertDependencies() {
         assert(self.event != nil)
     }

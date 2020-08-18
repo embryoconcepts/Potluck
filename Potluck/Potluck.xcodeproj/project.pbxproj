@@ -56,7 +56,6 @@
 		7657F43620D2F18D00C742C0 /* MHPRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657F43520D2F18D00C742C0 /* MHPRequestHandler.swift */; };
 		765986F620F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765986F520F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift */; };
 		765986F820FA83F300F6A7B1 /* MHPModifyItemPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765986F720FA83F300F6A7B1 /* MHPModifyItemPopoverViewController.swift */; };
-		76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76723D2F205E5609004940DE /* SwiftStyleSettings.plist */; };
 		76723D32205FB219004940DE /* MHPItemCardPledgingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */; };
 		76723D34205FB226004940DE /* MHPItemCardViewingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */; };
 		76723D36205FB23D004940DE /* MHPGuestListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76723D35205FB23D004940DE /* MHPGuestListViewController.swift */; };
@@ -161,7 +160,6 @@
 		7657F43520D2F18D00C742C0 /* MHPRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPRequestHandler.swift; sourceTree = "<group>"; };
 		765986F520F932D900F6A7B1 /* MHPSuggestedItemInfoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPSuggestedItemInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		765986F720FA83F300F6A7B1 /* MHPModifyItemPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPModifyItemPopoverViewController.swift; sourceTree = "<group>"; };
-		76723D2F205E5609004940DE /* SwiftStyleSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SwiftStyleSettings.plist; sourceTree = "<group>"; };
 		76723D31205FB219004940DE /* MHPItemCardPledgingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardPledgingViewController.swift; sourceTree = "<group>"; };
 		76723D33205FB226004940DE /* MHPItemCardViewingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPItemCardViewingViewController.swift; sourceTree = "<group>"; };
 		76723D35205FB23D004940DE /* MHPGuestListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHPGuestListViewController.swift; sourceTree = "<group>"; };
@@ -337,7 +335,6 @@
 			isa = PBXGroup;
 			children = (
 				765123DC2053552A00E78488 /* Potluck.entitlements */,
-				76723D2F205E5609004940DE /* SwiftStyleSettings.plist */,
 				765123B92053538900E78488 /* AppDelegate.swift */,
 				765123F720588DBB00E78488 /* Models */,
 				7657F43420D2F15600C742C0 /* Networking */,
@@ -531,8 +528,7 @@
 				765123B42053538900E78488 /* Resources */,
 				EC77A9EBA69C0E47B7E3982F /* [CP] Embed Pods Frameworks */,
 				FBA5433560C645507E1EE1A6 /* [CP] Copy Pods Resources */,
-				765124062058A1CC00E78488 /* ShellScript */,
-				SWIFCLEANCUSTOMRUNSCRIPT /* Swift-Clean Run Script */,
+				762037FA24B2393D00DA1EC5 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -637,7 +633,6 @@
 				7657AC30205CD34100FE7833 /* SignUpLogin.storyboard in Resources */,
 				76DF6B62205A29C300028B3B /* Roboto-Bold.ttf in Resources */,
 				7657AC3E205CFF3200FE7833 /* ViewEvent.storyboard in Resources */,
-				76723D30205E5609004940DE /* SwiftStyleSettings.plist in Resources */,
 				76DF6B64205A29C300028B3B /* Roboto-Italic.ttf in Resources */,
 				76D54A3520E6980C00349763 /* MHPCreateEventInvitesCell.xib in Resources */,
 				76DF6B68205A29C300028B3B /* Roboto-ThinItalic.ttf in Resources */,
@@ -765,18 +760,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PotluckTests/Pods-PotluckTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		765124062058A1CC00E78488 /* ShellScript */ = {
+		762037FA24B2393D00DA1EC5 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "KEYWORDS=\"TODO:|FIXME:\"\nfind \".\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -not -path \"./Pods/*\" -print0 |\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" |\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		EC77A9EBA69C0E47B7E3982F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -847,20 +847,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Potluck/Pods-Potluck-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		SWIFCLEANCUSTOMRUNSCRIPT /* Swift-Clean Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Swift-Clean Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "if [[ -z ${SKIP_SWIFTCLEAN} || ${SKIP_SWIFTCLEAN} != 1 ]]; then\nif [[ -d \"${LOCAL_APPS_DIR}/Swift-Clean.app\" ]]; then \n\"${LOCAL_APPS_DIR}\"/Swift-Clean.app/Contents/Resources/SwiftClean.app/Contents/MacOS/SwiftClean \"${SRCROOT}\"?MHP,@autoFix \nelse\necho \"warning: You have to install and set up Swift-Clean to use its features!\" \nfi\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

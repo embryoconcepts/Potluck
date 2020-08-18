@@ -10,21 +10,21 @@ import UIKit
 import Firebase
 
 class MHPProfileViewController: UIViewController {
-    
+
     var mhpUser: MHPUser?
-    
-    
+
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         assertDependencies()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let user = mhpUser {
@@ -40,15 +40,15 @@ class MHPProfileViewController: UIViewController {
             }
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     fileprivate func setupView() {
         // populate view with user data
     }
@@ -61,7 +61,7 @@ extension MHPProfileViewController: ProfileUserDelegate {
     func updateUser(mhpUser: MHPUser) {
         self.mhpUser = mhpUser
     }
-    
+
 }
 
 
@@ -69,11 +69,11 @@ extension MHPProfileViewController: ProfileUserDelegate {
 
 extension MHPProfileViewController: Injectable {
     typealias T = MHPUser
-    
+
     func inject(_ user: T) {
         self.mhpUser = user
     }
-    
+
     func assertDependencies() {
         assert(self.mhpUser != nil)
     }

@@ -9,12 +9,13 @@
 import UIKit
 
 class MHPInvite: Codable, Equatable, TableViewCompatible {
+    //swiftlint:disable operator_whitespace
     static func ==(lhs: MHPInvite, rhs: MHPInvite) -> Bool {
         return
             lhs.email == rhs.email ||
-            lhs.contactID == rhs.contactID 
+            lhs.contactID == rhs.contactID
     }
-    
+
     var userID: String?
     var userFirstName: String?
     var userLastName: String?
@@ -25,20 +26,20 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
     var eventID: String?
     var contactID: String?
     var contactImage: Data?
-    
+
     var reuseIdentifier: String {
         return "MHPCreateEventInvitesCell"
     }
-    
+
     init(userFirstName: String,
          userLastName: String,
          email: String) {
-        
+
         self.userFirstName = userFirstName
         self.userLastName = userLastName
         self.email = email
     }
-    
+
     init(userID: String?,
          userFirstName: String?,
          userLastName: String?,
@@ -49,7 +50,7 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
          eventID: String?,
          contactID: String?,
          contactImage: Data?) {
-    
+
         self.userID = userID
         self.userFirstName = userFirstName
         self.userLastName = userLastName
@@ -61,10 +62,10 @@ class MHPInvite: Codable, Equatable, TableViewCompatible {
         self.contactID = contactID
         self.contactImage = contactImage
     }
-    
+
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
         tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! MHPCreateEventInvitesCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as? MHPCreateEventInvitesCell else { return UITableViewCell() }
         cell.configureWithModel(self)
         return cell
     }
