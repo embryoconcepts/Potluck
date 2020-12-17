@@ -253,7 +253,7 @@ class MHPSignUpLoginChoiceViewController: UIViewController {
             return [NSAttributedString.Key.foregroundColor: UIColor.blue]
         } else {
             isPasswordValid = false
-            return [NSAttributedString.Key.foregroundColor: UIColor(hexString: "6A6A6A")]
+            return [NSAttributedString.Key.foregroundColor: UIColor(named: "6A6A6A") as Any]
         }
     }
 
@@ -357,7 +357,7 @@ extension MHPSignUpLoginChoiceViewController: UITextFieldDelegate {
             string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, and one number.",
             attributes: [
                 .font: UIFont(name: "Roboto", size: 11.0) ?? UIFont.systemFont(ofSize: 11.0),
-                .foregroundColor: UIColor(hexString: "6A6A6A")
+                .foregroundColor: UIColor(named: "6A6A6A") as Any
             ])
 
         if let txt = txtPassword.text {

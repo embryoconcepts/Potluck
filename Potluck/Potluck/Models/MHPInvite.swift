@@ -9,7 +9,7 @@
 import UIKit
 
 class MHPInvite: Codable, Equatable, TableViewCompatible {
-    //swiftlint:disable operator_whitespace
+    // swiftlint:disable operator_whitespace
     static func ==(lhs: MHPInvite, rhs: MHPInvite) -> Bool {
         return
             lhs.email == rhs.email ||

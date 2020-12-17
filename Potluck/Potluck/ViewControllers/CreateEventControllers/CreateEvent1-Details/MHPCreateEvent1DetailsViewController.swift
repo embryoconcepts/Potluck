@@ -130,7 +130,7 @@ class MHPCreateEvent1DetailsViewController: UIViewController {
 
 
         // style description text view
-        txtDescription.layer.borderColor = UIColor(hexString: "ebebeb").cgColor
+        txtDescription.layer.borderColor = UIColor(named: "ebebeb")?.cgColor
         txtDescription.layer.borderWidth = 1.0
         txtDescription.layer.cornerRadius = 5
 
@@ -261,7 +261,7 @@ extension MHPCreateEvent1DetailsViewController: UITextFieldDelegate {
 
     // add done button to keyboard
     func setupKeyboardDoneButton() {
-        //init toolbar
+        // init toolbar
         let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
 
         // create left side empty space so that done button set on right side
