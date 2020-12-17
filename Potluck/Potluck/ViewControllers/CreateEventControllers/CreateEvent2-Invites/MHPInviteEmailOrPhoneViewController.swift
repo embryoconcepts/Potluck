@@ -280,7 +280,7 @@ extension MHPInviteEmailOrPhoneViewController: UITextFieldDelegate {
 // MARK: - UserInjectable Protocol
 
 extension MHPInviteEmailOrPhoneViewController: Injectable {
-    //swiftlint:disable type_name
+    // swiftlint:disable type_name
     typealias T = [MHPInvite]
     typealias U = MHPUser
 

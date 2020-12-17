@@ -133,16 +133,16 @@ extension MHPModifyItemPopoverViewController: UITextFieldDelegate {
     }
 
     func setupKeyboardDoneButton() {
-        //init toolbar
+        // init toolbar
         let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
 
-        //create left side empty space so that done button set on right side
+        // create left side empty space so that done button set on right side
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
         toolbar.setItems([flexSpace, doneBtn], animated: false)
         toolbar.sizeToFit()
 
-        //setting toolbar as inputAccessoryView
+        // setting toolbar as inputAccessoryView
         self.txtName.inputAccessoryView = toolbar
         self.txtQuantity.inputAccessoryView = toolbar
         self.txtPortions.inputAccessoryView = toolbar

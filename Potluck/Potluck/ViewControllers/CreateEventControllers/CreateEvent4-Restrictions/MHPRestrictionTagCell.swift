@@ -36,10 +36,10 @@ class MHPRestrictionTagCell: UICollectionViewCell, Configurable {
         self.layer.shadowOpacity = 0.8
 
         if model.isSelected {
-            self.backgroundColor = UIColor(hexString: "8FD0AC")
+            self.backgroundColor = UIColor(named: "8FD0AC")
             imgCheckPlus.image = UIImage(named: "iconCheck")
         } else {
-            self.backgroundColor = UIColor(hexString: "DDDDDD")
+            self.backgroundColor = UIColor(named: "DDDDDD")
             imgCheckPlus.image = UIImage(named: "iconPlus")
         }
 

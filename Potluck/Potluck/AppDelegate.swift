@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import Firebase
-import FirebaseAuthUI
+import FirebaseUI
 import FBSDKCoreKit
 
 @UIApplicationMain
@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let firestore = Firestore.firestore()
         let settings = FirestoreSettings()
-        settings.areTimestampsInSnapshotsEnabled = true
         firestore.settings = settings
 
         // Facebook
@@ -69,9 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Dynamic Link methods
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
-            return false
-        }
+//        guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
+//            return false
+//        }
+        let dynamicLinks = DynamicLinks.dynamicLinks()
         let handled = dynamicLinks.handleUniversalLink(userActivity.referrerURL!) { dynamiclink, _ in
             if let path = dynamiclink?.url?.path {
                 if path == "/emailVerification" {
@@ -96,9 +96,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                            annotation: "")
     }
 
-    @available(iOS 8.0, *)
+    @available(iOS 13.0, *)
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        if let dynamicLink = DynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url) {
+        if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
             if let path = dynamicLink.url?.path {
                 if path == "/emailVerification" {
                     if Auth.auth().currentUser?.isEmailVerified != nil {

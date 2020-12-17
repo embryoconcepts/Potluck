@@ -1,10 +1,10 @@
-## Potluck by ManyHands
+## Potluck by ManyHands - WIP
 
-
+*Note: Development is paused at this time - but we'll be back!*
 
 ### About
 
-Potluck is an iOS app built for collaborative potlucks and community meal organization. 
+`Potluck` is an iOS app built for collaborative potlucks, dinner parties and community meal organization. 
 
 
 
@@ -24,7 +24,7 @@ Potluck is an iOS app built for collaborative potlucks and community meal organi
 
 ### Stack
 
-- Swift 4
+- Swift 5, iOS 13+
 - Google Firebase with Authentication, Firestore, Realtime Database (future), and Dynamic Links
 
 ### Reference:
@@ -37,4 +37,4 @@ Potluck is an iOS app built for collaborative potlucks and community meal organi
 
 ---
 
-&copy; ManyHandsApp 2015-2020
+&copy; ManyHandsApp 2015-2021

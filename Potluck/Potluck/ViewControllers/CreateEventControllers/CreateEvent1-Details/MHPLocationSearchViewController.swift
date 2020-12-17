@@ -127,7 +127,7 @@ extension MHPLocationSearchViewController: UISearchBarDelegate {
 extension MHPLocationSearchViewController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async { [unowned self] in
-            completer.filterType = MKLocalSearchCompleter.FilterType.locationsOnly
+            completer.resultTypes = .pointOfInterest
             self.searchResults = completer.results
             self.tblSearchResults.reloadData()
         }

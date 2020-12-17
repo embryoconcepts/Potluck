@@ -37,7 +37,6 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
 
     override init() {
         let settings = db.settings
-        settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
 
         actionCodeSettings.handleCodeInApp = true
@@ -89,9 +88,9 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
         Auth.auth().signInAnonymously { user, error in
             if error == nil {
                 if let returnedUser = user {
-                    let ref: DocumentReference = self.db.collection("users").document(returnedUser.uid)
-                    let dataSet = self.dataManager.encodeUser(firemail: returnedUser.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
-                    ref.setData(dataSet, options: SetOptions.merge()) { error in
+                    let ref: DocumentReference = self.db.collection("users").document(returnedUser.user.uid)
+                    let dataSet = self.dataManager.encodeUser(firemail: returnedUser.user.email, mhpUser: nil, firstName: nil, lastName: nil, state: .anonymous)
+                    ref.setData(dataSet, merge: true) { error in
                         if error == nil {
                             print("Anon user added with ID: \(ref.documentID)")
                             // retrieve mhpUser from db
@@ -250,7 +249,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
                 if error == nil {
                     let ref: DocumentReference = self.db.collection("users").document(firUser.uid)
                     let dataSet = self.dataManager.encodeUser(firemail: firUser.email, mhpUser: mhpUser, firstName: nil, lastName: nil, state: state)
-                    ref.setData(dataSet, options: SetOptions.merge()) { error in
+                    ref.setData(dataSet, merge: true) { error in
                         if error == nil {
                             print("User updated with document ID: \(ref.documentID)")
                             completion(.success(true))
@@ -314,7 +313,7 @@ class MHPFirebaseFirestoreServiceRouter: MHPServiceRouter {
     override func saveEvent(event: MHPEvent, completion: @escaping (Result<Bool, Error> ) -> Void) {
         let ref: DocumentReference = self.db.collection("events").document(event.eventID)
         let dataSet = self.dataManager.encodeEvent(event: event)
-        ref.setData(dataSet, options: SetOptions.merge()) { error in
+        ref.setData(dataSet, merge: true) { error in
             if error == nil {
                 print("Event saved with document ID: \(ref.documentID)")
                 completion(.success(true))
